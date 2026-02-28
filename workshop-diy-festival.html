@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // WKSHPCHELLA</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+
+.poster{max-width:480px;width:100%;background:linear-gradient(180deg,#0a0a14 0%,#1a0a2a 30%,#2a0a3a 60%,#0a0a14 100%);padding:24px 20px;border:1px solid rgba(255,255,255,.03);position:relative;overflow:hidden}
+
+/* DECORATIVE GRADIENT SHAPES */
+.poster::before{content:'';position:absolute;top:10%;left:-20%;width:140%;height:30%;background:radial-gradient(ellipse,rgba(255,0,102,.03),transparent 60%);pointer-events:none}
+.poster::after{content:'';position:absolute;bottom:10%;right:-20%;width:140%;height:30%;background:radial-gradient(ellipse,rgba(0,170,255,.03),transparent 60%);pointer-events:none}
+
+.fest-name{font-family:'Syne',sans-serif;font-size:clamp(36px,10vw,56px);font-weight:800;text-align:center;color:#fff;letter-spacing:4px;line-height:1;text-shadow:0 0 30px rgba(255,0,102,.1)}
+.fest-sub{text-align:center;font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.15);letter-spacing:4px;margin:4px 0 14px}
+
+.day{margin:12px 0;text-align:center}
+.day-label{font-family:'Oswald',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.08);letter-spacing:4px;margin-bottom:6px;text-transform:uppercase}
+.day-label span{color:var(--c,#ff0066)}
+
+/* HEADLINER */
+.headliner{font-family:'Syne',sans-serif;font-size:clamp(24px,6vw,32px);font-weight:800;color:#fff;letter-spacing:3px;margin:4px 0;text-shadow:0 0 16px var(--glow,rgba(255,0,102,.15))}
+
+/* TIER 2 */
+.tier2{font-family:'Oswald',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:700;color:rgba(255,255,255,.5);letter-spacing:2px;margin:3px 0}
+
+/* TIER 3 */
+.tier3{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.2);letter-spacing:1px;margin:2px 0;line-height:2}
+
+.divider{width:40px;height:1px;background:rgba(255,255,255,.05);margin:8px auto}
+
+/* STAGES */
+.stages{display:flex;justify-content:center;gap:10px;margin:10px 0;flex-wrap:wrap}
+.stage{text-align:center;padding:4px 10px;border:1px solid rgba(255,255,255,.03);border-radius:3px;font-size:7px;color:rgba(255,255,255,.1);font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+
+.info{text-align:center;margin-top:12px;font-size:7px;color:rgba(255,255,255,.06);font-family:'JetBrains Mono',monospace;letter-spacing:2px;line-height:2.5}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="poster">
+
+<div class="fest-name">WKSHPCHELLA</div>
+<div class="fest-sub">A WORKSHOP-DIY MUSIC & TECH FESTIVAL · FRANCE 2026</div>
+
+<!-- DAY 1: ROBOTICS -->
+<div class="day" style="--c:#00cc66">
+  <div class="day-label"><span>FRIDAY</span> · ROBOTICS STAGE</div>
+  <div class="headliner" style="--glow:rgba(0,204,102,.15)">BIT-BOT</div>
+  <div class="tier2">ESP32-C3-LAB · RXY</div>
+  <div class="tier3">servo-lab · talking-robot · mission-control · wled-kids-lab</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- DAY 2: AI + CYBER -->
+<div class="day" style="--c:#9966ff">
+  <div class="day-label"><span>SATURDAY</span> · NEURAL STAGE</div>
+  <div class="headliner" style="--glow:rgba(153,102,255,.15)">TEACHABLE MACHINE</div>
+  <div class="tier2">MAGIC-HANDS · FACE-QUEST</div>
+  <div class="tier3">pentest-lab · prompt-hero · face-tracking · smart-home</div>
+  <div class="tier2" style="margin-top:6px;color:rgba(255,51,68,.5)">PENTEST-LAB</div>
+  <div class="tier3">dhcp-lab · ctf-lab · wifi-scanner</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- DAY 3: SPECIAL GUESTS -->
+<div class="day" style="--c:#ffd700">
+  <div class="day-label"><span>SUNDAY</span> · MAIN STAGE</div>
+  <div class="headliner" style="--glow:rgba(255,215,0,.15)">BUG #42</div>
+  <div class="tier2">THE COFFEE MACHINE · PASSWORD123</div>
+  <div class="tier3">docker-lab · linux-kids-lab · pixel-gateway · nodered-lab · tty</div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,215,0,.1);margin-top:4px;letter-spacing:1px">+ SURPRISE GUEST: THE 40TH APP (3:42 AM SET)</div>
+</div>
+
+<div class="stages">
+  <div class="stage">🤖 ROBOTICS TENT</div>
+  <div class="stage">🧠 NEURAL DOME</div>
+  <div class="stage">🔐 CYBER BUNKER</div>
+  <div class="stage">☕ COFFEE LOUNGE</div>
+</div>
+
+<div class="info">
+  GATES OPEN: 24/7 (IT'S A WEBSITE)<br>
+  ADMISSION: FREE · NO TICKETS NEEDED · NO INSTALLATION REQUIRED<br>
+  WIFI: password123 · FOOD: COFFEE ONLY (8% CAPACITY)<br>
+  NO LINTERS BEYOND THIS POINT · ALL BUGS ARE HEADLINERS<br>
+  WORKSHOP-DIY · ASSOCIATION LOI 1901 · FRANCE 🇫🇷
+</div>
+
+</div>
+  <script src="nav.js"></script>
+</body>
+</html>

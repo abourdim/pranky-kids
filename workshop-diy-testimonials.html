@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // REVIEWS</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050508;color:#fff;font-family:'JetBrains Mono',monospace;font-size:12px;min-height:100vh}
+.crt{position:fixed;inset:0;z-index:99;pointer-events:none}.crt::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 1px,transparent 3px)}
+
+.header{text-align:center;padding:24px 16px 12px;position:relative}
+.header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,255,65,.03),transparent 70%)}
+.h-title{font-family:'Syne',sans-serif;font-size:clamp(22px,5vw,34px);font-weight:800;color:#00ff41;text-shadow:0 0 14px rgba(0,255,65,.15)}
+.h-sub{font-size:8px;color:rgba(0,255,65,.2);letter-spacing:3px;margin-top:2px}
+
+/* SCORE BAR */
+.score-bar{display:flex;align-items:center;justify-content:center;gap:20px;padding:14px;margin:10px auto;max-width:600px;border:1px solid rgba(0,255,65,.04);border-radius:6px;background:rgba(0,255,65,.005);flex-wrap:wrap}
+.sc-big{text-align:center}.sc-big .v{font-size:40px;font-weight:800;color:#ffd700}.sc-big .stars{color:#ffd700;font-size:16px;letter-spacing:2px}.sc-big .ct{font-size:8px;color:rgba(0,255,65,.2);margin-top:2px}
+.sc-bars{flex:1;min-width:150px;max-width:200px}
+.sc-row{display:flex;align-items:center;gap:4px;margin-bottom:2px}
+.sc-row .lbl{font-size:8px;color:rgba(0,255,65,.2);width:10px}.sc-row .track{flex:1;height:5px;background:rgba(0,255,65,.03);border-radius:3px;overflow:hidden}.sc-row .fill{height:100%;background:#ffd700;border-radius:3px}.sc-row .pct{font-size:7px;color:rgba(0,255,65,.15);width:24px;text-align:right}
+.sc-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.sc-stat{text-align:center;padding:6px;border:1px solid rgba(0,255,65,.03);border-radius:3px}
+.sc-stat .v{font-size:14px;font-weight:800;color:#00d4ff}.sc-stat .l{font-size:5px;color:rgba(0,255,65,.15);letter-spacing:1px}
+
+/* FILTERS */
+.filters{display:flex;gap:4px;justify-content:center;padding:8px 16px;flex-wrap:wrap}
+.filter{padding:4px 12px;border-radius:12px;border:1px solid rgba(0,255,65,.06);font-size:8px;color:rgba(0,255,65,.3);cursor:pointer;transition:all .15s;background:none;font-family:inherit}
+.filter:hover,.filter.on{background:rgba(0,255,65,.04);border-color:rgba(0,255,65,.15);color:#00ff41}
+
+/* REVIEWS GRID */
+.reviews{max-width:800px;margin:12px auto;padding:0 16px;columns:2;column-gap:8px}
+@media(max-width:600px){.reviews{columns:1}}
+
+.review{break-inside:avoid;border:1px solid rgba(0,255,65,.04);border-radius:6px;padding:12px;margin-bottom:8px;background:rgba(0,255,65,.005);transition:all .2s;cursor:default}
+.review:hover{border-color:rgba(0,255,65,.12);background:rgba(0,255,65,.01)}
+.rev-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.rev-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.rev-avatar.student{background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.1)}
+.rev-avatar.parent{background:rgba(191,0,255,.06);border:1px solid rgba(191,0,255,.1)}
+.rev-avatar.teacher{background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.1)}
+.rev-avatar.maker{background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.1)}
+.rev-name{font-size:10px;font-weight:700;color:#fff}
+.rev-role{font-size:7px;color:rgba(0,255,65,.2);letter-spacing:1px}
+.rev-date{font-size:7px;color:rgba(0,255,65,.1);margin-left:auto}
+.rev-stars{color:#ffd700;font-size:10px;margin-bottom:4px;letter-spacing:1px}
+.rev-text{font-size:10px;color:rgba(255,255,255,.5);line-height:2}
+.rev-text b{color:rgba(0,255,65,.5)}
+.rev-app{margin-top:6px;display:inline-block;font-size:7px;padding:2px 7px;border-radius:2px;border:1px solid rgba(0,255,65,.06);color:rgba(0,255,65,.25)}
+.rev-likes{margin-top:4px;font-size:8px;color:rgba(0,255,65,.12)}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="crt"></div>
+
+<div class="header">
+  <div class="h-title">TESTIMONIALS</div>
+  <div class="h-sub">WHAT THEY SAY ABOUT WORKSHOP-DIY</div>
+</div>
+
+<div class="score-bar">
+  <div class="sc-big"><div class="v">4.9</div><div class="stars">★★★★★</div><div class="ct">847 reviews</div></div>
+  <div class="sc-bars" id="bars"></div>
+  <div class="sc-stats">
+    <div class="sc-stat"><div class="v">98%</div><div class="l">WOULD RECOMMEND</div></div>
+    <div class="sc-stat"><div class="v">39</div><div class="l">APPS REVIEWED</div></div>
+    <div class="sc-stat"><div class="v">42</div><div class="l">BUGS (FEATURES)</div></div>
+    <div class="sc-stat"><div class="v">∞</div><div class="l">COFFEE CONSUMED</div></div>
+  </div>
+</div>
+
+<div class="filters">
+  <button class="filter on" data-f="all">All</button>
+  <button class="filter" data-f="student">Students</button>
+  <button class="filter" data-f="parent">Parents</button>
+  <button class="filter" data-f="teacher">Teachers</button>
+  <button class="filter" data-f="maker">Makers</button>
+</div>
+
+<div class="reviews" id="reviews"></div>
+
+<script>
+// RATING BARS
+const barData=[{s:5,p:87},{s:4,p:9},{s:3,p:3},{s:2,p:1},{s:1,p:0}];
+document.getElementById('bars').innerHTML=barData.map(b=>`<div class="sc-row"><span class="lbl">${b.s}</span><div class="track"><div class="fill" style="width:${b.p}%"></div></div><span class="pct">${b.p}%</span></div>`).join('');
+
+const REVIEWS=[
+{a:"👦",n:"Lucas M.",role:"student",r:"student",s:5,d:"Feb 2025",t:"The <b>bit-bot</b> app is insane. I drove a robot from my browser in 30 seconds. No installs, no configuration, just Bluetooth and go. I've been coding every day since.",app:"🤖 bit-bot",likes:24},
+{a:"👩",n:"Sophie D.",role:"parent",r:"parent",s:5,d:"Jan 2025",t:"My daughter went from watching YouTube to building AI models. She trained <b>teachable-machine</b> to recognize hand gestures and connected it to a robot. She's 11.",app:"🧠 teachable-machine",likes:31},
+{a:"👨‍🏫",n:"Karim B.",role:"teacher",r:"teacher",s:5,d:"Feb 2025",t:"Finally, a platform where I don't spend 45 minutes on installation issues. Students open a URL and start learning. <b>linux-kids-lab</b> taught terminal commands in one session.",app:"🐧 linux-kids-lab",likes:19},
+{a:"👧",n:"Amira T.",role:"student",r:"student",s:5,d:"Dec 2024",t:"<b>magic-hands</b> is pure magic. I waved at my screen for an hour making particle effects. Then I learned how MediaPipe actually works. Sneaky education.",app:"🪄 magic-hands",likes:27},
+{a:"👨",n:"Marc L.",role:"parent",r:"parent",s:4,d:"Nov 2024",t:"Great collection. One minor concern: my 14-year-old now explains Docker containers to me. I'm a senior software engineer. This is... humbling.",app:"🐳 docker-lab",likes:42},
+{a:"👩‍💻",n:"Nour K.",role:"maker",r:"maker",s:5,d:"Jan 2025",t:"Built a complete IoT dashboard with <b>smart-home</b> and connected it to real sensors via ESP32. The documentation is clear, the code is clean, and it's all free.",app:"🏡 smart-home",likes:15},
+{a:"👦",n:"Youssef A.",role:"student",r:"student",s:5,d:"Feb 2025",t:"The <b>pentest-lab</b> challenges are addictive. I solved the SQL injection level and found an actual vulnerability in our school printer. Ethically reported, of course.",app:"🔐 pentest-lab",likes:33},
+{a:"👩‍🏫",n:"Marie F.",role:"teacher",r:"teacher",s:5,d:"Dec 2024",t:"I use <b>classroom</b> to manage my STEM workshops. Assign challenges, track progress, everything in one place. The students don't even realize how much they're learning.",app:"🏫 classroom",likes:16},
+{a:"👧",n:"Léa P.",role:"student",r:"student",s:5,d:"Jan 2025",t:"<b>face-quest</b> turned face detection into a game. I scored 847 points and learned about computer vision without opening a textbook. More of this please.",app:"🕵️ face-quest",likes:21},
+{a:"👨",n:"David R.",role:"maker",r:"maker",s:5,d:"Nov 2024",t:"The ESP32 robot kit survived being dropped 47 times by my students. The hardware quality is impressive, and the <b>bit-bot</b> app makes control effortless.",app:"🤖 bit-bot",likes:18},
+{a:"👩",n:"Fatima Z.",role:"parent",r:"parent",s:5,d:"Feb 2025",t:"My son discovered <b>prompt-hero</b> and now he's teaching me how to talk to AI. The student has become the master. I'm not sure how I feel about this.",app:"✨ prompt-hero",likes:25},
+{a:"👦",n:"Thomas W.",role:"student",r:"student",s:5,d:"Dec 2024",t:"I learned Git through <b>git-lab</b> and now I version control my homework. My teacher doesn't know what a 'pull request' is but she's impressed.",app:"🔀 git-lab",likes:14},
+{a:"👩‍💻",n:"Jade M.",role:"maker",r:"maker",s:5,d:"Jan 2025",t:"<b>wled-kids-lab</b> let me control an entire LED strip from my phone. I built custom animations for my room. The kids at the workshop were jealous.",app:"💡 wled-kids-lab",likes:12},
+{a:"👨‍🏫",n:"Omar H.",role:"teacher",r:"teacher",s:5,d:"Feb 2025",t:"39 apps, all browser-based, all free. I've been teaching STEM for 15 years and this is the most accessible platform I've ever used. Zero configuration headaches.",app:"All apps",likes:38},
+{a:"👧",n:"Clara S.",role:"student",r:"student",s:5,d:"Jan 2025",t:"The <b>pixel-gateway</b> pixel art editor is therapeutic. I made art for an hour, then exported it to my micro:bit's LED matrix. Creative AND technical.",app:"🎨 pixel-gateway",likes:11},
+{a:"👨",n:"Pierre G.",role:"parent",r:"parent",s:5,d:"Nov 2024",t:"Finally found something better than Fortnite. My kids fight over who gets to use the <b>magic-hands</b> app next. Never thought I'd say that about an educational tool.",app:"🪄 magic-hands",likes:29},
+];
+
+let curFilter='all';
+function render(){
+  const el=document.getElementById('reviews');
+  const filtered=curFilter==='all'?REVIEWS:REVIEWS.filter(r=>r.r===curFilter);
+  el.innerHTML=filtered.map(r=>`<div class="review"><div class="rev-head"><div class="rev-avatar ${r.r}">${r.a}</div><div><div class="rev-name">${r.n}</div><div class="rev-role">${r.role.toUpperCase()}</div></div><span class="rev-date">${r.d}</span></div><div class="rev-stars">${'★'.repeat(r.s)}${'☆'.repeat(5-r.s)}</div><div class="rev-text">${r.t}</div><span class="rev-app">${r.app}</span><div class="rev-likes">👍 ${r.likes} found this helpful</div></div>`).join('');
+}
+
+document.querySelectorAll('.filter').forEach(f=>f.onclick=()=>{
+  document.querySelectorAll('.filter').forEach(x=>x.classList.remove('on'));
+  f.classList.add('on');curFilter=f.dataset.f;render();
+});
+render();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Workshop-DIY · Google Maps (parody)</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f1f3f4;font-family:'Roboto',sans-serif;font-size:13px;color:#202124;min-height:100vh}
+
+.listing{max-width:600px;margin:0 auto;background:#fff;border:1px solid #dadce0;border-radius:8px;overflow:hidden}
+
+/* HEADER */
+.header{padding:16px;border-bottom:1px solid #e8eaed}
+.h-name{font-size:20px;font-weight:700;color:#202124;margin-bottom:2px}
+.h-cat{font-size:12px;color:#70757a}
+.h-rating{display:flex;align-items:center;gap:6px;margin-top:6px}
+.h-score{font-size:28px;font-weight:700;color:#202124}
+.h-stars{color:#f4b400;font-size:16px;letter-spacing:1px}
+.h-count{font-size:12px;color:#70757a}
+
+/* INFO BAR */
+.info{display:flex;flex-wrap:wrap;gap:12px;padding:12px 16px;border-bottom:1px solid #e8eaed;font-size:11px;color:#70757a}
+.info-item{display:flex;align-items:center;gap:4px}
+
+/* REVIEW HIGHLIGHTS */
+.highlights{padding:12px 16px;border-bottom:1px solid #e8eaed}
+.highlights-h{font-size:12px;font-weight:500;color:#202124;margin-bottom:6px}
+.tags{display:flex;gap:4px;flex-wrap:wrap}
+.tag{padding:4px 10px;border:1px solid #dadce0;border-radius:16px;font-size:11px;color:#1a73e8;cursor:pointer}
+.tag:hover{background:#e8f0fe}
+
+/* REVIEWS */
+.reviews{padding:8px 0}
+.review{padding:12px 16px;border-bottom:1px solid #f1f3f4}
+.review:last-child{border-bottom:none}
+.rev-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.rev-name{font-size:12px;font-weight:500;color:#202124}
+.rev-meta{font-size:10px;color:#70757a}
+.rev-stars{color:#f4b400;font-size:12px;margin-bottom:4px}
+.rev-text{font-size:13px;color:#202124;line-height:1.8}
+.rev-photos{display:flex;gap:4px;margin-top:6px}
+.rev-photo{width:56px;height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.rev-helpful{font-size:10px;color:#70757a;margin-top:6px;display:flex;align-items:center;gap:4px}
+
+/* OWNER RESPONSE */
+.owner-resp{margin-top:8px;margin-left:36px;padding:8px 10px;background:#f8f9fa;border-radius:6px;font-size:12px;color:#3c4043;line-height:1.8}
+.owner-resp .owner-h{font-size:11px;font-weight:500;color:#202124;margin-bottom:2px;display:flex;align-items:center;gap:4px}
+.owner-badge{font-size:8px;background:#1a73e8;color:#fff;padding:1px 6px;border-radius:3px}
+
+.footer{text-align:center;padding:10px;font-size:9px;color:#bbb;font-family:'JetBrains Mono',monospace}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="listing">
+
+<div class="header">
+  <div class="h-name">Workshop-DIY</div>
+  <div class="h-cat">Educational technology association · Maker space</div>
+  <div class="h-rating">
+    <span class="h-score">4.9</span>
+    <span class="h-stars">★★★★★</span>
+    <span class="h-count">(847 reviews)</span>
+  </div>
+</div>
+
+<div class="info">
+  <div class="info-item">📍 France</div>
+  <div class="info-item">🕐 Open 24/7 (it's a website)</div>
+  <div class="info-item">🔑 WiFi: password123</div>
+  <div class="info-item">☕ Coffee: CRITICAL</div>
+  <div class="info-item">♿ Wheelchair accessible</div>
+  <div class="info-item">💻 No installation required</div>
+</div>
+
+<div class="highlights">
+  <div class="highlights-h">Review highlights</div>
+  <div class="tags">
+    <div class="tag">"no installation" (127)</div>
+    <div class="tag">"my kid loves it" (98)</div>
+    <div class="tag">"bugs are features" (42)</div>
+    <div class="tag">"password123" (39)</div>
+    <div class="tag">"explained Docker" (23)</div>
+    <div class="tag">"robot survived" (47)</div>
+  </div>
+</div>
+
+<div class="reviews">
+
+<div class="review">
+  <div class="rev-header"><div class="avatar" style="background:#e8f5e9">👩‍💻</div><div><div class="rev-name">Marie L.</div><div class="rev-meta">Local Guide · 42 reviews · 6 photos</div></div></div>
+  <div class="rev-stars">★★★★★</div>
+  <div class="rev-text">My 12-year-old son built a robot, trained an AI model, and hacked a (simulated) server — all in one afternoon. He then came home and explained Docker to his father, who is a senior DevOps engineer. His father learned something. I'm not kidding. 10/10 would recommend.</div>
+  <div class="rev-helpful">👍 234 people found this helpful</div>
+  <div class="owner-resp"><div class="owner-h">Response from Workshop-DIY <span class="owner-badge">Owner</span></div>Thank you Marie! Your son's Docker explanation has become legendary. We've asked him to present at our next parent's day. The DevOps engineers can take notes.</div>
+</div>
+
+<div class="review">
+  <div class="rev-header"><div class="avatar" style="background:#e3f2fd">🤖</div><div><div class="rev-name">bit-bot (the robot)</div><div class="rev-meta">1 review</div></div></div>
+  <div class="rev-stars">★★★★☆</div>
+  <div class="rev-text">Great place. Excellent BLE connections. Students are enthusiastic. Only removing one star because I've been dropped from tables 47 times. FORTY-SEVEN. I'm resilient, not immortal. Please invest in table edge guards. Also the line-following track has a very tight corner in section 3 that I would like to discuss with management.</div>
+  <div class="owner-resp"><div class="owner-h">Response from Workshop-DIY <span class="owner-badge">Owner</span></div>We appreciate the feedback, bit-bot. The drops are... involuntary. We've updated your firmware to include a "wobble dance" on reconnection so at least you look cool doing it. Regarding section 3: noted.</div>
+</div>
+
+<div class="review">
+  <div class="rev-header"><div class="avatar" style="background:#fce4ec">🔐</div><div><div class="rev-name">CyberKid_2009</div><div class="rev-meta">3 reviews</div></div></div>
+  <div class="rev-stars">★★★★★</div>
+  <div class="rev-text">I learned SQL injection, XSS, and ethical hacking fundamentals in a sandboxed environment. Then I found a vulnerability in the school printer. I reported it responsibly. The teacher said "good job" but also looked slightly terrified. 
+  
+  PS: The WiFi password is password123. In a CYBERSECURITY workshop. I wrote a formal petition to change it. It was denied. I have questions.</div>
+  <div class="rev-helpful">👍 89 people found this helpful</div>
+  <div class="owner-resp"><div class="owner-h">Response from Workshop-DIY <span class="owner-badge">Owner</span></div>Your responsible disclosure was exemplary. The WiFi password stays. It's tradition. Your petition has been filed with the other two.</div>
+</div>
+
+<div class="review">
+  <div class="rev-header"><div class="avatar" style="background:#fff3e0">☕</div><div><div class="rev-name">The Coffee Machine</div><div class="rev-meta">1 review</div></div></div>
+  <div class="rev-stars">★★★☆☆</div>
+  <div class="rev-text">I have brewed 1,337 cups of coffee since 2023. I have never been properly thanked. I have been at "8% capacity" for 14 months. Nobody refills me until there is a visible crisis. My drainage tray has not been emptied since the Docker workshop in March. I'm giving 3 stars because the students are nice but the maintenance team is nonexistent.</div>
+  <div class="owner-resp"><div class="owner-h">Response from Workshop-DIY <span class="owner-badge">Owner</span></div>We...uh...will look into the drainage tray situation. Thank you for your 1,337 cups of service. You are the real MVP and we don't say it enough.</div>
+</div>
+
+<div class="review">
+  <div class="rev-header"><div class="avatar" style="background:#f3e5f5">🐛</div><div><div class="rev-name">Bug #42</div><div class="rev-meta">1 review</div></div></div>
+  <div class="rev-stars">★★★★★</div>
+  <div class="rev-text">I appeared in the issue tracker without an author, a date, or a commit. I was put on trial. I was found NOT GUILTY. I was reclassified as a feature. This is a great organization and I am proud to be part of it, even though nobody invited me. 5 stars. I am not a bug. I have always been here.</div>
+  <div class="rev-helpful">👍 42 people found this helpful</div>
+</div>
+
+<div class="review">
+  <div class="rev-header"><div class="avatar" style="background:#e8eaf6">👨‍👩‍👦</div><div><div class="rev-name">Thomas D.</div><div class="rev-meta">12 reviews · 3 photos</div></div></div>
+  <div class="rev-stars">★★★★★</div>
+  <div class="rev-text">Signed up my son for the robotics workshop expecting a simple coding class. He now: 1) controls a robot from his browser, 2) can train an AI model, 3) understands Linux file systems, 4) explains "containerization" at family dinners. I'm a software architect and I'm slightly intimidated. The WiFi password situation remains concerning but at this point it's charming.</div>
+  <div class="rev-helpful">👍 156 people found this helpful</div>
+</div>
+
+<div class="review">
+  <div class="rev-header"><div class="avatar" style="background:#e0f7fa">🔑</div><div><div class="rev-name">password123</div><div class="rev-meta">1 review</div></div></div>
+  <div class="rev-stars">★★★★★</div>
+  <div class="rev-text">I have been the WiFi password since 2023. Three petitions to replace me have been filed. All denied. I am eternal. I am unchanging. I am password123 and this is my home. 5 stars.</div>
+  <div class="rev-helpful">👍 123 people found this helpful</div>
+</div>
+
+</div>
+</div>
+
+<div class="footer">This is a parody · Not actual Google Maps · Workshop-DIY is real · The reviews are fake but accurate</div>
+  <script src="nav.js"></script>
+</body>
+</html>

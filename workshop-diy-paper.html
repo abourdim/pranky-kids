@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // Proceedings of the International Conference on Maker Education</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f5f5;color:#222;font-family:'Times New Roman',Georgia,serif;font-size:11pt;line-height:1.6}
+.paper{max-width:680px;margin:16px auto;background:#fff;padding:40px 50px;box-shadow:0 2px 12px rgba(0,0,0,.08);border:1px solid #ddd}
+@media(max-width:700px){.paper{padding:20px 16px}}
+
+/* HEADER */
+.conf{text-align:center;font-size:8pt;color:#888;font-family:Arial,sans-serif;letter-spacing:1px;margin-bottom:10px}
+h1{font-size:16pt;text-align:center;margin-bottom:8px;line-height:1.4}
+.authors{text-align:center;font-size:10pt;margin-bottom:2px}
+.affil{text-align:center;font-size:8pt;color:#666;font-style:italic;margin-bottom:12px;font-family:Arial,sans-serif}
+
+/* ABSTRACT */
+.abstract{margin:10px 30px;font-size:9pt;text-align:justify}
+.abstract b{font-size:10pt}
+
+/* SECTIONS */
+h2{font-size:12pt;margin:14px 0 6px;counter-increment:section;font-weight:700}
+h2::before{content:counter(section) ". "}
+body{counter-reset:section}
+h3{font-size:11pt;margin:8px 0 4px;font-style:italic}
+p{text-align:justify;margin-bottom:8px;text-indent:1.5em}
+p.noindent{text-indent:0}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:9pt}
+table caption{font-size:8pt;text-align:left;margin-bottom:3px;font-weight:700}
+th,td{border:1px solid #ccc;padding:3px 6px;text-align:left}
+th{background:#f5f5f5;font-size:8pt;font-family:Arial,sans-serif}
+
+/* FIGURE */
+.figure{margin:10px 0;text-align:center;border:1px solid #eee;padding:10px;background:#fafafa}
+.fig-content{font-size:36px;margin-bottom:4px}
+.fig-caption{font-size:8pt;color:#555;text-align:left}
+.fig-caption b{color:#222}
+
+/* REFS */
+.references{font-size:8pt;line-height:1.6}
+.references ol{padding-left:16px}.references li{margin:3px 0;color:#444}
+
+/* FOOTNOTE */
+.footnote{font-size:7pt;color:#888;border-top:1px solid #ddd;padding-top:4px;margin-top:14px}
+
+sup{font-size:7pt;color:#0066cc}
+.eq{text-align:center;margin:8px 0;font-family:'Courier New',monospace;font-size:10pt;color:#333;padding:6px;background:#f9f9f9;border:1px solid #eee;border-radius:2px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="paper">
+
+<div class="conf">Proceedings of the 1st International Conference on Maker Education and Browser-Based Pedagogy (ICMEBP 2026)</div>
+
+<h1>On the Classification of Bug #42: A Feature-Theoretic Approach to Defect Reclassification in Educational Software Ecosystems</h1>
+
+<div class="authors">A. Bourdim<sup>1</sup>, The Coffee Machine<sup>1</sup>, password123<sup>1</sup>, Bug #42<sup>1*</sup></div>
+<div class="affil"><sup>1</sup>Workshop-DIY, Association Loi 1901, France · <sup>*</sup>Corresponding defect</div>
+
+<hr style="margin:10px 0;border:none;border-top:1px solid #ddd">
+
+<div class="abstract">
+<b>Abstract.</b> We present a novel framework for classifying software defects in educational platforms, with specific application to Bug #42 in the Workshop-DIY ecosystem (N=39 applications, 7 domains). Through empirical analysis of 847 user sessions, 42 bug reports, and one formal court proceeding, we demonstrate that Bug #42 satisfies all criteria for feature classification under the proposed WKSHP-FC (Workshop Feature Classification) taxonomy. Our results show zero runtime errors (p < 0.001), a 23% increase in engagement metrics, and a successful legal defense. We conclude that the boundary between "bug" and "feature" is socially constructed and context-dependent, with implications for educational software development practices worldwide.
+<br><br><b>Keywords:</b> Bug classification, feature engineering, educational technology, password123, coffee depletion, robot survivability
+</div>
+
+<h2>Introduction</h2>
+<p class="noindent">The Workshop-DIY ecosystem comprises 39 browser-based educational applications spanning seven domains: robotics, artificial intelligence, electronics, 3D printing, programming, cybersecurity, and DevOps [1]. Since its founding in 2023, the platform has maintained a strict "zero installation" policy, requiring only a modern web browser for operation.</p>
+
+<p>Bug #42 was first observed in the issue tracker on an indeterminate date by an unknown author. It appeared without a commit hash, pull request, or code review. Its initial description read: "I am not a bug. I am not a feature. I am the 40th" [2]. This paper examines whether Bug #42 meets the criteria for reclassification as a feature under our proposed taxonomy.</p>
+
+<h2>Related Work</h2>
+<p class="noindent">Previous work on bug-feature classification has focused primarily on intent-based frameworks [3]. However, these frameworks assume the existence of an author, a creation date, and a commit history — none of which apply to Bug #42. The WiFi password literature [4] establishes precedent for retaining known vulnerabilities as deliberate design choices (see: password123, unchanged since 2023, in a cybersecurity education context).</p>
+
+<h2>Methodology</h2>
+<h3>3.1 Data Collection</h3>
+<p class="noindent">We analyzed 847 workshop sessions conducted between 2023–2025 across 12 thematic cycles. Session data included: application usage metrics, error logs, engagement scores, robot drop counts (N=47), and caffeine consumption levels (perpetually "critical").</p>
+
+<h3>3.2 Feature Classification Taxonomy (WKSHP-FC)</h3>
+<p class="noindent">We propose a five-criteria taxonomy for classifying a defect as a feature:</p>
+
+<table>
+<caption>Table 1: WKSHP-FC Feature Classification Criteria</caption>
+<tr><th>Criterion</th><th>Definition</th><th>Bug #42</th></tr>
+<tr><td>C1: Zero Harm</td><td>Causes no runtime errors or data loss</td><td>✅ Pass</td></tr>
+<tr><td>C2: Positive Impact</td><td>Improves at least one engagement metric</td><td>✅ +23% engagement</td></tr>
+<tr><td>C3: User Invisibility</td><td>Users do not notice or complain</td><td>✅ 0 complaints / 847 sessions</td></tr>
+<tr><td>C4: Persistence</td><td>Has survived >6 months without fix request</td><td>✅ 2+ years</td></tr>
+<tr><td>C5: Legal Standing</td><td>Has been legally defended</td><td>✅ Acquitted (2026)</td></tr>
+</table>
+
+<h2>Results</h2>
+
+<div class="figure">
+  <div class="fig-content">📊</div>
+  <div style="display:flex;justify-content:space-around;font-size:9pt;padding:0 20px">
+    <div style="text-align:center"><div style="background:#0066cc;width:30px;height:23px;margin:0 auto"></div>Engagement +23%</div>
+    <div style="text-align:center"><div style="background:#cc0000;width:30px;height:0px;margin:0 auto;border:1px solid #ccc"></div>Errors: 0</div>
+    <div style="text-align:center"><div style="background:#00aa00;width:30px;height:0px;margin:0 auto;border:1px solid #ccc"></div>Complaints: 0</div>
+    <div style="text-align:center"><div style="background:#ff8800;width:30px;height:47px;margin:0 auto"></div>Robot drops: 47</div>
+  </div>
+  <div class="fig-caption"><b>Figure 1.</b> Key metrics for Bug #42 impact analysis. Robot drops included for completeness (unrelated but impressive).</div>
+</div>
+
+<p class="noindent">Bug #42 satisfies all five WKSHP-FC criteria (Table 1). The engagement increase of 23% is attributed to a subtle behavioral modification in the bit-bot BLE reconnection sequence, which users interpreted as a "dance." Statistical analysis confirms significance (p < 0.001, χ² = 42.0, df = 1).</p>
+
+<div class="eq">Feature_Score(b) = Σ(Cᵢ × wᵢ) = 5/5 = 1.0 (FEATURE)</div>
+
+<h2>Discussion</h2>
+<p class="noindent">Our findings suggest that the binary classification of software behavior as "bug" or "feature" is insufficient for educational contexts. Bug #42 exists in a liminal state — present but invisible, impactful but harmless, unauthorized but welcomed. We propose the term <b>"emergent feature"</b> for defects that satisfy WKSHP-FC criteria without deliberate implementation.</p>
+
+<p>Limitations include the ongoing WiFi password situation (password123, N=3 rejected petitions), which may introduce confounding variables related to organizational decision-making patterns.</p>
+
+<h2>Conclusion</h2>
+<p class="noindent">Bug #42 is a feature. It has always been a feature. The formal court proceeding of February 2026 confirmed this classification with a unanimous verdict. Future work will investigate the rumored 40th application, which has been observed at 3:42 AM but has not been independently verified.</p>
+
+<div class="references">
+<h2 style="font-size:10pt">References</h2>
+<ol>
+<li>Workshop-DIY. "Platform Documentation." workshop-diy.org, 2023–2026.</li>
+<li>Anonymous. "Bug #42 Initial Report." Issue tracker, date unknown, author unknown.</li>
+<li>IEEE. "Standard Classification for Software Anomalies." IEEE 1044-2009.</li>
+<li>The WiFi Password. "On Persistence: A 3-Year Case Study." password123, 2023–2026.</li>
+<li>The Coffee Machine. "Operational Logs: 1,337 Cups and Counting." Internal report, 2025.</li>
+<li>Judge Compiler. "Workshop-DIY v. Bug #42: Trial Transcript." Supreme Court of Code, 2026.</li>
+<li>ESP32 Robot Kit. "Survivability Assessment: 47 Impacts." Engineering report, 2025.</li>
+</ol>
+</div>
+
+<div class="footnote">
+Received: February 28, 2026. Accepted: February 28, 2026 (fast-tracked due to legal urgency).<br>
+Conflicts of interest: Bug #42 is a co-author and the subject of this paper. The Coffee Machine provided material support (espresso). password123 remains unchanged.<br>
+Funding: This research was supported by exactly zero euros and an unlimited supply of enthusiasm.<br>
+Correspondence: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bbd9cedc8f89fbccd4c9d0c8d3d4cb96dfd2c295d4c
+<script src="nav.js"></script>

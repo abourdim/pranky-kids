@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP PIZZA</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Pacifico&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a0800;color:#f0e0c0;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;padding:16px}
+
+.menu{max-width:550px;margin:0 auto}
+
+/* HEADER */
+.header{text-align:center;padding:20px;border-bottom:2px solid #3a1a00}
+.header .icon{font-size:48px;margin-bottom:4px}
+.header h1{font-family:'Pacifico',cursive;font-size:clamp(24px,6vw,36px);color:#ff6600;text-shadow:2px 2px 0 rgba(0,0,0,.3)}
+.header .tag{font-size:8px;color:rgba(255,102,0,.4);letter-spacing:3px;margin-top:2px}
+.header .info{font-size:8px;color:rgba(240,224,192,.2);margin-top:6px;line-height:2}
+
+/* SECTION */
+.sec-h{font-family:'Pacifico',cursive;font-size:18px;color:#ff6600;margin:16px 0 8px;padding-bottom:4px;border-bottom:1px dashed rgba(255,102,0,.15)}
+
+/* PIZZA CARD */
+.pizza{border:1px solid rgba(255,102,0,.08);border-radius:8px;padding:10px;margin:8px 0;background:rgba(255,102,0,.01);display:flex;gap:10px;transition:all .2s;cursor:pointer}
+.pizza:hover{background:rgba(255,102,0,.03);border-color:rgba(255,102,0,.15)}
+.pizza.selected{background:rgba(255,102,0,.06);border-color:#ff6600}
+.pizza .emoji{font-size:32px;flex-shrink:0}
+.pizza .info{flex:1}
+.pizza .name{font-family:'Pacifico',cursive;font-size:14px;color:#ff8833}
+.pizza .desc{font-size:9px;color:rgba(240,224,192,.4);line-height:2;margin-top:2px}
+.pizza .toppings{font-size:8px;color:rgba(255,102,0,.3);margin-top:2px}
+.pizza .price{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#ff6600;flex-shrink:0;align-self:center}
+
+/* SIDES */
+.sides{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.side{border:1px solid rgba(255,102,0,.06);border-radius:6px;padding:8px;text-align:center;cursor:pointer;transition:all .2s}
+.side:hover{background:rgba(255,102,0,.03)}
+.side .emoji{font-size:20px}.side .name{font-size:8px;color:rgba(240,224,192,.4);margin-top:2px}
+.side .price{font-size:10px;color:#ff6600;font-weight:700;margin-top:1px}
+
+/* ORDER */
+.order{border:2px solid rgba(255,102,0,.15);border-radius:8px;padding:12px;margin-top:14px;background:rgba(255,102,0,.02)}
+.order h3{font-family:'Pacifico',cursive;font-size:14px;color:#ff6600;margin-bottom:6px}
+.order-total{display:flex;justify-content:space-between;padding:6px 0;border-top:1px dashed rgba(255,102,0,.1);margin-top:6px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#ff6600}
+.order-btn{width:100%;margin-top:8px;padding:10px;background:linear-gradient(135deg,#ff6600,#cc4400);border:none;border-radius:6px;color:#fff;font-family:'Pacifico',cursive;font-size:14px;cursor:pointer;letter-spacing:1px}
+.order-btn:hover{background:linear-gradient(135deg,#ff7722,#dd5500)}
+.order-note{font-size:7px;color:rgba(240,224,192,.15);margin-top:4px;text-align:center}
+
+.footer{text-align:center;margin-top:14px;font-size:6px;color:rgba(255,102,0,.1);letter-spacing:1px;line-height:2.2}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="menu">
+
+<div class="header">
+  <div class="icon">🍕</div>
+  <h1>WKSHP Pizza Co.</h1>
+  <div class="tag">ARTISAN TECH-FIRED PIZZAS SINCE 2023</div>
+  <div class="info">📞 1-800-WKSHP-PIZ · 🕐 Open during workshops · 🛵 Delivery via WebRTC</div>
+</div>
+
+<div class="sec-h">🍕 Signature Pizzas</div>
+
+<div class="pizza" onclick="addToOrder('The Bluetooth Special',12.99,this)">
+  <div class="emoji">🤖</div>
+  <div class="info">
+    <div class="name">The Bluetooth Special</div>
+    <div class="desc">Our flagship pie. Hand-crafted with ESP32 mushrooms, BLE mozzarella, and a thin crust of firmware.</div>
+    <div class="toppings">Toppings: ESP32 · BLE · Servo Motor · Hot Glue Drizzle</div>
+  </div>
+  <div class="price">€12.99</div>
+</div>
+
+<div class="pizza" onclick="addToOrder('The Full Stack',15.99,this)">
+  <div class="emoji">🐳</div>
+  <div class="info">
+    <div class="name">The Full Stack</div>
+    <div class="desc">Layered like a Docker container. Frontend on top, backend in the middle, database at the bottom. Each layer isolated for maximum flavor.</div>
+    <div class="toppings">Toppings: HTML · CSS · JavaScript · Node.js · MongoDB</div>
+  </div>
+  <div class="price">€15.99</div>
+</div>
+
+<div class="pizza" onclick="addToOrder('The Ethical Hack',14.99,this)">
+  <div class="emoji">🔐</div>
+  <div class="info">
+    <div class="name">The Ethical Hack</div>
+    <div class="desc">Penetration-tested crust. Every ingredient has been SQL-injected for maximum flavor extraction. Served in a sandbox.</div>
+    <div class="toppings">Toppings: SQL Injection Sauce · XSS Olives · CTF Peppers · Firewall Crust</div>
+  </div>
+  <div class="price">€14.99</div>
+</div>
+
+<div class="pizza" onclick="addToOrder('The AI Supreme',16.99,this)">
+  <div class="emoji">🧠</div>
+  <div class="info">
+    <div class="name">The AI Supreme</div>
+    <div class="desc">Trained on 30 samples of artisan toppings. 98% accuracy in flavor detection. MediaPipe hand-tracked for optimal distribution.</div>
+    <div class="toppings">Toppings: TensorFlow Tomatoes · Neural Network Cheese · 468 Landmark Herbs</div>
+  </div>
+  <div class="price">€16.99</div>
+</div>
+
+<div class="pizza" onclick="addToOrder('The Bug #42',0.00,this)">
+  <div class="emoji">🐛</div>
+  <div class="info">
+    <div class="name">The Bug #42</div>
+    <div class="desc">We're not sure what's on it. Nobody ordered it. It just appeared on the menu. We tried removing it. It came back. Now it's our most popular item.</div>
+    <div class="toppings">Toppings: ???. Honestly we don't know. It changes every time.</div>
+  </div>
+  <div class="price">FREE*</div>
+</div>
+
+<div class="sec-h">🥤 Sides & Drinks</div>
+<div class="sides">
+  <div class="side" onclick="addToOrder('Coffee (Critical)',2.99)"><div class="emoji">☕</div><div class="name">Coffee (Critical Level)</div><div class="price">€2.99</div></div>
+  <div class="side" onclick="addToOrder('Breadsticks',4.99)"><div class="emoji">🥖</div><div class="name">USB-C Breadsticks</div><div class="price">€4.99</div></div>
+  <div class="side" onclick="addToOrder('Debug Juice',3.49)"><div class="emoji">🧃</div><div class="name">Debug Juice</div><div class="price">€3.49</div></div>
+  <div class="side" onclick="addToOrder('Pixel Salad',5.99)"><div class="emoji">🥗</div><div class="name">8-Bit Pixel Salad</div><div class="price">€5.99</div></div>
+</div>
+
+<div class="order">
+  <h3>Your Order 🛒</h3>
+  <div id="orderItems" style="font-size:9px;color:rgba(240,224,192,.4);min-height:20px">No items yet. Click a pizza!</div>
+  <div class="order-total"><span>Total</span><span id="orderTotal">€0.00</span></div>
+  <button class="order-btn" onclick="placeOrder()">🍕 PLACE ORDER 🍕</button>
+  <div class="order-note">* The Bug #42 pizza is free because nobody knows how to charge for it. Delivery via Web Bluetooth. ETA: 42 minutes. WiFi required (password: password123).</div>
+</div>
+
+</div>
+
+<div class="footer">
+  WKSHP PIZZA CO. · EST. 2023 · NOT A REAL RESTAURANT<br>
+  NO ACTUAL FOOD DELIVERED · BUGS ARE TOPPINGS · password123
+</div>
+
+<script>
+let items=[],total=0;
+function addToOrder(name,price,el){
+  items.push({name,price});
+  total+=price;
+  if(el)el.classList.add('selected');
+  document.getElementById('orderItems').innerHTML=items.map(i=>
+    `<div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid rgba(255,102,0,.04)"><span>${i.name}</span><span>€${i.price.toFixed(2)}</span></div>`
+  ).join('');
+  document.getElementById('orderTotal').textContent='€'+total.toFixed(2);
+}
+
+function placeOrder(){
+  if(items.length===0)return;
+  alert('🍕 ORDER CONFIRMED!\n\nDelivery via WebRTC in approximately 42 minutes.\nTracking: BLE-'+Math.floor(Math.random()*9000+1000)+'\n\nWiFi: password123\n\nBugs are features. Enjoy your pizza!');
+  items=[];total=0;
+  document.getElementById('orderItems').innerHTML='Order placed! 🎉';
+  document.getElementById('orderTotal').textContent='€0.00';
+  document.querySelectorAll('.pizza').forEach(p=>p.classList.remove('selected'));
+}
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

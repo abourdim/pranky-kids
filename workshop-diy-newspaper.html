@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The WKSHP Daily</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#d4c9a8;font-family:Georgia,'Times New Roman',serif;font-size:13px;color:#1a1a1a;padding:12px}
+
+.paper{max-width:800px;margin:0 auto;background:#f5f0e0;padding:20px 24px;box-shadow:0 4px 20px rgba(0,0,0,.15);border:1px solid #c5b898}
+
+/* MASTHEAD */
+.masthead{text-align:center;border-bottom:3px double #1a1a1a;padding-bottom:8px;margin-bottom:8px}
+.mast-top{display:flex;justify-content:space-between;font-size:8px;color:#666;font-family:'Courier New',monospace}
+.mast-title{font-size:clamp(28px,6vw,48px);font-weight:900;letter-spacing:-1px;line-height:1;font-family:'Times New Roman',serif}
+.mast-motto{font-size:9px;font-style:italic;color:#555;margin-top:2px}
+.mast-line{display:flex;justify-content:space-between;font-size:7px;color:#888;padding-top:4px;border-top:1px solid #ccc;margin-top:4px;font-family:'Courier New',monospace}
+
+/* HEADLINE */
+.headline{text-align:center;padding:10px 0;border-bottom:2px solid #1a1a1a;margin-bottom:10px}
+.headline h1{font-size:clamp(22px,4.5vw,36px);font-weight:900;line-height:1.2;letter-spacing:-.5px}
+.headline .deck{font-size:14px;font-style:italic;color:#444;margin-top:4px}
+
+/* COLUMNS */
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid #ccc;margin-bottom:10px}
+@media(max-width:500px){.columns{grid-template-columns:1fr}}
+.col{padding:8px 10px;border-right:1px solid #ddd}
+.col:last-child{border-right:none}
+.col-h{font-size:14px;font-weight:900;text-transform:uppercase;border-bottom:1px solid #aaa;padding-bottom:2px;margin-bottom:6px}
+.col p{font-size:11px;line-height:1.9;text-align:justify;margin-bottom:6px;text-indent:1.5em}
+.col p:first-of-type{text-indent:0}
+.col p::first-letter{font-size:inherit}
+.byline{font-size:8px;font-style:italic;color:#888;margin-bottom:4px}
+
+/* ARTICLE BOXES */
+.art-box{border:1px solid #ccc;padding:8px;margin:8px 0;background:rgba(0,0,0,.01)}
+.art-box h3{font-size:13px;margin-bottom:3px}
+.art-box p{font-size:10px;line-height:1.8;color:#444}
+
+/* SIDEBAR */
+.sidebar{border:2px solid #1a1a1a;padding:8px;margin:8px 0;background:#f0ead0}
+.sidebar h3{font-size:11px;text-transform:uppercase;letter-spacing:2px;text-align:center;border-bottom:1px solid #aaa;padding-bottom:3px;margin-bottom:4px}
+.sidebar p{font-size:9px;line-height:1.8;text-align:center;color:#555}
+
+/* CLASSIFIED */
+.classified{border-top:2px solid #1a1a1a;padding-top:6px;margin-top:10px}
+.classified h2{font-size:12px;text-transform:uppercase;letter-spacing:3px;text-align:center;margin-bottom:6px}
+.class-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:8px;line-height:1.8}
+@media(max-width:500px){.class-grid{grid-template-columns:1fr 1fr}}
+.class-ad{border:1px dashed #aaa;padding:5px;text-align:center}
+.class-ad b{font-size:9px}
+
+/* WEATHER */
+.weather{border-top:1px solid #ccc;padding-top:6px;margin-top:8px;display:flex;justify-content:space-between;font-size:8px;color:#666;flex-wrap:wrap;gap:4px}
+.wx-day{text-align:center;padding:3px 8px;border:1px solid #ddd;border-radius:2px;background:#f8f4e8}
+.wx-day .temp{font-size:12px;font-weight:700;color:#333}
+
+/* FOOTER */
+.paper-footer{text-align:center;border-top:3px double #1a1a1a;padding-top:4px;margin-top:8px;font-size:7px;color:#999;letter-spacing:1px;font-family:'Courier New',monospace}
+.dropcap::first-letter{float:left;font-size:36px;line-height:28px;padding:2px 4px 0 0;font-weight:900}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="paper">
+<div class="masthead">
+  <div class="mast-top"><span>VOL. XLII · No. 39</span><span>"ALL THE BUGS THAT'S FIT TO FEATURE"</span><span>EST. 2023</span></div>
+  <div class="mast-title">The WKSHP Daily</div>
+  <div class="mast-motto">France's Most Trusted Source for Robot News & Caffeinated Education</div>
+  <div class="mast-line"><span>SATURDAY, FEBRUARY 28, 2026</span><span>ASSOCIATION LOI 1901</span><span>PRICE: FREE (ALWAYS)</span></div>
+</div>
+
+<div class="headline">
+  <h1>WORKSHOP-DIY DEPLOYS 39TH APPLICATION; DECLARES "BUGS ARE FEATURES" OFFICIAL POLICY</h1>
+  <div class="deck">French association's browser-based ecosystem now spans robotics, AI, cybersecurity, and seven total domains — WiFi password remains "password123"</div>
+</div>
+
+<div class="columns">
+  <div class="col">
+    <div class="byline">By Our Technology Correspondent</div>
+    <p class="dropcap">In what officials are calling "the most ambitious deployment of educational software by a French association that also teaches children to hack printers ethically," Workshop-DIY has officially released its 39th browser-based application.</p>
+    <p>The ecosystem, which requires zero installation and runs entirely in web browsers, now covers seven distinct domains: robotics, artificial intelligence, electronics, 3D printing, programming, cybersecurity, and DevOps.</p>
+    <p>"We started with one app to control a robot via Bluetooth," said the founder, speaking from behind a fortress of coffee cups. "Somehow we ended up with 39 apps and a community of kids who can explain Docker to their parents."</p>
+    <p>The association, registered under France's Loi 1901 framework, operates on a simple premise: if a child can open a web browser, they can learn to build robots, train AI, and—perhaps most controversially—discover that the WiFi password is <i>password123</i>.</p>
+  </div>
+  <div class="col">
+    <div class="col-h">Inside the Ecosystem</div>
+    <p>Notable applications include <b>bit-bot</b>, which controls physical robots via Web Bluetooth; <b>magic-hands</b>, a MediaPipe-powered hand-tracking visual effects tool; and <b>pentest-lab</b>, an ethical hacking sandbox that has been credited with at least one school printer vulnerability disclosure.</p>
+    <p>The ESP32 Robot Kit Lite, developed specifically for workshops, has survived 47 drops from student desks. "The durability testing was entirely involuntary," noted the engineering team.</p>
+
+    <div class="sidebar">
+      <h3>By The Numbers</h3>
+      <p><b style="font-size:16px">39</b> applications<br><b style="font-size:16px">7</b> skill domains<br><b style="font-size:16px">12</b> visual themes<br><b style="font-size:16px">42</b> bugs (features)<br><b style="font-size:16px">47</b> robot drops survived<br><b style="font-size:16px">∞</b> cups of coffee</p>
+    </div>
+
+    <p>The organization reports that 98% of participants would recommend the program. The remaining 2% were reportedly "too busy explaining Kubernetes to their families to fill out the survey."</p>
+  </div>
+</div>
+
+<div class="art-box">
+  <h3>EDITORIAL: The WiFi Password Debate</h3>
+  <p>For the third consecutive year, the Workshop-DIY cybersecurity students have formally petitioned to change the association's WiFi password from "password123." For the third consecutive year, the petition has been denied on grounds of "tradition." This newspaper takes no editorial position, though we note the irony is exquisite. <i>— Ed.</i></p>
+</div>
+
+<div class="columns">
+  <div class="col">
+    <div class="col-h">Student Makes Robot Dance For 20 Minutes</div>
+    <div class="byline">Robotics Desk</div>
+    <p>A workshop participant reportedly made a Bit:Bot robot perform a continuous dance routine for twenty minutes using the browser-based control app. When asked why, the student replied: "Because I could." The robot had no comment.</p>
+  </div>
+  <div class="col">
+    <div class="col-h">Parent "Slightly Concerned, Mostly Proud"</div>
+    <div class="byline">Family Section</div>
+    <p>A professional software engineer has reported that their 14-year-old child, a Workshop-DIY participant, recently explained containerization concepts to them over dinner. "I've been doing this for 20 years," said the parent. "My teenager used the analogy of shipping containers and I finally understood."</p>
+  </div>
+</div>
+
+<div class="classified">
+  <h2>Classifieds</h2>
+  <div class="class-grid">
+    <div class="class-ad"><b>WANTED:</b> USB-C cables. Lost approx. 47 during workshops. Last seen "somewhere." Reward: eternal gratitude.</div>
+    <div class="class-ad"><b>FOR SALE:</b> One ESP32 robot kit. Minor cosmetic damage (47 drops). Still works. Asking price: one coffee.</div>
+    <div class="class-ad"><b>SERVICES:</b> WiFi password recovery. I already know it. It's password123. That'll be €0.</div>
+    <div class="class-ad"><b>LOST:</b> My patience with BLE disconnects on Chrome. If found, return to the robotics lab.</div>
+    <div class="class-ad"><b>HELP WANTED:</b> Workshop instructor. Must know: JavaScript, robots, patience. Coffee addiction a plus.</div>
+    <div class="class-ad"><b>ANNOUNCEMENT:</b> Bug #42 officially reclassified as feature. Cake in the break room to celebrate.</div>
+  </div>
+</div>
+
+<div class="weather">
+  <div class="wx-day"><div>MON</div><div class="temp">☀️ 18°</div><div>Perfect for soldering</div></div>
+  <div class="wx-day"><div>TUE</div><div class="temp">⛅ 15°</div><div>Robot testing weather</div></div>
+  <div class="wx-day"><div>WED</div><div class="temp">🌧️ 12°</div><div>Indoor coding day</div></div>
+  <div class="wx-day"><div>THU</div><div class="temp">☀️ 17°</div><div>3D printer friendly</div></div>
+  <div class="wx-day"><div>FRI</div><div class="temp">⛅ 14°</div><div>CTF challenge vibes</div></div>
+</div>
+
+<div class="paper-footer">
+  THE WKSHP DAILY · WORKSHOP-DIY · ASSOCIATION LOI 1901 · FRANCE · workshop-diy.org · abourdim.github.io/apps<br>
+  © 2026 · PRINTED ON RECYCLED ELECTRONS · NO ROBOTS WERE HARMED IN THE MAKING OF THIS NEWSPAPER
+</div>
+</div>
+
+  <script src="nav.js"></script>
+</body>
+</html>

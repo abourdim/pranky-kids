@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // LIVE MONITOR</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--g:#00ff41;--c:#00d4ff;--r:#ff0033;--o:#ff8800;--y:#ffd700;--p:#bf00ff}
+html,body{height:100%;overflow:hidden}
+body{background:#040608;color:var(--g);font-family:'JetBrains Mono',monospace;font-size:11px}
+.crt{position:fixed;inset:0;z-index:999;pointer-events:none}.crt::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 1px,transparent 3px)}
+.dash{position:fixed;inset:0;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto 1fr 1fr auto;gap:2px;padding:2px;z-index:1;background:#080a0c}
+@media(max-width:800px){.dash{grid-template-columns:1fr 1fr}}
+
+/* PANELS */
+.pan{border:1px solid rgba(0,255,65,.04);border-radius:3px;background:rgba(0,10,2,.3);padding:8px;overflow:hidden;position:relative}
+.pan-h{font-size:7px;color:var(--c);letter-spacing:2px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.pan-h .live{width:5px;height:5px;border-radius:50%;background:var(--g);box-shadow:0 0 4px var(--g);animation:livePulse 2s ease-in-out infinite}
+@keyframes livePulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* TOP BAR */
+.topbar{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;padding:5px 10px;font-size:7px;color:rgba(0,255,65,.25);border-bottom:1px solid rgba(0,255,65,.04);background:#040608}
+.topbar .title{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:var(--g);letter-spacing:-1px}
+
+/* BOT BAR */
+.botbar{grid-column:1/-1;display:flex;justify-content:space-between;padding:4px 10px;font-size:6px;color:rgba(0,255,65,.15);border-top:1px solid rgba(0,255,65,.04);background:#040608}
+
+/* ═══ STATS COUNTERS ═══ */
+.stat-row{display:flex;gap:4px;flex-wrap:wrap}
+.stat-box{flex:1;min-width:50px;text-align:center;padding:6px;border:1px solid rgba(0,255,65,.04);border-radius:2px;background:rgba(0,255,65,.005)}
+.stat-box .v{font-size:16px;font-weight:800;color:var(--g);text-shadow:0 0 6px rgba(0,255,65,.2)}
+.stat-box .l{font-size:5px;color:rgba(0,255,65,.25);letter-spacing:1px;margin-top:1px}
+.stat-box.hot .v{color:var(--r);text-shadow:0 0 6px rgba(255,0,51,.2)}
+.stat-box.warn .v{color:var(--o);text-shadow:0 0 6px rgba(255,136,0,.2)}
+.stat-box.gold .v{color:var(--y);text-shadow:0 0 6px rgba(255,215,0,.2)}
+
+/* ═══ CHART ═══ */
+.chart-wrap{height:80px;position:relative;margin-top:4px}
+canvas.chart{width:100%;height:100%;border-radius:2px}
+
+/* ═══ ACTIVITY FEED ═══ */
+.feed{overflow-y:auto;max-height:100%}.feed::-webkit-scrollbar{width:2px}.feed::-webkit-scrollbar-thumb{background:rgba(0,255,65,.1)}
+.feed-item{padding:4px 6px;border-bottom:1px solid rgba(0,255,65,.02);font-size:8px;line-height:1.7;display:flex;gap:6px;align-items:flex-start}
+.feed-item .time{color:rgba(0,255,65,.2);white-space:nowrap;flex-shrink:0;font-size:7px}
+.feed-item .msg{color:rgba(0,255,65,.45)}
+.feed-item .e{flex-shrink:0}
+
+/* ═══ APP STATUS GRID ═══ */
+.status-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:2px}
+.status-cell{text-align:center;padding:4px 2px;border:1px solid rgba(0,255,65,.03);border-radius:2px;cursor:default;transition:all .12s;font-size:6px}
+.status-cell:hover{border-color:rgba(0,255,65,.15);background:rgba(0,255,65,.02)}
+.status-cell .e{font-size:12px;display:block}
+.status-cell .n{color:rgba(0,255,65,.3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status-cell.online{border-color:rgba(0,255,65,.08)}.status-cell.online .n{color:var(--g)}
+.status-cell.offline{border-color:rgba(255,0,51,.06);opacity:.4}
+
+/* ═══ THREAT METER ═══ */
+.threat{text-align:center}
+.threat-bar{height:10px;background:rgba(0,255,65,.04);border-radius:5px;overflow:hidden;margin:6px 0;position:relative}
+.threat-fill{height:100%;border-radius:5px;transition:width 1s,background 1s}
+.threat-level{font-size:10px;font-weight:800;letter-spacing:2px}
+.threat-sub{font-size:6px;color:rgba(0,255,65,.2)}
+
+/* ═══ WORLD MAP (ASCII) ═══ */
+.map-ascii{font-size:5px;line-height:1.15;color:rgba(0,255,65,.12);white-space:pre;text-align:center;position:relative}
+.map-pin{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--c);box-shadow:0 0 6px var(--c);animation:pinPulse 2s ease-in-out infinite}
+@keyframes pinPulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.5);opacity:1}}
+
+/* ═══ CATEGORY BARS ═══ */
+.cat-bar{display:flex;align-items:center;gap:4px;margin-bottom:3px;font-size:7px}
+.cat-bar .name{width:55px;color:rgba(0,255,65,.4);text-align:right}
+.cat-bar .bar{flex:1;height:6px;background:rgba(0,255,65,.04);border-radius:3px;overflow:hidden}
+.cat-bar .fill{height:100%;border-radius:3px;transition:width 1s}
+.cat-bar .cnt{width:16px;color:rgba(0,255,65,.3);font-size:7px;text-align:right}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="crt"></div>
+<div class="dash">
+<div class="topbar">
+  <div class="title">WORKSHOP-DIY <span style="color:var(--c);font-size:8px;font-weight:400">LIVE MONITOR</span></div>
+  <span id="clock">00:00:00</span>
+  <span>UPTIME: <span id="uptime">0s</span> // STATUS: <span style="color:var(--g)">NOMINAL</span></span>
+</div>
+
+<!-- ROW 1: STATS -->
+<div class="pan">
+  <div class="pan-h">ECOSYSTEM STATS <div class="live"></div></div>
+  <div class="stat-row">
+    <div class="stat-box"><div class="v" id="sApps">39</div><div class="l">APPS</div></div>
+    <div class="stat-box gold"><div class="v">4</div><div class="l">POPULAR</div></div>
+    <div class="stat-box"><div class="v">7</div><div class="l">DOMAINS</div></div>
+    <div class="stat-box"><div class="v">12</div><div class="l">THEMES</div></div>
+  </div>
+</div>
+
+<div class="pan">
+  <div class="pan-h">ENGAGEMENT LIVE <div class="live"></div></div>
+  <div class="stat-row">
+    <div class="stat-box"><div class="v" id="sUsers">0</div><div class="l">ACTIVE USERS</div></div>
+    <div class="stat-box"><div class="v" id="sSessions">0</div><div class="l">SESSIONS/H</div></div>
+    <div class="stat-box warn"><div class="v" id="sBugs">42</div><div class="l">BUGS (FEATURES)</div></div>
+  </div>
+</div>
+
+<div class="pan">
+  <div class="pan-h">BOREDOM THREAT LEVEL <div class="live"></div></div>
+  <div class="threat">
+    <div class="threat-level" id="threatLvl" style="color:var(--g)">LOW</div>
+    <div class="threat-bar"><div class="threat-fill" id="threatFill" style="width:12%;background:var(--g)"></div></div>
+    <div class="threat-sub">// workshop mode active — boredom neutralized</div>
+  </div>
+</div>
+
+<!-- ROW 2 -->
+<div class="pan" style="grid-row:span 1">
+  <div class="pan-h">TRAFFIC (24H) <div class="live"></div></div>
+  <div class="chart-wrap"><canvas class="chart" id="chart1"></canvas></div>
+</div>
+
+<div class="pan" style="grid-row:span 1">
+  <div class="pan-h">CATEGORY DISTRIBUTION</div>
+  <div id="catBars"></div>
+</div>
+
+<div class="pan" style="grid-row:span 1">
+  <div class="pan-h">ACTIVITY FEED <div class="live"></div></div>
+  <div class="feed" id="feed"></div>
+</div>
+
+<!-- ROW 3 -->
+<div class="pan" style="grid-column:span 2">
+  <div class="pan-h">APP STATUS — ALL 39 NODES <div class="live"></div></div>
+  <div class="status-grid" id="statusGrid"></div>
+</div>
+
+<div class="pan">
+  <div class="pan-h">SYSTEM DIAGNOSTICS</div>
+  <div id="diag" style="font-size:8px;line-height:2;color:rgba(0,255,65,.35)"></div>
+</div>
+
+<div class="botbar">
+  <span>WKSHP_MONITOR v2.0 // PID:1337</span>
+  <span>workshop-diy.org // abourdim.github.io/apps</span>
+  <span>// no actual users were monitored in making this</span>
+</div>
+</div>
+
+<script>
+const APPS=[
+{e:"🤖",n:"bit-bot"},{e:"🪄",n:"magic-hands"},{e:"🕵️",n:"face-quest"},{e:"💬",n:"talking-robot"},{e:"🧠",n:"teachable-machine"},{e:"😎",n:"face-tracking"},{e:"😄",n:"bitmoji-lab"},{e:"🚀",n:"mission-control"},{e:"🧩",n:"bit-playground"},{e:"🎛️",n:"rxy"},{e:"🎨",n:"pixel-gateway"},{e:"💡",n:"wled-kids-lab"},{e:"⚡",n:"esp32-c3"},{e:"🪙",n:"crypto-acad"},{e:"🔐",n:"pentest-lab"},{e:"🐧",n:"linux-lab"},{e:"🏭",n:"production"},{e:"🏫",n:"classroom"},{e:"🔌",n:"usb-logger"},{e:"📡",n:"ble-logger"},{e:"🧰",n:"claude-tk"},{e:"🎭",n:"puppeteer"},{e:"🔋",n:"circuit-lab"},{e:"🛡️",n:"vpn-guide"},{e:"🧊",n:"3d-lab"},{e:"🔀",n:"git-lab"},{e:"✨",n:"prompt-hero"},{e:"🌍",n:"save-planet"},{e:"📋",n:"ops-catalog"},{e:"💻",n:"code-kids"},{e:"🏡",n:"smart-home"},{e:"🧱",n:"makecode"},{e:"🤖",n:"54-activ"},{e:"💰",n:"crypto-vault"},{e:"🔗",n:"dhcp-lab"},{e:"🐳",n:"docker-lab"},{e:"🔴",n:"nodered"},{e:"⛽",n:"ocpp"},{e:"🖥️",n:"tty"}
+];
+const CATS=[{n:"micro:bit",c:16,col:"#00d4ff"},{n:"Learning",c:20,col:"#00ff41"},{n:"Tools",c:7,col:"#ff0033"},{n:"AI",c:6,col:"#bf00ff"},{n:"Hardware",c:5,col:"#ff8800"},{n:"Camera",c:4,col:"#ffd700"},{n:"Classroom",c:2,col:"#0066ff"}];
+const FEED_MSGS=[
+  ["🤖","bit-bot connected via BLE — motor test OK"],["🪄","magic-hands: confetti triggered (hands detected)"],["🕵️","face-quest: new high score 847 by M4K3R"],["💬","talking-robot said: 'Hello, world!'"],["🧠","teachable-machine: gesture model trained (96% acc)"],["🐧","linux-lab: student ran 'sudo rm -rf /' (blocked, nice try)"],["🔐","pentest-lab: challenge #3 solved in 4min"],["🎨","pixel-gateway: new sprite saved (robot_v2.png)"],["💡","wled-kids-lab: rainbow mode activated"],["🏫","classroom: 5 students joined room MAKER-42"],["🧩","bit-playground: servo angle set to 90°"],["📡","ble-logger: scanning... found 3 devices"],["🐳","docker-lab: container 'hello-world' deployed"],["🔴","nodered: flow executed — MQTT message sent"],["⚡","esp32-c3: temperature reading: 23.4°C"],["🔋","circuit-lab: LED blink circuit simulated OK"],["🏡","smart-home: light toggled via dashboard"],["💻","code-kids: first <h1> tag written! 🎉"],["🔀","git-lab: merge conflict... student survived"],["🖥️","tty: serial connected at 115200 baud"]
+];
+const start=Date.now();
+
+// STATUS GRID
+const sg=document.getElementById('statusGrid');
+APPS.forEach(a=>{
+  const d=document.createElement('div');
+  const online=Math.random()>.15;
+  d.className='status-cell '+(online?'online':'offline');
+  d.innerHTML=`<span class="e">${a.e}</span><span class="n">${a.n}</span>`;
+  sg.appendChild(d);
+});
+
+// CAT BARS
+const cb=document.getElementById('catBars');
+CATS.forEach(c=>{
+  const pct=Math.round(c.c/39*100);
+  cb.innerHTML+=`<div class="cat-bar"><span class="name">${c.n}</span><div class="bar"><div class="fill" style="width:${pct}%;background:${c.col}"></div></div><span class="cnt">${c.c}</span></div>`;
+});
+
+// CHART
+const cv=document.getElementById('chart1'),cx=cv.getContext('2d');
+let chartData=Array(48).fill(0).map(()=>Math.random()*60+20);
+function drawChart(){
+  const w=cv.width=cv.offsetWidth*2,h=cv.height=cv.offsetHeight*2;
+  cx.clearRect(0,0,w,h);
+  const max=Math.max(...chartData)*1.2;
+  const step=w/(chartData.length-1);
+  // fill
+  cx.beginPath();cx.moveTo(0,h);
+  chartData.forEach((v,i)=>cx.lineTo(i*step,h-v/max*h));
+  cx.lineTo(w,h);cx.closePath();
+  const grad=cx.createLinearGradient(0,0,0,h);
+  grad.addColorStop(0,'rgba(0,255,65,.08)');grad.addColorStop(1,'rgba(0,255,65,0)');
+  cx.fillStyle=grad;cx.fill();
+  // line
+  cx.beginPath();
+  chartData.forEach((v,i)=>{i===0?cx.moveTo(i*step,h-v/max*h):cx.lineTo(i*step,h-v/max*h)});
+  cx.strokeStyle='#00ff41';cx.lineWidth=2;cx.stroke();
+  // glow
+  cx.strokeStyle='rgba(0,255,65,.2)';cx.lineWidth=6;cx.stroke();
+}
+drawChart();
+setInterval(()=>{chartData.shift();chartData.push(Math.random()*60+20);drawChart()},2000);
+
+// FEED
+const feedEl=document.getElementById('feed');
+function addFeed(){
+  const m=FEED_MSGS[Math.floor(Math.random()*FEED_MSGS.length)];
+  const t=new Date().toTimeString().slice(0,8);
+  const d=document.createElement('div');d.className='feed-item';
+  d.innerHTML=`<span class="time">${t}</span><span class="e">${m[0]}</span><span class="msg">${m[1]}</span>`;
+  feedEl.insertBefore(d,feedEl.firstChild);
+  if(feedEl.children.length>30)feedEl.removeChild(feedEl.lastChild);
+}
+addFeed();addFeed();addFeed();
+setInterval(addFeed,3000);
+
+// LIVE COUNTERS
+function updateCounters(){
+  document.getElementById('sUsers').textContent=Math.floor(Math.random()*15+5);
+  document.getElementById('sSessions').textContent=Math.floor(Math.random()*40+20);
+  document.getElementById('sBugs').textContent=42+Math.floor(Math.random()*3);
+}
+updateCounters();
+setInterval(updateCounters,5000);
+
+// THREAT LEVEL
+function updateThreat(){
+  const levels=[{n:'NONE',col:'#00ff41',w:5},{n:'LOW',col:'#00ff41',w:12},{n:'MINIMAL',col:'#00d4ff',w:25}];
+  const l=levels[Math.floor(Math.random()*levels.length)];
+  document.getElementById('threatLvl').textContent=l.n;
+  document.getElementById('threatLvl').style.color=l.col;
+  document.getElementById('threatFill').style.width=l.w+'%';
+  document.getElementById('threatFill').style.background=l.col;
+}
+setInterval(updateThreat,8000);
+
+// DIAGNOSTICS
+const diagEl=document.getElementById('diag');
+const diagLines=[
+  'CPU: 12% [████░░░░░░░░░░░░]','RAM: 64MB / 256MB','DISK: 1.2GB / 8GB',
+  'NET: 45 Mbps ↓ 12 Mbps ↑','BLE: 3 devices paired','WiFi: connected (password123)',
+  'TEMP: 42°C (cool enough)','UPTIME: since forever','ERRORS: 0 (lies)',
+  'COFFEE: ██░░░░░░ 25% (CRITICAL)'
+];
+diagEl.innerHTML=diagLines.join('<br>');
+
+// CLOCK
+setInterval(()=>{
+  document.getElementById('clock').textContent=new Date().toTimeString().slice(0,8);
+  document.getElementById('uptime').textContent=Math.floor((Date.now()-start)/1000)+'s';
+},1000);
+
+// Randomly toggle app status
+setInterval(()=>{
+  const cells=document.querySelectorAll('.status-cell');
+  const i=Math.floor(Math.random()*cells.length);
+  const on=Math.random()>.15;
+  cells[i].className='status-cell '+(on?'online':'offline');
+},4000);
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

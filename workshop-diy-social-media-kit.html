@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Workshop-DIY — Social Media Content Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--cy:#00d4ff;--bl:#4f6ef7;--pk:#ff2d8a;--or:#ff6b35;--lm:#a3e635;--pr:#9333ea;--yw:#fbbf24;--gn:#22c55e}
+body{background:#060810;color:#e8e8f0;font-family:'Fredoka',sans-serif;line-height:1.7}
+.wrap{max-width:900px;margin:0 auto;padding:24px 20px}
+
+/* Header */
+.hero{text-align:center;padding:60px 0 40px}
+.hero-badge{display:inline-block;padding:4px 14px;border:1px solid rgba(0,212,255,.2);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--cy);margin-bottom:16px}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,48px);font-weight:800;letter-spacing:-2px}
+.hero h1 .gr{background:linear-gradient(135deg,var(--cy),var(--bl),var(--pk));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:rgba(255,255,255,.35);font-size:14px;margin-top:8px}
+
+/* Section */
+.section{margin-bottom:50px}
+.sec-h{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:8px}
+
+/* Cards */
+.post-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:20px;margin-bottom:14px;position:relative}
+.post-card:hover{border-color:rgba(0,212,255,.15)}
+.post-platform{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.plat-ig{color:#E1306C}.plat-tk{color:#fff}.plat-yt{color:#FF0000}.plat-tw{color:#1DA1F2}.plat-li{color:#0A66C2}.plat-fb{color:#4267B2}
+.post-type{display:inline-block;padding:2px 8px;border-radius:4px;font-size:8px;font-weight:600;letter-spacing:1px;margin-left:8px}
+.type-reel{background:rgba(225,48,108,.1);color:#E1306C}.type-story{background:rgba(251,191,36,.1);color:var(--yw)}.type-post{background:rgba(0,212,255,.1);color:var(--cy)}.type-short{background:rgba(255,0,0,.1);color:#FF0000}.type-vid{background:rgba(147,51,234,.1);color:var(--pr)}
+
+.post-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px}
+.post-caption{font-size:13px;color:rgba(255,255,255,.5);line-height:1.8;margin-bottom:10px;white-space:pre-line}
+.post-hashtags{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--cy);opacity:.6;line-height:1.8;margin-bottom:10px}
+.post-notes{font-size:11px;color:rgba(255,255,255,.3);border-top:1px solid rgba(255,255,255,.04);padding-top:8px;margin-top:8px}
+.post-notes strong{color:rgba(255,255,255,.6)}
+
+/* Copy button */
+.copy-btn{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.4);font-size:10px;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all .2s}
+.copy-btn:hover{background:rgba(0,212,255,.1);color:var(--cy);border-color:rgba(0,212,255,.2)}
+.copy-btn.done{color:var(--gn);border-color:rgba(34,197,94,.2)}
+
+/* Script block */
+.script{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:14px 16px;margin:8px 0;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:2;color:rgba(255,255,255,.5)}
+.script .t{color:var(--yw);font-weight:700}.script .a{color:var(--cy)}.script .v{color:var(--pk)}.script .n{color:var(--gn)}
+
+/* Hashtag section */
+.hash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.hash-group{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:14px}
+.hash-group h4{font-size:12px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.hash-list{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--cy);opacity:.7;line-height:2}
+
+/* Calendar */
+.cal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.cal-day{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:12px;text-align:center}
+.cal-day .day{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:4px}
+.cal-day .what{font-size:11px;color:rgba(255,255,255,.45)}
+.cal-day .emoji{font-size:24px;margin-bottom:4px;display:block}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <div class="hero-badge">📱 SOCIAL MEDIA KIT</div>
+  <h1><span class="gr">Workshop-DIY</span><br>Content Templates</h1>
+  <p>Ready-to-use captions, scripts & hashtags for all platforms</p>
+</div>
+
+<!-- ===== REELS / TIKTOK SCRIPTS ===== -->
+<div class="section">
+  <div class="sec-h">🎬 Reels / TikTok / Shorts Scripts</div>
+
+  <div class="post-card">
+    <button class="copy-btn" onclick="copyCard(this)">📋 Copy</button>
+    <div class="post-platform"><span class="plat-ig">INSTAGRAM</span> <span class="plat-tk">TIKTOK</span> <span class="plat-yt">YOUTUBE</span><span class="post-type type-reel">REEL 15s</span></div>
+    <div class="post-title">🤖 "What is Workshop-DIY?" — 15s Explainer</div>
+    <div class="script">
+<span class="t">[0-3s]</span> <span class="v">HOOK:</span> Close-up of robot eyes lighting up
+<span class="t">[3-6s]</span> <span class="a">TEXT:</span> "39 apps. 7 categories. All free."
+<span class="t">[6-9s]</span> <span class="v">SHOW:</span> Quick montage: 🤖 bit-bot → 🪄 magic-hands → 🧠 teachable-machine → 🐧 linux-kids-lab
+<span class="t">[9-12s]</span> <span class="a">TEXT:</span> "Built for kids, makers & educators"
+<span class="t">[12-15s]</span> <span class="n">CTA:</span> "Link in bio ↗" + logo
+    </div>
+    <div class="post-caption">🤖 39 apps. One ecosystem. All free.
+
+From robot control to AI experiments, Linux labs to 3D design — Workshop-DIY is the open platform for young makers.
+
+🔗 Try it: abourdim.github.io/apps</div>
+    <div class="post-hashtags">#WorkshopDIY #STEM #Robotics #MicroBit #CodingForKids #MakerSpace #EdTech #LearnToCode #ESP32 #AIForKids</div>
+    <div class="post-notes"><strong>Audio:</strong> Trending tech/electronic sound · <strong>Style:</strong> Fast cuts, dark bg with neon text</div>
+  </div>
+
+  <div class="post-card">
+    <button class="copy-btn" onclick="copyCard(this)">📋 Copy</button>
+    <div class="post-platform"><span class="plat-ig">INSTAGRAM</span> <span class="plat-tk">TIKTOK</span><span class="post-type type-reel">REEL 30s</span></div>
+    <div class="post-title">🪄 "Magic Hands Challenge" — Viral Hook</div>
+    <div class="script">
+<span class="t">[0-3s]</span> <span class="v">HOOK:</span> "Wait... my hands do WHAT?! 🤯"
+<span class="t">[3-8s]</span> <span class="a">DEMO:</span> Show magic-hands app — wave hands → confetti explodes
+<span class="t">[8-13s]</span> <span class="v">DEMO:</span> Neon trails following fingers
+<span class="t">[13-18s]</span> <span class="a">TEXT:</span> "No install. No sign up. Just a browser."
+<span class="t">[18-23s]</span> <span class="v">DEMO:</span> Show face-quest — smile to score points
+<span class="t">[23-28s]</span> <span class="a">TEXT:</span> "100% private. Runs locally."
+<span class="t">[28-30s]</span> <span class="n">CTA:</span> "Try it FREE ↗ link in bio"
+    </div>
+    <div class="post-caption">My hands just did THAT 🤯✨
+
+Magic Hands uses AI hand-tracking to create insane visual effects — confetti, neon trails, particle explosions.
+
+No app to install. No sign-up. Just open your browser 🌐
+
+🔗 abourdim.github.io/magic-hands</div>
+    <div class="post-hashtags">#MagicHands #AI #HandTracking #MediaPipe #CoolTech #FreeApp #BrowserApp #Workshop</div>
+    <div class="post-notes"><strong>Audio:</strong> "Oh no" trending sound or magic swoosh · <strong>Potential:</strong> Very high viral potential — visual + wow factor</div>
+  </div>
+
+  <div class="post-card">
+    <button class="copy-btn" onclick="copyCard(this)">📋 Copy</button>
+    <div class="post-platform"><span class="plat-ig">INSTAGRAM</span> <span class="plat-tk">TIKTOK</span><span class="post-type type-reel">REEL 30s</span></div>
+    <div class="post-title">🕵️ "Face Quest Challenge" — Score Battle</div>
+    <div class="script">
+<span class="t">[0-2s]</span> <span class="v">TEXT:</span> "Can you beat my score? 😏"
+<span class="t">[2-8s]</span> <span class="a">DEMO:</span> Playing face-quest — smiling, blinking, turning head
+<span class="t">[8-12s]</span> <span class="v">SCORE:</span> Points counter going up rapidly
+<span class="t">[12-18s]</span> <span class="a">TEXT:</span> "A game you play with your FACE 🕵️"
+<span class="t">[18-24s]</span> <span class="v">TECH:</span> "Runs 100% locally — zero data sent anywhere"
+<span class="t">[24-30s]</span> <span class="n">CTA:</span> "Beat my score → comment your best! 👇"
+    </div>
+    <div class="post-caption">A game you play with your FACE 🕵️😄
+
+Smile = points. Blink = bonus. Turn your head = combo!
+
+100% private — zero data leaves your device.
+
+👇 Can you beat 500? Drop your score below!
+
+🔗 abourdim.github.io/face-quest</div>
+    <div class="post-hashtags">#FaceQuest #FaceDetection #BrowserGame #PrivacyFirst #AIGame #Workshop #ChallengeTrending</div>
+  </div>
+
+  <div class="post-card">
+    <button class="copy-btn" onclick="copyCard(this)">📋 Copy</button>
+    <div class="post-platform"><span class="plat-tk">TIKTOK</span> <span class="plat-ig">INSTAGRAM</span><span class="post-type type-reel">REEL 15s</span></div>
+    <div class="post-title">🎨 "12 Themes in 12 Seconds" — Beat Sync</div>
+    <div class="script">
+<span class="t">[EACH BEAT]</span> <span class="v">SWITCH:</span> 🌙→🌞→🌊→🚀→⚡→🌲→🔥→🕌→🏰→🔷→🧩→🌿
+<span class="t">[LAST 3s]</span> <span class="n">TEXT:</span> "Which one is you? 👇"
+    </div>
+    <div class="post-caption">12 themes. 12 seconds. Which one are you? 🎨
+
+🌙 Dark · 🌞 Light · 🌊 Ocean · 🚀 Space · ⚡ Electric · 🌲 Forest
+🔥 Lava · 🕌 Medina · 🏰 Alhambra · 🔷 Iznik · 🧩 Zellige · 🌿 Arabesque
+
+Comment your fav! 👇</div>
+    <div class="post-hashtags">#Themes #UIDesign #AppDesign #DarkMode #Aesthetic #Satisfying #UISwitch</div>
+    <div class="post-notes"><strong>Audio:</strong> Beat-synced trending sound · <strong>Technique:</strong> Screen-record theme switches on the real app</div>
+  </div>
+
+  <div class="post-card">
+    <button class="copy-btn" onclick="copyCard(this)">📋 Copy</button>
+    <div class="post-platform"><span class="plat-ig">INSTAGRAM</span> <span class="plat-yt">YOUTUBE</span><span class="post-type type-short">SHORT 45s</span></div>
+    <div class="post-title">💻 "Code → Robot Moves" — Live Demo</div>
+    <div class="script">
+<span class="t">[0-5s]</span> <span class="v">HOOK:</span> "Watch this code come ALIVE 🤯"
+<span class="t">[5-15s]</span> <span class="a">CODE:</span> Typing: const bot = new BLErobot();
+<span class="t">[15-25s]</span> <span class="v">ROBOT:</span> Robot connects, LED lights up blue
+<span class="t">[25-35s]</span> <span class="a">CODE:</span> bot.dance(); → Robot does a spin!
+<span class="t">[35-40s]</span> <span class="v">REACTION:</span> "🎉 It works!"
+<span class="t">[40-45s]</span> <span class="n">CTA:</span> "All code + app is FREE → link in bio"
+    </div>
+    <div class="post-caption">When your code comes ALIVE 🤖💙
+
+Write JavaScript. Hit run. Watch the robot dance.
+
+bit-bot connects your browser to a real robot over Bluetooth — no install, no USB cable.
+
+🔗 abourdim.github.io/bit-bot</div>
+    <div class="post-hashtags">#BitBot #Robotics #JavaScript #BLE #MicroBit #CodingIsFun #RobotDance #MakerLife</div>
+  </div>
+</div>
+
+<!-- ===== STATIC POSTS ===== -->
+<div class="section">
+  <div class="sec-h">📸 Static Posts / Carousels</div>
+
+  <div class="post-card">
+    <button class="copy-btn" onclick="copyCard(this)">📋 Copy</button>
+    <div class="post-platform"><span class="plat-ig">INSTAGRAM</span> <span class="plat-li">LINKEDIN</span><span class="post-type type-post">CAROUSEL</span></div>
+    <div class="post-title">📊 "39 Apps You Didn't Know Existed" — 10-slide Carousel</div>
+    <div class="post-caption">Slide 1: "39 free apps for young makers 🚀"
+Slide 2: 🤖 micro:bit — 10 apps (bit-bot, talking-robot, bit-playground, rxy...)
+Slide 3: 📚 Learning — 14 apps (linux-kids-lab, pentest-lab, crypto-academy...)
+Slide 4: 🧠 AI — 6 apps (teachable-machine, magic-hands, face-quest...)
+Slide 5: 🔩 Hardware — 5 apps (esp32-c3-kids-lab, circuit-lab, wled-kids-lab...)
+Slide 6: 📸 Camera — 4 apps (face-tracking, magic-hands, face-quest...)
+Slide 7: 🛠️ Tools — 7 apps (pixel-gateway, puppeteer-playground, ops-catalog...)
+Slide 8: 🏫 Classroom — 2 apps (classroom, mission-control)
+Slide 9: "12 themes. 3 languages. All free."
+Slide 10: CTA → abourdim.github.io/apps</div>
+    <div class="post-hashtags">#WorkshopDIY #STEM #EdTech #FreeTools #OpenSource #MakerEducation #Robotics #CodingForKids</div>
+  </div>
+
+  <div class="post-card">
+    <button class="copy-btn" onclick="copyCard(this)">📋 Copy</button>
+    <div class="post-platform"><span class="plat-li">LINKEDIN</span><span class="post-type type-post">ARTICLE POST</span></div>
+    <div class="post-title">🌍 "We Built 39 Free STEM Apps" — Thought Leadership</div>
+    <div class="post-caption">We built 39 free, browser-based educational apps.
+
+No install. No sign-up. No tracking. No ads.
+
+🤖 Robot control over Bluetooth
+🧠 AI experiments with MediaPipe & Teachable Machine
+🐧 Linux terminal in the browser
+🔐 Cybersecurity sandbox for beginners
+🔋 Circuit simulation
+🏫 Real-time classroom collaboration
+
+All running on abourdim.github.io/apps
+
+12 themes. 3 languages. Open source.
+
+Why? Because every kid deserves access to quality STEM tools — regardless of their school's budget.
+
+What free tool changed YOUR learning journey? 👇</div>
+    <div class="post-hashtags">#STEM #EdTech #OpenSource #Education #FreeTools #Robotics #AI #MakerMovement #DigitalInclusion</div>
+  </div>
+</div>
+
+<!-- ===== YOUTUBE ===== -->
+<div class="section">
+  <div class="sec-h">🎥 YouTube Video Ideas</div>
+
+  <div class="post-card">
+    <button class="copy-btn" onclick="copyCard(this)">📋 Copy</button>
+    <div class="post-platform"><span class="plat-yt">YOUTUBE</span><span class="post-type type-vid">VIDEO 5-10min</span></div>
+    <div class="post-title">🎓 "I Built 39 Apps for Kids — Here's What I Learned"</div>
+    <div class="post-caption">Title: I Built 39 Free STEM Apps for Kids — Here's What I Learned
+Thumbnail: Split screen — code on left, kid with robot on right, shocked face
+
+STRUCTURE:
+00:00 — Hook: "39 apps. Zero budget. Here's the story."
+00:30 — The mission: making STEM accessible
+02:00 — Demo: Top 4 popular apps (bit-bot, magic-hands, face-quest, teachable-machine)
+05:00 — Technical stack: browser-based, BLE, WebRTC, MediaPipe
+07:00 — The 12 themes & 3 languages
+08:00 — What's next: circuit-lab, 3d-lab, smart-home
+09:00 — CTA: Try it free + subscribe</div>
+  </div>
+
+  <div class="post-card">
+    <button class="copy-btn" onclick="copyCard(this)">📋 Copy</button>
+    <div class="post-platform"><span class="plat-yt">YOUTUBE</span><span class="post-type type-vid">SERIES</span></div>
+    <div class="post-title">📺 "App of the Week" — Recurring Series</div>
+    <div class="post-caption">Episode template:
+
+TITLE: "[App Name] — Workshop-DIY App of the Week #[N]"
+LENGTH: 3-5 minutes
+
+STRUCTURE:
+00:00 — "This week: [emoji] [app-name]"
+00:15 — What it does (30s demo)
+01:00 — How it works (tech explainer)
+02:00 — Live demo with real hardware
+03:00 — "Try it yourself" + link
+03:30 — Teaser for next week
+
+FIRST 8 EPISODES:
+#1 🤖 bit-bot — Robot control via Bluetooth
+#2 🪄 magic-hands — AI hand tracking effects
+#3 🕵️ face-quest — Face detection game
+#4 🧠 teachable-machine — Train AI in browser
+#5 🐧 linux-kids-lab — Linux in the browser
+#6 ⚡ esp32-c3-kids-lab — ESP32 IoT lab
+#7 🏫 classroom — PeerJS collaboration
+#8 🎨 pixel-gateway — Pixel art creator</div>
+  </div>
+</div>
+
+<!-- ===== HASHTAG SETS ===== -->
+<div class="section">
+  <div class="sec-h"># Hashtag Sets (copy & paste)</div>
+  <div class="hash-grid">
+    <div class="hash-group">
+      <h4>🤖 Robotics Posts</h4>
+      <div class="hash-list">#Robotics #MicroBit #BitBot #BLE #Bluetooth #RobotControl #STEM #MakerSpace #CodingForKids #EdTech #DIYRobot #ESP32 #Arduino #TechForKids #WorkshopDIY</div>
+    </div>
+    <div class="hash-group">
+      <h4>🧠 AI Posts</h4>
+      <div class="hash-list">#AI #ArtificialIntelligence #MediaPipe #HandTracking #FaceDetection #TeachableMachine #MachineLearning #AIForKids #BrowserAI #WebML #ComputerVision #WorkshopDIY</div>
+    </div>
+    <div class="hash-group">
+      <h4>💻 Coding Posts</h4>
+      <div class="hash-list">#LearnToCode #JavaScript #HTML #CSS #Python #Linux #Terminal #CodingForKids #WebDev #Programming #CodeNewbie #100DaysOfCode #FreeCode #WorkshopDIY</div>
+    </div>
+    <div class="hash-group">
+      <h4>🔩 Hardware Posts</h4>
+      <div class="hash-list">#ESP32 #IoT #Neopixel #LED #WLED #Electronics #CircuitDesign #SmartHome #Sensors #MakerMovement #DIYElectronics #Hardware #WorkshopDIY</div>
+    </div>
+    <div class="hash-group">
+      <h4>🏫 Education Posts</h4>
+      <div class="hash-list">#EdTech #STEM #Education #TeachersOfInstagram #Classroom #FreeTools #OpenSource #DigitalLiteracy #21stCenturySkills #MakerEducation #WorkshopDIY</div>
+    </div>
+    <div class="hash-group">
+      <h4>🇫🇷 French Posts</h4>
+      <div class="hash-list">#Robotique #Programmation #NumériqueÉducatif #STEM #FabLab #Maker #ApprendreÀCoder #Atelier #ÉducationNumérique #MicroBit #WorkshopDIY</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PUBLISHING CALENDAR ===== -->
+<div class="section">
+  <div class="sec-h">📅 Weekly Publishing Calendar</div>
+  <div class="cal-grid">
+    <div class="cal-day"><span class="emoji">🧠</span><div class="day">Monday</div><div class="what">STEM Fact / Did You Know?<br><small>LinkedIn + Instagram</small></div></div>
+    <div class="cal-day"><span class="emoji">💡</span><div class="day">Tuesday</div><div class="what">App Tip / Mini Tutorial<br><small>TikTok + Reels</small></div></div>
+    <div class="cal-day"><span class="emoji">🎬</span><div class="day">Wednesday</div><div class="what">App Demo Reel<br><small>All platforms</small></div></div>
+    <div class="cal-day"><span class="emoji">🤖</span><div class="day">Thursday</div><div class="what">Robot / Hardware Showcase<br><small>YouTube + Instagram</small></div></div>
+    <div class="cal-day"><span class="emoji">🎨</span><div class="day">Friday</div><div class="what">Creative / Fun Content<br><small>TikTok + Reels</small></div></div>
+    <div class="cal-day"><span class="emoji">📸</span><div class="day">Saturday</div><div class="what">Community Spotlight<br><small>Instagram Stories</small></div></div>
+    <div class="cal-day"><span class="emoji">📊</span><div class="day">Sunday</div><div class="what">Weekly Recap + Stats<br><small>LinkedIn + Twitter</small></div></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+function copyCard(btn){
+  const card=btn.closest('.post-card');
+  const parts=[];
+  const title=card.querySelector('.post-title');
+  const caption=card.querySelector('.post-caption');
+  const hashtags=card.querySelector('.post-hashtags');
+  const script=card.querySelector('.script');
+  if(title)parts.push(title.textContent);
+  if(caption)parts.push(caption.textContent);
+  if(script)parts.push(script.textContent);
+  if(hashtags)parts.push(hashtags.textContent);
+  navigator.clipboard.writeText(parts.join('\n\n')).then(()=>{
+    btn.textContent='✅ Copied!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='📋 Copy';btn.classList.remove('done')},1500);
+  });
+}
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

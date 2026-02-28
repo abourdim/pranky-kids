@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP FORTUNE</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a0008;color:#ffd700;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px}
+.glow{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(200,30,30,.04),transparent 60%);pointer-events:none}
+
+.title{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#cc0000;text-shadow:0 0 12px rgba(204,0,0,.15);margin-bottom:4px;text-align:center}
+.subtitle{font-size:7px;color:rgba(255,215,0,.2);letter-spacing:3px;margin-bottom:20px;text-align:center}
+
+/* COOKIE */
+.cookie-area{position:relative;width:200px;height:200px;cursor:pointer;margin:0 auto}
+.cookie{font-size:100px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);transition:all .5s;filter:drop-shadow(0 8px 20px rgba(0,0,0,.3))}
+.cookie.cracked{opacity:0;transform:translate(-50%,-50%) scale(1.5)}
+.click-hint{text-align:center;font-size:8px;color:rgba(255,215,0,.15);margin-top:4px;letter-spacing:2px;transition:opacity .3s}
+.click-hint.hide{opacity:0}
+
+/* FORTUNE SLIP */
+.fortune{max-width:350px;text-align:center;opacity:0;transform:translateY(20px);transition:all .6s;pointer-events:none}
+.fortune.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.slip{background:linear-gradient(180deg,#fff8e0,#fff5d0);border-radius:2px;padding:16px 20px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);position:relative}
+.slip::before,.slip::after{content:'';position:absolute;top:0;bottom:0;width:10px}
+.slip::before{left:0;background:linear-gradient(90deg,rgba(0,0,0,.02),transparent)}
+.slip::after{right:0;background:linear-gradient(-90deg,rgba(0,0,0,.02),transparent)}
+.fortune-text{font-size:13px;color:#333;line-height:2;font-style:italic;font-family:Georgia,serif}
+.fortune-lucky{font-size:8px;color:#888;margin-top:8px;font-family:'JetBrains Mono',monospace}
+.fortune-app{font-size:8px;color:#cc0000;margin-top:2px;font-family:'JetBrains Mono',monospace}
+
+.new-btn{padding:6px 20px;background:rgba(204,0,0,.06);border:1px solid rgba(204,0,0,.15);border-radius:4px;color:#cc0000;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all .2s}
+.new-btn:hover{background:rgba(204,0,0,.1)}
+
+.counter{font-size:7px;color:rgba(255,215,0,.1);margin-top:16px;letter-spacing:2px}
+.footer{font-size:6px;color:rgba(255,215,0,.06);margin-top:8px;text-align:center;letter-spacing:1px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="glow"></div>
+
+<div class="title">🥠 WKSHP FORTUNE</div>
+<div class="subtitle">CRACK OPEN YOUR DESTINY</div>
+
+<div class="cookie-area" id="cookieArea" onclick="crack()">
+  <div class="cookie" id="cookie">🥠</div>
+</div>
+<div class="click-hint" id="hint">CLICK THE COOKIE</div>
+
+<div class="fortune" id="fortune">
+  <div class="slip">
+    <div class="fortune-text" id="fortuneText"></div>
+    <div class="fortune-lucky" id="fortuneLucky"></div>
+    <div class="fortune-app" id="fortuneApp"></div>
+  </div>
+  <button class="new-btn" onclick="reset()">🥠 NEW FORTUNE</button>
+</div>
+
+<div class="counter" id="counter">Fortunes read: 0</div>
+<div class="footer">WKSHP FORTUNE COOKIE CO. · NOT ACTUAL PREDICTIONS · BUGS ARE FEATURES IN ALL TIMELINES</div>
+
+<script>
+const FORTUNES=[
+  {text:"A bug in your code will reveal itself as a feature in disguise. Embrace it.",lucky:"42, 39, 7, 12, 47, 8",app:"Lucky App: Bug #42"},
+  {text:"The WiFi password you seek has been in front of you all along. It is password123.",lucky:"1, 2, 3, 39, 42, 0",app:"Lucky App: password123"},
+  {text:"A wise robot once said: 'It's not falling — it's testing gravity.' You will survive.",lucky:"47, 3, 7, 12, 42, 1",app:"Lucky App: bit-bot"},
+  {text:"Your next project will run perfectly on the first try. Just kidding. Check the console.",lucky:"500, 404, 200, 301, 42, 0",app:"Lucky App: pentest-lab"},
+  {text:"You will explain a complex topic so well that an expert learns from you.",lucky:"14, 42, 7, 39, 3, 99",app:"Lucky App: docker-lab"},
+  {text:"Coffee is not the answer. Coffee is the question. The answer is yes.",lucky:"8, 1337, 42, 7, 3, 0",app:"Lucky App: coffee-supply"},
+  {text:"The best code you will ever write has zero comments. And somehow it works.",lucky:"0, 42, 39, 7, 1, 23",app:"Lucky App: linux-kids-lab"},
+  {text:"A hand gesture will change your destiny. Wave at your webcam and see what happens.",lucky:"21, 42, 7, 3, 98, 5",app:"Lucky App: magic-hands"},
+  {text:"Your face holds 468 secrets. One of them is your high score.",lucky:"468, 42, 7, 39, 100, 3",app:"Lucky App: face-quest"},
+  {text:"Teach a machine, and it learns. Teach a child, and they teach their parents Docker.",lucky:"98, 42, 14, 7, 39, 3",app:"Lucky App: teachable-machine"},
+  {text:"In a world of GUIs, the one who knows 'ls -la' is king.",lucky:"755, 644, 777, 42, 0, 1",app:"Lucky App: linux-kids-lab"},
+  {text:"16 million colors, and you will pick the one that matches nothing. That's creativity.",lucky:"16, 777, 215, 255, 0, 42",app:"Lucky App: wled-kids-lab"},
+  {text:"Hot glue is temporary. The friendships you make in a workshop are forever.",lucky:"350, 42, 7, 39, 47, 1",app:"Lucky App: esp32-c3-lab"},
+  {text:"The container that holds your future is already running. Just check the dashboard.",lucky:"80, 443, 3000, 42, 8, 27",app:"Lucky App: docker-lab"},
+  {text:"There are 39 paths before you. Choose any. They all lead to learning.",lucky:"39, 7, 12, 42, 1, 0",app:"Lucky App: all of them"},
+  {text:"The soldering iron is hot. So is your potential. Handle both with care.",lucky:"350, 42, 330, 5, 3, 7",app:"Lucky App: esp32-c3-lab"},
+  {text:"Someone will try to change the WiFi password tomorrow. They will fail.",lucky:"1, 2, 3, 42, 0, 39",app:"Lucky App: password123"},
+  {text:"Your robot will survive its next drop. It always does.",lucky:"47, 48, 49, 42, 7, 1",app:"Lucky App: bit-bot"},
+];
+
+let count=0;
+function crack(){
+  document.getElementById('cookie').classList.add('cracked');
+  document.getElementById('hint').classList.add('hide');
+  
+  const f=FORTUNES[Math.floor(Math.random()*FORTUNES.length)];
+  document.getElementById('fortuneText').textContent=f.text;
+  document.getElementById('fortuneLucky').textContent='Lucky numbers: '+f.lucky;
+  document.getElementById('fortuneApp').textContent=f.app;
+  
+  setTimeout(()=>{
+    document.getElementById('fortune').classList.add('show');
+    count++;
+    document.getElementById('counter').textContent='Fortunes read: '+count;
+  },500);
+}
+
+function reset(){
+  document.getElementById('fortune').classList.remove('show');
+  document.getElementById('cookie').classList.remove('cracked');
+  document.getElementById('hint').classList.remove('hide');
+}
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

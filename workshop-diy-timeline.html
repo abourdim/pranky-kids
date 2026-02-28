@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // TIMELINE</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050508;color:#fff;font-family:'JetBrains Mono',monospace;font-size:12px}
+.crt{position:fixed;inset:0;z-index:999;pointer-events:none}.crt::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 1px,transparent 3px)}
+
+.header{text-align:center;padding:40px 20px 30px;position:relative}
+.header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,255,65,.03),transparent 70%)}
+.h-pre{font-size:8px;color:rgba(0,255,65,.2);letter-spacing:5px}
+.h-title{font-family:'Syne',sans-serif;font-size:clamp(28px,6vw,48px);font-weight:800;color:#00ff41;text-shadow:0 0 20px rgba(0,255,65,.15);position:relative}
+.h-sub{font-size:10px;color:rgba(0,255,65,.2);margin-top:4px}
+
+/* TIMELINE */
+.tl{max-width:700px;margin:0 auto;padding:0 20px 60px;position:relative}
+.tl::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent,rgba(0,255,65,.08) 5%,rgba(0,255,65,.08) 95%,transparent);transform:translateX(-50%)}
+@media(max-width:600px){.tl::before{left:24px}}
+
+.tl-year{text-align:center;position:relative;z-index:2;margin:30px 0 16px}
+.tl-year span{display:inline-block;font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#ffd700;background:#050508;padding:0 14px;letter-spacing:2px;text-shadow:0 0 10px rgba(255,215,0,.15)}
+
+.tl-item{display:flex;align-items:flex-start;gap:0;margin-bottom:16px;position:relative;opacity:0;transform:translateY(20px);transition:all .6s cubic-bezier(.16,1,.3,1)}
+.tl-item.show{opacity:1;transform:translateY(0)}
+.tl-item:nth-child(odd){flex-direction:row-reverse;text-align:right}
+@media(max-width:600px){.tl-item,.tl-item:nth-child(odd){flex-direction:row;text-align:left}}
+
+.tl-content{flex:1;max-width:calc(50% - 24px);padding:12px 14px;border:1px solid rgba(0,255,65,.04);border-radius:6px;background:rgba(0,255,65,.005);transition:all .2s}
+.tl-content:hover{border-color:rgba(0,255,65,.1);background:rgba(0,255,65,.01)}
+@media(max-width:600px){.tl-content{max-width:calc(100% - 50px)}}
+
+.tl-dot{width:12px;height:12px;border-radius:50%;border:2px solid #00ff41;background:#050508;flex-shrink:0;margin:14px 14px 0;z-index:2;box-shadow:0 0 8px rgba(0,255,65,.15);position:relative}
+.tl-dot.gold{border-color:#ffd700;box-shadow:0 0 8px rgba(255,215,0,.15)}
+.tl-dot.red{border-color:#ff0033;box-shadow:0 0 8px rgba(255,0,51,.15)}
+.tl-dot.cyan{border-color:#00d4ff;box-shadow:0 0 8px rgba(0,212,255,.15)}
+.tl-dot.purple{border-color:#bf00ff;box-shadow:0 0 8px rgba(191,0,255,.15)}
+
+.tl-date{font-size:8px;color:rgba(0,255,65,.2);letter-spacing:2px;margin-bottom:3px}
+.tl-title{font-size:13px;font-weight:700;color:#00ff41;margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.tl-item:nth-child(odd) .tl-title{justify-content:flex-end}
+@media(max-width:600px){.tl-item:nth-child(odd) .tl-title{justify-content:flex-start}}
+.tl-desc{font-size:10px;color:rgba(0,255,65,.3);line-height:1.8}
+.tl-tag{display:inline-block;font-size:7px;padding:1px 6px;border-radius:2px;letter-spacing:1px;margin-top:4px}
+.tag-launch{background:rgba(0,255,65,.04);color:#00ff41;border:1px solid rgba(0,255,65,.08)}
+.tag-milestone{background:rgba(255,215,0,.04);color:#ffd700;border:1px solid rgba(255,215,0,.08)}
+.tag-event{background:rgba(0,212,255,.04);color:#00d4ff;border:1px solid rgba(0,212,255,.08)}
+.tag-bug{background:rgba(255,0,51,.04);color:#ff0033;border:1px solid rgba(255,0,51,.08)}
+
+.tl-spacer{flex:1;max-width:calc(50% - 24px)}
+@media(max-width:600px){.tl-spacer{display:none}}
+
+.footer{text-align:center;padding:20px;font-size:8px;color:rgba(0,255,65,.1);border-top:1px solid rgba(0,255,65,.03);line-height:2.2}
+.footer a{color:rgba(0,212,255,.3);text-decoration:none}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="crt"></div>
+
+<div class="header">
+  <div class="h-pre">ASSOCIATION LOI 1901 — FRANCE</div>
+  <div class="h-title">TIMELINE</div>
+  <div class="h-sub">The Workshop-DIY Story // From First Commit to 39 Apps</div>
+</div>
+
+<div class="tl" id="tl">
+
+<div class="tl-year"><span>2023</span></div>
+
+<div class="tl-item"><div class="tl-content">
+  <div class="tl-date">JANUARY 2023</div>
+  <div class="tl-title">🌱 The Idea</div>
+  <div class="tl-desc">A thought: "What if kids could control robots from a browser?" First lines of code written. Coffee consumed: immeasurable.</div>
+  <span class="tl-tag tag-milestone">MILESTONE</span>
+</div><div class="tl-dot gold"></div><div class="tl-spacer"></div></div>
+
+<div class="tl-item"><div class="tl-spacer"></div><div class="tl-dot"></div><div class="tl-content">
+  <div class="tl-date">MARCH 2023</div>
+  <div class="tl-title">🤖 bit-bot v1.0</div>
+  <div class="tl-desc">First app launched: browser-based robot control via Web Bluetooth. A micro:bit moves. A child screams with joy. Everything changes.</div>
+  <span class="tl-tag tag-launch">APP LAUNCH</span>
+</div></div>
+
+<div class="tl-item"><div class="tl-content">
+  <div class="tl-date">JUNE 2023</div>
+  <div class="tl-title">📋 Association Founded</div>
+  <div class="tl-desc">Workshop-DIY officially registered as Association Loi 1901 in France. Paperwork: 3 weeks. Coffee during paperwork: 47 cups.</div>
+  <span class="tl-tag tag-milestone">MILESTONE</span>
+</div><div class="tl-dot gold"></div><div class="tl-spacer"></div></div>
+
+<div class="tl-item"><div class="tl-spacer"></div><div class="tl-dot"></div><div class="tl-content">
+  <div class="tl-date">AUGUST 2023</div>
+  <div class="tl-title">🪄 magic-hands Released</div>
+  <div class="tl-desc">MediaPipe hand tracking goes live. Kids wave at screens for hours. Parents confused but supportive.</div>
+  <span class="tl-tag tag-launch">APP LAUNCH</span>
+</div></div>
+
+<div class="tl-item"><div class="tl-content">
+  <div class="tl-date">OCTOBER 2023</div>
+  <div class="tl-title">🏫 First Workshop</div>
+  <div class="tl-desc">First in-person workshop held. 12 students. 3 robots. 1 accidental table flip. Zero injuries (barely).</div>
+  <span class="tl-tag tag-event">EVENT</span>
+</div><div class="tl-dot cyan"></div><div class="tl-spacer"></div></div>
+
+<div class="tl-item"><div class="tl-spacer"></div><div class="tl-dot red"></div><div class="tl-content">
+  <div class="tl-date">NOVEMBER 2023</div>
+  <div class="tl-title">🐛 Bug #42 Discovered</div>
+  <div class="tl-desc">A mysterious bug appears in bit-bot's BLE reconnection logic. After 3 weeks of debugging, it is officially declared "a feature."</div>
+  <span class="tl-tag tag-bug">BUG → FEATURE</span>
+</div></div>
+
+<div class="tl-year"><span>2024</span></div>
+
+<div class="tl-item"><div class="tl-content">
+  <div class="tl-date">JANUARY 2024</div>
+  <div class="tl-title">🧠 AI Suite Launch</div>
+  <div class="tl-desc">face-quest, face-tracking, and teachable-machine released. AI is now accessible to 10-year-olds. The future is weird and wonderful.</div>
+  <span class="tl-tag tag-launch">APP LAUNCH ×3</span>
+</div><div class="tl-dot purple"></div><div class="tl-spacer"></div></div>
+
+<div class="tl-item"><div class="tl-spacer"></div><div class="tl-dot"></div><div class="tl-content">
+  <div class="tl-date">APRIL 2024</div>
+  <div class="tl-title">⚡ ESP32 Robot Kit</div>
+  <div class="tl-desc">The ESP32 Robot Kit Lite is designed and assembled. Dual-core 240MHz. IR sensors. Ultrasonic. Survives its first drop. Then 46 more.</div>
+  <span class="tl-tag tag-milestone">HARDWARE</span>
+</div></div>
+
+<div class="tl-item"><div class="tl-content">
+  <div class="tl-date">JUNE 2024</div>
+  <div class="tl-title">🔐 Cybersecurity Track</div>
+  <div class="tl-desc">pentest-lab and crypto-academy launch. Teens learn ethical hacking. School IT departments are "cautiously supportive."</div>
+  <span class="tl-tag tag-launch">APP LAUNCH ×2</span>
+</div><div class="tl-dot"></div><div class="tl-spacer"></div></div>
+
+<div class="tl-item"><div class="tl-spacer"></div><div class="tl-dot cyan"></div><div class="tl-content">
+  <div class="tl-date">SEPTEMBER 2024</div>
+  <div class="tl-title">🎨 12 Themes Released</div>
+  <div class="tl-desc">Cultural skin system: Medina, Alhambra, Iznik, Zellige, and 8 more. Every app now has 12 visual identities.</div>
+  <span class="tl-tag tag-milestone">DESIGN</span>
+</div></div>
+
+<div class="tl-item"><div class="tl-content">
+  <div class="tl-date">NOVEMBER 2024</div>
+  <div class="tl-title">🐧 Linux & Docker Labs</div>
+  <div class="tl-desc">Browser-based Linux terminal and Docker experiments. A 14-year-old explains containers to their parent, a professional engineer.</div>
+  <span class="tl-tag tag-launch">APP LAUNCH ×2</span>
+</div><div class="tl-dot"></div><div class="tl-spacer"></div></div>
+
+<div class="tl-item"><div class="tl-spacer"></div><div class="tl-dot red"></div><div class="tl-content">
+  <div class="tl-date">DECEMBER 2024</div>
+  <div class="tl-title">🔑 WiFi Password Incident</div>
+  <div class="tl-desc">Pentest students discover the WiFi password is "password123." The founder confirms it has been this way since founding. "It's tradition."</div>
+  <span class="tl-tag tag-bug">INCIDENT</span>
+</div></div>
+
+<div class="tl-year"><span>2025</span></div>
+
+<div class="tl-item"><div class="tl-content">
+  <div class="tl-date">FEBRUARY 2025</div>
+  <div class="tl-title">📦 30 Apps Milestone</div>
+  <div class="tl-desc">The ecosystem reaches 30 applications across 7 domains. IoT, AI, robotics, cybersecurity, electronics, code, and more.</div>
+  <span class="tl-tag tag-milestone">MILESTONE</span>
+</div><div class="tl-dot gold"></div><div class="tl-spacer"></div></div>
+
+<div class="tl-item"><div class="tl-spacer"></div><div class="tl-dot"></div><div class="tl-content">
+  <div class="tl-date">MAY 2025</div>
+  <div class="tl-title">🚀 mission-control + WebRTC</div>
+  <div class="tl-desc">Real-time collaboration goes live. Students can video-chat while controlling robots remotely. The future was supposed to have flying cars, but this is better.</div>
+  <span class="tl-tag tag-launch">APP LAUNCH</span>
+</div></div>
+
+<div class="tl-item"><div class="tl-content">
+  <div class="tl-date">AUGUST 2025</div>
+  <div class="tl-title">✨ AI Prompt Engineering</div>
+  <div class="tl-desc">prompt-hero and claude-toolkit launch. Kids learn to talk to AI effectively. The robots are getting smarter. Should we be worried? Probably not. Maybe.</div>
+  <span class="tl-tag tag-launch">APP LAUNCH ×2</span>
+</div><div class="tl-dot purple"></div><div class="tl-spacer"></div></div>
+
+<div class="tl-item"><div class="tl-spacer"></div><div class="tl-dot gold"></div><div class="tl-content">
+  <div class="tl-date">OCTOBER 2025</div>
+  <div class="tl-title">🎯 39 Apps — Complete</div>
+  <div class="tl-desc">The 39th app launches. 39 browser-based tools. 7 domains. 12 themes. Zero installations. Infinite bugs (features). The ecosystem is complete. For now.</div>
+  <span class="tl-tag tag-milestone">MILESTONE</span>
+</div></div>
+
+<div class="tl-year"><span>2026</span></div>
+
+<div class="tl-item"><div class="tl-content">
+  <div class="tl-date">FEBRUARY 2026</div>
+  <div class="tl-title">🔮 The Future</div>
+  <div class="tl-desc">More workshops. More apps. More robots. More coffee. The WiFi password remains unchanged. Bug #42 persists. Everything is exactly as it should be.</div>
+  <span class="tl-tag tag-milestone">THE FUTURE</span>
+</div><div class="tl-dot gold"></div><div class="tl-spacer"></div></div>
+
+</div>
+
+<div class="footer">
+  <a href="https://workshop-diy.org">workshop-diy.org</a> · <a href="https://abourdim.github.io/apps/">abourdim.github.io/apps</a><br>
+  Association Loi 1901 — France · 39 apps · 7 domains · 12 themes · ∞ features<br>
+  // made with 💚, ☕, and stackoverflow
+</div>
+
+<script>
+// Scroll reveal
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')});
+},{threshold:.15});
+document.querySelectorAll('.tl-item').forEach(el=>obs.observe(el));
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

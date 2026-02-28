@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // THE WORKSHOP GAMES</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:12px}
+
+/* BROADCAST BAR */
+.broadcast{width:100%;max-width:700px;background:linear-gradient(90deg,#cc0000,#dd2222);padding:3px 10px;display:flex;align-items:center;gap:6px;font-size:7px;color:#fff;letter-spacing:2px;border-radius:4px 4px 0 0}
+.broadcast .live{display:flex;align-items:center;gap:3px}.broadcast .dot{width:5px;height:5px;border-radius:50%;background:#fff;animation:p 1s infinite}
+@keyframes p{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* SCOREBOARD */
+.scoreboard{width:100%;max-width:700px;background:#111;border:2px solid #222;border-top:none;border-radius:0 0 8px 8px;overflow:hidden}
+
+.score-main{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:14px;gap:10px;background:linear-gradient(180deg,#151520,#111)}
+.team{text-align:center}
+.team-emoji{font-size:36px;margin-bottom:2px}
+.team-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;letter-spacing:1px}
+.team-record{font-size:7px;color:#555}
+.score-center{text-align:center}
+.score-nums{display:flex;align-items:center;gap:10px}
+.score-num{font-family:'Syne',sans-serif;font-size:clamp(36px,8vw,52px);font-weight:800;line-height:1}
+.score-vs{font-size:10px;color:#444}
+.game-clock{font-size:14px;color:#ffd700;font-weight:700;margin-top:4px}
+.game-period{font-size:7px;color:#666;letter-spacing:2px;margin-top:2px}
+
+/* STATS BAR */
+.stats-bar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;border-top:1px solid #1a1a24;background:#0d0d18}
+.stat-box{text-align:center;padding:6px;border-right:1px solid #1a1a24}
+.stat-box:last-child{border-right:none}
+.stat-box .label{font-size:6px;color:#555;letter-spacing:2px}.stat-box .value{font-size:14px;font-weight:700;margin-top:1px}
+
+/* PLAY-BY-PLAY */
+.pbp{padding:8px 10px;border-top:1px solid #1a1a24;max-height:180px;overflow-y:auto}
+.pbp::-webkit-scrollbar{width:2px}.pbp::-webkit-scrollbar-thumb{background:#222}
+.play{display:flex;gap:6px;padding:3px 0;border-bottom:1px solid #0d0d14;font-size:9px}
+.play .time{color:#555;width:40px;flex-shrink:0}.play .icon{font-size:12px;width:18px;text-align:center}
+.play .desc{color:#888;flex:1}
+.play.highlight{background:rgba(255,215,0,.02)}
+.play.highlight .desc{color:#ffd700}
+
+/* JUMBOTRON */
+.jumbo{text-align:center;padding:10px;border-top:1px solid #1a1a24;background:#0a0a0e}
+.jumbo-text{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#ffd700;animation:jumboScroll 8s linear infinite}
+@keyframes jumboScroll{0%,100%{opacity:1}48%{opacity:1}50%{opacity:0}52%{opacity:0}54%{opacity:1}}
+
+/* CROWD METER */
+.crowd{padding:6px 10px;border-top:1px solid #1a1a24;display:flex;align-items:center;gap:6px}
+.crowd-label{font-size:7px;color:#555;letter-spacing:1px;width:50px}
+.crowd-bar{flex:1;height:8px;background:#1a1a24;border-radius:4px;overflow:hidden}
+.crowd-fill{height:100%;border-radius:4px;transition:width .5s;background:linear-gradient(90deg,#00cc66,#ffd700,#ff0066)}
+.crowd-level{font-size:8px;color:#888;width:36px;text-align:right}
+
+/* CONTROLS */
+.controls{display:flex;gap:4px;margin-top:8px}
+.ctrl{padding:4px 12px;border-radius:4px;border:1px solid #222;background:#111;color:#555;font-family:inherit;font-size:8px;cursor:pointer}
+.ctrl:hover{background:#1a1a24;color:#fff;border-color:#333}
+
+.footer{font-size:6px;color:#222;margin-top:8px;letter-spacing:1px;text-align:center}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="broadcast">
+  <div class="live"><div class="dot"></div>LIVE</div>
+  <span>WKSHP SPORTS NETWORK</span>
+  <span style="margin-left:auto">THE WORKSHOP GAMES 2026 · FRANCE 🇫🇷</span>
+</div>
+
+<div class="scoreboard">
+  <div class="score-main">
+    <div class="team" id="t1"><div class="team-emoji">🤖</div><div class="team-name" style="color:#0af">ROBOTS</div><div class="team-record">W:39 L:0</div></div>
+    <div class="score-center">
+      <div class="score-nums">
+        <div class="score-num" style="color:#0af" id="s1">42</div>
+        <div class="score-vs">—</div>
+        <div class="score-num" style="color:#ff0066" id="s2">39</div>
+      </div>
+      <div class="game-clock" id="clock">12:42</div>
+      <div class="game-period" id="period">Q3 · THE WORKSHOP GAMES</div>
+    </div>
+    <div class="team" id="t2"><div class="team-emoji">🔐</div><div class="team-name" style="color:#ff0066">HACKERS</div><div class="team-record">W:38 L:1</div></div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-box"><div class="label">APPS DEPLOYED</div><div class="value" style="color:#0af" id="appsDep">24</div></div>
+    <div class="stat-box"><div class="label">BUGS FOUND</div><div class="value" style="color:#ffd700" id="bugsFnd">42</div></div>
+    <div class="stat-box"><div class="label">COFFEE CUPS</div><div class="value" style="color:#ff8800" id="coffees">7</div></div>
+    <div class="stat-box"><div class="label">ROBOT DROPS</div><div class="value" style="color:#ff0066" id="drops">3</div></div>
+  </div>
+
+  <div class="pbp" id="pbp"></div>
+
+  <div class="crowd">
+    <span class="crowd-label">CROWD</span>
+    <div class="crowd-bar"><div class="crowd-fill" id="crowdFill" style="width:72%"></div></div>
+    <span class="crowd-level" id="crowdLvl">72%</span>
+  </div>
+
+  <div class="jumbo">
+    <div class="jumbo-text" id="jumbo">🏆 WELCOME TO THE WORKSHOP GAMES! 🏆</div>
+  </div>
+</div>
+
+<div class="controls">
+  <button class="ctrl" onclick="scorePoint(1)">🤖 +1</button>
+  <button class="ctrl" onclick="scorePoint(2)">🔐 +1</button>
+  <button class="ctrl" onclick="addPlay()">▶ NEXT PLAY</button>
+  <button class="ctrl" onclick="timeout()">⏸ TIMEOUT</button>
+</div>
+
+<div class="footer">WKSHP SPORTS NETWORK · NOT REAL SPORTS · BUGS ARE FEATURES IN ALL CONFERENCES</div>
+
+<script>
+let s1=42,s2=39,crowd=72;
+
+const PLAYS=[
+  {i:"🤖",d:"bit-bot SCORES! Line-following layup off the BLE connection!",h:true},
+  {i:"🔐",d:"pentest-lab intercepts! SQL injection steal!",h:true},
+  {i:"🧠",d:"teachable-machine with a 98% accuracy three-pointer!",h:true},
+  {i:"🐛",d:"Bug #42 called for traveling. Reclassified as a feature. Play continues."},
+  {i:"🪄",d:"magic-hands behind-the-back pass! 21 landmarks of deception!"},
+  {i:"☕",d:"TIMEOUT called. Coffee refill required. Supply at 8%."},
+  {i:"🐧",d:"linux-kids-lab with the 'sudo' power move!",h:true},
+  {i:"🐳",d:"docker-lab containers the rebound! Isolation play!"},
+  {i:"🔑",d:"WiFi disconnects! Technical timeout! Password still password123."},
+  {i:"💡",d:"wled-kids-lab lights up the scoreboard! 16 million color celebration!"},
+  {i:"🤖",d:"Robot DROPS from desk — survives! Crowd goes wild! Drop #48!",h:true},
+  {i:"🚀",d:"mission-control with the WebRTC assist! Real-time pass!"},
+  {i:"🕵️",d:"face-quest scans the defense! 468 landmarks analyzed!"},
+  {i:"⚡",d:"ESP32 with the fast break! 240MHz speed advantage!"},
+];
+let playIdx=0;
+
+function addPlay(){
+  const play=PLAYS[playIdx%PLAYS.length];playIdx++;
+  const t=document.getElementById('clock').textContent;
+  const pbp=document.getElementById('pbp');
+  pbp.innerHTML=`<div class="play${play.h?' highlight':''}"><span class="time">${t}</span><span class="icon">${play.i}</span><span class="desc">${play.d}</span></div>`+pbp.innerHTML;
+  // Random score
+  if(play.h){
+    if(Math.random()>.5){s1++;document.getElementById('s1').textContent=s1}
+    else{s2++;document.getElementById('s2').textContent=s2}
+  }
+  crowd=Math.min(100,crowd+Math.floor(Math.random()*8));
+  document.getElementById('crowdFill').style.width=crowd+'%';
+  document.getElementById('crowdLvl').textContent=crowd+'%';
+}
+
+function scorePoint(team){
+  if(team===1){s1++;document.getElementById('s1').textContent=s1}
+  else{s2++;document.getElementById('s2').textContent=s2}
+  crowd=Math.min(100,crowd+5);
+  document.getElementById('crowdFill').style.width=crowd+'%';
+  document.getElementById('crowdLvl').textContent=crowd+'%';
+}
+
+function timeout(){
+  const pbp=document.getElementById('pbp');
+  pbp.innerHTML=`<div class="play"><span class="time">--:--</span><span class="icon">⏸</span><span class="desc">TIMEOUT! Coffee break. Everyone hydrate. password123 still works.</span></div>`+pbp.innerHTML;
+}
+
+// CLOCK
+let sec=762;
+setInterval(()=>{
+  sec--;if(sec<0)sec=900;
+  const m=String(Math.floor(sec/60)).padStart(2,'0');
+  const s=String(sec%60).padStart(2,'0');
+  document.getElementById('clock').textContent=m+':'+s;
+},1000);
+
+// JUMBOTRON MESSAGES
+const msgs=["🏆 WELCOME TO THE WORKSHOP GAMES!","🤖 ROBOTS LEAD "+s1+"-"+s2,"☕ COFFEE SUPPLY: CRITICAL","🐛 BUG #42 IS STILL A FEATURE","🔑 WIFI: password123","📣 MAKE SOME NOISE!","⚡ POWERED BY ESP32"];
+let mIdx=0;
+setInterval(()=>{mIdx=(mIdx+1)%msgs.length;document.getElementById('jumbo').textContent=msgs[mIdx]},4000);
+
+// Auto plays
+setInterval(addPlay,6000);
+
+// Init with a few plays
+addPlay();addPlay();addPlay();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

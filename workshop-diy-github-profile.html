@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>workshop-diy · GitHub</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow-y:auto;overflow-x:hidden}
+body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+
+/* NAV */
+.gh-nav{background:#161b22;border-bottom:1px solid #30363d;padding:8px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.gh-logo{font-size:20px;filter:grayscale(1) brightness(2)}
+.gh-search{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:4px 10px;color:#e6edf3;font-size:12px;width:240px;outline:none}
+.gh-nav-links{display:flex;gap:12px;margin-left:auto;font-size:12px;color:#8b949e}
+
+/* PROFILE HEADER */
+.profile{max-width:1000px;margin:20px auto;padding:0 16px;display:flex;gap:20px}
+.profile-left{width:240px;flex-shrink:0}
+.avatar{width:200px;height:200px;border-radius:50%;border:1px solid #30363d;background:#161b22;display:flex;align-items:center;justify-content:center;font-size:80px;margin-bottom:10px}
+.display-name{font-size:22px;font-weight:700;color:#e6edf3}
+.username{font-size:16px;color:#8b949e}
+.bio{font-size:13px;color:#8b949e;margin:8px 0;line-height:1.6}
+.profile-stats{display:flex;gap:8px;margin:8px 0;font-size:12px;color:#8b949e}
+.profile-stats span{display:flex;align-items:center;gap:3px}
+.profile-stats b{color:#e6edf3}
+.profile-meta{font-size:12px;color:#8b949e;line-height:2.2}
+.follow-btn{width:100%;padding:5px;background:#21262d;border:1px solid #30363d;border-radius:6px;color:#e6edf3;font-size:12px;font-weight:600;cursor:pointer;margin:10px 0}
+.follow-btn:hover{background:#30363d}
+.profile-right{flex:1;min-width:0}
+
+/* TABS */
+.tabs{display:flex;gap:0;border-bottom:1px solid #30363d;margin-bottom:16px}
+.tab{padding:8px 14px;font-size:13px;color:#8b949e;cursor:pointer;border-bottom:2px solid transparent;display:flex;align-items:center;gap:5px}
+.tab:hover{color:#e6edf3}.tab.on{color:#e6edf3;border-bottom-color:#f78166}
+.tab .cnt{background:#30363d;border-radius:10px;padding:0 6px;font-size:11px}
+
+/* CONTRIBUTION GRAPH */
+.contrib-box{border:1px solid #30363d;border-radius:6px;padding:12px;margin-bottom:16px;background:#0d1117}
+.contrib-h{font-size:13px;color:#e6edf3;margin-bottom:8px}
+.contrib-h b{color:#58a6ff}
+.contrib-grid{display:flex;gap:2px;overflow-x:auto}
+.contrib-col{display:flex;flex-direction:column;gap:2px}
+.contrib-cell{width:10px;height:10px;border-radius:2px;background:#161b22}
+.contrib-cell.l1{background:#0e4429}.contrib-cell.l2{background:#006d32}.contrib-cell.l3{background:#26a641}.contrib-cell.l4{background:#39d353}
+.contrib-legend{display:flex;align-items:center;gap:3px;margin-top:6px;font-size:10px;color:#8b949e;justify-content:flex-end}
+
+/* REPO LIST */
+.repo{border:1px solid #30363d;border-radius:6px;padding:14px;margin-bottom:8px;background:#0d1117}
+.repo:hover{background:#161b22}
+.repo-h{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+.repo-name{font-size:16px;font-weight:600;color:#58a6ff;cursor:pointer}.repo-name:hover{text-decoration:underline}
+.repo-badge{font-size:10px;padding:0 6px;border:1px solid #30363d;border-radius:10px;color:#8b949e}
+.repo-desc{font-size:12px;color:#8b949e;margin-bottom:6px;line-height:1.6}
+.repo-meta{display:flex;gap:12px;font-size:11px;color:#8b949e;flex-wrap:wrap}
+.repo-meta span{display:flex;align-items:center;gap:3px}
+.lang-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.lang-js{background:#f1e05a}.lang-py{background:#3572a5}.lang-html{background:#e34c26}.lang-css{background:#563d7c}.lang-cpp{background:#f34b7d}
+.repo-star{cursor:pointer;padding:2px 8px;border:1px solid #30363d;border-radius:6px;font-size:11px;color:#8b949e;background:#21262d;display:flex;align-items:center;gap:3px}
+
+/* PIN */
+.pinned-h{font-size:13px;color:#8b949e;margin-bottom:8px}
+.pinned-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+@media(max-width:600px){.pinned-grid{grid-template-columns:1fr}}
+.pin{border:1px solid #30363d;border-radius:6px;padding:12px;background:#0d1117}
+.pin:hover{background:#161b22}
+.pin-name{font-size:13px;font-weight:600;color:#58a6ff;margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.pin-desc{font-size:11px;color:#8b949e;line-height:1.5;margin-bottom:6px}
+.pin-meta{display:flex;gap:10px;font-size:10px;color:#8b949e}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="gh-nav">
+  <span class="gh-logo">🐙</span>
+  <input class="gh-search" placeholder="Search or jump to..." readonly>
+  <div class="gh-nav-links">
+    <span>Pull requests</span><span>Issues</span><span>Marketplace</span><span>Explore</span>
+    <span>🤖</span>
+  </div>
+</div>
+
+<div class="profile">
+<div class="profile-left">
+  <div class="avatar">🤖</div>
+  <div class="display-name">Workshop-DIY</div>
+  <div class="username">@workshop-diy</div>
+  <div class="bio">Association Loi 1901 — France 🇫🇷<br>Robotics · AI · Electronics · 3D · Code · Cyber<br>39 apps. All free. All browser-based.<br>// bugs are features since 2023</div>
+  <button class="follow-btn">☆ Follow</button>
+  <div class="profile-stats">
+    <span><b>42</b> followers</span> · <span><b>7</b> following</span>
+  </div>
+  <div class="profile-meta">
+    📍 France<br>
+    🔗 <a href="https://workshop-diy.org">workshop-diy.org</a><br>
+    🤖 Joined 2023<br>
+    ☕ Powered by caffeine
+  </div>
+</div>
+
+<div class="profile-right">
+<div class="tabs">
+  <div class="tab on">📋 Overview</div>
+  <div class="tab">📦 Repositories <span class="cnt">39</span></div>
+  <div class="tab">⭐ Stars <span class="cnt">12</span></div>
+</div>
+
+<!-- PINNED -->
+<div class="pinned-h">📌 Pinned</div>
+<div class="pinned-grid" id="pinned"></div>
+
+<!-- CONTRIBUTION GRAPH -->
+<div class="contrib-box">
+  <div class="contrib-h"><b>1,337</b> contributions in the last year</div>
+  <div class="contrib-grid" id="contribGrid"></div>
+  <div class="contrib-legend">Less <div class="contrib-cell"></div><div class="contrib-cell l1"></div><div class="contrib-cell l2"></div><div class="contrib-cell l3"></div><div class="contrib-cell l4"></div> More</div>
+</div>
+
+<!-- REPOS -->
+<div id="repos"></div>
+</div>
+</div>
+
+<script>
+const APPS=[
+{e:"🤖",n:"bit-bot",d:"Drive Bit:Bot robot via Bluetooth — joystick, line-follow, obstacle avoidance",l:"JavaScript",lc:"lang-js",s:127,f:34},
+{e:"🪄",n:"magic-hands",d:"Hand-tracking magic effects powered by MediaPipe",l:"JavaScript",lc:"lang-js",s:98,f:28},
+{e:"🕵️",n:"face-quest",d:"Face-detection scoring game — 100% local, zero data sent",l:"JavaScript",lc:"lang-js",s:89,f:22},
+{e:"🧠",n:"teachable-machine",d:"Train AI gestures in browser, send to micro:bit via BLE",l:"JavaScript",lc:"lang-js",s:112,f:31},
+{e:"💬",n:"talking-robot",d:"Conversational robot with speech, emotions, and BLE",l:"JavaScript",lc:"lang-js",s:67,f:18},
+{e:"😎",n:"face-tracking",d:"Kids face tracking with event triggers for micro:bit",l:"JavaScript",lc:"lang-js",s:54,f:15},
+{e:"😄",n:"bitmoji-lab",d:"Emoji to 5×5 LED pixel art on micro:bit",l:"JavaScript",lc:"lang-js",s:43,f:12},
+{e:"🚀",n:"mission-control",d:"WebRTC dashboard with live video/chat — command micro:bits",l:"JavaScript",lc:"lang-js",s:71,f:19},
+{e:"🧩",n:"bit-playground",d:"Ultimate micro:bit BLE playground — LEDs, sensors, servos",l:"JavaScript",lc:"lang-js",s:58,f:16},
+{e:"🎛️",n:"rxy",d:"Custom Bluetooth remote builder — drag & drop UI",l:"JavaScript",lc:"lang-js",s:45,f:11},
+{e:"🎨",n:"pixel-gateway",d:"Retro pixel art portal — draw, animate, export",l:"HTML",lc:"lang-html",s:62,f:20},
+{e:"💡",n:"wled-kids-lab",d:"Control Neopixel LED strips with WLED",l:"JavaScript",lc:"lang-js",s:38,f:9},
+{e:"⚡",n:"esp32-c3-kids-lab",d:"Hands-on ESP32-C3 IoT lab",l:"C++",lc:"lang-cpp",s:55,f:14},
+{e:"🔐",n:"pentest-lab",d:"Cybersecurity sandbox — ethical hacking challenges",l:"JavaScript",lc:"lang-js",s:87,f:25},
+{e:"🐧",n:"linux-kids-lab",d:"Linux commands in a safe browser sandbox",l:"JavaScript",lc:"lang-js",s:76,f:21},
+{e:"🐳",n:"docker-lab",d:"Docker experiments — containers, images, volumes",l:"Python",lc:"lang-py",s:41,f:10},
+{e:"🔗",n:"dhcp-lab",d:"Python DHCP server with real-time web dashboard",l:"Python",lc:"lang-py",s:33,f:8},
+];
+
+// PINNED
+const pinned=APPS.slice(0,6);
+document.getElementById('pinned').innerHTML=pinned.map(a=>`<div class="pin"><div class="pin-name">📦 <a href="#">${a.n}</a></div><div class="pin-desc">${a.d}</div><div class="pin-meta"><span><span class="lang-dot ${a.lc}"></span> ${a.l}</span><span>⭐ ${a.s}</span><span>🍴 ${a.f}</span></div></div>`).join('');
+
+// CONTRIB GRAPH
+const grid=document.getElementById('contribGrid');
+for(let w=0;w<52;w++){
+  const col=document.createElement('div');col.className='contrib-col';
+  for(let d=0;d<7;d++){
+    const cell=document.createElement('div');
+    const r=Math.random();
+    const lvl=r>.92?'l4':r>.8?'l3':r>.6?'l2':r>.35?'l1':'';
+    cell.className='contrib-cell '+lvl;
+    col.appendChild(cell);
+  }
+  grid.appendChild(col);
+}
+
+// REPOS
+const reposEl=document.getElementById('repos');
+APPS.forEach(a=>{
+  reposEl.innerHTML+=`<div class="repo"><div class="repo-h"><span class="repo-name">${a.e} ${a.n}</span><span class="repo-badge">Public</span><div class="repo-star" style="margin-left:auto">☆ Star <b>${a.s}</b></div></div><div class="repo-desc">${a.d}</div><div class="repo-meta"><span><span class="lang-dot ${a.lc}"></span> ${a.l}</span><span>⭐ ${a.s}</span><span>🍴 ${a.f}</span><span>Updated this week</span></div></div>`;
+});
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

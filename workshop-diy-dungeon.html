@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // DUNGEON</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#0a0a0e;color:#00ff41;font-family:'JetBrains Mono',monospace;font-size:13px}
+.crt{position:fixed;inset:0;z-index:999;pointer-events:none}.crt::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 1px,transparent 3px)}
+.app{position:fixed;inset:0;display:flex;flex-direction:column;z-index:1}
+.hud{padding:4px 10px;display:flex;justify-content:space-between;font-size:8px;color:rgba(0,255,65,.2);border-bottom:1px solid rgba(0,255,65,.04);flex-shrink:0}
+.game{flex:1;display:flex;overflow:hidden}
+
+/* MAP */
+.map-panel{width:180px;border-right:1px solid rgba(0,255,65,.04);padding:8px;flex-shrink:0;display:flex;flex-direction:column}
+.map-h{font-size:8px;color:#0af;letter-spacing:2px;margin-bottom:6px}
+.map-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-bottom:10px}
+.map-cell{aspect-ratio:1;border:1px solid rgba(0,255,65,.04);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:10px;background:rgba(0,255,65,.005);transition:all .2s}
+.map-cell.visited{background:rgba(0,255,65,.02);border-color:rgba(0,255,65,.08)}
+.map-cell.current{background:rgba(0,255,65,.06);border-color:#0f0;box-shadow:0 0 6px rgba(0,255,65,.15)}
+.map-cell.hidden{opacity:.15}
+
+/* STATS */
+.stat-box{border:1px solid rgba(0,255,65,.04);border-radius:3px;padding:6px;margin-bottom:6px;font-size:9px}
+.stat-row{display:flex;justify-content:space-between;margin-bottom:2px}
+.stat-row .l{color:rgba(0,255,65,.3)}.stat-row .v{color:#0f0}
+.hp-bar{height:6px;background:rgba(0,255,65,.06);border-radius:3px;overflow:hidden;margin-top:3px}
+.hp-fill{height:100%;background:#0f0;border-radius:3px;transition:width .3s}
+.inv{margin-top:auto}
+.inv-h{font-size:8px;color:#ffd700;letter-spacing:2px;margin-bottom:4px}
+.inv-item{font-size:9px;color:rgba(0,255,65,.4);padding:1px 0}
+
+/* OUTPUT */
+.output-area{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.output{flex:1;overflow-y:auto;padding:10px 14px;line-height:1.8;font-size:12px}
+.output::-webkit-scrollbar{width:3px}.output::-webkit-scrollbar-thumb{background:rgba(0,255,65,.1)}
+.output .room{color:#0af;font-weight:700;font-size:13px}.output .desc{color:rgba(0,255,65,.4)}.output .action{color:#ffd700}.output .enemy{color:#f03}.output .item{color:#0f0}.output .sys{color:rgba(0,255,65,.15);font-size:10px}
+.output .ascii{color:rgba(0,255,65,.25);font-size:10px;line-height:1.3}
+
+/* INPUT */
+.input-area{padding:6px 14px;border-top:1px solid rgba(0,255,65,.04);display:flex;gap:6px;flex-shrink:0}
+.input-area input{flex:1;background:rgba(0,255,65,.02);border:1px solid rgba(0,255,65,.06);border-radius:3px;padding:6px 10px;color:#0f0;font-family:inherit;font-size:12px;outline:none}
+.input-area input:focus{border-color:rgba(0,255,65,.15)}
+.cmd-btns{display:flex;gap:3px;padding:4px 14px;border-top:1px solid rgba(0,255,65,.02);flex-shrink:0;flex-wrap:wrap}
+.cmd-btn{background:rgba(0,255,65,.02);border:1px solid rgba(0,255,65,.04);border-radius:2px;color:rgba(0,255,65,.3);font-family:inherit;font-size:8px;padding:3px 8px;cursor:pointer;transition:all .1s}
+.cmd-btn:hover{color:#0f0;border-color:rgba(0,255,65,.12);background:rgba(0,255,65,.04)}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="crt"></div>
+<div class="app">
+<div class="hud"><span>DUNGEON_CRAWLER v1.0</span><span>WORKSHOP-DIY // TEXT ADVENTURE</span></div>
+<div class="game">
+<div class="map-panel">
+  <div class="map-h">DUNGEON MAP</div>
+  <div class="map-grid" id="mapGrid"></div>
+  <div class="stat-box">
+    <div class="stat-row"><span class="l">HP</span><span class="v" id="hpVal">100/100</span></div>
+    <div class="hp-bar"><div class="hp-fill" id="hpFill" style="width:100%"></div></div>
+    <div class="stat-row" style="margin-top:4px"><span class="l">LEVEL</span><span class="v" id="lvl">1</span></div>
+    <div class="stat-row"><span class="l">XP</span><span class="v" id="xp">0/100</span></div>
+    <div class="stat-row"><span class="l">BUGS FIXED</span><span class="v" id="bugs">0</span></div>
+    <div class="stat-row"><span class="l">COFFEE</span><span class="v" id="coffee">☕☕☕</span></div>
+  </div>
+  <div class="inv">
+    <div class="inv-h">INVENTORY</div>
+    <div id="invList"><div class="inv-item">📝 Empty...</div></div>
+  </div>
+</div>
+<div class="output-area">
+  <div class="output" id="output"></div>
+  <div class="cmd-btns">
+    <button class="cmd-btn" onclick="cmd('north')">⬆ north</button>
+    <button class="cmd-btn" onclick="cmd('south')">⬇ south</button>
+    <button class="cmd-btn" onclick="cmd('east')">➡ east</button>
+    <button class="cmd-btn" onclick="cmd('west')">⬅ west</button>
+    <button class="cmd-btn" onclick="cmd('look')">👁 look</button>
+    <button class="cmd-btn" onclick="cmd('take')">🤚 take</button>
+    <button class="cmd-btn" onclick="cmd('fight')">⚔ fight</button>
+    <button class="cmd-btn" onclick="cmd('use coffee')">☕ coffee</button>
+    <button class="cmd-btn" onclick="cmd('help')">❓ help</button>
+  </div>
+  <div class="input-area">
+    <input type="text" id="inp" placeholder="Enter command..." onkeydown="if(event.key==='Enter')cmd(this.value)">
+  </div>
+</div>
+</div>
+</div>
+
+<script>
+const ROOMS={
+  "0,2":{name:"🚪 Workshop Entrance",desc:"You stand at the gates of the Workshop-DIY dungeon. Fluorescent lights flicker. The smell of solder and coffee fills the air. Exits lead <b>north</b> and <b>east</b>.",exits:{north:"1,2",east:"0,3"},item:"📝 Workshop Map",ascii:`   ┌───────────┐
+   │ WORKSHOP  │
+   │   -DIY-   │
+   │  ENTER →  │
+   └───────────┘`},
+  "1,2":{name:"🤖 Robot Arena",desc:"A vast room filled with tiny ESP32 robots zooming around. One has been doing donuts for 3 hours. A <span class='enemy'>Bug Swarm (HP: 30)</span> blocks the north exit.",exits:{south:"0,2",north:"2,2",east:"1,3"},enemy:{name:"Bug Swarm",hp:30,dmg:8,xp:40},item:"🔧 Wrench of Debugging"},
+  "2,2":{name:"🧠 AI Laboratory",desc:"Neural networks pulse on holographic screens. A <b>teachable-machine</b> waits to learn from you. Gesture controls flicker in mid-air.",exits:{south:"1,2",east:"2,3"},item:"🧠 AI Cortex Module"},
+  "0,3":{name:"💡 LED Chamber",desc:"Every surface is covered in Neopixel strips. They cycle through rainbow patterns. It's like a rave, but educational. A treasure chest glows in the corner.",exits:{west:"0,2",north:"1,3"},item:"💡 RGB Power Crystal"},
+  "1,3":{name:"🐧 Terminal Room",desc:"Rows of terminals. Someone typed <code>sudo rm -rf /</code> and the room laughed. A <span class='enemy'>Kernel Panic (HP: 45)</span> lurks here.",exits:{south:"0,3",west:"1,2",north:"2,3"},enemy:{name:"Kernel Panic",hp:45,dmg:12,xp:60},item:"🐧 Root Access Key"},
+  "2,3":{name:"🔐 Cyber Vault",desc:"Firewalls shimmer like force fields. Encrypted data streams flow across the walls. The <b>Final Bug</b> guards the exit — a massive <span class='enemy'>Segmentation Fault (HP: 80)</span>.",exits:{south:"1,3",west:"2,2"},enemy:{name:"Segmentation Fault",hp:80,dmg:18,xp:100},item:"🏆 Golden Semicolon"},
+};
+
+let state={pos:"0,2",hp:100,maxHp:100,lvl:1,xp:0,bugs:0,coffee:3,inv:[],visited:new Set(["0,2"]),enemies:{}};
+
+const out=document.getElementById('output');
+function print(html,cls=''){out.innerHTML+=`<div class="${cls}">${html}</div>`;out.scrollTop=out.scrollHeight}
+
+function look(){
+  const r=ROOMS[state.pos];
+  if(!r){print("You're in the void. This shouldn't happen.",'sys');return}
+  print(`<br><span class="room">${r.name}</span>`);
+  if(r.ascii)print(`<pre class="ascii">${r.ascii}</pre>`);
+  let desc=r.desc;
+  if(r.enemy&&!state.enemies[state.pos])desc=desc;
+  else if(r.enemy)desc=desc.replace(/<span class='enemy'>.*?<\/span>/,'<span class="item">✓ defeated</span>');
+  print(desc,'desc');
+  if(r.item&&!state.inv.includes(r.item))print(`You see: <span class="item">${r.item}</span>`,'action');
+  const exits=Object.keys(r.exits).join(', ');
+  print(`Exits: ${exits}`,'sys');
+}
+
+function move(dir){
+  const r=ROOMS[state.pos];
+  if(!r||!r.exits[dir]){print("You can't go that way.",'sys');return}
+  if(r.enemy&&!state.enemies[state.pos]){print(`The ${r.enemy.name} blocks your path! You must <b>fight</b> first.`,'enemy');return}
+  state.pos=r.exits[dir];state.visited.add(state.pos);
+  look();updateMap();updateStats();
+}
+
+function fight(){
+  const r=ROOMS[state.pos];
+  if(!r?.enemy||state.enemies[state.pos]){print("Nothing to fight here.",'sys');return}
+  const e={...r.enemy};
+  print(`<br>⚔ BATTLE: You vs ${e.name} (HP: ${e.hp})`,'enemy');
+  const atk=15+(state.inv.includes('🔧 Wrench of Debugging')?10:0)+(state.inv.includes('🧠 AI Cortex Module')?8:0);
+  while(e.hp>0&&state.hp>0){
+    const dmg=Math.floor(Math.random()*atk)+5;
+    e.hp-=dmg;print(`You deal ${dmg} damage!`,'action');
+    if(e.hp<=0)break;
+    const eDmg=Math.floor(Math.random()*e.dmg)+3;
+    state.hp-=eDmg;print(`${e.name} hits you for ${eDmg}!`,'enemy');
+  }
+  if(state.hp<=0){
+    state.hp=1;print("You barely survived! Drink coffee to heal.",'enemy');
+  }
+  if(e.hp<=0){
+    print(`<span class="item">✓ ${e.name} defeated! +${e.xp} XP</span>`);
+    state.enemies[state.pos]=true;state.xp+=e.xp;state.bugs++;
+    if(state.xp>=state.lvl*100){state.lvl++;state.xp=0;state.maxHp+=20;state.hp=state.maxHp;print(`<span class="action">🎉 LEVEL UP! You are now level ${state.lvl}!</span>`)}
+    if(state.pos==="2,3")print(`<br><span class="action">🏆 YOU HAVE CONQUERED THE WORKSHOP-DIY DUNGEON!</span><br><span class="action">Final stats: Level ${state.lvl} | Bugs fixed: ${state.bugs} | Items: ${state.inv.length}</span><br><span class="sys">// all bugs are now features. you did it.</span>`);
+  }
+  updateStats();
+}
+
+function take(){
+  const r=ROOMS[state.pos];
+  if(!r?.item||state.inv.includes(r.item)){print("Nothing to take.",'sys');return}
+  state.inv.push(r.item);print(`<span class="item">Picked up: ${r.item}</span>`);
+  updateStats();
+}
+
+function useCoffee(){
+  if(state.coffee<=0){print("No coffee left. This is a crisis.",'enemy');return}
+  state.coffee--;state.hp=Math.min(state.hp+40,state.maxHp);
+  print(`<span class="action">☕ You drink coffee. HP restored! (+40 HP)</span>`);
+  if(state.coffee===0)print(`<span class="enemy">⚠ COFFEE DEPLETED. CRITICAL STATUS.</span>`);
+  updateStats();
+}
+
+function cmd(c){
+  c=c.trim().toLowerCase();document.getElementById('inp').value='';
+  if(!c)return;
+  print(`<span class="sys">> ${c}</span>`);
+  if(c==='north'||c==='n')move('north');
+  else if(c==='south'||c==='s')move('south');
+  else if(c==='east'||c==='e')move('east');
+  else if(c==='west'||c==='w')move('west');
+  else if(c==='look'||c==='l')look();
+  else if(c==='take'||c==='get'||c==='grab')take();
+  else if(c==='fight'||c==='attack'||c==='kill')fight();
+  else if(c.includes('coffee')||c==='heal')useCoffee();
+  else if(c==='inventory'||c==='inv'||c==='i'){print('Inventory: '+(state.inv.length?state.inv.join(', '):'empty'),'action')}
+  else if(c==='help')print(`Commands: <b>north/south/east/west</b> — move | <b>look</b> — examine room | <b>take</b> — pick up item | <b>fight</b> — battle enemy | <b>use coffee</b> — heal +40 HP | <b>inventory</b> — show items`,'sys');
+  else print(`Unknown command: "${c}". Type <b>help</b>.`,'sys');
+}
+
+// MAP
+function updateMap(){
+  const grid=document.getElementById('mapGrid');grid.innerHTML='';
+  for(let y=2;y>=0;y--)for(let x=0;x<5;x++){
+    const key=`${y},${x}`;const r=ROOMS[key];
+    const d=document.createElement('div');
+    d.className='map-cell'+(key===state.pos?' current':state.visited.has(key)?' visited':' hidden');
+    if(r&&(state.visited.has(key)||key===state.pos))d.textContent=r.name.split(' ')[0];
+    grid.appendChild(d);
+  }
+}
+
+function updateStats(){
+  document.getElementById('hpVal').textContent=`${state.hp}/${state.maxHp}`;
+  document.getElementById('hpFill').style.width=(state.hp/state.maxHp*100)+'%';
+  document.getElementById('hpFill').style.background=state.hp<30?'#f03':state.hp<60?'#ff0':'#0f0';
+  document.getElementById('lvl').textContent=state.lvl;
+  document.getElementById('xp').textContent=`${state.xp}/${state.lvl*100}`;
+  document.getElementById('bugs').textContent=state.bugs;
+  document.getElementById('coffee').textContent='☕'.repeat(state.coffee)||(state.coffee<=0?'💀 EMPTY':'');
+  document.getElementById('invList').innerHTML=state.inv.length?state.inv.map(i=>`<div class="inv-item">${i}</div>`).join(''):'<div class="inv-item">📝 Empty...</div>';
+}
+
+// INIT
+print(`<pre class="ascii">
+ ╔══════════════════════════════════════╗
+ ║   WORKSHOP-DIY DUNGEON CRAWLER      ║
+ ║   ──────────────────────────────     ║
+ ║   Navigate rooms. Collect items.     ║
+ ║   Fight bugs. Drink coffee.          ║
+ ║   Type HELP for commands.            ║
+ ╚══════════════════════════════════════╝
+</pre>`);
+look();updateMap();updateStats();
+document.getElementById('inp').focus();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

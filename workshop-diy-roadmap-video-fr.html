@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workshop-DIY — Roadmap Vidéo Complète</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e17;
+  --surface: #111827;
+  --surface2: #1a2234;
+  --border: #1e2d44;
+  --text: #e2e8f0;
+  --text-dim: #8899b0;
+  --blue: #3b82f6;
+  --blue-glow: #3b82f620;
+  --cyan: #06b6d4;
+  --orange: #f97316;
+  --green: #10b981;
+  --purple: #a855f7;
+  --pink: #ec4899;
+  --yellow: #eab308;
+  --red: #ef4444;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ===== BACKGROUND GRID ===== */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glow-orb {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+.glow-orb.blue { background: var(--blue); top: -200px; left: -200px; }
+.glow-orb.purple { background: var(--purple); bottom: -200px; right: -200px; }
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== HERO ===== */
+.hero {
+  text-align: center;
+  padding: 100px 0 60px;
+  position: relative;
+}
+.hero-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border: 1px solid var(--blue);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 28px;
+  background: var(--blue-glow);
+  animation: fadeUp 0.6s ease both;
+}
+.hero h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(42px, 6vw, 68px);
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+.hero h1 span { color: var(--blue); }
+.hero .subtitle {
+  font-size: 20px;
+  color: var(--text-dim);
+  max-width: 600px;
+  margin: 0 auto 24px;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+.hero .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+.hero .tag {
+  padding: 4px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+/* ===== NAV ===== */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 64px;
+  animation: fadeUp 0.6s 0.4s ease both;
+}
+.toc h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 8px;
+}
+.toc a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.toc a:hover {
+  background: var(--surface2);
+  color: var(--blue);
+}
+.toc-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--blue);
+  background: var(--blue-glow);
+  border: 1px solid rgba(59,130,246,0.2);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+/* ===== SECTIONS ===== */
+section {
+  margin-bottom: 80px;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.section-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.section-num.blue { background: rgba(59,130,246,0.15); color: var(--blue); border: 1px solid rgba(59,130,246,0.25); }
+.section-num.orange { background: rgba(249,115,22,0.15); color: var(--orange); border: 1px solid rgba(249,115,22,0.25); }
+.section-num.green { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.25); }
+.section-num.purple { background: rgba(168,85,247,0.15); color: var(--purple); border: 1px solid rgba(168,85,247,0.25); }
+.section-num.cyan { background: rgba(6,182,212,0.15); color: var(--cyan); border: 1px solid rgba(6,182,212,0.25); }
+.section-num.pink { background: rgba(236,72,153,0.15); color: var(--pink); border: 1px solid rgba(236,72,153,0.25); }
+
+section > h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+section > .section-desc {
+  color: var(--text-dim);
+  margin-bottom: 32px;
+  font-size: 15px;
+}
+h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 36px 0 16px;
+  letter-spacing: -0.5px;
+}
+
+/* ===== PROMPT CARDS ===== */
+.prompt-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 24px;
+  transition: border-color 0.3s;
+}
+.prompt-card:hover { border-color: rgba(59,130,246,0.4); }
+.prompt-card-header {
+  padding: 20px 24px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.prompt-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+.prompt-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+}
+.prompt-body {
+  padding: 0 24px 20px;
+}
+.prompt-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.8;
+  padding: 16px 20px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 14px;
+  position: relative;
+  cursor: pointer;
+}
+.prompt-text::after {
+  content: '📋 Copier';
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.1);
+  color: var(--text-dim);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.prompt-text:hover::after { opacity: 1; }
+.prompt-text.copied::after { content: '✓ Copié !'; color: var(--green); }
+
+.prompt-card.blue-card .prompt-card-header { background: rgba(59,130,246,0.06); }
+.prompt-card.blue-card .prompt-text { background: rgba(59,130,246,0.06); color: #93c5fd; }
+.prompt-card.green-card .prompt-card-header { background: rgba(16,185,129,0.06); }
+.prompt-card.green-card .prompt-text { background: rgba(16,185,129,0.06); color: #6ee7b7; }
+.prompt-card.orange-card .prompt-card-header { background: rgba(249,115,22,0.06); }
+.prompt-card.orange-card .prompt-text { background: rgba(249,115,22,0.06); color: #fdba74; }
+.prompt-card.purple-card .prompt-card-header { background: rgba(168,85,247,0.06); }
+.prompt-card.purple-card .prompt-text { background: rgba(168,85,247,0.06); color: #c4b5fd; }
+.prompt-card.cyan-card .prompt-card-header { background: rgba(6,182,212,0.06); }
+.prompt-card.cyan-card .prompt-text { background: rgba(6,182,212,0.06); color: #67e8f9; }
+
+.prompt-tips {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.prompt-tips strong { color: var(--text); }
+
+/* ===== SCRIPT TABLE ===== */
+.script-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+.script-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface2);
+}
+.script-header h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+}
+.script-rows { padding: 8px 0; }
+.script-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  padding: 10px 24px;
+  font-size: 14px;
+  gap: 16px;
+}
+.script-row:nth-child(odd) { background: rgba(255,255,255,0.015); }
+.script-label {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+}
+.script-value { color: var(--text-dim); }
+
+/* ===== STORYBOARD TABLE ===== */
+.story-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+.story-table th {
+  background: var(--surface2);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  padding: 14px 18px;
+  text-align: left;
+  font-weight: 600;
+}
+.story-table td {
+  padding: 12px 18px;
+  font-size: 14px;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border);
+  vertical-align: top;
+}
+.story-table tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
+.story-table td:first-child { font-weight: 600; color: var(--text); white-space: nowrap; }
+
+/* ===== EXPLAINER ===== */
+.explainer-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin-bottom: 24px;
+}
+.explainer-card h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+.explainer-steps {
+  list-style: none;
+  counter-reset: step;
+}
+.explainer-steps li {
+  counter-increment: step;
+  padding: 6px 0 6px 36px;
+  position: relative;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+.explainer-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: rgba(59,130,246,0.1);
+  color: var(--blue);
+}
+.explainer-format {
+  margin-top: 12px;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(168,85,247,0.06);
+  font-size: 13px;
+  color: var(--purple);
+  font-style: italic;
+}
+
+/* ===== TOOLS TABLE ===== */
+.tools-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+.tools-table th {
+  background: var(--surface2);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  padding: 14px 20px;
+  text-align: left;
+}
+.tools-table td {
+  padding: 12px 20px;
+  font-size: 14px;
+  border-top: 1px solid var(--border);
+}
+.tools-table td:first-child {
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  width: 200px;
+}
+.tools-table td:last-child { color: var(--text-dim); }
+.tools-table tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
+
+/* ===== HASHTAGS ===== */
+.hashtag-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.hashtag-block h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.hashtag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.hashtag {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.hashtag.fr { background: rgba(59,130,246,0.1); color: #93c5fd; border: 1px solid rgba(59,130,246,0.15); }
+.hashtag.en { background: rgba(16,185,129,0.1); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.15); }
+.hashtag:hover { transform: translateY(-1px); }
+
+/* ===== CALENDAR ===== */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.cal-day {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+}
+.cal-day-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+.cal-day-content { font-size: 13px; color: var(--text-dim); }
+.cal-day-platform { font-size: 12px; color: var(--blue); margin-top: 6px; }
+
+/* ===== FOOTER ===== */
+.site-footer {
+  text-align: center;
+  padding: 60px 0 40px;
+  border-top: 1px solid var(--border);
+  margin-top: 80px;
+}
+.site-footer p {
+  color: var(--text-dim);
+  font-size: 14px;
+}
+.site-footer a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 640px) {
+  .hero { padding: 60px 0 40px; }
+  .hero h1 { font-size: 36px; letter-spacing: -1px; }
+  section > h2 { font-size: 26px; }
+  .script-row { grid-template-columns: 1fr; gap: 4px; }
+  .story-table { font-size: 12px; }
+  .story-table td, .story-table th { padding: 8px 10px; }
+}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb purple"></div>
+
+<div class="container">
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="hero-badge">🎬 Roadmap Vidéo 2025</div>
+  <h1><span>WORKSHOP-DIY</span><br>Roadmap Vidéo</h1>
+  <p class="subtitle">Prompts IA • Scripts Réseaux Sociaux • Storyboards • Stratégie de Publication</p>
+  <div class="tags">
+    <span class="tag">🤖 Robotique</span>
+    <span class="tag">💻 Programmation</span>
+    <span class="tag">🧊 Conception 3D</span>
+    <span class="tag">⚙️ Fabrication Numérique</span>
+    <span class="tag">🐧 Linux</span>
+  </div>
+</div>
+
+<!-- ===== TABLE OF CONTENTS ===== -->
+<div class="toc">
+  <h3>Sommaire</h3>
+  <div class="toc-grid">
+    <a href="#s1"><span class="toc-num">01</span> Prompts Génération Vidéo IA</a>
+    <a href="#s2"><span class="toc-num">02</span> Scripts Réseaux Sociaux</a>
+    <a href="#s3"><span class="toc-num">03</span> Storyboards Vidéos Filmées</a>
+    <a href="#s4"><span class="toc-num">04</span> Vidéos Explicatives</a>
+    <a href="#s5"><span class="toc-num">05</span> Outils & Ressources</a>
+    <a href="#s6"><span class="toc-num">06</span> Stratégie de Publication</a>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: AI PROMPTS -->
+<!-- ============================================================ -->
+<section id="s1" class="fade-in">
+  <div class="section-header">
+    <span class="section-num blue">01</span>
+    <h2>Prompts de Génération Vidéo par IA</h2>
+  </div>
+  <p class="section-desc">Prompts prêts à copier-coller dans Sora, Runway ML, Kling, Pika ou Luma Dream Machine.</p>
+
+  <div class="prompt-card blue-card">
+    <div class="prompt-card-header">
+      <span class="prompt-icon">🎬</span>
+      <span class="prompt-title">A — Introduction Workshop-DIY</span>
+    </div>
+    <div class="prompt-body">
+      <div class="prompt-text" onclick="copyPrompt(this)">Plan cinématographique d'un atelier maker moderne baigné de lumière chaude. Des mains assemblent avec soin un petit robot sur un établi en bois. Autour, des imprimantes 3D en fonctionnement, des écrans affichant du code Arduino. Mouvements de caméra lents et fluides. Ambiance inspirante et technologique. Des jeunes collaborent et sourient. Style documentaire haut de gamme, 4K.</div>
+      <p class="prompt-tips"><strong>Outils :</strong> Sora, Runway Gen-3 Alpha, Kling 2.0 &nbsp;|&nbsp; <strong>Durée :</strong> 10-15s &nbsp;|&nbsp; <strong>Ratio :</strong> 16:9</p>
+    </div>
+  </div>
+
+  <div class="prompt-card green-card">
+    <div class="prompt-card-header">
+      <span class="prompt-icon">🤖</span>
+      <span class="prompt-title">B — Robot ESP32 Lite en Action</span>
+    </div>
+    <div class="prompt-body">
+      <div class="prompt-text" onclick="copyPrompt(this)">Gros plan macro d'un petit robot ESP32 sur fond noir épuré. Le robot avance, ses yeux LED s'allument en bleu. La caméra tourne lentement autour du robot en orbite. Des lignes de code C++ défilent en surimpression semi-transparente. Lumière de studio professionnelle avec reflets doux. Style publicité produit Apple, 4K cinématographique.</div>
+      <p class="prompt-tips"><strong>Outils :</strong> Kling 2.0, Pika 2.0 &nbsp;|&nbsp; <strong>Durée :</strong> 8-12s &nbsp;|&nbsp; Idéal pour page produit HelloAsso</p>
+    </div>
+  </div>
+
+  <div class="prompt-card orange-card">
+    <div class="prompt-card-header">
+      <span class="prompt-icon">🛠️</span>
+      <span class="prompt-title">C — Atmosphère Collaborative</span>
+    </div>
+    <div class="prompt-body">
+      <div class="prompt-text" onclick="copyPrompt(this)">Intérieur lumineux d'un fablab. Des étudiants de différents âges travaillent ensemble autour de tables. Certains soudent, d'autres programment sur des laptops, d'autres assemblent des pièces imprimées en 3D. Rires et concentration se mêlent. Caméra en mouvement steady, profondeur de champ faible. Lumière naturelle et chaleureuse. Style documentaire feel-good.</div>
+      <p class="prompt-tips"><strong>Outils :</strong> Sora, Runway &nbsp;|&nbsp; <strong>Durée :</strong> 10-20s &nbsp;|&nbsp; Parfait pour réseaux sociaux et page d'accueil</p>
+    </div>
+  </div>
+
+  <div class="prompt-card purple-card">
+    <div class="prompt-card-header">
+      <span class="prompt-icon">⚙️</span>
+      <span class="prompt-title">D — Du Numérique au Réel</span>
+    </div>
+    <div class="prompt-body">
+      <div class="prompt-text" onclick="copyPrompt(this)">Séquence timelapse : un modèle 3D apparaît à l'écran dans un logiciel de CAO. Transition vers une imprimante 3D qui commence à imprimer l'objet couche par couche. Ensuite, une découpeuse laser découpe des pièces en bois avec précision. Plan final : l'objet fini tenu en main avec fierté. Montage dynamique, musique électronique. 4K.</div>
+      <p class="prompt-tips"><strong>Outils :</strong> Kling, Luma Dream Machine &nbsp;|&nbsp; <strong>Durée :</strong> 12-20s &nbsp;|&nbsp; Idéal pour montrer le processus complet</p>
+    </div>
+  </div>
+
+  <div class="prompt-card cyan-card">
+    <div class="prompt-card-header">
+      <span class="prompt-icon">🚀</span>
+      <span class="prompt-title">E — Rejoignez Workshop-DIY !</span>
+    </div>
+    <div class="prompt-body">
+      <div class="prompt-text" onclick="copyPrompt(this)">Montage énergique de plans rapides : étincelles de soudure, doigts tapant du code, robot qui se met en mouvement, sourires de jeunes créateurs, high-five entre participants. Le rythme accélère progressivement. Dernier plan : un écran affiche « Rejoignez-nous » sur fond bleu électrique. Style publicitaire motivant, cinématographique, 4K.</div>
+      <p class="prompt-tips"><strong>Outils :</strong> Sora, Runway &nbsp;|&nbsp; <strong>Durée :</strong> 15-30s &nbsp;|&nbsp; Parfait pour clôture de vidéo promo ou publicité</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: SOCIAL MEDIA SCRIPTS -->
+<!-- ============================================================ -->
+<section id="s2" class="fade-in">
+  <div class="section-header">
+    <span class="section-num orange">02</span>
+    <h2>Scripts pour Réseaux Sociaux</h2>
+  </div>
+  <p class="section-desc">Scripts prêts à tourner avec un smartphone. Reels, TikTok, YouTube Shorts.</p>
+
+  <div class="script-card">
+    <div class="script-header">
+      <span>⚡</span>
+      <h4>Script 1 — « Ce qu'on fait en 15 secondes »</h4>
+    </div>
+    <div class="script-rows">
+      <div class="script-row"><span class="script-label">Durée</span><span class="script-value">15 secondes</span></div>
+      <div class="script-row"><span class="script-label">Accroche (0-3s)</span><span class="script-value">« On construit des robots. Pour de vrai. » — texte à l'écran, regard caméra</span></div>
+      <div class="script-row"><span class="script-label">Plan 1 (3-6s)</span><span class="script-value">Gros plan : mains qui soudent un composant</span></div>
+      <div class="script-row"><span class="script-label">Plan 2 (6-9s)</span><span class="script-value">Plan moyen : écran avec code Arduino en cours d'exécution</span></div>
+      <div class="script-row"><span class="script-label">Plan 3 (9-12s)</span><span class="script-value">Plan large : robot qui avance sur une table</span></div>
+      <div class="script-row"><span class="script-label">CTA (12-15s)</span><span class="script-value">« Lien en bio » + logo Workshop-DIY + workshop-diy.org</span></div>
+      <div class="script-row"><span class="script-label">Musique</span><span class="script-value">Son tendance énergique / beat électronique</span></div>
+      <div class="script-row"><span class="script-label">Hashtags</span><span class="script-value">#robotique #STEM #maker #DIY #ESP32 #fablab #arduino</span></div>
+    </div>
+  </div>
+
+  <div class="script-card">
+    <div class="script-header">
+      <span>🤖</span>
+      <h4>Script 2 — « Construis ton premier robot »</h4>
+    </div>
+    <div class="script-rows">
+      <div class="script-row"><span class="script-label">Durée</span><span class="script-value">30 secondes</span></div>
+      <div class="script-row"><span class="script-label">Accroche (0-3s)</span><span class="script-value">« Tu veux construire un robot ? Regarde ça. » — face caméra, enthousiaste</span></div>
+      <div class="script-row"><span class="script-label">Étape 1 (3-8s)</span><span class="script-value">On ouvre le kit ESP32 Lite — texte : « Étape 1 : Déballer »</span></div>
+      <div class="script-row"><span class="script-label">Étape 2 (8-14s)</span><span class="script-value">Assemblage des pièces — texte : « Étape 2 : Assembler »</span></div>
+      <div class="script-row"><span class="script-label">Étape 3 (14-20s)</span><span class="script-value">Upload du code via l'app — texte : « Étape 3 : Programmer »</span></div>
+      <div class="script-row"><span class="script-label">Étape 4 (20-26s)</span><span class="script-value">Le robot roule ! — texte : « Étape 4 : C'est vivant ! »</span></div>
+      <div class="script-row"><span class="script-label">CTA (26-30s)</span><span class="script-value">« Kit disponible sur HelloAsso — lien en bio ! »</span></div>
+      <div class="script-row"><span class="script-label">Musique</span><span class="script-value">Build-up progressif avec drop au moment où le robot bouge</span></div>
+    </div>
+  </div>
+
+  <div class="script-card">
+    <div class="script-header">
+      <span>✨</span>
+      <h4>Script 3 — « Avant / Après »</h4>
+    </div>
+    <div class="script-rows">
+      <div class="script-row"><span class="script-label">Durée</span><span class="script-value">10-15 secondes</span></div>
+      <div class="script-row"><span class="script-label">Plan AVANT (0-5s)</span><span class="script-value">Table vide avec composants éparpillés. Texte : « Avant l'atelier »</span></div>
+      <div class="script-row"><span class="script-label">Transition</span><span class="script-value">Snap / clap de mains / effet flash</span></div>
+      <div class="script-row"><span class="script-label">Plan APRÈS (5-10s)</span><span class="script-value">Robot assemblé et fonctionnel. Texte : « Après 2h chez Workshop-DIY »</span></div>
+      <div class="script-row"><span class="script-label">CTA</span><span class="script-value">Logo + « Prochain atelier : [date] »</span></div>
+      <div class="script-row"><span class="script-label">Tendance</span><span class="script-value">Utiliser le format « transformation » viral sur TikTok/Reels</span></div>
+    </div>
+  </div>
+
+  <div class="script-card">
+    <div class="script-header">
+      <span>📸</span>
+      <h4>Script 4 — « Une journée chez Workshop-DIY » (POV)</h4>
+    </div>
+    <div class="script-rows">
+      <div class="script-row"><span class="script-label">Durée</span><span class="script-value">45-60 secondes</span></div>
+      <div class="script-row"><span class="script-label">Style</span><span class="script-value">POV caméra subjective / vlog immersif</span></div>
+      <div class="script-row"><span class="script-label">Intro (0-5s)</span><span class="script-value">Réveil, texte : « Aujourd'hui c'est atelier robotique »</span></div>
+      <div class="script-row"><span class="script-label">Arrivée (5-12s)</span><span class="script-value">Entrée dans le local, salutations, découverte du matériel</span></div>
+      <div class="script-row"><span class="script-label">Activités (12-35s)</span><span class="script-value">Montage accéléré : soudure, code, impression 3D, tests robot</span></div>
+      <div class="script-row"><span class="script-label">Résultat (35-45s)</span><span class="script-value">Robot fonctionnel, fierté de l'équipe, applaudissements</span></div>
+      <div class="script-row"><span class="script-label">Fin (45-60s)</span><span class="script-value">« C'était génial. À la semaine prochaine ! » + infos site web</span></div>
+      <div class="script-row"><span class="script-label">Musique</span><span class="script-value">Lo-fi chill pour début, énergique pour le montage</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: STORYBOARDS -->
+<!-- ============================================================ -->
+<section id="s3" class="fade-in">
+  <div class="section-header">
+    <span class="section-num green">03</span>
+    <h2>Storyboards pour Vidéos Filmées</h2>
+  </div>
+  <p class="section-desc">Plans scène par scène pour des vidéos professionnelles tournées avec caméra ou smartphone.</p>
+
+  <h3>Storyboard A — Vidéo Promo Officielle (60-90s)</h3>
+  <table class="story-table">
+    <tr><th>Scène</th><th>Visuels & Action</th><th>Audio / Voix-off</th></tr>
+    <tr><td>1. Ouverture (0-8s)</td><td>Plans aériens / extérieur du local. Transition vers l'intérieur.</td><td>Musique douce. VO : « Dans un monde de plus en plus numérique... »</td></tr>
+    <tr><td>2. Problème (8-18s)</td><td>Enfants devant des écrans passifs. Visages neutres.</td><td>VO : « ...comment donner aux jeunes les clés pour créer, pas juste consommer ? »</td></tr>
+    <tr><td>3. Solution (18-35s)</td><td>Transition dynamique : atelier Workshop-DIY. Mains qui construisent, écrans de code, imprimante 3D.</td><td>Musique monte. VO : « Workshop-DIY, c'est apprendre en faisant. Robotique, programmation, fabrication numérique. »</td></tr>
+    <tr><td>4. Témoignages (35-55s)</td><td>Plans serrés de 2-3 participants + 1 parent qui témoignent.</td><td>« J'ai appris à coder mon propre robot ! » / « Mon fils est transformé. »</td></tr>
+    <tr><td>5. Showcase (55-70s)</td><td>Montage rapide : robots en action, projets finis, compétitions, Linux, 3D.</td><td>Musique énergique, beat drops.</td></tr>
+    <tr><td>6. CTA (70-90s)</td><td>Logo animé. Texte : « Rejoignez l'aventure ». URL + QR code.</td><td>VO : « Inscrivez-vous sur workshop-diy.org »</td></tr>
+  </table>
+
+  <h3>Storyboard B — Récap' d'Atelier (30-45s)</h3>
+  <table class="story-table">
+    <tr><th>Scène</th><th>Visuels & Action</th><th>Audio</th></tr>
+    <tr><td>1. Titre (0-3s)</td><td>Texte animé : « Atelier [Thème] — [Date] »</td><td>Son whoosh</td></tr>
+    <tr><td>2. Ambiance (3-10s)</td><td>Plans variés de l'installation et des participants</td><td>Musique upbeat</td></tr>
+    <tr><td>3. Action (10-25s)</td><td>Meilleurs moments : assemblage, tests, réussites, rires</td><td>Musique continue</td></tr>
+    <tr><td>4. Résultat (25-35s)</td><td>Projets finis. Selfie de groupe.</td><td>Musique ralentit</td></tr>
+    <tr><td>5. CTA (35-45s)</td><td>« Prochain atelier le [date]. Places limitées ! »</td><td>VO ou texte seul</td></tr>
+  </table>
+
+  <h3>Storyboard C — Vidéo Témoignage</h3>
+  <table class="story-table">
+    <tr><th>Segment</th><th>Contenu</th><th>Conseils Techniques</th></tr>
+    <tr><td>Introduction</td><td>Le témoin se présente : prénom, âge, rôle</td><td>Fond flou (fablab), éclairage naturel</td></tr>
+    <tr><td>Le déclic</td><td>« Pourquoi j'ai rejoint Workshop-DIY »</td><td>Plan poitrine, regard caméra</td></tr>
+    <tr><td>L'expérience</td><td>« Ce que j'ai appris / construit »</td><td>Inserts B-roll du projet</td></tr>
+    <tr><td>L'impact</td><td>« Ce que ça a changé pour moi »</td><td>Plan plus serré, émotionnel</td></tr>
+    <tr><td>Recommandation</td><td>« Je recommande parce que... »</td><td>Sourire, ton positif</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: EXPLAINER -->
+<!-- ============================================================ -->
+<section id="s4" class="fade-in">
+  <div class="section-header">
+    <span class="section-num purple">04</span>
+    <h2>Plans pour Vidéos Explicatives</h2>
+  </div>
+  <p class="section-desc">Structures complètes pour des vidéos de présentation et d'explication.</p>
+
+  <div class="explainer-card">
+    <h4>🏠 A — « Qu'est-ce que Workshop-DIY ? » (2-3 min)</h4>
+    <ol class="explainer-steps">
+      <li>Accroche : question provocante — « Et si votre enfant construisait son propre robot ? »</li>
+      <li>Qui sommes-nous : association dédiée à l'éducation STEM, basée sur le faire soi-même.</li>
+      <li>Nos activités : robotique, programmation, impression 3D, découpe laser, initiation Linux.</li>
+      <li>Notre approche : apprendre en faisant, collaboration, créativité.</li>
+      <li>Témoignages rapides (10s chacun).</li>
+      <li>Comment nous rejoindre : site web, HelloAsso, réseaux sociaux.</li>
+    </ol>
+    <div class="explainer-format">Format idéal : motion graphics + images réelles. Outil : Canva, After Effects, ou IA.</div>
+  </div>
+
+  <div class="explainer-card">
+    <h4>🤖 B — « Kit Robot ESP32 — Comment ça marche ? » (90s-2min)</h4>
+    <ol class="explainer-steps">
+      <li>Le kit : ce qu'il contient (pièces, carte ESP32, capteurs).</li>
+      <li>L'assemblage : accéléré du montage (30s).</li>
+      <li>La programmation : téléchargement du code, utilisation de l'app de calibration.</li>
+      <li>Le résultat : le robot en action, différents modes démo.</li>
+      <li>Où l'obtenir : lien HelloAsso, prix, public cible.</li>
+    </ol>
+    <div class="explainer-format">Format idéal : vidéo produit avec gros plans macro. Fond neutre ou noir.</div>
+  </div>
+
+  <div class="explainer-card">
+    <h4>🎓 C — « Nos Ateliers » (2 min)</h4>
+    <ol class="explainer-steps">
+      <li>Introduction : diversité des ateliers proposés.</li>
+      <li>Programmation : Arduino, Python, langages web. Extraits de code à l'écran.</li>
+      <li>Conception 3D : modélisation, création d'objets. Captures logiciel.</li>
+      <li>Fabrication numérique : impression 3D, découpe laser. Timelapse.</li>
+      <li>Linux & Ligne de commande : cowsay, fortune, initiation ludique.</li>
+      <li>Calendrier et inscription.</li>
+    </ol>
+    <div class="explainer-format">Format idéal : mix screencasts + prises de vue réelles.</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: TOOLS -->
+<!-- ============================================================ -->
+<section id="s5" class="fade-in">
+  <div class="section-header">
+    <span class="section-num cyan">05</span>
+    <h2>Outils & Ressources Recommandés</h2>
+  </div>
+  <p class="section-desc">Tout ce dont vous avez besoin pour produire, éditer et publier vos vidéos.</p>
+
+  <table class="tools-table">
+    <tr><th>Catégorie</th><th>Outils Recommandés</th></tr>
+    <tr><td>🎥 Génération IA</td><td>Sora (OpenAI), Runway ML Gen-3, Kling 2.0, Pika 2.0, Luma Dream Machine</td></tr>
+    <tr><td>✂️ Montage vidéo</td><td>CapCut (gratuit), DaVinci Resolve (gratuit), Adobe Premiere Pro</td></tr>
+    <tr><td>🎨 Motion Graphics</td><td>Canva (simple), After Effects (avancé), Motionity (gratuit en ligne)</td></tr>
+    <tr><td>🎵 Musique libre</td><td>Epidemic Sound, Pixabay Music, Uppbeat, YouTube Audio Library</td></tr>
+    <tr><td>🗣️ Voix-off IA</td><td>ElevenLabs, PlayHT, Murf AI (support français)</td></tr>
+    <tr><td>💬 Sous-titres</td><td>CapCut auto-caption, Descript, Subtitle Edit</td></tr>
+    <tr><td>🖼️ Miniatures</td><td>Canva, Figma, Photoshop</td></tr>
+    <tr><td>🖥️ Enregistrement écran</td><td>OBS Studio (gratuit), Loom, ScreenPal</td></tr>
+    <tr><td>📤 Hébergement</td><td>YouTube, Vimeo, PeerTube (open source)</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: STRATEGY -->
+<!-- ============================================================ -->
+<section id="s6" class="fade-in">
+  <div class="section-header">
+    <span class="section-num pink">06</span>
+    <h2>Stratégie de Publication</h2>
+  </div>
+  <p class="section-desc">Recommandations par plateforme pour maximiser la visibilité de Workshop-DIY.</p>
+
+  <table class="story-table">
+    <tr><th>Plateforme</th><th>Format & Contenu</th><th>Conseils</th></tr>
+    <tr><td>YouTube</td><td>Vidéos longues (2-5 min) : tutos, présentations, témoignages. Shorts pour extraits.</td><td>SEO : titres en FR avec mots-clés robotique/STEM. Miniatures accrocheuses.</td></tr>
+    <tr><td>Instagram</td><td>Reels (15-60s) : scripts 1-4. Stories pour coulisses. Carrousels pour conseils.</td><td>Hashtags FR. Publier en heures de pointe (12h, 18h-21h).</td></tr>
+    <tr><td>TikTok</td><td>Vidéos courtes (15-60s) : tendances, transformations, POV. Ton décontracté.</td><td>Sons tendance. 3-5x/semaine. Sous-titres obligatoires.</td></tr>
+    <tr><td>Facebook</td><td>Vidéos moyennes (1-3 min). Événements d'ateliers. Albums photos.</td><td>Groupes locaux, partage communautaire. Boost payant pour événements.</td></tr>
+    <tr><td>LinkedIn</td><td>Vidéos pro (1-2 min) : impact éducatif, partenariats, vision associative.</td><td>Ton professionnel. Idéal pour partenaires et sponsors.</td></tr>
+  </table>
+
+  <h3>Calendrier de Publication Suggéré</h3>
+  <div class="cal-grid">
+    <div class="cal-day">
+      <div class="cal-day-name">📅 Lundi</div>
+      <div class="cal-day-content">Reel « Saviez-vous que... » (fait STEM)</div>
+      <div class="cal-day-platform">Instagram, TikTok</div>
+    </div>
+    <div class="cal-day">
+      <div class="cal-day-name">📅 Mercredi</div>
+      <div class="cal-day-content">Tutoriel court ou coulisses d'atelier</div>
+      <div class="cal-day-platform">YouTube Shorts, TikTok, Reels</div>
+    </div>
+    <div class="cal-day">
+      <div class="cal-day-name">📅 Vendredi</div>
+      <div class="cal-day-content">Showcase projet / Témoignage participant</div>
+      <div class="cal-day-platform">Toutes plateformes</div>
+    </div>
+    <div class="cal-day">
+      <div class="cal-day-name">📅 Samedi</div>
+      <div class="cal-day-content">Récap' semaine / Annonce atelier</div>
+      <div class="cal-day-platform">Facebook, LinkedIn</div>
+    </div>
+  </div>
+
+  <h3>Hashtags Recommandés</h3>
+  <div class="hashtag-block">
+    <h4>🇫🇷 Français</h4>
+    <div class="hashtag-list">
+      <span class="hashtag fr">#WorkshopDIY</span>
+      <span class="hashtag fr">#Robotique</span>
+      <span class="hashtag fr">#STEM</span>
+      <span class="hashtag fr">#FabLab</span>
+      <span class="hashtag fr">#Maker</span>
+      <span class="hashtag fr">#FabricationNumerique</span>
+      <span class="hashtag fr">#Impression3D</span>
+      <span class="hashtag fr">#Arduino</span>
+      <span class="hashtag fr">#ESP32</span>
+      <span class="hashtag fr">#ApprendreCoder</span>
+      <span class="hashtag fr">#Education</span>
+      <span class="hashtag fr">#DIYFrance</span>
+      <span class="hashtag fr">#TechEducation</span>
+      <span class="hashtag fr">#CodePourTous</span>
+      <span class="hashtag fr">#AssociationSTEM</span>
+    </div>
+  </div>
+  <div class="hashtag-block">
+    <h4>🇬🇧 English (portée internationale)</h4>
+    <div class="hashtag-list">
+      <span class="hashtag en">#WorkshopDIY</span>
+      <span class="hashtag en">#Robotics</span>
+      <span class="hashtag en">#STEMeducation</span>
+      <span class="hashtag en">#MakerSpace</span>
+      <span class="hashtag en">#3DPrinting</span>
+      <span class="hashtag en">#Arduino</span>
+      <span class="hashtag en">#ESP32</span>
+      <span class="hashtag en">#LearnToCode</span>
+      <span class="hashtag en">#DIYRobotics</span>
+      <span class="hashtag en">#DigitalFabrication</span>
+      <span class="hashtag en">#EdTech</span>
+      <span class="hashtag en">#FutureMakers</span>
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>Workshop-DIY</strong> — Robotique & Éducation STEM</p>
+    <p><a href="https://workshop-diy.org" target="_blank">workshop-diy.org</a></p>
+  </div>
+</footer>
+
+<script>
+// Scroll fade-in
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Copy prompt
+function copyPrompt(el) {
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1500);
+  });
+}
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

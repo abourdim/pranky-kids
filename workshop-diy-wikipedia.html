@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Workshop-DIY — Wikipedia</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#fff;font-family:'Linux Libertine','Georgia',serif;font-size:14px;color:#202122;line-height:1.65}
+a{color:#0645ad;text-decoration:none}a:hover{text-decoration:underline}
+
+.wiki-header{background:#fff;border-bottom:1px solid #a7d7f9;padding:6px 16px;display:flex;align-items:center;gap:10px}
+.wiki-logo{font-size:18px;font-weight:700;font-family:sans-serif;color:#000;display:flex;align-items:center;gap:6px}
+.wiki-logo span{font-size:22px}
+.wiki-tabs{display:flex;gap:0;margin-left:auto;font-size:12px;font-family:sans-serif}
+.wiki-tab{padding:6px 12px;color:#0645ad;cursor:pointer;border-bottom:2px solid transparent}
+.wiki-tab.on{border-bottom-color:#36c;font-weight:700}
+
+.content{max-width:960px;margin:0 auto;padding:16px 20px}
+
+.notice{background:#f8eaba;border:1px solid #e0c252;padding:8px 12px;font-size:12px;font-family:sans-serif;margin-bottom:12px;border-radius:2px}
+.notice b{color:#705000}
+
+h1.title{font-size:28px;font-weight:400;border-bottom:1px solid #a2a9b1;padding-bottom:4px;margin-bottom:12px;font-family:'Linux Libertine',Georgia,serif}
+
+/* INFOBOX */
+.infobox{float:right;width:260px;margin:0 0 12px 16px;border:1px solid #a2a9b1;background:#f8f9fa;font-size:12px;font-family:sans-serif;border-collapse:collapse}
+.infobox-h{background:#0645ad;color:#fff;text-align:center;padding:8px;font-size:13px;font-weight:700}
+.infobox-img{text-align:center;padding:10px;font-size:48px;background:#fff}
+.infobox-cap{text-align:center;font-size:11px;color:#555;padding:0 8px 8px;font-style:italic}
+.infobox tr td{padding:4px 8px;border-top:1px solid #e0e0e0;vertical-align:top}
+.infobox .label{font-weight:700;color:#555;width:85px}
+
+/* TOC */
+.toc{border:1px solid #a2a9b1;background:#f8f9fa;padding:8px 14px;display:inline-block;margin:8px 0 14px;font-size:12px;font-family:sans-serif}
+.toc-h{font-weight:700;margin-bottom:4px;font-size:13px}
+.toc ol{padding-left:20px}.toc li{margin:2px 0}
+.toc a{color:#0645ad}
+
+/* HEADINGS */
+h2{font-size:22px;font-weight:400;border-bottom:1px solid #a2a9b1;margin:16px 0 8px;padding-bottom:2px}
+h3{font-size:17px;font-weight:700;margin:12px 0 6px}
+.edit{font-size:11px;font-family:sans-serif;color:#0645ad;float:right;font-weight:400;cursor:pointer}
+
+p{margin-bottom:10px}
+sup{font-size:10px}sup a{color:#0645ad}
+.ref{font-size:11px;color:#555;font-family:sans-serif}
+
+/* CATEGORIES */
+.cats{margin-top:20px;padding-top:10px;border-top:1px solid #a2a9b1;font-size:12px;font-family:sans-serif;color:#555}
+.cats a{margin:0 4px}
+
+/* TABLE */
+.wiki-table{border-collapse:collapse;margin:10px 0;font-size:12px;font-family:sans-serif}
+.wiki-table th{background:#eaecf0;padding:6px 10px;border:1px solid #a2a9b1;text-align:left;font-weight:700}
+.wiki-table td{padding:6px 10px;border:1px solid #a2a9b1}
+
+.clear{clear:both}
+
+@media(max-width:600px){.infobox{float:none;width:100%;margin:0 0 12px 0}}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="wiki-header">
+  <div class="wiki-logo"><span>🌍</span> Wikipedia</div>
+  <div class="wiki-tabs">
+    <span class="wiki-tab on">Article</span>
+    <span class="wiki-tab">Talk</span>
+    <span class="wiki-tab">Read</span>
+    <span class="wiki-tab">Edit</span>
+    <span class="wiki-tab">View history</span>
+  </div>
+</div>
+
+<div class="content">
+<div class="notice">
+  ⚠️ <b>This article is about a fictional organization created for demonstration purposes.</b> It is a creative piece showcasing Workshop-DIY's ecosystem. For the real association, see <a href="https://workshop-diy.org">workshop-diy.org</a>.
+</div>
+
+<h1 class="title">Workshop-DIY</h1>
+
+<table class="infobox">
+  <tr><td colspan="2" class="infobox-h">Workshop-DIY</td></tr>
+  <tr><td colspan="2" class="infobox-img">🤖</td></tr>
+  <tr><td colspan="2" class="infobox-cap">The Workshop-DIY logo, a robot emoji that has survived 47 drops</td></tr>
+  <tr><td class="label">Formation</td><td>2023</td></tr>
+  <tr><td class="label">Type</td><td>Association Loi 1901</td></tr>
+  <tr><td class="label">Purpose</td><td>STEM education for youth</td></tr>
+  <tr><td class="label">Headquarters</td><td>France 🇫🇷</td></tr>
+  <tr><td class="label">Products</td><td>39 browser-based apps</td></tr>
+  <tr><td class="label">Fields</td><td>Robotics, AI, Electronics, 3D Printing, Programming, Cybersecurity, IoT</td></tr>
+  <tr><td class="label">Key people</td><td>Founder (prefers coffee)</td></tr>
+  <tr><td class="label">Website</td><td><a href="https://workshop-diy.org">workshop-diy.org</a></td></tr>
+  <tr><td class="label">WiFi password</td><td>password123 <sup><a href="#">[citation needed]</a></sup></td></tr>
+  <tr><td class="label">Known bugs</td><td>42 (all features)</td></tr>
+</table>
+
+<p><b>Workshop-DIY</b> is a French non-profit association (<i>association loi 1901</i>) dedicated to teaching science, technology, engineering, and mathematics (<a href="#">STEM</a>) skills to young people through hands-on workshops involving robotics, artificial intelligence, electronics, 3D printing, programming, and cybersecurity.<sup><a href="#">[1]</a></sup> Founded in 2023, the organization has developed an ecosystem of 39 browser-based educational applications, all free and open-source, requiring no installation.<sup><a href="#">[2]</a></sup></p>
+
+<p>The association is notable for its approach of making complex technology accessible to children aged 8–16 through interactive web applications that connect to physical hardware such as the <a href="#">BBC micro:bit</a> and <a href="#">ESP32</a> microcontrollers via Web Bluetooth.<sup><a href="#">[3]</a></sup></p>
+
+<div class="toc">
+  <div class="toc-h">Contents</div>
+  <ol>
+    <li><a href="#">History</a></li>
+    <li><a href="#">Application ecosystem</a>
+      <ol><li><a href="#">Categories</a></li><li><a href="#">Notable apps</a></li></ol>
+    </li>
+    <li><a href="#">ESP32 Robot Kit</a></li>
+    <li><a href="#">Workshop programs</a></li>
+    <li><a href="#">Technical architecture</a></li>
+    <li><a href="#">Cultural impact</a></li>
+    <li><a href="#">Criticism and controversies</a></li>
+    <li><a href="#">See also</a></li>
+    <li><a href="#">References</a></li>
+  </ol>
+</div>
+
+<div class="clear"></div>
+
+<h2>History <span class="edit">[edit]</span></h2>
+<p>Workshop-DIY was founded in 2023 in France as an <i>association loi 1901</i>, a type of non-profit organization under French law. The founder, motivated by the observation that "children learn without realizing they're learning when the tools are fun enough," began developing browser-based applications that could interface with low-cost microcontrollers.<sup><a href="#">[4]</a></sup></p>
+<p>The first application released was <b>bit-bot</b>, a web-based interface for controlling a Bit:Bot robot via Bluetooth Low Energy. The project expanded rapidly, reaching 39 applications by 2025, covering seven distinct educational domains.<sup><a href="#">[5]</a></sup></p>
+
+<h2>Application ecosystem <span class="edit">[edit]</span></h2>
+<p>The Workshop-DIY ecosystem comprises 39 web applications, all hosted on <a href="https://abourdim.github.io/apps/">GitHub Pages</a> and requiring no server-side infrastructure. Applications range from robot control interfaces to AI training tools to cybersecurity sandboxes.<sup><a href="#">[6]</a></sup></p>
+
+<h3>Categories</h3>
+<table class="wiki-table">
+  <tr><th>Category</th><th>Apps</th><th>Description</th></tr>
+  <tr><td>🤖 micro:bit</td><td>16</td><td>Applications connecting to BBC micro:bit via Web Bluetooth</td></tr>
+  <tr><td>📚 Learning</td><td>20</td><td>Educational content across multiple STEM domains</td></tr>
+  <tr><td>🛠️ Tools</td><td>7</td><td>Developer and maker utilities</td></tr>
+  <tr><td>🧠 AI</td><td>6</td><td>Artificial intelligence and machine learning experiments</td></tr>
+  <tr><td>🔩 Hardware</td><td>5</td><td>Electronic hardware interfaces and IoT</td></tr>
+  <tr><td>📸 Camera</td><td>4</td><td>Computer vision and camera-based interactions</td></tr>
+  <tr><td>🏫 Classroom</td><td>2</td><td>Collaborative learning environments</td></tr>
+</table>
+
+<h3>Notable apps</h3>
+<p><b>bit-bot</b> is the flagship application, enabling browser-based control of a physical robot via Bluetooth Low Energy. It features a virtual joystick, line-following mode, and obstacle avoidance, and has logged over 2,800 sessions.<sup><a href="#">[7]</a></sup></p>
+<p><b>teachable-machine</b> bridges browser-based AI training with physical hardware, allowing users to train gesture recognition models using Google's Teachable Machine and send classification results to a micro:bit via Web Bluetooth. It has been described as "the most technically ambitious app in the ecosystem."<sup><a href="#">[8]</a></sup></p>
+<p><b>magic-hands</b> uses MediaPipe hand tracking to generate real-time visual effects including confetti, neon trails, and particle explosions, triggered by hand gestures detected at 30 frames per second in-browser.<sup><a href="#">[9]</a></sup></p>
+
+<h2>ESP32 Robot Kit <span class="edit">[edit]</span></h2>
+<p>The ESP32 Robot Kit Lite is the association's hardware offering, featuring an ESP32-WROOM-32 microcontroller with dual-core 240 MHz processor, 520 KB SRAM, WiFi, and Bluetooth Low Energy. The kit includes two DC motors, a servo, IR sensors for line following, and an ultrasonic sensor for obstacle detection.<sup><a href="#">[10]</a></sup></p>
+<p>According to internal documentation, the robot has "survived 47 drops" from workshop tables, a figure that is described as "autobiographical."<sup><a href="#">[11]</a></sup></p>
+
+<h2>Workshop programs <span class="edit">[edit]</span></h2>
+<p>The association offers eight workshop programs for young people aged 8–16:</p>
+<table class="wiki-table">
+  <tr><th>Program</th><th>Ages</th><th>Focus</th></tr>
+  <tr><td>Robot Building</td><td>8–16</td><td>ESP32 assembly and programming</td></tr>
+  <tr><td>Code Camp</td><td>10–16</td><td>HTML, CSS, JavaScript</td></tr>
+  <tr><td>3D Design</td><td>10–16</td><td>CAD and 3D printing</td></tr>
+  <tr><td>Solder School</td><td>12–16</td><td>Electronics and PCB assembly</td></tr>
+  <tr><td>Terminal Academy</td><td>12–16</td><td>Linux and command line</td></tr>
+  <tr><td>AI Experiments</td><td>10–16</td><td>Machine learning and computer vision</td></tr>
+  <tr><td>Cyber Defense</td><td>13–16</td><td>Ethical hacking and security</td></tr>
+  <tr><td>Web Builder</td><td>10–16</td><td>Full-stack web development</td></tr>
+</table>
+
+<h2>Technical architecture <span class="edit">[edit]</span></h2>
+<p>All 39 applications are static single-page applications (SPAs) hosted on GitHub Pages, requiring no backend infrastructure. Key technologies include Web Bluetooth API for hardware communication, MediaPipe for computer vision, WebRTC (via PeerJS) for real-time collaboration, and xterm.js for terminal emulation.<sup><a href="#">[12]</a></sup></p>
+<p>The platform offers 12 UI themes, including culturally-inspired designs named "Medina," "Alhambra," "Iznik," and "Zellige."<sup><a href="#">[13]</a></sup></p>
+
+<h2>Cultural impact <span class="edit">[edit]</span></h2>
+<p>Workshop-DIY has gained recognition for its approach of embedding education within engaging, hacker-aesthetic interfaces. One parent reportedly stated: "My son now explains Docker to me. I'm a software engineer."<sup><a href="#">[14]</a></sup> Another noted: "They learn without realizing they're learning. That's the trick."<sup><a href="#">[15]</a></sup></p>
+
+<h2>Criticism and controversies <span class="edit">[edit]</span></h2>
+<p>The association has faced mild criticism for maintaining the WiFi password "password123" despite cybersecurity being a core curriculum area. The founder has described this as "tradition at this point."<sup><a href="#">[16]</a></sup> Additionally, the official documentation lists the bug count as "42 (all features)," which has been described as "technically accurate but ethically questionable."<sup><a href="#">[17]</a></sup></p>
+
+<h2>See also <span class="edit">[edit]</span></h2>
+<p><a href="#">BBC micro:bit</a> · <a href="#">ESP32</a> · <a href="#">STEM education</a> · <a href="#">Maker culture</a> · <a href="#">Web Bluetooth API</a> · <a href="#">MediaPipe</a> · <a href="#">Association loi 1901</a></p>
+
+<h2>References <span class="edit">[edit]</span></h2>
+<div class="ref" style="line-height:2.2">
+  <p>[1] "About Workshop-DIY". <i>workshop-diy.org</i>. Retrieved 2025.</p>
+  <p>[2] "Workshop-DIY Apps". <i>abourdim.github.io/apps</i>. Retrieved 2025.</p>
+  <p>[3] "Web Bluetooth in Education". <i>Journal of STEM Innovation</i>. 2024.</p>
+  <p>[4] Interview with founder. 2024.</p>
+  <p>[5] "39 Apps and Counting". Workshop-DIY Blog. 2025.</p>
+  <p>[6] Platform Architecture Overview. Internal documentation. 2025.</p>
+  <p>[7–9] App analytics dashboard. 2025.</p>
+  <p>[10–11] ESP32 Robot Kit Technical Specifications. Rev 4.2.</p>
+  <p>[12–13] "Static SPAs for STEM Education". Workshop-DIY Technical Blog.</p>
+  <p>[14–15] Parent testimonials. Collected 2024–2025.</p>
+  <p>[16] "WiFi Password Controversy". Internal memo. 2025.</p>
+  <p>[17] Bug tracker. GitHub Issues. "All 42 marked as won't fix."</p>
+</div>
+
+<div class="cats">
+  <b>Categories:</b>
+  <a href="#">Educational organizations in France</a> ·
+  <a href="#">STEM education</a> ·
+  <a href="#">Maker culture</a> ·
+  <a href="#">Robotics education</a> ·
+  <a href="#">Open-source software</a> ·
+  <a href="#">Associations loi 1901</a> ·
+  <a href="#">Organizations with questionable WiFi security</a>
+</div>
+</div>
+  <script src="nav.js"></script>
+</body>
+</html>

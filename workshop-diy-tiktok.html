@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // WKSHPTOK</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;display:flex;justify-content:center}
+
+.feed{width:100%;max-width:380px;scroll-snap-type:y mandatory;overflow-y:scroll;height:100vh}
+.feed::-webkit-scrollbar{display:none}
+
+.video{height:100vh;scroll-snap-align:start;position:relative;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #111}
+
+/* BG GRADIENT per video */
+.video .bg{position:absolute;inset:0;opacity:.15}
+
+/* CENTER CONTENT */
+.video .center{text-align:center;z-index:1;padding:0 40px}
+.video .emoji{font-size:72px;margin-bottom:8px;filter:drop-shadow(0 4px 16px rgba(0,0,0,.3))}
+.video .action-text{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.5);line-height:1.4;margin-bottom:4px}
+
+/* BOTTOM INFO */
+.video .info{position:absolute;bottom:60px;left:12px;right:50px;z-index:2}
+.video .creator{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.video .avatar{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:14px;background:#111}
+.video .username{font-size:12px;font-weight:700}
+.video .follow{font-size:8px;color:#fe2c55;border:1px solid #fe2c55;padding:1px 8px;border-radius:2px;margin-left:4px}
+.video .caption{font-size:11px;color:rgba(255,255,255,.8);line-height:1.8;margin:4px 0}
+.video .tags{font-size:10px;color:rgba(255,255,255,.5)}
+.video .sound{display:flex;align-items:center;gap:4px;font-size:9px;color:rgba(255,255,255,.4);margin-top:4px}
+
+/* RIGHT SIDEBAR */
+.video .sidebar{position:absolute;right:8px;bottom:80px;display:flex;flex-direction:column;gap:14px;align-items:center;z-index:2}
+.sb-item{text-align:center}
+.sb-item .icon{font-size:22px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
+.sb-item .count{font-size:8px;color:rgba(255,255,255,.6);margin-top:1px}
+
+/* TOP BAR */
+.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:380px;display:flex;justify-content:center;gap:14px;padding:10px;z-index:10;background:linear-gradient(180deg,rgba(0,0,0,.6),transparent)}
+.topbar span{font-size:11px;color:rgba(255,255,255,.4);font-weight:700}
+.topbar span.active{color:#fff;border-bottom:2px solid #fff;padding-bottom:2px}
+
+/* NAV */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:380px;display:flex;justify-content:space-around;padding:8px;background:#000;border-top:1px solid #222;z-index:10}
+.nav-item{text-align:center;font-size:8px;color:rgba(255,255,255,.3)}
+.nav-item .ni{font-size:16px;margin-bottom:1px}
+.nav-item.active{color:#fff}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span>Following</span>
+  <span class="active">For You</span>
+</div>
+
+<div class="feed" id="feed"></div>
+
+<div class="nav">
+  <div class="nav-item active"><div class="ni">🏠</div>Home</div>
+  <div class="nav-item"><div class="ni">🔍</div>Discover</div>
+  <div class="nav-item"><div class="ni">➕</div>Create</div>
+  <div class="nav-item"><div class="ni">💬</div>Inbox</div>
+  <div class="nav-item"><div class="ni">👤</div>Profile</div>
+</div>
+
+<script>
+const VIDS=[
+{emoji:"🤖",action:"bit-bot just survived DROP #47",user:"@bitbot_official",avatar:"🤖",caption:"They said I wouldn't make it. They were wrong. 47 times wrong.",tags:"#robotics #survivor #hotglue #workshop",sound:"Original Sound - The Sound of Hot Glue",likes:"42.7K",comments:"1,337",shares:"847",saves:"420",bg:"linear-gradient(180deg,#001a00,#000)"},
+{emoji:"🐛",action:"Bug #42 shows up to court like",user:"@bug42_real",avatar:"🐛",caption:"NOT GUILTY. Say it louder for the linters in the back.",tags:"#bug42 #feature #trial #notguilty",sound:"Dramatic Court Music - Judge Compiler",likes:"142K",comments:"4,242",shares:"2,023",saves:"999",bg:"linear-gradient(180deg,#1a000a,#000)"},
+{emoji:"☕",action:"POV: The coffee machine hits 8%",user:"@coffeemachine_wkshp",avatar:"☕",caption:"14 months at 8% and nobody refills me. This is my villain origin story.",tags:"#coffee #critical #8percent #refillme",sound:"Sad Violin - Maintenance Team",likes:"89.3K",comments:"2,847",shares:"1,200",saves:"666",bg:"linear-gradient(180deg,#0a0800,#000)"},
+{emoji:"🔑",action:"password123 when someone tries to change it",user:"@password123_forever",avatar:"🔑",caption:"Three petitions. Three denials. I am ETERNAL. 🔐",tags:"#password123 #unchanged #tradition #wifi",sound:"I Will Survive - Gloria Gaynor",likes:"123K",comments:"3,333",shares:"999",saves:"123",bg:"linear-gradient(180deg,#000a1a,#000)"},
+{emoji:"🪄",action:"When the particles follow your hands perfectly",user:"@magichands_lab",avatar:"🪄",caption:"21 landmarks per hand. MediaPipe understood the assignment.",tags:"#gestures #ai #mediapipe #magic",sound:"Original Sound - Particle Noises",likes:"67.8K",comments:"892",shares:"1,567",saves:"334",bg:"linear-gradient(180deg,#0a001a,#000)"},
+{emoji:"🐳",action:"14-year-old explains Docker to DevOps dad",user:"@dockerlab_wkshp",avatar:"🐳",caption:"Dad has a CS degree. Dad learned something. I'm not even sorry.",tags:"#docker #containers #education #parenting",sound:"Mind Blown Sound Effect",likes:"234K",comments:"8,472",shares:"5,600",saves:"1,337",bg:"linear-gradient(180deg,#00081a,#000)"},
+{emoji:"🔐",action:"Student finds open port on school printer",user:"@pentestlab_ethical",avatar:"🔐",caption:"Port 9100. Wide open. Responsibly disclosed. Teacher was proud AND terrified.",tags:"#ethicalhacking #cybersecurity #responsible",sound:"Hacker Typing Sounds - ASMR",likes:"98.4K",comments:"3,142",shares:"2,100",saves:"847",bg:"linear-gradient(180deg,#1a0000,#000)"},
+{emoji:"⬛",action:"The 40th app appearing at 3:42 AM",user:"@the40th",avatar:"⬛",caption:"",tags:"#40thapp #342am #mystery",sound:"...",likes:"???",comments:"42",shares:"0",saves:"∞",bg:"linear-gradient(180deg,#050505,#000)"},
+];
+
+const feed=document.getElementById('feed');
+VIDS.forEach(v=>{
+  feed.innerHTML+=`
+  <div class="video">
+    <div class="bg" style="background:${v.bg}"></div>
+    <div class="center">
+      <div class="emoji">${v.emoji}</div>
+      <div class="action-text">${v.action}</div>
+    </div>
+    <div class="info">
+      <div class="creator">
+        <div class="avatar">${v.avatar}</div>
+        <span class="username">${v.user}</span>
+        <span class="follow">Follow</span>
+      </div>
+      <div class="caption">${v.caption}</div>
+      <div class="tags">${v.tags}</div>
+      <div class="sound">🎵 ${v.sound}</div>
+    </div>
+    <div class="sidebar">
+      <div class="sb-item"><div class="icon">❤️</div><div class="count">${v.likes}</div></div>
+      <div class="sb-item"><div class="icon">💬</div><div class="count">${v.comments}</div></div>
+      <div class="sb-item"><div class="icon">↗️</div><div class="count">${v.shares}</div></div>
+      <div class="sb-item"><div class="icon">🔖</div><div class="count">${v.saves}</div></div>
+    </div>
+  </div>`;
+});
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

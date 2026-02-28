@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // AS SEEN ON TV!</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&family=Bangers&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#fff;color:#222;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh}
+
+/* TICKER */
+.ticker{background:#ff0000;color:#fff;padding:4px 0;overflow:hidden;font-family:'Bangers',cursive;font-size:14px;letter-spacing:2px}
+.ticker-inner{display:flex;gap:40px;animation:scroll 20s linear infinite;white-space:nowrap}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* HEADER */
+.hero{background:linear-gradient(135deg,#ff0000,#cc0000);text-align:center;padding:20px 16px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(255,255,255,.03) 20px,rgba(255,255,255,.03) 40px)}
+.hero-badge{background:#ffd700;color:#000;display:inline-block;padding:4px 16px;border-radius:4px;font-family:'Bangers',cursive;font-size:14px;letter-spacing:2px;transform:rotate(-2deg);margin-bottom:6px}
+.hero h1{font-family:'Bangers',cursive;font-size:clamp(28px,7vw,48px);color:#fff;letter-spacing:3px;text-shadow:2px 2px 0 rgba(0,0,0,.2)}
+.hero p{color:rgba(255,255,255,.8);font-size:12px;margin-top:4px}
+
+.container{max-width:700px;margin:0 auto;padding:16px}
+
+/* PRICE */
+.price-box{text-align:center;padding:16px;margin:12px 0;border:3px dashed #ff0000;border-radius:8px;background:#fff8f8}
+.old-price{font-size:20px;color:#999;text-decoration:line-through;font-family:'Bangers',cursive}
+.new-price{font-family:'Bangers',cursive;font-size:clamp(36px,8vw,56px);color:#ff0000;letter-spacing:2px}
+.new-price .free{color:#00aa00}
+.price-label{font-size:10px;color:#999;margin-top:2px}
+
+/* TIMER */
+.timer-box{background:#222;color:#ff0;text-align:center;padding:10px;border-radius:6px;margin:12px 0;font-family:'Bangers',cursive}
+.timer-label{font-size:10px;color:#ff0;letter-spacing:3px;margin-bottom:4px}
+.timer-num{font-size:28px;letter-spacing:4px}
+
+/* PRODUCTS */
+.product{border:2px solid #eee;border-radius:8px;margin:12px 0;overflow:hidden}
+.product-badge{background:#ff0000;color:#fff;font-family:'Bangers',cursive;font-size:12px;padding:4px 10px;letter-spacing:2px}
+.product-body{padding:12px;display:flex;gap:12px;align-items:center}
+.product-emoji{font-size:48px;flex-shrink:0}
+.product-info h3{font-family:'Bangers',cursive;font-size:16px;color:#ff0000;letter-spacing:1px}
+.product-info p{font-size:10px;color:#666;line-height:2;margin-top:2px}
+.product-features{list-style:none;margin-top:6px;font-size:9px;color:#444}
+.product-features li{padding:1px 0}.product-features li::before{content:'✅ '}
+
+/* BEFORE/AFTER */
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.ba-card{text-align:center;padding:12px;border-radius:8px}
+.ba-before{background:#f5f5f5;border:2px solid #ddd}
+.ba-after{background:#f0fff0;border:2px solid #00aa00}
+.ba-label{font-family:'Bangers',cursive;font-size:14px;letter-spacing:2px}
+.ba-before .ba-label{color:#999}.ba-after .ba-label{color:#00aa00}
+.ba-emoji{font-size:36px;margin:6px 0}
+.ba-text{font-size:9px;color:#666;line-height:2}
+
+/* TESTIMONIALS */
+.testi{background:#f9f9f9;border-left:4px solid #ffd700;padding:10px;margin:8px 0;border-radius:0 6px 6px 0}
+.testi .stars{color:#ffd700;font-size:12px;margin-bottom:2px}
+.testi .quote{font-size:10px;color:#555;font-style:italic;line-height:2}
+.testi .who{font-size:8px;color:#999;margin-top:2px}
+
+/* CTA */
+.cta{text-align:center;background:linear-gradient(135deg,#ff0000,#cc0000);color:#fff;padding:16px;border-radius:8px;margin:14px 0}
+.cta h2{font-family:'Bangers',cursive;font-size:clamp(20px,5vw,30px);letter-spacing:2px}
+.cta .phone{font-family:'Bangers',cursive;font-size:28px;letter-spacing:3px;color:#ffd700;margin:6px 0}
+.cta p{font-size:9px;color:rgba(255,255,255,.7)}
+
+/* GUARANTEE */
+.guarantee{text-align:center;padding:14px;border:2px solid #ffd700;border-radius:50%;width:120px;height:120px;margin:12px auto;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#fff8e0,#fff)}
+.guarantee .g-title{font-family:'Bangers',cursive;font-size:11px;color:#cc8800;letter-spacing:1px}
+.guarantee .g-num{font-family:'Bangers',cursive;font-size:24px;color:#ff0000}
+.guarantee .g-sub{font-size:6px;color:#999}
+
+.footer{text-align:center;padding:10px;font-size:7px;color:#ccc;border-top:1px solid #eee;margin-top:14px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="ticker">
+  <div class="ticker-inner" id="ticker"></div>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">★ AS SEEN ON LOCALHOST ★</div>
+  <h1>WORKSHOP-DIY MEGA BUNDLE!</h1>
+  <p>39 APPS · 7 DOMAINS · ZERO INSTALLATIONS · 100% FREE</p>
+</div>
+
+<div class="container">
+
+<div class="price-box">
+  <div class="old-price">$9,999.99</div>
+  <div class="new-price"><span class="free">FREE!</span></div>
+  <div class="price-label">That's right. ZERO dollars. ZERO cents. ZERO installations. Just open your browser.</div>
+</div>
+
+<div class="timer-box">
+  <div class="timer-label">⚠ THIS OFFER EXPIRES IN ⚠</div>
+  <div class="timer-num" id="timer">00:00:00</div>
+</div>
+
+<h2 style="text-align:center;font-family:'Bangers',cursive;font-size:20px;color:#ff0000;margin:14px 0;letter-spacing:2px">BUT WAIT, THERE'S MORE!</h2>
+
+<div class="product">
+  <div class="product-badge">★ BEST SELLER</div>
+  <div class="product-body">
+    <div class="product-emoji">🤖</div>
+    <div class="product-info">
+      <h3>THE BIT-BOT CONTROLLER</h3>
+      <p>Control a REAL ROBOT from your BROWSER! No app store. No download. Just BLUETOOTH MAGIC!</p>
+      <ul class="product-features">
+        <li>Web Bluetooth connection</li>
+        <li>Line-following mode</li>
+        <li>Obstacle avoidance</li>
+        <li>Survived 47 drops (DURABILITY TESTED!)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="ba">
+  <div class="ba-card ba-before">
+    <div class="ba-label">BEFORE</div>
+    <div class="ba-emoji">😩</div>
+    <div class="ba-text">Installing dependencies.<br>npm errors everywhere.<br>"Module not found."<br>3 hours wasted.</div>
+  </div>
+  <div class="ba-card ba-after">
+    <div class="ba-label">AFTER</div>
+    <div class="ba-emoji">😎</div>
+    <div class="ba-text">Open browser. Click link.<br>Robot moves. AI detects.<br>Kids learn. Parents impressed.<br>Zero installation.</div>
+  </div>
+</div>
+
+<div class="product">
+  <div class="product-badge">★ VIEWERS' CHOICE</div>
+  <div class="product-body">
+    <div class="product-emoji">🧠</div>
+    <div class="product-info">
+      <h3>AI TRAINING STUDIO</h3>
+      <p>Train a CUSTOM AI MODEL in under 15 MINUTES! No Python! No GPU! Just a WEBCAM and DREAMS!</p>
+      <ul class="product-features">
+        <li>MediaPipe-powered hand tracking</li>
+        <li>Face detection with 468 landmarks</li>
+        <li>Custom gesture recognition (98% accuracy!)</li>
+        <li>Export to micro:bit — AI meets ROBOTICS!</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="product">
+  <div class="product-badge">★ CONTROVERSIAL PICK</div>
+  <div class="product-body">
+    <div class="product-emoji">🔐</div>
+    <div class="product-info">
+      <h3>ETHICAL HACKING SANDBOX</h3>
+      <p>Learn REAL cybersecurity skills in a SAFE environment! SQL injection! XSS! And YES, the WiFi password is still password123!</p>
+      <ul class="product-features">
+        <li>Fully sandboxed — hack responsibly</li>
+        <li>SQL injection challenges</li>
+        <li>CTF competitions included</li>
+        <li>School printer NOT included</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<h2 style="text-align:center;font-family:'Bangers',cursive;font-size:18px;color:#ff0000;margin:14px 0">REAL TESTIMONIALS FROM REAL HUMANS!</h2>
+
+<div class="testi">
+  <div class="stars">★★★★★</div>
+  <div class="quote">"My teenager explained Docker to me at dinner. I have a CS degree. I learned something."</div>
+  <div class="who">— Software Engineer Parent, verified human</div>
+</div>
+<div class="testi">
+  <div class="stars">★★★★★</div>
+  <div class="quote">"I made a robot dance for 20 minutes. Why? Because I could. Five stars."</div>
+  <div class="who">— Student, age 12, definitely not a robot</div>
+</div>
+<div class="testi">
+  <div class="stars">★★★★★</div>
+  <div class="quote">"The WiFi password is password123. I've been in cybersecurity for 15 years. I have so many questions."</div>
+  <div class="who">— Visiting security consultant, confused but impressed</div>
+</div>
+
+<div class="guarantee">
+  <div class="g-title">MONEY BACK</div>
+  <div class="g-num">100%</div>
+  <div class="g-title">GUARANTEE</div>
+  <div class="g-sub">(It's free, so technically yes)</div>
+</div>
+
+<div class="cta">
+  <h2>ORDER NOW! CALL!</h2>
+  <div class="phone">1-800-WKSHP-DIY</div>
+  <p>Or just... open your browser? It's free. We don't actually have a phone number.<br>Visit: abourdim.github.io/apps · No credit card. No signup. No installation.</p>
+</div>
+
+</div>
+
+<div class="footer">
+  Workshop-DIY · Association Loi 1901 · France 🇫🇷 · Not actually a shopping channel<br>
+  Results may vary. Side effects include: learning, excitement, explaining Docker to parents, and questioning WiFi security policies.<br>
+  No robots were harmed. 47 were dropped. All survived. password123 is still the password.
+</div>
+
+<script>
+// TIMER (always 23:59:59 counting down from when you open the page)
+let sec=86399;
+setInterval(()=>{
+  sec=(sec-1+86400)%86400;
+  const h=String(Math.floor(sec/3600)).padStart(2,'0');
+  const m=String(Math.floor((sec%3600)/60)).padStart(2,'0');
+  const s=String(sec%60).padStart(2,'0');
+  document.getElementById('timer').textContent=h+':'+m+':'+s;
+},1000);
+
+// TICKER
+const items=["🔥 ONLY 39 APPS LEFT (we're not making more... probably)","⚡ FREE SHIPPING (it's a URL)","☕ COFFEE NOT INCLUDED","🤖 ROBOT DROPS GUARANTEED","🔑 WIFI PASSWORD: password123","⭐ 4.9/5 STARS FROM 847 REVIEWS","🐛 BUG #42 IS STILL A FEATURE"];
+const t=document.getElementById('ticker');
+t.innerHTML=(items.join(' &nbsp;&nbsp;★&nbsp;&nbsp; ')+' &nbsp;&nbsp;★&nbsp;&nbsp; ').repeat(3);
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

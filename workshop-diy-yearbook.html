@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // YEARBOOK 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#2a1a1a;font-family:Georgia,serif;font-size:13px;color:#2a1a1a;padding:16px}
+.book{max-width:680px;margin:0 auto}
+
+.page{background:#faf5eb;padding:24px;margin-bottom:4px;box-shadow:0 2px 12px rgba(0,0,0,.1);position:relative;min-height:200px}
+.page::before{content:'';position:absolute;right:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.03),transparent)}
+
+/* COVER */
+.cover{background:linear-gradient(135deg,#1a3a5a,#0a2a4a);color:#ffd700;text-align:center;padding:40px 24px;border:4px double #ffd700}
+.cover-year{font-family:'Playfair Display',serif;font-size:60px;font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+.cover-title{font-family:'Syne',sans-serif;font-size:20px;letter-spacing:4px;margin:4px 0}
+.cover-sub{font-size:10px;color:rgba(255,215,0,.5);letter-spacing:3px;margin-top:4px}
+.cover-motto{font-family:'Playfair Display',serif;font-style:italic;font-size:14px;margin-top:12px;color:rgba(255,215,0,.6)}
+
+/* SECTION HEADERS */
+.sec-title{font-family:'Playfair Display',serif;font-size:24px;text-align:center;margin-bottom:12px;color:#1a3a5a}
+.sec-line{height:2px;background:linear-gradient(90deg,transparent,#1a3a5a,transparent);margin-bottom:12px}
+
+/* CLASS PHOTO GRID */
+.class-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;margin:10px 0}
+.student{text-align:center}
+.student-photo{width:60px;height:60px;border-radius:50%;margin:0 auto 3px;display:flex;align-items:center;justify-content:center;font-size:28px;border:2px solid #1a3a5a;background:#f0ead8}
+.student-name{font-size:8px;font-weight:700;color:#1a3a5a}.student-role{font-size:6px;color:#888}
+
+/* SUPERLATIVES */
+.superlatives{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:500px){.superlatives{grid-template-columns:1fr}}
+.super{border:1px solid #ddd;border-radius:4px;padding:8px;text-align:center;background:#faf8f0}
+.super-title{font-family:'Playfair Display',serif;font-style:italic;font-size:11px;color:#1a3a5a;margin-bottom:3px}
+.super-winner{font-size:24px;margin:2px 0}
+.super-name{font-size:10px;font-weight:700;color:#333}
+
+/* QUOTE */
+.quote-box{border-left:3px solid #1a3a5a;padding:8px 14px;margin:8px 0;font-style:italic;color:#555;font-size:12px}
+.quote-attr{font-style:normal;font-size:9px;color:#999;margin-top:3px;text-align:right}
+
+/* CLUBS */
+.club{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid #eee}
+.club-emoji{font-size:28px;flex-shrink:0}.club-name{font-weight:700;font-size:12px;color:#1a3a5a}.club-desc{font-size:10px;color:#666;line-height:1.8}
+.club-members{font-size:8px;color:#999;margin-top:2px}
+
+/* SENIOR WILL */
+.will-item{padding:4px 0;border-bottom:1px dotted #ddd;font-size:11px;line-height:1.8}
+.will-item b{color:#1a3a5a}
+
+/* AUTOGRAPHS */
+.autograph-area{min-height:150px;border:2px dashed #ddd;border-radius:8px;padding:12px;position:relative;background:repeating-linear-gradient(0deg,transparent,transparent 23px,#e8e0d0 23px,#e8e0d0 24px)}
+.auto-note{position:absolute;font-size:10px;transform:rotate(var(--r));color:var(--c);font-family:'Playfair Display',serif;font-style:italic}
+
+/* PAGE NUM */
+.page-num{text-align:center;font-size:8px;color:#ccc;margin-top:10px;font-family:'JetBrains Mono',monospace}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="book">
+
+<!-- COVER -->
+<div class="page cover">
+  <div class="cover-year">2025</div>
+  <div class="cover-title">WORKSHOP-DIY</div>
+  <div class="cover-sub">ASSOCIATION LOI 1901 · FRANCE</div>
+  <div class="cover-motto">"Bugs are features, robots are friends, coffee is life."</div>
+</div>
+
+<!-- CLASS OF 2025 -->
+<div class="page">
+  <div class="sec-title">Class of 2025</div>
+  <div class="sec-line"></div>
+  <div class="class-grid">
+    <div class="student"><div class="student-photo">🤖</div><div class="student-name">bit-bot</div><div class="student-role">Class President</div></div>
+    <div class="student"><div class="student-photo">🪄</div><div class="student-name">magic-hands</div><div class="student-role">Prom Queen</div></div>
+    <div class="student"><div class="student-photo">🕵️</div><div class="student-name">face-quest</div><div class="student-role">Detective</div></div>
+    <div class="student"><div class="student-photo">🧠</div><div class="student-name">teachable-m</div><div class="student-role">Valedictorian</div></div>
+    <div class="student"><div class="student-photo">💬</div><div class="student-name">talking-robot</div><div class="student-role">Class Speaker</div></div>
+    <div class="student"><div class="student-photo">😎</div><div class="student-name">face-tracking</div><div class="student-role">Cool Kid</div></div>
+    <div class="student"><div class="student-photo">🚀</div><div class="student-name">mission-ctrl</div><div class="student-role">Captain</div></div>
+    <div class="student"><div class="student-photo">🔐</div><div class="student-name">pentest-lab</div><div class="student-role">Rebel</div></div>
+    <div class="student"><div class="student-photo">🐧</div><div class="student-name">linux-lab</div><div class="student-role">Class Nerd</div></div>
+    <div class="student"><div class="student-photo">💡</div><div class="student-name">wled-lab</div><div class="student-role">Light Designer</div></div>
+    <div class="student"><div class="student-photo">⚡</div><div class="student-name">esp32-lab</div><div class="student-role">Electrician</div></div>
+    <div class="student"><div class="student-photo">🐳</div><div class="student-name">docker-lab</div><div class="student-role">Philosopher</div></div>
+    <div class="student"><div class="student-photo">🎨</div><div class="student-name">pixel-gw</div><div class="student-role">Artist</div></div>
+    <div class="student"><div class="student-photo">🧩</div><div class="student-name">bit-play</div><div class="student-role">Class Clown</div></div>
+    <div class="student"><div class="student-photo">✨</div><div class="student-name">prompt-hero</div><div class="student-role">Poet</div></div>
+    <div class="student"><div class="student-photo">🏡</div><div class="student-name">smart-home</div><div class="student-role">Homebody</div></div>
+  </div>
+  <div class="page-num">— 2 —</div>
+</div>
+
+<!-- SUPERLATIVES -->
+<div class="page">
+  <div class="sec-title">Senior Superlatives</div>
+  <div class="sec-line"></div>
+  <div class="superlatives">
+    <div class="super"><div class="super-title">Most Likely to Take Over the World</div><div class="super-winner">🧠</div><div class="super-name">teachable-machine</div></div>
+    <div class="super"><div class="super-title">Best Dance Moves</div><div class="super-winner">🤖</div><div class="super-name">bit-bot (unintentional)</div></div>
+    <div class="super"><div class="super-title">Most Mysterious</div><div class="super-winner">🔐</div><div class="super-name">pentest-lab</div></div>
+    <div class="super"><div class="super-title">Life of the Party</div><div class="super-winner">🪄</div><div class="super-name">magic-hands</div></div>
+    <div class="super"><div class="super-title">Most Likely to Explain Docker at Dinner</div><div class="super-winner">🐳</div><div class="super-name">docker-lab</div></div>
+    <div class="super"><div class="super-title">Most Dramatic</div><div class="super-winner">💬</div><div class="super-name">talking-robot</div></div>
+    <div class="super"><div class="super-title">Most Resilient (47 Drops)</div><div class="super-winner">⚡</div><div class="super-name">ESP32 Robot Kit</div></div>
+    <div class="super"><div class="super-title">Unchanged Since Day One</div><div class="super-winner">🔑</div><div class="super-name">WiFi Password</div></div>
+  </div>
+  <div class="page-num">— 3 —</div>
+</div>
+
+<!-- TEACHER QUOTES -->
+<div class="page">
+  <div class="sec-title">Faculty Quotes</div>
+  <div class="sec-line"></div>
+  <div class="quote-box">"I stopped writing bug reports. They just become features anyway."<div class="quote-attr">— Lead Developer</div></div>
+  <div class="quote-box">"Teaching cybersecurity with password123 as the WiFi password is what we in education call 'ironic pedagogy.'"<div class="quote-attr">— Cybersecurity Instructor</div></div>
+  <div class="quote-box">"The robot was supposed to go forward. It danced instead. The student was happier. I learned something that day."<div class="quote-attr">— Robotics Instructor</div></div>
+  <div class="quote-box">"My 14-year-old student explained Docker to me better than my college professor did."<div class="quote-attr">— Visiting Software Engineer Parent</div></div>
+  <div class="quote-box">"If coffee were a programming language, I'd be fluent."<div class="quote-attr">— The Founder, probably</div></div>
+  <div class="page-num">— 4 —</div>
+</div>
+
+<!-- CLUBS -->
+<div class="page">
+  <div class="sec-title">Clubs & Activities</div>
+  <div class="sec-line"></div>
+  <div class="club"><span class="club-emoji">🤖</span><div><div class="club-name">Robotics Club</div><div class="club-desc">Building and crashing robots since 2023. Specialties: BLE control, line-following, surviving table drops.</div><div class="club-members">Members: bit-bot, talking-robot, bit-playground, rxy · Advisor: ESP32</div></div></div>
+  <div class="club"><span class="club-emoji">🧠</span><div><div class="club-name">AI & Machine Learning Society</div><div class="club-desc">Training models, tracking faces, recognizing hands. All in the browser. All privacy-first.</div><div class="club-members">Members: teachable-m, magic-hands, face-quest, prompt-hero · Advisor: MediaPipe</div></div></div>
+  <div class="club"><span class="club-emoji">🔐</span><div><div class="club-name">Ethical Hacking Team</div><div class="club-desc">Finding vulnerabilities responsibly. Current record: one school printer. WiFi password remains unchanged.</div><div class="club-members">Members: pentest-lab, linux-lab · Advisor: Mr. password123</div></div></div>
+  <div class="club"><span class="club-emoji">☕</span><div><div class="club-name">Coffee Appreciation Society</div><div class="club-desc">Fueling every line of code. Emergency supply protocol: always active. Status: permanently critical.</div><div class="club-members">Members: Everyone · Advisor: The Coffee Machine</div></div></div>
+  <div class="page-num">— 5 —</div>
+</div>
+
+<!-- SENIOR WILL -->
+<div class="page">
+  <div class="sec-title">The Senior Will</div>
+  <div class="sec-line"></div>
+  <div class="will-item"><b>bit-bot</b> leaves its spare servo to the next generation of robots who will also dance unintentionally.</div>
+  <div class="will-item"><b>magic-hands</b> leaves 21 hand landmarks and a lifetime supply of particle effects to whoever waves next.</div>
+  <div class="will-item"><b>pentest-lab</b> leaves one unsolved CTF challenge. The hint is: it's always SQL injection.</div>
+  <div class="will-item"><b>docker-lab</b> leaves one confused parent and a perfectly working container to the DevOps class of 2026.</div>
+  <div class="will-item"><b>linux-lab</b> leaves its bash history. DO NOT read line 847.</div>
+  <div class="will-item"><b>The WiFi Password</b> leaves nothing. It's staying forever. We've tried.</div>
+  <div class="will-item"><b>Bug #42</b> leaves its legacy. May all future bugs find their inner feature.</div>
+  <div class="will-item"><b>The Coffee Machine</b> leaves... wait, the coffee machine isn't leaving. FALSE ALARM. Nobody panic.</div>
+  <div class="page-num">— 6 —</div>
+</div>
+
+<!-- AUTOGRAPHS -->
+<div class="page">
+  <div class="sec-title">Autographs</div>
+  <div class="sec-line"></div>
+  <div class="autograph-area">
+    <div class="auto-note" style="top:8px;left:10px;--r:-5deg;--c:#1a3a5a">Have a great summer! Stay hacking! — pentest-lab 🔐</div>
+    <div class="auto-note" style="top:30px;right:20px;--r:3deg;--c:#aa3333">HAGS! Don't forget to change the WiFi password (jk it'll never happen) — linux-lab</div>
+    <div class="auto-note" style="top:65px;left:30px;--r:-2deg;--c:#336633">Keep dancing! Even if it's a bug! 🤖 — bit-bot</div>
+    <div class="auto-note" style="top:90px;right:10px;--r:5deg;--c:#663399">✨ Stay magical! — magic-hands</div>
+    <div class="auto-note" style="top:115px;left:15px;--r:-3deg;--c:#996633">Never stop learning. Also, drink more coffee. — The Founder ☕</div>
+  </div>
+  <div class="page-num">— 7 —</div>
+</div>
+
+</div>
+  <script src="nav.js"></script>
+</body>
+</html>

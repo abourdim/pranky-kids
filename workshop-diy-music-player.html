@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // Player</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#121212;color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px}
+a{color:#1db954;text-decoration:none}
+
+.app{position:fixed;inset:0;display:flex;flex-direction:column}
+
+/* NAV */
+.nav{height:50px;background:#000;display:flex;align-items:center;padding:0 16px;gap:12px;flex-shrink:0;border-bottom:1px solid #282828}
+.nav-logo{font-size:16px;font-weight:700;color:#1db954;display:flex;align-items:center;gap:6px}
+.nav-search{background:#242424;border:none;border-radius:20px;padding:6px 14px;color:#fff;font-family:inherit;font-size:11px;width:200px;outline:none}
+.nav-search:focus{border:1px solid #1db954}
+.nav-links{margin-left:auto;display:flex;gap:16px;font-size:11px;color:#b3b3b3}
+
+/* BODY */
+.bod{flex:1;display:flex;overflow:hidden}
+
+/* SIDEBAR */
+.side{width:220px;background:#000;padding:12px;flex-shrink:0;overflow-y:auto;border-right:1px solid #181818}
+.side::-webkit-scrollbar{width:4px}.side::-webkit-scrollbar-thumb{background:#333}
+.side-h{font-size:9px;color:#b3b3b3;letter-spacing:2px;margin:10px 0 6px}
+.side-item{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:4px;cursor:pointer;color:#b3b3b3;font-size:11px;transition:all .1s}
+.side-item:hover{background:#1a1a1a;color:#fff}
+.side-item.on{color:#1db954}
+.side-item .e{font-size:14px;width:18px;text-align:center}
+.side-pl{display:flex;align-items:center;gap:8px;padding:4px 8px;border-radius:4px;cursor:pointer;transition:all .1s}
+.side-pl:hover{background:#1a1a1a}
+.side-pl .cover{width:36px;height:36px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.side-pl .info{font-size:10px;color:#b3b3b3;line-height:1.5}.side-pl .info .n{color:#fff;font-size:11px}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;background:linear-gradient(180deg,#1a3a1a 0%,#121212 300px);padding:20px}
+.main::-webkit-scrollbar{width:6px}.main::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+
+/* ALBUM HEADER */
+.album-h{display:flex;gap:20px;align-items:flex-end;margin-bottom:20px}
+.album-cover{width:180px;height:180px;border-radius:6px;background:#0a2a0a;display:flex;align-items:center;justify-content:center;font-size:72px;box-shadow:0 8px 24px rgba(0,0,0,.5);flex-shrink:0}
+.album-info{padding-bottom:6px}
+.album-type{font-size:10px;color:#fff;letter-spacing:1px;text-transform:uppercase}
+.album-title{font-size:clamp(24px,4vw,42px);font-weight:700;margin:4px 0;line-height:1.2}
+.album-meta{font-size:11px;color:#b3b3b3;display:flex;align-items:center;gap:6px}
+.album-meta b{color:#fff}
+
+/* PLAY BAR */
+.play-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.play-big{width:42px;height:42px;border-radius:50%;background:#1db954;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:#000;transition:all .1s;border:none}
+.play-big:hover{transform:scale(1.05);background:#1ed760}
+
+/* TRACK LIST */
+.track-header{display:flex;padding:6px 14px;font-size:9px;color:#b3b3b3;letter-spacing:1px;border-bottom:1px solid #282828;margin-bottom:4px}
+.track-header .num{width:30px}.track-header .ttl{flex:1}.track-header .dur{width:50px;text-align:right}
+.track{display:flex;align-items:center;padding:6px 14px;border-radius:4px;cursor:pointer;transition:all .1s;gap:8px}
+.track:hover{background:rgba(255,255,255,.05)}
+.track.playing{background:rgba(29,185,84,.08)}
+.track .num{width:30px;font-size:11px;color:#b3b3b3;text-align:center}
+.track.playing .num{color:#1db954}
+.track .emoji{font-size:16px;width:24px;text-align:center}
+.track .info{flex:1;min-width:0}
+.track .name{font-size:12px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track.playing .name{color:#1db954}
+.track .artist{font-size:10px;color:#b3b3b3}
+.track .plays{font-size:10px;color:#b3b3b3;width:70px;text-align:right}
+.track .dur{font-size:10px;color:#b3b3b3;width:50px;text-align:right}
+.eq{display:inline-flex;gap:1px;align-items:flex-end;height:12px}
+.eq span{width:2px;background:#1db954;animation:eqBar 0.8s ease-in-out infinite alternate}
+@keyframes eqBar{from{height:3px}to{height:12px}}
+
+/* PLAYER BAR */
+.player{height:70px;background:#181818;border-top:1px solid #282828;display:flex;align-items:center;padding:0 14px;flex-shrink:0;gap:10px}
+.pl-left{display:flex;align-items:center;gap:10px;width:220px}
+.pl-cover{width:42px;height:42px;border-radius:3px;background:#0a2a0a;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.pl-info .n{font-size:11px;color:#fff}.pl-info .a{font-size:9px;color:#b3b3b3}
+.pl-center{flex:1;text-align:center}
+.pl-controls{display:flex;justify-content:center;gap:14px;margin-bottom:4px}
+.pl-btn{background:none;border:none;color:#b3b3b3;cursor:pointer;font-size:14px;transition:color .1s}.pl-btn:hover{color:#fff}
+.pl-btn.main-play{color:#fff;font-size:16px}
+.pl-progress{display:flex;align-items:center;gap:6px}
+.pl-time{font-size:9px;color:#b3b3b3;width:35px}
+.pl-time.r{text-align:right}
+.pl-bar{flex:1;max-width:400px;height:4px;background:#4d4d4d;border-radius:2px;cursor:pointer;position:relative}
+.pl-bar-fill{height:100%;background:#1db954;border-radius:2px;width:35%;transition:width .5s}
+.pl-bar:hover .pl-bar-fill{background:#1ed760}
+.pl-right{width:180px;display:flex;justify-content:flex-end;gap:10px;align-items:center;font-size:12px;color:#b3b3b3}
+.vol-bar{width:80px;height:4px;background:#4d4d4d;border-radius:2px;overflow:hidden}
+.vol-fill{height:100%;width:70%;background:#fff;border-radius:2px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="app">
+<div class="nav">
+  <div class="nav-logo">🤖 WKSHP Player</div>
+  <input class="nav-search" placeholder="Search apps, tracks..." readonly>
+  <div class="nav-links"><span>Explore</span><span>Library</span><span>👤 Maker</span></div>
+</div>
+<div class="bod">
+<div class="side">
+  <div class="side-item on"><span class="e">🏠</span> Home</div>
+  <div class="side-item"><span class="e">🔍</span> Search</div>
+  <div class="side-item"><span class="e">📚</span> Library</div>
+  <div class="side-h">PLAYLISTS</div>
+  <div class="side-pl"><div class="cover" style="background:#0a2a0a">🤖</div><div class="info"><div class="n">Robot Beats</div>Playlist · 16 tracks</div></div>
+  <div class="side-pl"><div class="cover" style="background:#1a0033">🧠</div><div class="info"><div class="n">AI Lo-Fi</div>Playlist · 6 tracks</div></div>
+  <div class="side-pl"><div class="cover" style="background:#330011">🔐</div><div class="info"><div class="n">Hack the Planet</div>Playlist · 8 tracks</div></div>
+  <div class="side-pl"><div class="cover" style="background:#1a1a00">⚡</div><div class="info"><div class="n">Solder Sessions</div>Playlist · 5 tracks</div></div>
+  <div class="side-pl"><div class="cover" style="background:#001a1a">🐧</div><div class="info"><div class="n">Terminal Vibes</div>Playlist · 7 tracks</div></div>
+</div>
+<div class="main">
+  <div class="album-h">
+    <div class="album-cover">🤖</div>
+    <div class="album-info">
+      <div class="album-type">Album</div>
+      <div class="album-title">Workshop Sessions Vol. 1</div>
+      <div class="album-meta"><b>Workshop-DIY</b> · 2025 · 39 tracks · 4h 20min</div>
+    </div>
+  </div>
+  <div class="play-row">
+    <button class="play-big" onclick="togglePlay()">▶</button>
+  </div>
+  <div class="track-header">
+    <span class="num">#</span><span class="ttl" style="margin-left:32px">TITLE</span><span class="plays">PLAYS</span><span class="dur">⏱</span>
+  </div>
+  <div id="tracks"></div>
+</div>
+</div>
+<div class="player">
+  <div class="pl-left">
+    <div class="pl-cover" id="plCover">🤖</div>
+    <div class="pl-info"><div class="n" id="plName">bit-bot (BLE Connection)</div><div class="a">Workshop-DIY</div></div>
+  </div>
+  <div class="pl-center">
+    <div class="pl-controls">
+      <button class="pl-btn">⏮</button>
+      <button class="pl-btn main-play" id="plPlay" onclick="togglePlay()">▶</button>
+      <button class="pl-btn">⏭</button>
+    </div>
+    <div class="pl-progress">
+      <span class="pl-time r" id="plTime">1:23</span>
+      <div class="pl-bar"><div class="pl-bar-fill" id="plFill"></div></div>
+      <span class="pl-time" id="plDur">3:42</span>
+    </div>
+  </div>
+  <div class="pl-right"><span>🔊</span><div class="vol-bar"><div class="vol-fill"></div></div></div>
+</div>
+</div>
+
+<script>
+const TRACKS=[
+{e:"🤖",n:"bit-bot (BLE Connection)",sub:"Robot Beats",p:"2,847",d:"3:42"},
+{e:"🪄",n:"magic-hands (Particle Storm)",sub:"AI Lo-Fi",p:"2,103",d:"4:15"},
+{e:"🕵️",n:"face-quest (Boss Battle)",sub:"AI Lo-Fi",p:"1,892",d:"2:58"},
+{e:"🧠",n:"teachable-machine (Training Loop)",sub:"AI Lo-Fi",p:"1,654",d:"5:01"},
+{e:"💬",n:"talking-robot (Emotional Payload)",sub:"Robot Beats",p:"987",d:"3:33"},
+{e:"😎",n:"face-tracking (Detection Groove)",sub:"AI Lo-Fi",p:"876",d:"3:12"},
+{e:"😄",n:"bitmoji-lab (Pixel Anthem)",sub:"Robot Beats",p:"654",d:"2:45"},
+{e:"🚀",n:"mission-control (Launch Sequence)",sub:"Terminal Vibes",p:"1,201",d:"4:42"},
+{e:"🧩",n:"bit-playground (Sensor Jam)",sub:"Robot Beats",p:"543",d:"3:18"},
+{e:"🎛️",n:"rxy (Remote Frequencies)",sub:"Robot Beats",p:"432",d:"2:55"},
+{e:"🎨",n:"pixel-gateway (8-Bit Dreams)",sub:"Solder Sessions",p:"789",d:"3:08"},
+{e:"💡",n:"wled-kids-lab (Neopixel Nights)",sub:"Solder Sessions",p:"654",d:"4:20"},
+{e:"⚡",n:"esp32-c3 (Blink Loop)",sub:"Solder Sessions",p:"543",d:"2:30"},
+{e:"🔐",n:"pentest-lab (Firewall Breach)",sub:"Hack the Planet",p:"1,456",d:"5:15"},
+{e:"🐧",n:"linux-kids-lab (sudo Chill)",sub:"Terminal Vibes",p:"1,234",d:"3:45"},
+{e:"🏭",n:"production-chain (Factory Floor)",sub:"Solder Sessions",p:"321",d:"4:02"},
+{e:"🏫",n:"classroom (Peer Connection)",sub:"Terminal Vibes",p:"567",d:"3:22"},
+{e:"🐳",n:"docker-lab (Container Groove)",sub:"Terminal Vibes",p:"432",d:"3:55"},
+{e:"🔴",n:"nodered-lab (Flow State)",sub:"Terminal Vibes",p:"345",d:"4:11"},
+{e:"✨",n:"prompt-hero (Inference Beat)",sub:"AI Lo-Fi",p:"678",d:"3:40"},
+];
+
+let playing=0,isPlaying=false;
+
+const tracksEl=document.getElementById('tracks');
+TRACKS.forEach((t,i)=>{
+  const d=document.createElement('div');
+  d.className='track'+(i===0?' playing':'');d.dataset.i=i;
+  d.innerHTML=`<span class="num">${i===0?'<span class="eq"><span></span><span style="animation-delay:.1s"></span><span style="animation-delay:.2s"></span></span>':i+1}</span><span class="emoji">${t.e}</span><div class="info"><div class="name">${t.n}</div><div class="artist">${t.sub}</div></div><span class="plays">${t.p}</span><span class="dur">${t.d}</span>`;
+  d.onclick=()=>playTrack(i);
+  tracksEl.appendChild(d);
+});
+
+function playTrack(i){
+  playing=i;isPlaying=true;
+  document.querySelectorAll('.track').forEach((t,j)=>{
+    t.classList.toggle('playing',j===i);
+    t.querySelector('.num').innerHTML=j===i?'<span class="eq"><span></span><span style="animation-delay:.1s"></span><span style="animation-delay:.2s"></span></span>':j+1;
+  });
+  document.getElementById('plCover').textContent=TRACKS[i].e;
+  document.getElementById('plName').textContent=TRACKS[i].n;
+  document.getElementById('plDur').textContent=TRACKS[i].d;
+  document.getElementById('plPlay').textContent='⏸';
+}
+
+function togglePlay(){
+  isPlaying=!isPlaying;
+  document.getElementById('plPlay').textContent=isPlaying?'⏸':'▶';
+}
+
+// Fake progress
+let prog=35;
+setInterval(()=>{if(isPlaying){prog=(prog+0.5)%100;document.getElementById('plFill').style.width=prog+'%';const m=Math.floor(prog*2.2/60),s=Math.floor(prog*2.2%60);document.getElementById('plTime').textContent=m+':'+(s<10?'0':'')+s}},500);
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

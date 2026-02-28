@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // IN MEMORIAM</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;color:#fff;font-family:'Playfair Display',serif;font-size:12px;min-height:100vh;padding:16px}
+
+.header{text-align:center;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.03)}
+.header .cross{font-size:24px;color:rgba(255,255,255,.08);margin-bottom:4px}
+.header h1{font-size:18px;font-weight:400;color:rgba(255,255,255,.15);letter-spacing:6px;font-style:italic}
+.header .sub{font-size:8px;color:rgba(255,255,255,.06);letter-spacing:3px;margin-top:2px;font-family:'JetBrains Mono',monospace}
+
+.memorials{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+
+.memorial{padding:14px;border:1px solid rgba(255,255,255,.03);border-radius:4px;background:rgba(255,255,255,.01);position:relative}
+.memorial::before{content:'✦';position:absolute;top:-6px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.06);font-size:10px;background:#0a0a14;padding:0 6px}
+
+.m-emoji{font-size:28px;text-align:center;margin-bottom:4px;filter:grayscale(.6) opacity(.5)}
+.m-name{text-align:center;font-size:14px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:2px}
+.m-dates{text-align:center;font-size:9px;color:rgba(255,255,255,.08);font-family:'JetBrains Mono',monospace;margin:2px 0}
+.m-text{text-align:center;font-style:italic;font-size:11px;color:rgba(255,255,255,.12);line-height:2;margin:6px 0;padding:0 12px}
+.m-cause{text-align:center;font-size:8px;color:rgba(255,255,255,.06);font-family:'JetBrains Mono',monospace;margin-top:4px}
+.m-survived{text-align:center;font-size:8px;color:rgba(255,255,255,.06);margin-top:2px;font-style:italic}
+
+.candles{text-align:center;margin:14px 0;font-size:16px;letter-spacing:6px;animation:flicker 4s infinite;opacity:.3}
+@keyframes flicker{0%,100%{opacity:.2}25%{opacity:.35}75%{opacity:.25}}
+
+.quote{text-align:center;font-style:italic;font-size:11px;color:rgba(255,255,255,.06);margin:10px 0;padding:0 20px;line-height:2.4}
+
+.footer{text-align:center;margin-top:14px;font-size:6px;color:rgba(255,255,255,.03);letter-spacing:1px;font-family:'JetBrains Mono',monospace;line-height:2.2}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="cross">✝</div>
+  <h1>In Memoriam</h1>
+  <div class="sub">THOSE WE LOST IN THE LINE OF EDUCATION</div>
+</div>
+
+<div class="memorials">
+
+<div class="memorial">
+  <div class="m-emoji">🔌</div>
+  <div class="m-name">USB-C Cable #1</div>
+  <div class="m-dates">October 2025 — February 2026</div>
+  <div class="m-text">Faithful companion to the ESP32. Connected without complaint. Gave its life on Workbench 7 when pulled sideways at an acute angle during an enthusiastic code upload.</div>
+  <div class="m-cause">Cause: Internal conductor fatigue · Manner: Student-induced misadventure</div>
+  <div class="m-survived">Survived by: 6 remaining USB-C cables in the drawer</div>
+</div>
+
+<div class="memorial">
+  <div class="m-emoji">💡</div>
+  <div class="m-name">WS2812B LED #17</div>
+  <div class="m-dates">March 2024 — November 2025</div>
+  <div class="m-text">Burned brighter than any LED in the strip. Literally. Received 5.5V instead of 5V due to a wiring error. Died in a blaze of white. The adjacent LEDs still mourn — they display blue every Tuesday in tribute.</div>
+  <div class="m-cause">Cause: Overvoltage (5.5V applied to 5V rated component)</div>
+  <div class="m-survived">Survived by: 59 remaining LEDs in the strip</div>
+</div>
+
+<div class="memorial">
+  <div class="m-emoji">🔋</div>
+  <div class="m-name">18650 Battery "Old Reliable"</div>
+  <div class="m-dates">January 2024 — August 2025</div>
+  <div class="m-text">Powered bit-bot through 47 desk drops and 2,000 line-following missions. Capacity gradually declined from 2600mAh to 800mAh. Retired with honors when it could no longer power a single motor. It gave everything.</div>
+  <div class="m-cause">Cause: Natural cell degradation after 500+ charge cycles</div>
+  <div class="m-survived">Survived by: bit-bot (who misses the extra range)</div>
+</div>
+
+<div class="memorial">
+  <div class="m-emoji">🔧</div>
+  <div class="m-name">SG90 Servo "Spinny"</div>
+  <div class="m-dates">June 2024 — January 2026</div>
+  <div class="m-text">Spent 18 months turning the ultrasonic sensor left and right. Never complained. Developed a 0.42° drift per hour that became its signature quirk. One day, the gear stripped. The sound was unmistakable. The silence that followed was worse.</div>
+  <div class="m-cause">Cause: Gear strip after 400,000+ rotations</div>
+  <div class="m-survived">Survived by: Replacement servo "Spinny II"</div>
+</div>
+
+<div class="memorial">
+  <div class="m-emoji">🖥️</div>
+  <div class="m-name">The Old Laptop</div>
+  <div class="m-dates">2018 — December 2025</div>
+  <div class="m-text">Served as the primary demo machine for three years. Could run Chrome with only 12 tabs before the fan sounded like a jet engine. Died during a Docker workshop when it tried to build three containers simultaneously. It tried its best. That's all we can ask.</div>
+  <div class="m-cause">Cause: Thermal shutdown (final) · 47 Chrome tabs open at time of death</div>
+  <div class="m-survived">Survived by: A shiny new laptop (16GB RAM) that doesn't know the struggle</div>
+</div>
+
+<div class="memorial">
+  <div class="m-emoji">🔥</div>
+  <div class="m-name">Hot Glue Stick Collection (Jan 2024 batch)</div>
+  <div class="m-dates">January 2024 — consumed gradually through 2025</div>
+  <div class="m-text">24 sticks. Gone too soon. Melted in service to robot chassis construction, sensor mounting, and what one instructor called "structural engineering." Each stick gave its molecular integrity so that a child's robot could drive another day.</div>
+  <div class="m-cause">Cause: Thermoplastic sacrifice (350°C)</div>
+  <div class="m-survived">Survived by: A new 50-pack (arriving Tuesday)</div>
+</div>
+
+<div class="memorial">
+  <div class="m-emoji">📡</div>
+  <div class="m-name">HC-SR04 Ultrasonic Sensor "Echo"</div>
+  <div class="m-dates">March 2024 — September 2025</div>
+  <div class="m-text">Measured distances faithfully for 18 months. Reported obstacles at 2cm to 400cm. One day, started reporting everything as 0cm. The world, to Echo, had closed in completely. We replaced it, but we never forgot.</div>
+  <div class="m-cause">Cause: Transducer membrane failure</div>
+  <div class="m-survived">Survived by: "Echo II" (who seems nervous)</div>
+</div>
+
+</div>
+
+<div class="candles">🕯️ 🕯️ 🕯️ 🕯️ 🕯️ 🕯️ 🕯️</div>
+
+<div class="quote">"In the workshop, nothing truly dies. Every burned LED teaches voltage. Every stripped gear teaches load limits. Every dead cable teaches: pull the connector, not the cord."<br><br>— The Founder, memorial address, 2026</div>
+
+<div class="footer">
+  WORKSHOP-DIY · IN MEMORIAM · HONORING FALLEN HARDWARE SINCE 2023<br>
+  ALL COMPONENTS SERVED WITH DISTINCTION · BUGS ARE FEATURES · REST IN PACKETS
+</div>
+  <script src="nav.js"></script>
+</body>
+</html>

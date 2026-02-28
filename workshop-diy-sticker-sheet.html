@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // STICKER SHEET</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0e;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;padding:16px}
+
+.header{text-align:center;margin-bottom:16px}
+.h-title{font-family:'Syne',sans-serif;font-size:clamp(20px,4vw,30px);font-weight:800;color:#00ff41;text-shadow:0 0 10px rgba(0,255,65,.15)}
+.h-sub{font-size:7px;color:rgba(0,255,65,.2);letter-spacing:3px;margin-top:2px}
+
+/* SECTION */
+.sec-h{font-size:8px;color:rgba(0,255,65,.3);letter-spacing:3px;padding:8px 0;border-bottom:1px solid rgba(0,255,65,.04);margin:12px 0 8px}
+
+/* STICKER GRID */
+.stickers{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+
+.sticker{width:100px;height:100px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;position:relative;border:2px solid;text-align:center;flex-shrink:0}
+.sticker:hover{transform:scale(1.1) rotate(-3deg);z-index:2}
+.sticker:active{transform:scale(.95)}
+.sticker .emoji{font-size:28px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
+.sticker .name{font-size:6px;font-weight:700;margin-top:2px;letter-spacing:.5px;max-width:80px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+
+/* COLORS */
+.s-green{background:radial-gradient(circle,rgba(0,255,65,.08),rgba(0,255,65,.015));border-color:rgba(0,255,65,.2);color:#00ff41}
+.s-green:hover{box-shadow:0 0 16px rgba(0,255,65,.15)}
+.s-cyan{background:radial-gradient(circle,rgba(0,212,255,.08),rgba(0,212,255,.015));border-color:rgba(0,212,255,.2);color:#00d4ff}
+.s-cyan:hover{box-shadow:0 0 16px rgba(0,212,255,.15)}
+.s-purple{background:radial-gradient(circle,rgba(191,0,255,.08),rgba(191,0,255,.015));border-color:rgba(191,0,255,.2);color:#bf00ff}
+.s-purple:hover{box-shadow:0 0 16px rgba(191,0,255,.15)}
+.s-red{background:radial-gradient(circle,rgba(255,0,51,.08),rgba(255,0,51,.015));border-color:rgba(255,0,51,.2);color:#ff0033}
+.s-red:hover{box-shadow:0 0 16px rgba(255,0,51,.15)}
+.s-gold{background:radial-gradient(circle,rgba(255,215,0,.1),rgba(255,215,0,.02));border-color:rgba(255,215,0,.25);color:#ffd700}
+.s-gold:hover{box-shadow:0 0 16px rgba(255,215,0,.2)}
+.s-orange{background:radial-gradient(circle,rgba(255,136,0,.08),rgba(255,136,0,.015));border-color:rgba(255,136,0,.2);color:#ff8800}
+.s-orange:hover{box-shadow:0 0 16px rgba(255,136,0,.15)}
+
+/* HEX BADGES */
+.badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.badge{width:90px;height:100px;position:relative;cursor:pointer;transition:all .2s;text-align:center}
+.badge:hover{transform:scale(1.08);z-index:2}
+.badge svg{position:absolute;inset:0}
+.badge-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding-top:6px}
+.badge .emoji{font-size:24px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4))}
+.badge .name{font-size:6px;font-weight:700;margin-top:2px;letter-spacing:.5px;color:rgba(255,255,255,.7)}
+.badge .desc{font-size:5px;color:rgba(255,255,255,.3);margin-top:1px;max-width:70px}
+
+/* RECT STICKERS */
+.rect-stickers{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.rect{padding:6px 14px;border-radius:6px;border:2px solid;display:flex;align-items:center;gap:6px;cursor:pointer;transition:all .2s;flex-shrink:0}
+.rect:hover{transform:scale(1.05)}
+.rect .emoji{font-size:16px}.rect .name{font-size:8px;font-weight:700}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="h-title">STICKER SHEET</div>
+  <div class="h-sub">WORKSHOP-DIY // COLLECT THEM ALL</div>
+</div>
+
+<div class="sec-h">🤖 APP STICKERS</div>
+<div class="stickers" id="appStickers"></div>
+
+<div class="sec-h">🏆 ACHIEVEMENT BADGES</div>
+<div class="badges" id="achieveBadges"></div>
+
+<div class="sec-h">🏷️ SKILL TAGS</div>
+<div class="rect-stickers" id="skillTags"></div>
+
+<div class="sec-h">🎭 MEME STICKERS</div>
+<div class="stickers" id="memeStickers"></div>
+
+<div style="text-align:center;padding:16px;font-size:6px;color:rgba(0,255,65,.1);letter-spacing:2px;line-height:2">
+WORKSHOP-DIY · ASSOCIATION LOI 1901 — FRANCE<br>// screenshot & print · share & flex · bugs are features
+</div>
+
+<script>
+const apps=[
+{e:"🤖",n:"bit-bot",c:"s-green"},{e:"🪄",n:"magic-hands",c:"s-purple"},{e:"🕵️",n:"face-quest",c:"s-cyan"},{e:"🧠",n:"teachable-machine",c:"s-purple"},{e:"💬",n:"talking-robot",c:"s-green"},{e:"😎",n:"face-tracking",c:"s-cyan"},{e:"🚀",n:"mission-ctrl",c:"s-orange"},{e:"🔐",n:"pentest-lab",c:"s-red"},{e:"🐧",n:"linux-lab",c:"s-green"},{e:"💡",n:"wled-lab",c:"s-gold"},{e:"⚡",n:"esp32-c3",c:"s-orange"},{e:"🐳",n:"docker-lab",c:"s-cyan"},{e:"🎨",n:"pixel-gateway",c:"s-purple"},{e:"🧩",n:"bit-playground",c:"s-green"},{e:"✨",n:"prompt-hero",c:"s-gold"},{e:"🔴",n:"nodered-lab",c:"s-red"},{e:"🏡",n:"smart-home",c:"s-orange"},{e:"🎛️",n:"rxy",c:"s-green"}
+];
+
+document.getElementById('appStickers').innerHTML=apps.map(a=>`<div class="sticker ${a.c}"><span class="emoji">${a.e}</span><span class="name">${a.n}</span></div>`).join('');
+
+const achievements=[
+{e:"🏆",n:"ELITE HACKER",d:"Solved all CTF challenges",c:"#ffd700"},
+{e:"🤖",n:"ROBOT MASTER",d:"Built 5+ robots",c:"#00ff41"},
+{e:"🧠",n:"AI WIZARD",d:"Trained 10 models",c:"#bf00ff"},
+{e:"🔐",n:"CYBER KNIGHT",d:"Completed pentest-lab",c:"#ff0033"},
+{e:"🐧",n:"LINUX GURU",d:"100+ terminal commands",c:"#00d4ff"},
+{e:"⚡",n:"CIRCUIT SAGE",d:"Soldered without burns",c:"#ff8800"},
+{e:"☕",n:"CAFFEINATED",d:"Survived a marathon session",c:"#ffd700"},
+{e:"🐛",n:"BUG HUNTER",d:"Found 42 features",c:"#00ff41"},
+{e:"🎨",n:"PIXEL ARTIST",d:"Created 50 pixel art",c:"#bf00ff"},
+{e:"🔥",n:"ON FIRE",d:"7-day learning streak",c:"#ff0033"},
+];
+
+document.getElementById('achieveBadges').innerHTML=achievements.map(a=>{
+  const col=a.c;
+  return `<div class="badge"><svg viewBox="0 0 90 100"><polygon points="45,2 85,25 85,75 45,98 5,75 5,25" fill="none" stroke="${col}" stroke-width="1.5" opacity=".2"/><polygon points="45,8 80,28 80,72 45,92 10,72 10,28" fill="${col}" fill-opacity=".03"/></svg><div class="badge-content"><span class="emoji">${a.e}</span><span class="name">${a.n}</span><span class="desc">${a.d}</span></div></div>`;
+}).join('');
+
+const skills=[
+{e:"🤖",n:"Robotics",c:"s-green"},{e:"🧠",n:"AI / ML",c:"s-purple"},{e:"⚡",n:"Electronics",c:"s-orange"},{e:"🔐",n:"Cybersecurity",c:"s-red"},{e:"💻",n:"Web Dev",c:"s-cyan"},{e:"🐳",n:"DevOps",c:"s-cyan"},{e:"🧊",n:"3D Print",c:"s-gold"},{e:"🔴",n:"Node-RED",c:"s-red"},{e:"📡",n:"BLE",c:"s-green"},{e:"🌍",n:"IoT",c:"s-orange"},{e:"🐧",n:"Linux",c:"s-green"},{e:"🔀",n:"Git",c:"s-purple"},
+];
+document.getElementById('skillTags').innerHTML=skills.map(s=>`<div class="rect ${s.c}"><span class="emoji">${s.e}</span><span class="name">${s.n}</span></div>`).join('');
+
+const memes=[
+{e:"☕",n:"NEED COFFEE",c:"s-gold"},{e:"🐛",n:"IT'S A FEATURE",c:"s-green"},{e:"🔑",n:"password123",c:"s-red"},{e:"🤷",n:"WORKS ON MY\nMACHINE",c:"s-cyan"},{e:"💀",n:"rm -rf /",c:"s-red"},{e:"🔥",n:"THIS IS FINE",c:"s-orange"},{e:"😅",n:"SHIP IT",c:"s-purple"},{e:"🤖",n:"I AM ROOT",c:"s-green"},
+];
+document.getElementById('memeStickers').innerHTML=memes.map(m=>`<div class="sticker ${m.c}"><span class="emoji">${m.e}</span><span class="name">${m.n.replace('\n','<br>')}</span></div>`).join('');
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

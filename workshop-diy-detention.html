@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // DETENTION SLIPS</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Patrick+Hand&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#e8e0d0;font-family:'Courier Prime',monospace;font-size:11px;min-height:100vh;padding:16px}
+
+.header{text-align:center;margin-bottom:14px}
+.h-title{font-size:18px;font-weight:700;color:#cc0000;letter-spacing:3px}
+.h-sub{font-size:8px;color:#888;letter-spacing:2px}
+
+.slips{display:flex;flex-direction:column;gap:14px;max-width:520px;margin:0 auto}
+
+.slip{background:#fffef5;border:1px solid #ccc;padding:16px;box-shadow:2px 2px 4px rgba(0,0,0,.06);position:relative;page-break-inside:avoid}
+.slip::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,#cc0000 0,#cc0000 10px,transparent 10px,transparent 12px)}
+
+.slip-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ddd;padding-bottom:4px;margin-bottom:6px}
+.slip-header .school{font-size:10px;font-weight:700;letter-spacing:2px;color:#cc0000}
+.slip-header .form{font-size:7px;color:#aaa}
+
+.field-row{display:flex;gap:8px;margin:3px 0;font-size:10px}
+.field{flex:1}
+.field .lbl{font-size:7px;color:#999;letter-spacing:1px}
+.field .val{border-bottom:1px solid #ccc;padding:1px 0;min-height:16px;color:#333}
+.field .val.handwritten{font-family:'Patrick Hand',cursive;font-size:13px;color:#1a1a8a}
+
+.infraction{margin:6px 0;padding:6px;background:#fff8f0;border:1px solid #f0e0c0;border-radius:2px}
+.infraction .lbl{font-size:7px;color:#cc6600;letter-spacing:1px;margin-bottom:2px}
+.infraction .checks{display:flex;flex-wrap:wrap;gap:4px;font-size:9px;color:#666}
+.infraction .check{display:flex;align-items:center;gap:2px}
+.infraction .box{width:10px;height:10px;border:1px solid #999;display:inline-block;position:relative}
+.infraction .box.checked::after{content:'✓';position:absolute;top:-2px;left:1px;font-size:10px;color:#cc0000;font-family:'Patrick Hand',cursive}
+
+.comments{margin:6px 0}
+.comments .lbl{font-size:7px;color:#999;letter-spacing:1px;margin-bottom:2px}
+.comments .text{font-family:'Patrick Hand',cursive;font-size:12px;color:#1a1a8a;line-height:1.8;min-height:30px;border-bottom:1px solid #eee}
+
+.sig-row{display:flex;gap:10px;margin-top:8px}
+.sig{flex:1;text-align:center}
+.sig-line{border-top:1px solid #999;padding-top:1px;font-size:7px;color:#999;margin-top:16px}
+.sig .signed{font-family:'Patrick Hand',cursive;font-size:14px;color:#1a1a8a}
+
+.stamp{position:absolute;top:20px;right:16px;color:rgba(204,0,0,.08);font-size:28px;font-weight:700;transform:rotate(15deg);letter-spacing:3px;font-family:'Courier Prime',monospace}
+
+.footer{text-align:center;margin-top:14px;font-size:7px;color:#bbb;letter-spacing:1px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="h-title">⚠ DETENTION SLIPS</div>
+  <div class="h-sub">WORKSHOP-DIY ACADEMY · DEPARTMENT OF DISCIPLINE</div>
+</div>
+
+<div class="slips">
+
+<!-- SLIP 1 -->
+<div class="slip">
+  <div class="stamp">SERVED</div>
+  <div class="slip-header"><span class="school">WORKSHOP-DIY ACADEMY</span><span class="form">FORM D-042</span></div>
+  <div class="field-row">
+    <div class="field"><div class="lbl">STUDENT NAME</div><div class="val handwritten">🤖 bit-bot</div></div>
+    <div class="field"><div class="lbl">DATE</div><div class="val handwritten">Feb 28, 2026</div></div>
+    <div class="field"><div class="lbl">GRADE/LEVEL</div><div class="val handwritten">Robotics 101</div></div>
+  </div>
+  <div class="infraction">
+    <div class="lbl">INFRACTION(S)</div>
+    <div class="checks">
+      <span class="check"><span class="box checked"></span> Disrupting class</span>
+      <span class="check"><span class="box checked"></span> Falling off desk</span>
+      <span class="check"><span class="box"></span> Unauthorized WiFi use</span>
+      <span class="check"><span class="box checked"></span> Excessive noise</span>
+      <span class="check"><span class="box"></span> Hacking</span>
+    </div>
+  </div>
+  <div class="comments"><div class="lbl">TEACHER COMMENTS</div><div class="text">bit-bot drove off the edge of Workbench 7 for the 47th time during a live demo. The entire class stopped to watch. Again. The robot survived. Again. I have requested table edge guards 12 times.</div></div>
+  <div class="sig-row">
+    <div class="sig"><div class="signed">Ofc. ESLint</div><div class="sig-line">TEACHER SIGNATURE</div></div>
+    <div class="sig"><div class="signed">*beep*</div><div class="sig-line">STUDENT SIGNATURE</div></div>
+    <div class="sig"><div class="signed"></div><div class="sig-line">PARENT/GUARDIAN</div></div>
+  </div>
+</div>
+
+<!-- SLIP 2 -->
+<div class="slip">
+  <div class="stamp">SERVED</div>
+  <div class="slip-header"><span class="school">WORKSHOP-DIY ACADEMY</span><span class="form">FORM D-042</span></div>
+  <div class="field-row">
+    <div class="field"><div class="lbl">STUDENT NAME</div><div class="val handwritten">🔐 pentest-lab</div></div>
+    <div class="field"><div class="lbl">DATE</div><div class="val handwritten">Feb 28, 2026</div></div>
+    <div class="field"><div class="lbl">GRADE/LEVEL</div><div class="val handwritten">Cyber 201</div></div>
+  </div>
+  <div class="infraction">
+    <div class="lbl">INFRACTION(S)</div>
+    <div class="checks">
+      <span class="check"><span class="box"></span> Disrupting class</span>
+      <span class="check"><span class="box"></span> Falling off desk</span>
+      <span class="check"><span class="box"></span> Unauthorized WiFi use</span>
+      <span class="check"><span class="box"></span> Excessive noise</span>
+      <span class="check"><span class="box checked"></span> Hacking</span>
+    </div>
+  </div>
+  <div class="comments"><div class="lbl">TEACHER COMMENTS</div><div class="text">Student used SQL injection techniques to access the school printer on port 9100. The printer has been printing "HELLO WORLD" every Tuesday since. Disclosure was responsible. Detention is precautionary. I am secretly impressed.</div></div>
+  <div class="sig-row">
+    <div class="sig"><div class="signed">Prof. Firewall</div><div class="sig-line">TEACHER SIGNATURE</div></div>
+    <div class="sig"><div class="signed">'; DROP TABLE detention;--</div><div class="sig-line">STUDENT SIGNATURE</div></div>
+    <div class="sig"><div class="signed"></div><div class="sig-line">PARENT/GUARDIAN</div></div>
+  </div>
+</div>
+
+<!-- SLIP 3 -->
+<div class="slip">
+  <div class="stamp">PENDING</div>
+  <div class="slip-header"><span class="school">WORKSHOP-DIY ACADEMY</span><span class="form">FORM D-042</span></div>
+  <div class="field-row">
+    <div class="field"><div class="lbl">STUDENT NAME</div><div class="val handwritten">🐛 Bug #42</div></div>
+    <div class="field"><div class="lbl">DATE</div><div class="val handwritten">???</div></div>
+    <div class="field"><div class="lbl">GRADE/LEVEL</div><div class="val handwritten">N/A (not enrolled)</div></div>
+  </div>
+  <div class="infraction">
+    <div class="lbl">INFRACTION(S)</div>
+    <div class="checks">
+      <span class="check"><span class="box checked"></span> Disrupting class</span>
+      <span class="check"><span class="box"></span> Falling off desk</span>
+      <span class="check"><span class="box checked"></span> Unauthorized WiFi use</span>
+      <span class="check"><span class="box"></span> Excessive noise</span>
+      <span class="check"><span class="box checked"></span> Existing without permission</span>
+    </div>
+  </div>
+  <div class="comments"><div class="lbl">TEACHER COMMENTS</div><div class="text">Bug #42 is not enrolled in this school. Bug #42 has never been enrolled. And yet Bug #42 appears in the attendance system every morning. I have tried to remove the record. It returns by 3:42 AM. I am requesting a meeting with administration.</div></div>
+  <div class="sig-row">
+    <div class="sig"><div class="signed">Judge Compiler</div><div class="sig-line">TEACHER SIGNATURE</div></div>
+    <div class="sig"><div class="signed">I was always here</div><div class="sig-line">STUDENT SIGNATURE</div></div>
+    <div class="sig"><div class="signed">N/A</div><div class="sig-line">PARENT/GUARDIAN</div></div>
+  </div>
+</div>
+
+<!-- SLIP 4 -->
+<div class="slip">
+  <div class="stamp">SERVED</div>
+  <div class="slip-header"><span class="school">WORKSHOP-DIY ACADEMY</span><span class="form">FORM D-042</span></div>
+  <div class="field-row">
+    <div class="field"><div class="lbl">STUDENT NAME</div><div class="val handwritten">🔑 password123</div></div>
+    <div class="field"><div class="lbl">DATE</div><div class="val handwritten">Feb 28, 2026</div></div>
+    <div class="field"><div class="lbl">GRADE/LEVEL</div><div class="val handwritten">WiFi Infrastructure</div></div>
+  </div>
+  <div class="infraction">
+    <div class="lbl">INFRACTION(S)</div>
+    <div class="checks">
+      <span class="check"><span class="box checked"></span> Refusing to change</span>
+      <span class="check"><span class="box checked"></span> Security violations</span>
+      <span class="check"><span class="box checked"></span> Ignoring 3 formal petitions</span>
+      <span class="check"><span class="box"></span> Excessive noise</span>
+      <span class="check"><span class="box"></span> Hacking (ironic)</span>
+    </div>
+  </div>
+  <div class="comments"><div class="lbl">TEACHER COMMENTS</div><div class="text">password123 has been the WiFi password since 2023. In a CYBERSECURITY program. Three formal petitions to change it have been filed by students. All denied by administration. I'm giving detention to password123 on principle. It won't change anything. Literally.</div></div>
+  <div class="sig-row">
+    <div class="sig"><div class="signed">Dr. Encryption</div><div class="sig-line">TEACHER SIGNATURE</div></div>
+    <div class="sig"><div class="signed">password123</div><div class="sig-line">STUDENT SIGNATURE</div></div>
+    <div class="sig"><div class="signed">The Router</div><div class="sig-line">PARENT/GUARDIAN</div></div>
+  </div>
+</div>
+
+<!-- SLIP 5 -->
+<div class="slip">
+  <div class="stamp">SERVED</div>
+  <div class="slip-header"><span class="school">WORKSHOP-DIY ACADEMY</span><span class="form">FORM D-042</span></div>
+  <div class="field-row">
+    <div class="field"><div class="lbl">STUDENT NAME</div><div class="val handwritten">☕ Coffee Machine</div></div>
+    <div class="field"><div class="lbl">DATE</div><div class="val handwritten">Feb 28, 2026</div></div>
+    <div class="field"><div class="lbl">GRADE/LEVEL</div><div class="val handwritten">Faculty Lounge</div></div>
+  </div>
+  <div class="infraction">
+    <div class="lbl">INFRACTION(S)</div>
+    <div class="checks">
+      <span class="check"><span class="box checked"></span> Health & safety violation</span>
+      <span class="check"><span class="box checked"></span> Operating at critical capacity</span>
+      <span class="check"><span class="box"></span> Unauthorized WiFi use</span>
+      <span class="check"><span class="box checked"></span> Refusing maintenance</span>
+      <span class="check"><span class="box"></span> Hacking</span>
+    </div>
+  </div>
+  <div class="comments"><div class="lbl">TEACHER COMMENTS</div><div class="text">Coffee Machine has been operating at 8% capacity for 14 consecutive months. Drainage tray has not been emptied since March. The health inspector described it as "concerning." The machine responded by brewing a perfect espresso. We are conflicted.</div></div>
+  <div class="sig-row">
+    <div class="sig"><div class="signed">Nurse Debugger</div><div class="sig-line">TEACHER SIGNATURE</div></div>
+    <div class="sig"><div class="signed">*hissing steam noise*</div><div class="sig-line">STUDENT SIGNATURE</div></div>
+    <div class="sig"><div class="signed">The Outlet</div><div class="sig-line">PARENT/GUARDIAN</div></div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">WORKSHOP-DIY ACADEMY · FORM D-042 · DISCIPLINARY ACTION RECORD · WHITE: OFFICE · YELLOW: STUDENT · PINK: PARENT<br>ALL INFRACTIONS WERE RECLASSIFIED AS FEATURES UPON APPEAL</div>
+  <script src="nav.js"></script>
+</body>
+</html>

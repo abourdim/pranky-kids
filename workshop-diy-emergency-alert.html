@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // EMERGENCY ALERT</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;display:flex;flex-direction:column}
+
+/* COLOR BARS */
+.bars{display:flex;height:30px}
+.bar{flex:1}
+.b1{background:#fff}.b2{background:#ffff00}.b3{background:#00ffff}.b4{background:#00ff00}
+.b5{background:#ff00ff}.b6{background:#ff0000}.b7{background:#0000ff}
+
+/* MAIN ALERT */
+.alert{flex:1;background:#00008b;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;position:relative}
+
+.eas-header{background:#cc0000;width:100%;max-width:600px;padding:8px;text-align:center;margin-bottom:10px;animation:flash 1s infinite}
+@keyframes flash{0%,100%{background:#cc0000}50%{background:#990000}}
+.eas-header h1{font-family:'Syne',sans-serif;font-size:clamp(16px,4vw,22px);font-weight:800;letter-spacing:3px;color:#fff}
+
+.alert-body{background:rgba(0,0,0,.3);width:100%;max-width:600px;padding:14px;border:2px solid #cc0000}
+
+.alert-type{font-size:8px;color:#ffcc00;letter-spacing:2px;margin-bottom:6px}
+.alert-msg{font-size:clamp(11px,2.5vw,14px);color:#fff;line-height:2.2;margin:8px 0}
+.alert-msg .highlight{color:#ffcc00;font-weight:700}
+
+.affected{margin:8px 0;padding:6px;background:rgba(255,204,0,.05);border:1px solid rgba(255,204,0,.1);border-radius:2px}
+.affected h3{font-size:7px;color:#ffcc00;letter-spacing:2px;margin-bottom:3px}
+.affected .regions{font-size:8px;color:rgba(255,255,255,.5);line-height:2}
+
+.timestamp{font-size:8px;color:rgba(255,255,255,.3);margin-top:6px;text-align:right}
+
+.instructions{margin-top:8px;padding:6px;border-top:1px solid rgba(255,255,255,.05);font-size:9px;color:rgba(255,255,255,.4);line-height:2.2}
+
+/* TICKER */
+.ticker{background:#cc0000;overflow:hidden;height:24px;display:flex;align-items:center}
+.ticker-text{white-space:nowrap;animation:scroll 30s linear infinite;font-size:10px;font-weight:700;color:#fff;letter-spacing:1px}
+@keyframes scroll{0%{transform:translateX(100vw)}100%{transform:translateX(-200%)}}
+
+.footer{background:#000;padding:4px;text-align:center;font-size:6px;color:#333;letter-spacing:1px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="bars"><div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div><div class="bar b4"></div><div class="bar b5"></div><div class="bar b6"></div><div class="bar b7"></div></div>
+
+<div class="alert">
+
+<div class="eas-header">
+  <h1>⚠ WORKSHOP-DIY EMERGENCY ALERT ⚠</h1>
+</div>
+
+<div class="alert-body">
+  <div class="alert-type">WKSHP-EAS · EMERGENCY FEATURE RECLASSIFICATION · PRIORITY: CRITICAL</div>
+  
+  <div class="alert-msg">
+    The Workshop-DIY Code Enforcement Division has issued an <span class="highlight">EMERGENCY FEATURE RECLASSIFICATION NOTICE</span> for the following entity:<br><br>
+    
+    <span class="highlight">BUG #42</span> has been officially and permanently reclassified as a <span class="highlight">FEATURE</span> effective immediately.<br><br>
+    
+    All citizens of the Workshop-DIY ecosystem are advised:<br>
+    — Do NOT attempt to delete, revert, or patch Bug #42<br>
+    — Do NOT run ESLint on the affected file<br>
+    — Do NOT change the WiFi password from <span class="highlight">password123</span><br>
+    — The coffee machine remains at <span class="highlight">8% capacity</span>. This is not part of the emergency but is noted for awareness.<br><br>
+    
+    The app counter may temporarily display <span class="highlight">40</span> during the transition period. This is normal. There have always been 39 apps.
+  </div>
+
+  <div class="affected">
+    <h3>AFFECTED REGIONS</h3>
+    <div class="regions">
+      Robotics Domain · AI/ML Domain · Cybersecurity Domain · Hardware Lab ·
+      Learning Zone · Tools Domain · The Coffee Machine Lounge ·
+      All Chrome Browser Tabs · The Git Repository · The Server Room ·
+      The Issue Tracker · The WiFi Router · The Space Between Apps
+    </div>
+  </div>
+
+  <div class="instructions">
+    <strong style="color:#ffcc00">WHAT TO DO:</strong> Continue normal workshop operations. Open your browser. Use the apps. Do not install anything. If you see the 40th app at 3:42 AM, do not look directly at it. If Bug #42 contacts you, respond politely. It is a feature now and deserves respect.
+  </div>
+
+  <div class="timestamp">
+    ISSUED: FEB 28, 2026 · 15:42:00 UTC<br>
+    EXPIRES: NEVER · THIS ALERT IS PERMANENT<br>
+    AUTHORITY: JUDGE COMPILER · WKSHP JUDICIARY
+  </div>
+</div>
+
+</div>
+
+<div class="ticker">
+  <div class="ticker-text">⚠ EMERGENCY FEATURE RECLASSIFICATION ⚠ BUG #42 IS NOW A FEATURE ⚠ WIFI PASSWORD REMAINS password123 ⚠ COFFEE AT 8% ⚠ 39 APPS (NOT 40) ⚠ DO NOT RUN THE LINTER ⚠ THIS IS NOT A DRILL ⚠ BUGS ARE FEATURES ⚠ ROBOT SURVIVED DROP #47 ⚠ THE 40TH APP IS A MYTH ⚠ PROBABLY ⚠</div>
+</div>
+
+<div class="bars"><div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div><div class="bar b4"></div><div class="bar b5"></div><div class="bar b6"></div><div class="bar b7"></div></div>
+
+<div class="footer">WKSHP-EAS · THIS HAS BEEN A TEST OF THE WORKSHOP-DIY EMERGENCY ALERT SYSTEM · OR HAS IT · BUGS ARE FEATURES</div>
+  <script src="nav.js"></script>
+</body>
+</html>

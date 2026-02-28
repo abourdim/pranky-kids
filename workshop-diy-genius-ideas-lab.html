@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workshop-DIY — 🧠 Genius Video Ideas Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060a;--s:#0d0d14;--s2:#13131f;--bd:#1a1a2e;
+  --tx:#e8e8f0;--dim:#6b6b8a;
+  --blue:#4f6ef7;--cyan:#00d4ff;--lime:#a3e635;--orange:#ff6b35;
+  --pink:#ff2d8a;--purple:#9333ea;--yellow:#fbbf24;--green:#22c55e;--red:#ef4444;
+  --r:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);line-height:1.7}
+body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:0}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+/* HERO */
+.hero{min-height:85vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;overflow:hidden}
+.glow{position:absolute;border-radius:50%;filter:blur(140px);opacity:.12;pointer-events:none}
+.g1{width:500px;height:500px;background:var(--blue);top:-150px;left:-100px}
+.g2{width:500px;height:500px;background:var(--pink);bottom:-150px;right:-100px}
+.g3{width:700px;height:700px;background:var(--cyan);top:50%;left:50%;transform:translate(-50%,-50%);opacity:.05}
+.hero-pre{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--cyan);margin-bottom:20px;animation:fadeUp .6s ease both}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(38px,7vw,78px);font-weight:800;line-height:1.05;letter-spacing:-3px;margin-bottom:16px;animation:fadeUp .6s .1s ease both}
+.hero h1 .gr{background:linear-gradient(135deg,var(--cyan),var(--blue),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero .sub{font-size:17px;color:var(--dim);max-width:580px;animation:fadeUp .6s .2s ease both}
+.hero .scroll-h{position:absolute;bottom:40px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);letter-spacing:2px;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+
+/* IDEA COUNT */
+.counter{text-align:center;margin:0 0 80px;padding:30px;border:1px solid var(--bd);border-radius:var(--r);background:var(--s)}
+.counter .num{font-family:'Syne',sans-serif;font-size:60px;font-weight:800;background:linear-gradient(135deg,var(--cyan),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.counter .lab{font-size:14px;color:var(--dim);letter-spacing:2px;text-transform:uppercase}
+
+/* IDEAS */
+.idea{background:var(--s);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:48px;transition:border-color .4s,transform .3s}
+.idea:hover{transform:translateY(-2px)}
+.idea-grid{display:grid;grid-template-columns:1fr 1fr;min-height:340px}
+@media(max-width:768px){.idea-grid{grid-template-columns:1fr}}
+
+/* Preview */
+.preview{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:340px}
+
+/* Info */
+.info{padding:32px 36px;display:flex;flex-direction:column;justify-content:center}
+.idea-num{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:6px}
+.info h3{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;letter-spacing:-1px;margin-bottom:10px;line-height:1.2}
+.info .desc{color:var(--dim);font-size:14px;margin-bottom:16px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.tag{font-size:10px;font-weight:600;padding:3px 10px;border-radius:6px;letter-spacing:.5px;border:1px solid}
+.tag.ai{background:rgba(79,110,247,.1);color:var(--blue);border-color:rgba(79,110,247,.2)}
+.tag.social{background:rgba(255,45,138,.1);color:var(--pink);border-color:rgba(255,45,138,.2)}
+.tag.film{background:rgba(255,107,53,.1);color:var(--orange);border-color:rgba(255,107,53,.2)}
+.tag.viral{background:rgba(163,230,53,.1);color:var(--lime);border-color:rgba(163,230,53,.2)}
+.tag.brand{background:rgba(147,51,234,.1);color:var(--purple);border-color:rgba(147,51,234,.2)}
+.tag.edu{background:rgba(0,212,255,.1);color:var(--cyan);border-color:rgba(0,212,255,.2)}
+.tag.app{background:rgba(34,197,94,.1);color:var(--green);border-color:rgba(34,197,94,.2)}
+
+/* Expand */
+.exp-bar{border-top:1px solid var(--bd)}
+.exp-h{padding:14px 36px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-weight:600;font-size:13px;transition:background .2s;user-select:none}
+.exp-h:hover{background:var(--s2)}
+.exp-arr{transition:transform .3s;font-size:11px}
+.exp-h.open .exp-arr{transform:rotate(180deg)}
+.exp-b{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.exp-b.open{max-height:800px;padding:0 36px 20px}
+.prompt{font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9;padding:14px 18px;border-radius:10px;background:var(--s2);border:1px solid var(--bd);margin-bottom:10px;cursor:pointer;position:relative;transition:border-color .3s}
+.prompt:hover{border-color:var(--cyan)}
+.prompt::after{content:'📋 Copier';position:absolute;top:8px;right:10px;font-family:'DM Sans',sans-serif;font-size:10px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,.08);color:var(--dim);opacity:0;transition:opacity .2s}
+.prompt:hover::after{opacity:1}
+.prompt.copied::after{content:'✅ Copié';opacity:1;color:var(--green)}
+.notes{font-size:13px;color:var(--dim);line-height:1.8}
+.notes strong{color:var(--tx)}
+.note-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+@media(max-width:600px){.note-grid{grid-template-columns:1fr}}
+.note-item{background:var(--s2);padding:10px 14px;border-radius:8px;font-size:12px}
+.note-item strong{display:block;margin-bottom:2px}
+
+/* ===== ANIMATED PREVIEWS ===== */
+
+/* 1: Robot POV HUD */
+.pov-scene{width:100%;height:100%;background:radial-gradient(ellipse at center,#0a1525,#050a12);position:relative}
+.hud{position:absolute;inset:16px;border:1px solid rgba(0,212,255,.12);border-radius:8px}
+.hud-rec{position:absolute;top:10px;right:14px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--red);animation:blink 1s step-end infinite}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+.hud-battery{position:absolute;top:10px;left:14px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--green)}
+.hud-crosshair{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;border:1px solid rgba(0,212,255,.2);border-radius:50%}
+.hud-crosshair::before,.hud-crosshair::after{content:'';position:absolute;background:rgba(0,212,255,.3)}
+.hud-crosshair::before{width:1px;height:16px;top:-20px;left:50%;transform:translateX(-50%)}
+.hud-crosshair::after{width:16px;height:1px;left:-20px;top:50%;transform:translateY(-50%)}
+.scan-line{position:absolute;left:16px;right:16px;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,.2),transparent);animation:scanMove 3s linear infinite}
+@keyframes scanMove{0%{top:16px}100%{top:calc(100% - 16px)}}
+.hud-data{position:absolute;bottom:14px;left:14px;font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(0,212,255,.5);line-height:1.6}
+.obstacle{position:absolute;width:30px;height:30px;border:1px solid rgba(255,107,53,.3);border-radius:4px;animation:obstacleDetect 2s ease-in-out infinite}
+.obstacle.o1{top:35%;left:30%;animation-delay:0s}
+.obstacle.o2{top:40%;right:25%;animation-delay:.7s}
+.obstacle.o3{top:55%;left:45%;animation-delay:1.4s}
+@keyframes obstacleDetect{0%,100%{opacity:.3;border-color:rgba(255,107,53,.2)}50%{opacity:.8;border-color:rgba(255,107,53,.6)}}
+.obstacle-label{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--orange);text-align:center;margin-top:32px}
+
+/* 2: App Showcase Carousel */
+.app-scene{width:100%;height:100%;background:linear-gradient(160deg,#0d0018,#0a0e1a);position:relative;display:flex;align-items:center;justify-content:center}
+.phone{width:130px;height:240px;border:2px solid #333;border-radius:18px;background:#111;position:relative;overflow:hidden;box-shadow:0 0 40px rgba(79,110,247,.15)}
+.phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:50px;height:14px;background:#111;border-radius:0 0 10px 10px;z-index:5;border:1px solid #222;border-top:none}
+.phone-screen{position:absolute;inset:6px;border-radius:14px;overflow:hidden}
+.app-slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .6s;padding:16px}
+.app-slide.active{opacity:1}
+.app-slide .app-icon{font-size:40px;margin-bottom:8px}
+.app-slide .app-name{font-size:11px;font-weight:700;letter-spacing:.5px}
+.app-slide .app-desc{font-size:8px;color:var(--dim);text-align:center;margin-top:4px}
+.slide-bg1{background:linear-gradient(135deg,#1a1a3e,#0a1a30)}
+.slide-bg2{background:linear-gradient(135deg,#1a0a2e,#0e1a28)}
+.slide-bg3{background:linear-gradient(135deg,#0a1e1e,#0a1028)}
+.slide-bg4{background:linear-gradient(135deg,#1e1a0a,#1a0e0a)}
+.slide-bg5{background:linear-gradient(135deg,#0a1a0e,#0a1828)}
+.phone-dots{display:flex;gap:4px;position:absolute;bottom:10px;left:50%;transform:translateX(-50%)}
+.phone-dot{width:5px;height:5px;border-radius:50%;background:#333;transition:background .3s}
+.phone-dot.active{background:var(--cyan)}
+.float-apps{position:absolute;pointer-events:none}
+.float-app{position:absolute;font-size:24px;opacity:.15;animation:floatApp var(--d) ease-in-out infinite;animation-delay:var(--dl)}
+@keyframes floatApp{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(8deg)}}
+
+/* 3: Stop Motion */
+.stop-scene{width:100%;height:100%;background:linear-gradient(135deg,#14120a,#0a0e14);position:relative;display:flex;align-items:center;justify-content:center}
+.film-strip{display:flex;gap:4px;animation:filmScroll 8s linear infinite}
+@keyframes filmScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.film-frame{width:70px;height:56px;border:2px solid #333;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--s);flex-shrink:0;position:relative}
+.film-frame::before,.film-frame::after{content:'';position:absolute;left:4px;right:4px;height:4px;background:repeating-linear-gradient(90deg,#222 0 4px,transparent 4px 8px)}
+.film-frame::before{top:-6px}
+.film-frame::after{bottom:-6px}
+.stop-label{position:absolute;bottom:20px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:2px}
+
+/* 4: Split Screen Race */
+.race-scene{width:100%;height:100%;background:#080810;position:relative;overflow:hidden}
+.race-split{position:absolute;top:50%;left:0;right:0;height:2px;background:var(--cyan);box-shadow:0 0 10px var(--cyan);z-index:2}
+.race-half{position:absolute;left:0;right:0;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.race-top{top:0;height:50%;background:linear-gradient(180deg,#0a0e1a,#060810)}
+.race-bot{bottom:0;height:50%;background:linear-gradient(0deg,#0a1a0e,#060810)}
+.race-emoji{font-size:36px;animation:raceMove 3s ease-in-out infinite}
+.race-top .race-emoji{animation-delay:0s}
+.race-bot .race-emoji{animation-delay:.5s}
+@keyframes raceMove{0%{transform:translateX(-60px)}50%{transform:translateX(60px)}100%{transform:translateX(-60px)}}
+.race-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;margin-top:8px}
+.race-top .race-label{color:var(--cyan)}
+.race-bot .race-label{color:var(--green)}
+.race-timer{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:#fff;z-index:3;text-shadow:0 0 20px rgba(0,212,255,.5)}
+
+/* 5: Unboxing */
+.unbox-scene{width:100%;height:100%;background:radial-gradient(ellipse at center,#1a1408,#0a0a06);position:relative;display:flex;align-items:center;justify-content:center}
+.box{width:100px;height:80px;background:linear-gradient(145deg,#d4a44a,#b8892a);border-radius:6px;position:relative;box-shadow:0 10px 40px rgba(180,130,40,.2)}
+.box-lid{position:absolute;top:-20px;left:-8px;right:-8px;height:24px;background:linear-gradient(145deg,#e0b85a,#c89a3a);border-radius:6px 6px 0 0;transform-origin:bottom;animation:lidOpen 4s ease-in-out infinite}
+@keyframes lidOpen{0%,60%{transform:rotateX(0)}30%,50%{transform:rotateX(-70deg)}}
+.box-ribbon{position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:14px;height:calc(100% + 20px);background:var(--red);z-index:1}
+.box-ribbon-h{position:absolute;top:50%;left:0;right:0;height:14px;transform:translateY(-50%);background:var(--red)}
+.box-sparkle{position:absolute;font-size:14px;animation:sparkle 2s ease-in-out infinite;opacity:0}
+.box-sparkle.s1{top:-30px;left:20px;animation-delay:1.5s}
+.box-sparkle.s2{top:-25px;right:15px;animation-delay:1.8s}
+.box-sparkle.s3{top:-35px;left:50%;animation-delay:1.6s}
+@keyframes sparkle{0%,60%{opacity:0;transform:translateY(0)}70%{opacity:1;transform:translateY(-15px)}100%{opacity:0;transform:translateY(-30px)}}
+.box-items{position:absolute;bottom:-50px;display:flex;gap:8px;font-size:18px}
+.box-item{animation:itemPop 4s ease-in-out infinite;opacity:0}
+.box-item:nth-child(1){animation-delay:1.8s}
+.box-item:nth-child(2){animation-delay:2.1s}
+.box-item:nth-child(3){animation-delay:2.4s}
+.box-item:nth-child(4){animation-delay:2.7s}
+@keyframes itemPop{0%,40%{opacity:0;transform:translateY(10px) scale(.5)}50%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:1;transform:translateY(0) scale(1)}}
+
+/* 6: Multilingual */
+.lang-scene{width:100%;height:100%;background:linear-gradient(135deg,#0a0a1e,#0e1418);position:relative;display:flex;align-items:center;justify-content:center}
+.lang-orbit{position:relative;width:200px;height:200px}
+.lang-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:32px;width:56px;height:56px;display:flex;align-items:center;justify-content:center;background:var(--s2);border:1px solid var(--bd);border-radius:50%}
+.lang-flag{position:absolute;font-size:28px;animation:langOrbit 8s linear infinite}
+.lang-flag:nth-child(2){animation-delay:0s}
+.lang-flag:nth-child(3){animation-delay:-2.67s}
+.lang-flag:nth-child(4){animation-delay:-5.33s}
+@keyframes langOrbit{
+  0%{top:0%;left:50%;transform:translate(-50%,-50%)}
+  25%{top:50%;left:100%;transform:translate(-50%,-50%)}
+  50%{top:100%;left:50%;transform:translate(-50%,-50%)}
+  75%{top:50%;left:0%;transform:translate(-50%,-50%)}
+  100%{top:0%;left:50%;transform:translate(-50%,-50%)}
+}
+.lang-words{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:12px}
+.lang-word{font-size:11px;padding:4px 10px;border-radius:6px;background:var(--s2);border:1px solid var(--bd);animation:wordFade 6s ease-in-out infinite}
+.lang-word:nth-child(1){animation-delay:0s}
+.lang-word:nth-child(2){animation-delay:2s}
+.lang-word:nth-child(3){animation-delay:4s}
+@keyframes wordFade{0%,30%{opacity:1}35%,65%{opacity:.3}70%,100%{opacity:1}}
+
+/* 7: Time-lapse workshop */
+.timelapse-scene{width:100%;height:100%;background:linear-gradient(135deg,#0a0e1e,#0a0610);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.clock-ring{width:140px;height:140px;border:2px solid var(--bd);border-radius:50%;position:relative}
+.clock-hand{position:absolute;bottom:50%;left:50%;width:2px;height:50px;background:var(--cyan);transform-origin:bottom center;animation:clockSpin 4s linear infinite;border-radius:1px}
+.clock-hand.minute{height:40px;background:var(--blue);animation-duration:8s}
+@keyframes clockSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.clock-dot{position:absolute;top:50%;left:50%;width:8px;height:8px;background:var(--cyan);border-radius:50%;transform:translate(-50%,-50%);z-index:2}
+.tl-stages{position:absolute;bottom:30px;display:flex;gap:6px}
+.tl-stage{font-size:20px;padding:6px;background:var(--s2);border:1px solid var(--bd);border-radius:8px;animation:stageGlow 8s ease-in-out infinite}
+.tl-stage:nth-child(1){animation-delay:0s}
+.tl-stage:nth-child(2){animation-delay:2s}
+.tl-stage:nth-child(3){animation-delay:4s}
+.tl-stage:nth-child(4){animation-delay:6s}
+@keyframes stageGlow{0%,20%{border-color:var(--cyan);box-shadow:0 0 8px rgba(0,212,255,.2)}30%,100%{border-color:var(--bd);box-shadow:none}}
+
+/* 8: Live coding */
+.livecode-scene{width:100%;height:100%;background:#0d1117;position:relative;padding:20px;font-family:'JetBrains Mono',monospace;font-size:10px;overflow:hidden}
+.lc-bar{display:flex;gap:5px;margin-bottom:12px}
+.lc-dot{width:8px;height:8px;border-radius:50%}
+.lc-dot.r{background:#ff5f57}.lc-dot.y{background:#ffbd2e}.lc-dot.g{background:#28c840}
+.lc-line{margin-bottom:3px;opacity:0;animation:typeIn .3s ease both;white-space:nowrap}
+.lc-line:nth-child(2){animation-delay:.5s}
+.lc-line:nth-child(3){animation-delay:1s}
+.lc-line:nth-child(4){animation-delay:1.5s}
+.lc-line:nth-child(5){animation-delay:2s}
+.lc-line:nth-child(6){animation-delay:2.5s}
+.lc-line:nth-child(7){animation-delay:3s}
+.lc-line:nth-child(8){animation-delay:3.5s}
+.lc-line:nth-child(9){animation-delay:4s}
+.lc-line:nth-child(10){animation-delay:4.5s}
+.lc-line:nth-child(11){animation-delay:5s}
+@keyframes typeIn{from{opacity:0;transform:translateX(-5px)}to{opacity:1;transform:translateX(0)}}
+.lc-kw{color:#ff7b72}
+.lc-fn{color:#d2a8ff}
+.lc-str{color:#a5d6ff}
+.lc-cm{color:#484f58}
+.lc-num{color:#79c0ff}
+.lc-cursor{display:inline-block;width:6px;height:12px;background:var(--cyan);animation:cursorBlink .8s step-end infinite;vertical-align:middle;margin-left:2px}
+@keyframes cursorBlink{0%,50%{opacity:1}51%,100%{opacity:0}}
+
+/* 9: Day vs Night */
+.daynight-scene{width:100%;height:100%;position:relative;overflow:hidden;animation:dayNightCycle 8s ease-in-out infinite}
+@keyframes dayNightCycle{
+  0%,40%{background:linear-gradient(180deg,#1a1a3e 0%,#0a0e28 100%)}
+  50%,90%{background:linear-gradient(180deg,#4a90d9 0%,#87ceeb 100%)}
+  100%{background:linear-gradient(180deg,#1a1a3e 0%,#0a0e28 100%)}
+}
+.dn-moon{position:absolute;top:20%;right:20%;width:40px;height:40px;background:var(--yellow);border-radius:50%;box-shadow:0 0 30px rgba(251,191,36,.3);animation:moonSun 8s ease-in-out infinite}
+@keyframes moonSun{0%,40%{opacity:1;background:var(--yellow);top:20%}45%{opacity:0;top:60%}50%,90%{opacity:1;background:var(--orange);top:15%}95%{opacity:0;top:60%}100%{opacity:1;background:var(--yellow);top:20%}}
+.dn-stars{position:absolute;inset:0;pointer-events:none}
+.dn-star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:starTwinkle 8s ease-in-out infinite}
+@keyframes starTwinkle{0%,40%{opacity:.6}50%,90%{opacity:0}100%{opacity:.6}}
+.dn-ground{position:absolute;bottom:0;left:0;right:0;height:30%;background:linear-gradient(180deg,transparent,rgba(10,14,20,.8))}
+.dn-building{position:absolute;bottom:30%;background:var(--s);border-radius:4px 4px 0 0}
+.dn-building.b1{left:15%;width:40px;height:60px}
+.dn-building.b2{left:35%;width:50px;height:80px}
+.dn-building.b3{right:25%;width:35px;height:50px}
+.dn-window{width:6px;height:6px;border-radius:1px;position:absolute;animation:windowGlow 8s ease-in-out infinite}
+@keyframes windowGlow{0%,40%{background:var(--yellow);box-shadow:0 0 4px rgba(251,191,36,.3)}50%,90%{background:#87ceeb;box-shadow:none}100%{background:var(--yellow);box-shadow:0 0 4px rgba(251,191,36,.3)}}
+.dn-text{position:absolute;bottom:10%;left:50%;transform:translateX(-50%);font-family:'Syne',sans-serif;font-weight:700;font-size:14px;text-align:center;white-space:nowrap}
+
+/* 10: Mosaic */
+.mosaic-scene{width:100%;height:100%;background:var(--bg);display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(4,1fr);gap:3px;padding:10px}
+.mosaic-cell{border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:18px;animation:mosaicPop .4s ease both;transition:transform .2s}
+.mosaic-cell:hover{transform:scale(1.1)}
+
+/* Footer */
+.site-footer{text-align:center;padding:60px 0 40px;border-top:1px solid var(--bd);margin-top:60px}
+.site-footer p{color:var(--dim);font-size:14px}
+.site-footer a{color:var(--cyan);text-decoration:none}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
+
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-pre">⚡ Workshop-DIY Creative Lab</div>
+  <h1>10 <span class="gr">Genius</span><br>Video Ideas</h1>
+  <p class="sub">Des concepts vidéo innovants pour mettre en valeur l'écosystème Workshop-DIY : apps, robot ESP32, ateliers et communauté.</p>
+  <div class="scroll-h">↓ SCROLL TO EXPLORE</div>
+</div>
+
+<div class="counter">
+  <div class="num">10</div>
+  <div class="lab">Concepts vidéo prêts à produire</div>
+</div>
+
+<!-- ============================================== -->
+<!-- IDEA 1: ROBOT POV -->
+<!-- ============================================== -->
+<div class="idea" style="--accent-color:var(--cyan)">
+  <div class="idea-grid">
+    <div class="preview">
+      <div class="pov-scene">
+        <div class="hud">
+          <div class="hud-rec">● REC</div>
+          <div class="hud-battery">🔋 87%</div>
+          <div class="hud-crosshair"></div>
+          <div class="scan-line"></div>
+          <div class="obstacle o1"><div class="obstacle-label">OBJ_01</div></div>
+          <div class="obstacle o2"><div class="obstacle-label">OBJ_02</div></div>
+          <div class="obstacle o3"><div class="obstacle-label">OBJ_03</div></div>
+          <div class="hud-data">DIST: 42cm<br>SPEED: 0.3m/s<br>MODE: AUTO<br>ESP32: ONLINE</div>
+        </div>
+      </div>
+    </div>
+    <div class="info">
+      <div class="idea-num" style="color:var(--cyan)">Idée 01</div>
+      <h3>🤖 Vue POV du Robot ESP32</h3>
+      <p class="desc">Filmez une vidéo entièrement du point de vue du robot : HUD avec données capteurs en temps réel, détection d'obstacles, navigation autonome. Le spectateur DEVIENT le robot.</p>
+      <div class="tags">
+        <span class="tag viral">🔥 Viral</span>
+        <span class="tag ai">🎥 IA + Film</span>
+        <span class="tag social">📱 Reels</span>
+      </div>
+    </div>
+  </div>
+  <div class="exp-bar">
+    <div class="exp-h" onclick="toggle(this)">📋 Prompt IA + Notes de production <span class="exp-arr">▼</span></div>
+    <div class="exp-b">
+      <div class="prompt" onclick="copy(this)">Vue subjective caméra embarquée sur un petit robot ESP32 qui navigue dans un atelier maker. Interface HUD semi-transparente avec données capteurs : distance, vitesse, batterie. Le robot détecte et évite des obstacles, des pieds de chaises, des fils. Effet caméra fisheye léger. Ambiance sci-fi documentaire, éclairage atelier. Glitch effects subtils. 4K cinématographique.</div>
+      <div class="notes">
+        <strong>📌 Comment produire :</strong>
+        <div class="note-grid">
+          <div class="note-item"><strong>Option A — Réel</strong>Fixer une GoPro/Insta360 sur le robot ESP32 réel. Ajouter le HUD en post-prod (After Effects / CapCut).</div>
+          <div class="note-item"><strong>Option B — IA</strong>Générer avec Sora/Runway puis ajouter overlay HUD en HTML/CSS (comme cette preview !).</div>
+          <div class="note-item"><strong>Durée</strong>30-60s pour Reels/TikTok, 2-3min pour YouTube.</div>
+          <div class="note-item"><strong>Audio</strong>Sons de servomoteurs + bips électroniques + musique ambient sci-fi.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- IDEA 2: APP SHOWCASE -->
+<!-- ============================================== -->
+<div class="idea" style="--accent-color:var(--green)">
+  <div class="idea-grid">
+    <div class="preview">
+      <div class="app-scene">
+        <div class="float-apps">
+          <div class="float-app" style="top:15%;left:10%;--d:3s;--dl:0s">⭐</div>
+          <div class="float-app" style="top:70%;left:8%;--d:4s;--dl:.5s">🧠</div>
+          <div class="float-app" style="top:20%;right:12%;--d:3.5s;--dl:1s">📸</div>
+          <div class="float-app" style="top:65%;right:10%;--d:4.5s;--dl:.3s">🔩</div>
+          <div class="float-app" style="top:40%;left:5%;--d:3s;--dl:.8s">📚</div>
+          <div class="float-app" style="top:45%;right:5%;--d:4s;--dl:1.2s">🗣️</div>
+        </div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="app-slide slide-bg1 active" data-idx="0"><div class="app-icon">⭐</div><div class="app-name">Favoris</div><div class="app-desc">Tes apps préférées</div></div>
+            <div class="app-slide slide-bg2" data-idx="1"><div class="app-icon">🤖</div><div class="app-name">Robot Control</div><div class="app-desc">Pilote ton ESP32</div></div>
+            <div class="app-slide slide-bg3" data-idx="2"><div class="app-icon">🧠</div><div class="app-name">Brain Games</div><div class="app-desc">Défis logiques</div></div>
+            <div class="app-slide slide-bg4" data-idx="3"><div class="app-icon">🛠️</div><div class="app-name">Workshop Tools</div><div class="app-desc">Outils numériques</div></div>
+            <div class="app-slide slide-bg5" data-idx="4"><div class="app-icon">📸</div><div class="app-name">Camera</div><div class="app-desc">Capture & partage</div></div>
+          </div>
+          <div class="phone-dots">
+            <div class="phone-dot active"></div><div class="phone-dot"></div><div class="phone-dot"></div><div class="phone-dot"></div><div class="phone-dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="info">
+      <div class="idea-num" style="color:var(--green)">Idée 02</div>
+      <h3>📱 Showcase Écosystème Apps</h3>
+      <p class="desc">Présenter TOUTES les apps Workshop-DIY dans un carrousel dynamique : robot control, brain games, camera, voice, school tools. Montrer la richesse de l'écosystème en 30 secondes.</p>
+      <div class="tags">
+        <span class="tag app">📱 Apps</span>
+        <span class="tag social">📱 Reels</span>
+        <span class="tag brand">🏷️ Brand</span>
+      </div>
+    </div>
+  </div>
+  <div class="exp-bar">
+    <div class="exp-h" onclick="toggle(this)">📋 Prompt IA + Notes de production <span class="exp-arr">▼</span></div>
+    <div class="exp-b">
+      <div class="prompt" onclick="copy(this)">Animation fluide d'un smartphone flottant dans l'espace sombre. Des icônes d'applications colorées gravitent autour. L'écran du téléphone montre un carrousel d'apps éducatives : contrôle robot, jeux de logique, caméra, outils ateliers. Transitions fluides entre chaque app. Style Apple keynote, fond sombre avec lumières douces. Motion graphics modernes. 4K.</div>
+      <div class="notes">
+        <strong>📌 Production :</strong>
+        <div class="note-grid">
+          <div class="note-item"><strong>Screencast</strong>Enregistrer l'app réelle sur abourdim.github.io/apps/ avec les différents thèmes (dark, ocean, fire, mosque...).</div>
+          <div class="note-item"><strong>Motion</strong>After Effects ou Canva pour les transitions entre apps. Ou filmer un vrai téléphone en main.</div>
+          <div class="note-item"><strong>Hook</strong>« 9 apps. 3 langues. 1 seul écosystème. » — texte d'accroche.</div>
+          <div class="note-item"><strong>Multilingual</strong>Montrer le switch FR → EN → AR en live pour impressionner.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- IDEA 3: STOP MOTION -->
+<!-- ============================================== -->
+<div class="idea" style="--accent-color:var(--orange)">
+  <div class="idea-grid">
+    <div class="preview">
+      <div class="stop-scene">
+        <div style="overflow:hidden;width:100%;display:flex;justify-content:center">
+          <div class="film-strip">
+            <div class="film-frame">📦</div><div class="film-frame">🔧</div><div class="film-frame">⚡</div>
+            <div class="film-frame">🔌</div><div class="film-frame">💻</div><div class="film-frame">🤖</div>
+            <div class="film-frame">🎉</div><div class="film-frame">🚀</div>
+            <div class="film-frame">📦</div><div class="film-frame">🔧</div><div class="film-frame">⚡</div>
+            <div class="film-frame">🔌</div><div class="film-frame">💻</div><div class="film-frame">🤖</div>
+            <div class="film-frame">🎉</div><div class="film-frame">🚀</div>
+          </div>
+        </div>
+        <div class="stop-label">STOP MOTION · 24 FPS</div>
+      </div>
+    </div>
+    <div class="info">
+      <div class="idea-num" style="color:var(--orange)">Idée 03</div>
+      <h3>🎬 Stop Motion Assemblage Robot</h3>
+      <p class="desc">Un stop-motion où le robot ESP32 « s'assemble tout seul » comme par magie. Les pièces glissent, se connectent, le code apparaît à l'écran, puis le robot prend vie et roule hors du cadre.</p>
+      <div class="tags">
+        <span class="tag film">🎥 Film</span>
+        <span class="tag viral">🔥 Viral</span>
+        <span class="tag social">📱 TikTok</span>
+      </div>
+    </div>
+  </div>
+  <div class="exp-bar">
+    <div class="exp-h" onclick="toggle(this)">📋 Prompt IA + Notes de production <span class="exp-arr">▼</span></div>
+    <div class="exp-b">
+      <div class="prompt" onclick="copy(this)">Stop motion vue du dessus sur un fond blanc épuré. Des composants électroniques (ESP32, moteurs, roues, capteurs, fils) entrent dans le cadre et s'assemblent seuls pour former un petit robot. Le processus est fluide et satisfaisant. À la fin, le robot cligne des yeux LED et sort du cadre en roulant. Style ASMR satisfying. Lumière studio douce.</div>
+      <div class="notes">
+        <strong>📌 Production :</strong>
+        <div class="note-grid">
+          <div class="note-item"><strong>Matériel</strong>Smartphone sur trépied vue plongeante. Fond blanc (papier ou carton). Kit ESP32 réel.</div>
+          <div class="note-item"><strong>Technique</strong>~200 photos. Déplacer les pièces de 2-3mm entre chaque photo. Assembler avec Stop Motion Studio (gratuit).</div>
+          <div class="note-item"><strong>Audio</strong>Sons ASMR satisfying : clics, snaps, whirrs. Musique lo-fi douce.</div>
+          <div class="note-item"><strong>Potentiel</strong>Les stop-motions « assembly » sont extrêmement viraux sur TikTok/Reels (millions de vues).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- IDEA 4: SPLIT SCREEN CHALLENGE -->
+<!-- ============================================== -->
+<div class="idea" style="--accent-color:var(--pink)">
+  <div class="idea-grid">
+    <div class="preview">
+      <div class="race-scene">
+        <div class="race-half race-top"><div class="race-emoji">🤖</div><div class="race-label">ROBOT A — CODE RAPIDE</div></div>
+        <div class="race-split"></div>
+        <div class="race-half race-bot"><div class="race-emoji">🤖</div><div class="race-label">ROBOT B — CODE OPTIMISÉ</div></div>
+        <div class="race-timer">VS</div>
+      </div>
+    </div>
+    <div class="info">
+      <div class="idea-num" style="color:var(--pink)">Idée 04</div>
+      <h3>🏎️ Robot Race — Split Screen Challenge</h3>
+      <p class="desc">Deux robots ESP32 s'affrontent en écran divisé. Un parcours d'obstacles. Qui arrive en premier ? Suspense, commentaire sportif humoristique, replay au ralenti. Le public vote en commentaires.</p>
+      <div class="tags">
+        <span class="tag viral">🔥 Viral</span>
+        <span class="tag social">📱 YouTube</span>
+        <span class="tag edu">🎓 Éducatif</span>
+      </div>
+    </div>
+  </div>
+  <div class="exp-bar">
+    <div class="exp-h" onclick="toggle(this)">📋 Prompt IA + Notes de production <span class="exp-arr">▼</span></div>
+    <div class="exp-b">
+      <div class="prompt" onclick="copy(this)">Vue split-screen horizontale. En haut : un petit robot bleu navigue un parcours d'obstacles fait de livres et de crayons. En bas : un robot orange fait le même parcours. Chronomètre central. Ambiance compétition sportive, commentaires dynamiques. Plans alternés entre vue générale et gros plans sur les roues. Style F1 broadcast. Éclairage LED coloré.</div>
+      <div class="notes">
+        <div class="note-grid">
+          <div class="note-item"><strong>Setup</strong>2 robots ESP32, parcours identiques côte à côte. Filmer en 2 prises puis monter en split screen.</div>
+          <div class="note-item"><strong>Engagement</strong>« ROBOT A ou ROBOT B ? Votez en commentaire ! » — CTA qui booste l'algorithme.</div>
+          <div class="note-item"><strong>Série</strong>Créer une série « Robot Grand Prix » avec classement et saisons.</div>
+          <div class="note-item"><strong>Éducation</strong>Expliquer les différences de code entre les deux robots après la course.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- IDEA 5: UNBOXING ASMR -->
+<!-- ============================================== -->
+<div class="idea" style="--accent-color:var(--yellow)">
+  <div class="idea-grid">
+    <div class="preview">
+      <div class="unbox-scene">
+        <div class="box">
+          <div class="box-lid"></div>
+          <div class="box-ribbon"></div>
+          <div class="box-ribbon-h"></div>
+          <div class="box-sparkle s1">✨</div>
+          <div class="box-sparkle s2">⭐</div>
+          <div class="box-sparkle s3">💫</div>
+          <div class="box-items">
+            <span class="box-item">🔧</span>
+            <span class="box-item">🤖</span>
+            <span class="box-item">💻</span>
+            <span class="box-item">⚡</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="info">
+      <div class="idea-num" style="color:var(--yellow)">Idée 05</div>
+      <h3>📦 ASMR Unboxing Kit ESP32</h3>
+      <p class="desc">Unboxing ASMR ultra-satisfaisant du kit robot ESP32 Lite. Gros plans tactiles, sons amplifiés des emballages, reveal de chaque composant avec texte overlay. Le format qui génère des millions de vues.</p>
+      <div class="tags">
+        <span class="tag viral">🔥 Mega Viral</span>
+        <span class="tag social">📱 TikTok</span>
+        <span class="tag film">🎥 Film</span>
+      </div>
+    </div>
+  </div>
+  <div class="exp-bar">
+    <div class="exp-h" onclick="toggle(this)">📋 Prompt IA + Notes de production <span class="exp-arr">▼</span></div>
+    <div class="exp-b">
+      <div class="prompt" onclick="copy(this)">Gros plan macro mains qui déballent un kit robot. Sons ASMR amplifiés : froissement du papier, clics des composants, son satisfaisant de l'ouverture. Chaque pièce est posée délicatement sur fond noir mat. Texte minimal apparaît : « ESP32 », « Moteurs », « Capteurs ». Lumière latérale chaude studio. Plans ultra rapprochés des textures. Tempo lent et hypnotique.</div>
+      <div class="notes">
+        <div class="note-grid">
+          <div class="note-item"><strong>Audio</strong>Micro ASMR (ou amplifier en post-prod). AUCUNE musique, juste les sons. Ou musique très douce.</div>
+          <div class="note-item"><strong>Lumière</strong>Une seule source latérale pour créer des ombres dramatiques sur fond noir.</div>
+          <div class="note-item"><strong>Texte</strong>Noms minimalistes des composants en overlay. Police mono blanche.</div>
+          <div class="note-item"><strong>CTA</strong>« Kit disponible sur HelloAsso — lien en bio 🔗 »</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- IDEA 6: MULTILINGUAL SWITCH -->
+<!-- ============================================== -->
+<div class="idea" style="--accent-color:var(--blue)">
+  <div class="idea-grid">
+    <div class="preview">
+      <div class="lang-scene">
+        <div class="lang-orbit">
+          <div class="lang-center">🌍</div>
+          <div class="lang-flag">🇫🇷</div>
+          <div class="lang-flag">🇬🇧</div>
+          <div class="lang-flag">🇸🇦</div>
+        </div>
+        <div class="lang-words">
+          <span class="lang-word">Robotique</span>
+          <span class="lang-word">Robotics</span>
+          <span class="lang-word" style="direction:rtl">الروبوتات</span>
+        </div>
+      </div>
+    </div>
+    <div class="info">
+      <div class="idea-num" style="color:var(--blue)">Idée 06</div>
+      <h3>🌍 « Same App, 3 Languages » Challenge</h3>
+      <p class="desc">Montrer en live le switch FR → EN → AR de l'app Workshop-DIY. L'interface change de direction (RTL pour l'arabe !). Spectaculaire et montre l'ambition internationale de l'association.</p>
+      <div class="tags">
+        <span class="tag app">📱 Apps</span>
+        <span class="tag viral">🔥 Viral</span>
+        <span class="tag brand">🏷️ Brand</span>
+      </div>
+    </div>
+  </div>
+  <div class="exp-bar">
+    <div class="exp-h" onclick="toggle(this)">📋 Prompt IA + Notes de production <span class="exp-arr">▼</span></div>
+    <div class="exp-b">
+      <div class="prompt" onclick="copy(this)">Screencast d'une app éducative moderne. La personne tape un drapeau : 🇫🇷 — l'interface est en français. Puis 🇬🇧 — tout switch en anglais instantanément. Puis 🇸🇦 — l'interface bascule en arabe avec layout RTL (droite à gauche). Effet waouh. Fond sombre, app lumineuse au centre. Transitions fluides avec effet morphing. Style tech demo Apple.</div>
+      <div class="notes">
+        <div class="note-grid">
+          <div class="note-item"><strong>Facile</strong>Screen-recorder sur le site réel (abourdim.github.io/apps/) — le switch est déjà implémenté !</div>
+          <div class="note-item"><strong>Hook</strong>« Une app. 3 langues. 12 thèmes. 9 modules. Gratuit. » — accroche punchline.</div>
+          <div class="note-item"><strong>Thèmes</strong>Montrer aussi le switch de thèmes : Mosque 🕌 → Ocean 🌊 → Fire 🔥 → Space 🚀</div>
+          <div class="note-item"><strong>Cible</strong>Communauté tech internationale, parents, éducateurs multiculturels.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- IDEA 7: TIME-LAPSE WORKSHOP -->
+<!-- ============================================== -->
+<div class="idea" style="--accent-color:var(--purple)">
+  <div class="idea-grid">
+    <div class="preview">
+      <div class="timelapse-scene">
+        <div class="clock-ring">
+          <div class="clock-hand"></div>
+          <div class="clock-hand minute"></div>
+          <div class="clock-dot"></div>
+        </div>
+        <div class="tl-stages">
+          <div class="tl-stage">🪑</div>
+          <div class="tl-stage">👥</div>
+          <div class="tl-stage">🔧</div>
+          <div class="tl-stage">🎉</div>
+        </div>
+      </div>
+    </div>
+    <div class="info">
+      <div class="idea-num" style="color:var(--purple)">Idée 07</div>
+      <h3>⏱️ « 2 Heures en 30 Secondes » — Timelapse</h3>
+      <p class="desc">Caméra fixe pendant tout un atelier. Accéléré x100. On voit la salle se remplir, l'activité bouillonner, les projets avancer, puis tout le monde partir fier. Satisfaisant et authentique.</p>
+      <div class="tags">
+        <span class="tag film">🎥 Film</span>
+        <span class="tag social">📱 Reels</span>
+        <span class="tag edu">🎓 Atelier</span>
+      </div>
+    </div>
+  </div>
+  <div class="exp-bar">
+    <div class="exp-h" onclick="toggle(this)">📋 Prompt IA + Notes de production <span class="exp-arr">▼</span></div>
+    <div class="exp-b">
+      <div class="prompt" onclick="copy(this)">Timelapse vue plongeante d'un atelier maker. La salle est vide au début. Des personnes arrivent, s'installent, commencent à travailler. Des câbles, composants, laptops apparaissent sur les tables. L'activité s'accélère. À la fin, tout le monde lève son projet fini en l'air. La salle se vide. Plan final : la table avec un robot fini dessus. 4K.</div>
+      <div class="notes">
+        <div class="note-grid">
+          <div class="note-item"><strong>Setup</strong>GoPro ou smartphone fixé en hauteur (trépied, étagère). Mode timelapse 1 photo/5s.</div>
+          <div class="note-item"><strong>Durée réelle</strong>2-3h d'atelier = 30-45s de vidéo. Parfait pour Reels.</div>
+          <div class="note-item"><strong>Overlay</strong>Horloge accélérée en coin + compteur de participants.</div>
+          <div class="note-item"><strong>Audio</strong>Musique build-up qui accélère avec le timelapse. Drop au moment du reveal final.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- IDEA 8: LIVE CODING -->
+<!-- ============================================== -->
+<div class="idea" style="--accent-color:var(--lime)">
+  <div class="idea-grid">
+    <div class="preview">
+      <div class="livecode-scene">
+        <div class="lc-bar"><div class="lc-dot r"></div><div class="lc-dot y"></div><div class="lc-dot g"></div></div>
+        <div class="lc-line"><span class="lc-cm">// Workshop-DIY Robot</span></div>
+        <div class="lc-line"><span class="lc-kw">#include</span> <span class="lc-str">&lt;ESP32Servo.h&gt;</span></div>
+        <div class="lc-line"></div>
+        <div class="lc-line"><span class="lc-kw">void</span> <span class="lc-fn">setup</span>() {</div>
+        <div class="lc-line">&nbsp;&nbsp;Serial.<span class="lc-fn">begin</span>(<span class="lc-num">115200</span>);</div>
+        <div class="lc-line">&nbsp;&nbsp;motor.<span class="lc-fn">attach</span>(<span class="lc-num">GPIO_13</span>);</div>
+        <div class="lc-line">&nbsp;&nbsp;led.<span class="lc-fn">setColor</span>(<span class="lc-str">BLUE</span>);</div>
+        <div class="lc-line">}</div>
+        <div class="lc-line"></div>
+        <div class="lc-line"><span class="lc-kw">void</span> <span class="lc-fn">loop</span>() {</div>
+        <div class="lc-line">&nbsp;&nbsp;robot.<span class="lc-fn">forward</span>();<span class="lc-cursor"></span></div>
+      </div>
+    </div>
+    <div class="info">
+      <div class="idea-num" style="color:var(--lime)">Idée 08</div>
+      <h3>💻 « Code → Robot Bouge » en Temps Réel</h3>
+      <p class="desc">Écran splitté : à gauche le code s'écrit en live, à droite le robot exécute chaque ligne en temps réel. Le spectateur voit directement le lien entre le code et l'action physique. Magique et éducatif.</p>
+      <div class="tags">
+        <span class="tag edu">🎓 Éducatif</span>
+        <span class="tag viral">🔥 Viral</span>
+        <span class="tag social">📱 YouTube</span>
+      </div>
+    </div>
+  </div>
+  <div class="exp-bar">
+    <div class="exp-h" onclick="toggle(this)">📋 Prompt IA + Notes de production <span class="exp-arr">▼</span></div>
+    <div class="exp-b">
+      <div class="prompt" onclick="copy(this)">Split screen vertical. Gauche : éditeur de code sombre avec du code Arduino qui s'écrit ligne par ligne. Le curseur clignote. Droite : un petit robot ESP32 réagit en temps réel — les moteurs tournent, les LED s'allument, le robot avance. Synchronisation parfaite entre code et action. Style coding tutorial esthétique. Fond sombre pro.</div>
+      <div class="notes">
+        <div class="note-grid">
+          <div class="note-item"><strong>Setup</strong>OBS Studio : capture d'écran IDE + webcam sur le robot. Synchroniser au montage.</div>
+          <div class="note-item"><strong>Wow factor</strong>« robot.dance() » → le robot fait une chorégraphie. La crowd explose.</div>
+          <div class="note-item"><strong>Série</strong>« 1 Ligne de Code = 1 Action Robot » — série de shorts éducatifs.</div>
+          <div class="note-item"><strong>Audience</strong>Dev community, étudiants, enseignants STEM. Fort potentiel LinkedIn.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- IDEA 9: THEME SWITCH VIBES -->
+<!-- ============================================== -->
+<div class="idea" style="--accent-color:var(--orange)">
+  <div class="idea-grid">
+    <div class="preview">
+      <div class="daynight-scene">
+        <div class="dn-stars">
+          <div class="dn-star" style="top:10%;left:20%"></div>
+          <div class="dn-star" style="top:15%;left:60%"></div>
+          <div class="dn-star" style="top:25%;left:80%"></div>
+          <div class="dn-star" style="top:8%;left:45%"></div>
+          <div class="dn-star" style="top:30%;left:30%"></div>
+        </div>
+        <div class="dn-moon"></div>
+        <div class="dn-ground"></div>
+        <div class="dn-building b1"><div class="dn-window" style="top:10px;left:6px"></div><div class="dn-window" style="top:10px;right:6px"></div><div class="dn-window" style="top:28px;left:6px"></div></div>
+        <div class="dn-building b2"><div class="dn-window" style="top:10px;left:8px"></div><div class="dn-window" style="top:10px;right:8px"></div><div class="dn-window" style="top:30px;left:8px"></div><div class="dn-window" style="top:30px;right:8px"></div></div>
+        <div class="dn-building b3"><div class="dn-window" style="top:10px;left:6px"></div><div class="dn-window" style="top:10px;right:6px"></div></div>
+        <div class="dn-text">🌙 Dark → 🌞 Light → 🌊 Ocean → 🔥 Fire</div>
+      </div>
+    </div>
+    <div class="info">
+      <div class="idea-num" style="color:var(--orange)">Idée 09</div>
+      <h3>🎨 « 12 Thèmes en 12 Secondes » Vibes Video</h3>
+      <p class="desc">Montrer les 12 thèmes de l'app Workshop-DIY qui switch au rythme d'un beat. Dark 🌙, Light 🌞, Ocean 🌊, Space 🚀, Fire 🔥, Forest 🌲, Mosque 🕌, Castle 🏰... Chaque thème = 1 beat. Ultra satisfaisant.</p>
+      <div class="tags">
+        <span class="tag app">📱 Apps</span>
+        <span class="tag viral">🔥 Mega Viral</span>
+        <span class="tag social">📱 TikTok</span>
+      </div>
+    </div>
+  </div>
+  <div class="exp-bar">
+    <div class="exp-h" onclick="toggle(this)">📋 Prompt IA + Notes de production <span class="exp-arr">▼</span></div>
+    <div class="exp-b">
+      <div class="prompt" onclick="copy(this)">Screencast rapide d'une app mobile qui change de thème à chaque beat musical. Dark mode avec étoiles. Light mode lumineux. Ocean bleu profond. Space avec nébuleuses. Fire avec des flammes. Forest vert nature. Mosque avec motifs islamiques. Castle médiéval. Chaque transition synchro au beat. Style satisfying compilation. Vertical 9:16.</div>
+      <div class="notes">
+        <div class="note-grid">
+          <div class="note-item"><strong>Simple</strong>Screen-recorder sur l'app réelle + couper au rythme du son dans CapCut.</div>
+          <div class="note-item"><strong>Son</strong>Choisir un son TikTok tendance avec un beat régulier. Chaque beat = 1 switch de thème.</div>
+          <div class="note-item"><strong>12 thèmes</strong>🌙🌞🌊🚀⚡🌲🔥🕌🏰🔷🧩🌿 — tous ceux de l'app !</div>
+          <div class="note-item"><strong>CTA</strong>« Quel est ton thème préféré ? » en fin — booste commentaires.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- IDEA 10: COMMUNITY MOSAIC -->
+<!-- ============================================== -->
+<div class="idea" style="--accent-color:var(--cyan)">
+  <div class="idea-grid">
+    <div class="preview">
+      <div class="mosaic-scene" id="mosaic"></div>
+    </div>
+    <div class="info">
+      <div class="idea-num" style="color:var(--cyan)">Idée 10</div>
+      <h3>🧩 « Mosaïque Communauté » — Vidéo Collaborative</h3>
+      <p class="desc">Chaque participant filme 3 secondes de son projet/activité. On assemble toutes les vidéos en mosaïque synchronisée. Le résultat : un portrait vivant de toute la communauté Workshop-DIY. Émouvant et inclusif.</p>
+      <div class="tags">
+        <span class="tag brand">🏷️ Brand</span>
+        <span class="tag edu">🎓 Communauté</span>
+        <span class="tag social">📱 Toutes</span>
+      </div>
+    </div>
+  </div>
+  <div class="exp-bar">
+    <div class="exp-h" onclick="toggle(this)">📋 Prompt IA + Notes de production <span class="exp-arr">▼</span></div>
+    <div class="exp-b">
+      <div class="prompt" onclick="copy(this)">Mosaïque vidéo style « Year in Review ». Grille de 4x5 petites vidéos qui jouent simultanément. Chaque case montre un participant différent : un enfant qui code, un robot qui avance, une imprimante 3D, un écran avec l'app, un sourire, un high-five. Les cases s'illuminent par vagues. Musique inspirante crescendo. Plan final : toutes les cases fusionnent pour former le logo Workshop-DIY.</div>
+      <div class="notes">
+        <div class="note-grid">
+          <div class="note-item"><strong>Collecte</strong>Demander à chaque participant d'envoyer un clip de 3-5s sur WhatsApp/Telegram.</div>
+          <div class="note-item"><strong>Montage</strong>CapCut (grille vidéo) ou After Effects (plus pro). DaVinci Resolve gratuit.</div>
+          <div class="note-item"><strong>Émotion</strong>Terminer sur un message : « Ensemble, on construit le futur. » Garantie de larmes.</div>
+          <div class="note-item"><strong>Récurrent</strong>Faire une mosaïque chaque trimestre pour montrer la croissance de la communauté.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p><strong>Workshop-DIY</strong> — Genius Video Ideas Lab</p>
+    <p><a href="https://workshop-diy.org" target="_blank">workshop-diy.org</a> · <a href="https://abourdim.github.io/apps/" target="_blank">Kids Apps</a></p>
+  </div>
+</footer>
+
+<script>
+// App carousel
+let appIdx = 0;
+const slides = document.querySelectorAll('.app-slide');
+const dots = document.querySelectorAll('.phone-dot');
+setInterval(() => {
+  slides.forEach(s => s.classList.remove('active'));
+  dots.forEach(d => d.classList.remove('active'));
+  appIdx = (appIdx + 1) % slides.length;
+  slides[appIdx].classList.add('active');
+  dots[appIdx].classList.add('active');
+}, 2000);
+
+// Mosaic
+const mosaicEl = document.getElementById('mosaic');
+const emojis = ['🤖','💻','🔧','⚡','📸','🧠','🛠️','📚','🗣️','🏫','🎨','🔩','🌍','🎬','⭐','🚀','🔬','🎮','📐','🧪'];
+const colors = ['rgba(79,110,247,.15)','rgba(0,212,255,.15)','rgba(255,45,138,.15)','rgba(163,230,53,.15)','rgba(255,107,53,.15)','rgba(147,51,234,.15)','rgba(251,191,36,.15)','rgba(34,197,94,.15)'];
+emojis.forEach((e, i) => {
+  const c = document.createElement('div');
+  c.className = 'mosaic-cell';
+  c.textContent = e;
+  c.style.background = colors[i % colors.length];
+  c.style.animationDelay = (i * 0.08) + 's';
+  mosaicEl.appendChild(c);
+});
+
+// Expand toggle
+function toggle(el) {
+  el.classList.toggle('open');
+  el.nextElementSibling.classList.toggle('open');
+}
+
+// Copy prompt
+function copy(el) {
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1500);
+  });
+}
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.style.opacity = 1; e.target.style.transform = 'translateY(0)'; });
+}, {threshold: 0.1});
+document.querySelectorAll('.idea').forEach((el,i) => {
+  el.style.opacity = 0;
+  el.style.transform = 'translateY(30px)';
+  el.style.transition = `opacity 0.6s ${i*0.05}s ease, transform 0.6s ${i*0.05}s ease`;
+  obs.observe(el);
+});
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // RECEIPT</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a1a1a;display:flex;justify-content:center;padding:20px;min-height:100vh}
+
+.receipt{width:300px;background:#fefef4;padding:20px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#2a2a2a;line-height:1.7;box-shadow:0 4px 20px rgba(0,0,0,.3);position:relative}
+.receipt::before{content:'';position:absolute;top:-10px;left:0;right:0;height:10px;background:linear-gradient(180deg,transparent 40%,#fefef4 40%);background-size:10px 10px;background-repeat:repeat-x}
+.receipt::after{content:'';position:absolute;bottom:-10px;left:0;right:0;height:10px;background:linear-gradient(0deg,transparent 40%,#fefef4 40%);background-size:10px 10px;background-repeat:repeat-x}
+
+.center{text-align:center}
+.bold{font-weight:700}
+.dim{color:#999}
+.sep{text-align:center;color:#ccc;letter-spacing:2px;margin:4px 0;overflow:hidden}
+.dashed{border-top:1px dashed #ccc;margin:6px 0}
+.row{display:flex;justify-content:space-between}
+.row .r{text-align:right}
+.big{font-size:20px;font-weight:700}
+.total-row{display:flex;justify-content:space-between;font-weight:700;font-size:13px;border-top:2px solid #2a2a2a;border-bottom:2px solid #2a2a2a;padding:4px 0;margin:4px 0}
+
+.barcode{display:flex;justify-content:center;gap:1px;margin:8px 0}
+.barcode span{display:block;height:30px;background:#2a2a2a}
+.stars{color:#ffc107;letter-spacing:2px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="receipt" id="receipt">
+  <div class="center bold" style="font-size:16px;letter-spacing:2px">WORKSHOP-DIY</div>
+  <div class="center dim" style="font-size:8px;letter-spacing:3px">ASSOCIATION LOI 1901</div>
+  <div class="center dim" style="font-size:8px">France · workshop-diy.org</div>
+  <div class="center" style="font-size:22px;margin:4px 0">🤖</div>
+  <div class="dashed"></div>
+  <div class="center dim" style="font-size:8px" id="dateTime"></div>
+  <div class="center dim" style="font-size:8px">Receipt #42-1337-DIY</div>
+  <div class="center dim" style="font-size:8px">Cashier: ROBOT_01</div>
+  <div class="dashed"></div>
+
+  <div class="center bold" style="margin:4px 0">WORKSHOP SESSION SUMMARY</div>
+  <div class="dashed"></div>
+
+  <div class="row"><span>🤖 Robot Control (BLE)</span><span class="r">FREE</span></div>
+  <div class="row"><span>🪄 Hand Tracking (AI)</span><span class="r">FREE</span></div>
+  <div class="row"><span>🕵️ Face Detection Game</span><span class="r">FREE</span></div>
+  <div class="row"><span>🧠 AI Model Training</span><span class="r">FREE</span></div>
+  <div class="row"><span>🐧 Linux Commands</span><span class="r">FREE</span></div>
+  <div class="row"><span>🔐 Ethical Hacking</span><span class="r">FREE</span></div>
+  <div class="row"><span>⚡ ESP32 Wiring</span><span class="r">FREE</span></div>
+  <div class="row"><span>🎨 Pixel Art Creation</span><span class="r">FREE</span></div>
+  <div class="dashed"></div>
+
+  <div class="row"><span>Apps explored</span><span class="r bold">39</span></div>
+  <div class="row"><span>Skills learned</span><span class="r bold">7</span></div>
+  <div class="row"><span>Themes applied</span><span class="r bold">12</span></div>
+  <div class="row"><span>Robot drops survived</span><span class="r bold">47</span></div>
+  <div class="dashed"></div>
+
+  <div class="center bold" style="margin:4px 0">BUGS ENCOUNTERED</div>
+  <div class="dashed"></div>
+  <div class="row"><span>🐛 Bug #001: BLE disconnect</span><span class="r dim">FEATURE</span></div>
+  <div class="row"><span>🐛 Bug #013: LED wrong color</span><span class="r dim">FEATURE</span></div>
+  <div class="row"><span>🐛 Bug #027: Robot spins</span><span class="r dim">FEATURE</span></div>
+  <div class="row"><span>🐛 Bug #042: [REDACTED]</span><span class="r dim">FEATURE</span></div>
+  <div class="row"><span style="color:#999">Total bugs</span><span class="r">42 (all features)</span></div>
+  <div class="dashed"></div>
+
+  <div class="center bold" style="margin:4px 0">REFRESHMENTS</div>
+  <div class="dashed"></div>
+  <div class="row"><span>☕ Coffee (instructor)</span><span class="r">∞ cups</span></div>
+  <div class="row"><span>☕ Coffee (students)</span><span class="r">0 cups</span></div>
+  <div class="row"><span>🍕 Pizza (motivation)</span><span class="r">2 boxes</span></div>
+  <div class="row"><span>💧 Water (hydration)</span><span class="r">ignored</span></div>
+  <div class="dashed"></div>
+
+  <div class="total-row"><span>TOTAL COST</span><span>€ 0.00</span></div>
+  <div class="center dim" style="font-size:9px;margin-top:2px">FREE. ALWAYS FREE. FOREVER FREE.</div>
+  <div class="dashed"></div>
+
+  <div class="row"><span>Payment method</span><span class="r">CURIOSITY</span></div>
+  <div class="row"><span>WiFi password</span><span class="r">password123</span></div>
+  <div class="row"><span>Return policy</span><span class="r">NO REFUNDS ON FUN</span></div>
+  <div class="dashed"></div>
+
+  <div class="center" style="margin:6px 0">
+    <div class="stars">★ ★ ★ ★ ★</div>
+    <div class="dim" style="font-size:8px">How was your workshop?</div>
+  </div>
+
+  <div class="barcode" id="barcode"></div>
+  <div class="center dim" style="font-size:7px">42 1337 0039 0007 0012</div>
+  <div class="dashed"></div>
+
+  <div class="center dim" style="font-size:8px;line-height:2">
+    Thank you for learning with us!<br>
+    They learn without realizing<br>
+    they're learning. That's the trick.<br>
+    <br>
+    workshop-diy.org<br>
+    abourdim.github.io/apps<br>
+    <br>
+    <span style="font-size:7px">// no robots were harmed during this session</span><br>
+    <span style="font-size:7px">// made with 💚, ☕, and stackoverflow</span>
+  </div>
+</div>
+
+<script>
+// Date
+document.getElementById('dateTime').textContent=new Date().toLocaleString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
+
+// Barcode
+const bc=document.getElementById('barcode');
+const pattern=[2,1,3,1,2,1,1,3,2,1,1,2,3,1,2,1,1,3,1,2,1,3,2,1,1,2,1,3,2,1,1,2,3,1,2,1,1,3,2,1,1,2,1,3,1,2,3,1,2,1];
+pattern.forEach(w=>{
+  const s=document.createElement('span');
+  s.style.width=w+'px';
+  bc.appendChild(s);
+  const g=document.createElement('span');
+  g.style.width=Math.ceil(Math.random()*2)+'px';
+  g.style.background='transparent';
+  bc.appendChild(g);
+});
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

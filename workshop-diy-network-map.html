@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP_DIY // NETWORK MAP</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--g:#00ff41;--c:#00d4ff;--r:#ff0033;--o:#ff8800;--y:#ffd700;--p:#bf00ff}
+html,body{height:100%;overflow:hidden}
+body{background:#050508;color:var(--g);font-family:'JetBrains Mono',monospace;font-size:12px}
+
+/* CRT */
+.crt{position:fixed;inset:0;z-index:999;pointer-events:none}
+.crt::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 1px,transparent 3px)}
+
+canvas#net{position:fixed;inset:0;z-index:0;cursor:crosshair}
+
+/* HUD */
+.hud-t{position:fixed;top:0;left:0;right:0;padding:5px 12px;display:flex;justify-content:space-between;font-size:7.5px;color:rgba(0,255,65,.2);z-index:10;border-bottom:1px solid rgba(0,255,65,.04)}
+.hud-b{position:fixed;bottom:0;left:0;right:0;padding:5px 12px;display:flex;justify-content:space-between;font-size:7.5px;color:rgba(0,255,65,.2);z-index:10;border-top:1px solid rgba(0,255,65,.04)}
+
+/* LEFT PANEL */
+.panel-l{position:fixed;top:28px;left:0;bottom:28px;width:220px;z-index:10;border-right:1px solid rgba(0,255,65,.04);background:rgba(5,5,8,.85);backdrop-filter:blur(8px);overflow-y:auto;padding:10px}
+.panel-l::-webkit-scrollbar{width:3px}.panel-l::-webkit-scrollbar-thumb{background:rgba(0,255,65,.1)}
+.pl-h{font-size:9px;color:var(--c);letter-spacing:2px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid rgba(0,255,65,.04)}
+.cat-btn{display:flex;align-items:center;gap:6px;width:100%;background:none;border:1px solid rgba(0,255,65,.04);color:var(--g);font-family:inherit;font-size:9px;padding:5px 8px;border-radius:3px;cursor:pointer;transition:all .15s;margin-bottom:3px;text-align:left}
+.cat-btn:hover{background:rgba(0,255,65,.04);border-color:rgba(0,255,65,.12)}
+.cat-btn.on{background:rgba(0,255,65,.06);border-color:var(--g);box-shadow:0 0 6px rgba(0,255,65,.1)}
+.cat-btn .cnt{margin-left:auto;font-size:7px;color:rgba(0,255,65,.3)}
+.cat-btn .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* app list in panel */
+.app-li{display:flex;align-items:center;gap:5px;padding:3px 6px;border-radius:2px;cursor:pointer;transition:all .12s;font-size:8px;color:rgba(0,255,65,.35)}
+.app-li:hover{background:rgba(0,255,65,.04);color:var(--g)}
+.app-li.hl{background:rgba(0,212,255,.06);color:var(--c);border-left:2px solid var(--c)}
+.app-li .e{font-size:11px}
+
+/* RIGHT PANEL — detail */
+.panel-r{position:fixed;top:28px;right:-320px;bottom:28px;width:300px;z-index:10;border-left:1px solid rgba(0,255,65,.04);background:rgba(5,5,8,.9);backdrop-filter:blur(8px);transition:right .3s;padding:14px;overflow-y:auto}
+.panel-r.open{right:0}
+.panel-r::-webkit-scrollbar{width:3px}.panel-r::-webkit-scrollbar-thumb{background:rgba(0,255,65,.1)}
+.pr-close{position:absolute;top:6px;right:8px;background:none;border:none;color:rgba(0,255,65,.3);cursor:pointer;font-family:inherit;font-size:12px}.pr-close:hover{color:var(--g)}
+.pr-emoji{font-size:40px;display:block;margin-bottom:6px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
+.pr-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--c);letter-spacing:-1px}
+.pr-desc{font-size:10px;color:rgba(0,255,65,.4);line-height:1.8;margin-top:6px}
+.pr-cats{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.pr-cat{font-size:8px;padding:2px 7px;border-radius:2px;font-weight:700;letter-spacing:.5px}
+.pr-badge{display:inline-block;font-size:7px;padding:2px 7px;border-radius:2px;font-weight:700;letter-spacing:1px;margin-top:6px}
+.b-popular{background:rgba(255,215,0,.08);color:var(--y);border:1px solid rgba(255,215,0,.15)}
+.b-stable{background:rgba(0,255,65,.05);color:var(--g);border:1px solid rgba(0,255,65,.1)}
+.b-dev{background:rgba(191,0,255,.06);color:var(--p);border:1px solid rgba(191,0,255,.12)}
+.b-new{background:rgba(0,212,255,.06);color:var(--c);border:1px solid rgba(0,212,255,.12)}
+.pr-link{display:inline-block;margin-top:10px;font-size:9px;color:var(--c);text-decoration:none;letter-spacing:1px;padding:4px 10px;border:1px solid rgba(0,212,255,.15);border-radius:2px;transition:all .2s}
+.pr-link:hover{background:rgba(0,212,255,.08);border-color:var(--c)}
+.pr-conns{margin-top:14px;padding-top:10px;border-top:1px solid rgba(0,255,65,.04)}
+.pr-conns-h{font-size:8px;color:rgba(0,255,65,.25);letter-spacing:1px;margin-bottom:6px}
+.conn-app{display:inline-flex;align-items:center;gap:3px;padding:2px 6px;margin:2px;border:1px solid rgba(0,255,65,.04);border-radius:2px;font-size:8px;color:rgba(0,255,65,.35);cursor:pointer;transition:all .12s}
+.conn-app:hover{border-color:var(--g);color:var(--g)}
+
+/* ID CARD MODAL */
+#idModal{position:fixed;inset:0;z-index:9990;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center}
+.id-card{width:360px;border:1px solid var(--g);border-radius:6px;background:#0a0a0a;padding:20px;position:relative;box-shadow:0 0 40px rgba(0,255,65,.08)}
+.id-card::before{content:'WORKSHOP-DIY // MEMBER ID';position:absolute;top:-10px;left:12px;font-size:7px;color:var(--g);background:#0a0a0a;padding:0 6px;letter-spacing:3px}
+.id-top{display:flex;gap:14px;align-items:center;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(0,255,65,.06)}
+.id-avatar{width:60px;height:60px;border:1px solid var(--g);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:28px;background:rgba(0,255,65,.02)}
+.id-info .name{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--c)}
+.id-info .role{font-size:8px;color:rgba(0,255,65,.3);letter-spacing:2px;margin-top:2px}
+.id-info .since{font-size:8px;color:rgba(0,255,65,.2);margin-top:1px}
+.id-row{display:flex;justify-content:space-between;font-size:9px;margin-bottom:3px}
+.id-row .k{color:rgba(0,255,65,.3)}.id-row .v{color:var(--g);font-weight:700}
+.id-barcode{margin-top:10px;text-align:center;font-size:6px;color:rgba(0,255,65,.15);letter-spacing:2px}
+.id-barcode-lines{display:flex;justify-content:center;gap:1px;margin-bottom:3px}
+.id-bar{width:2px;background:var(--g);opacity:.2;border-radius:1px}
+.id-foot{text-align:center;margin-top:8px;font-size:7px;color:rgba(0,255,65,.12)}
+.id-close{position:absolute;top:8px;right:10px;background:none;border:none;color:rgba(0,255,65,.3);cursor:pointer;font-size:14px;font-family:inherit}.id-close:hover{color:var(--g)}
+.id-gen{margin-top:10px;text-align:center}
+.id-gen input{background:rgba(0,255,65,.02);border:1px solid rgba(0,255,65,.1);color:var(--g);font-family:inherit;font-size:11px;padding:5px 10px;border-radius:2px;text-align:center;outline:none;width:200px}
+.id-gen input:focus{border-color:var(--g);box-shadow:0 0 6px rgba(0,255,65,.15)}
+.id-gen button{background:rgba(0,255,65,.06);border:1px solid var(--g);color:var(--g);font-family:inherit;font-size:9px;padding:4px 14px;border-radius:2px;cursor:pointer;margin-top:6px;letter-spacing:1px;transition:all .15s}
+.id-gen button:hover{background:var(--g);color:#000}
+
+/* CAT COLORS */
+.c-microbit{background:rgba(0,212,255,.08);color:var(--c);border:1px solid rgba(0,212,255,.12)}
+.c-camera{background:rgba(255,215,0,.08);color:var(--y);border:1px solid rgba(255,215,0,.12)}
+.c-ai{background:rgba(191,0,255,.06);color:var(--p);border:1px solid rgba(191,0,255,.1)}
+.c-hardware{background:rgba(255,136,0,.08);color:var(--o);border:1px solid rgba(255,136,0,.12)}
+.c-learning{background:rgba(0,255,65,.05);color:var(--g);border:1px solid rgba(0,255,65,.1)}
+.c-classroom{background:rgba(0,102,255,.08);color:#06f;border:1px solid rgba(0,102,255,.12)}
+.c-tools{background:rgba(255,0,51,.06);color:var(--r);border:1px solid rgba(255,0,51,.1)}
+
+/* mobile */
+@media(max-width:700px){.panel-l{width:160px;font-size:8px}.panel-r{width:260px}}
+@media(max-width:500px){.panel-l{display:none}}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="crt"></div>
+<canvas id="net"></canvas>
+
+<!-- HUD -->
+<div class="hud-t">
+  <span>NETWORK_MAP.sys // 39 NODES // <span id="edgeCnt">0</span> EDGES</span>
+  <span id="clock">00:00:00</span>
+  <span>DRAG NODES // CLICK TO INSPECT // [I] = ID CARD</span>
+</div>
+<div class="hud-b">
+  <span>WORKSHOP-DIY ECOSYSTEM v4.2.0</span>
+  <span>workshop-diy.org // abourdim.github.io/apps</span>
+</div>
+
+<!-- LEFT PANEL -->
+<div class="panel-l" id="panelL">
+  <div class="pl-h">CATEGORIES</div>
+  <div id="catBtns"></div>
+  <div class="pl-h" style="margin-top:10px">APPS (<span id="appCnt">39</span>)</div>
+  <div id="appList"></div>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="panel-r" id="panelR">
+  <button class="pr-close" onclick="closeDetail()">×</button>
+  <span class="pr-emoji" id="prE"></span>
+  <div class="pr-name" id="prN"></div>
+  <div class="pr-desc" id="prD"></div>
+  <div class="pr-cats" id="prC"></div>
+  <div id="prB"></div>
+  <a class="pr-link" id="prL" href="#" target="_blank">↗ OPEN APP</a>
+  <div class="pr-conns">
+    <div class="pr-conns-h">CONNECTED APPS (shared categories)</div>
+    <div id="prConns"></div>
+  </div>
+</div>
+
+<!-- ID CARD MODAL -->
+<div id="idModal">
+  <div class="id-card">
+    <button class="id-close" onclick="document.getElementById('idModal').style.display='none'">×</button>
+    <div class="id-top">
+      <div class="id-avatar" id="idAvatar">🤖</div>
+      <div class="id-info">
+        <div class="name" id="idName">MAKER</div>
+        <div class="role">WORKSHOP-DIY // MEMBER</div>
+        <div class="since">SINCE: <span id="idDate"></span></div>
+      </div>
+    </div>
+    <div class="id-row"><span class="k">CLEARANCE:</span><span class="v">LEVEL ∞</span></div>
+    <div class="id-row"><span class="k">SKILLS:</span><span class="v">ROBOTS · CODE · AI · SOLDER</span></div>
+    <div class="id-row"><span class="k">BUGS CREATED:</span><span class="v" id="idBugs">42</span></div>
+    <div class="id-row"><span class="k">COFFEE STATUS:</span><span class="v">CRITICAL</span></div>
+    <div class="id-row"><span class="k">ACCESS:</span><span class="v" style="color:var(--g)">ALL 39 APPS</span></div>
+    <div class="id-barcode">
+      <div class="id-barcode-lines" id="idBars"></div>
+      WKSHP-DIY-<span id="idCode">0000</span>-MKR
+    </div>
+    <div class="id-gen">
+      <input type="text" id="idInput" placeholder="Enter your name" maxlength="20">
+      <br><button onclick="genId()">GENERATE ID</button>
+    </div>
+    <div class="id-foot">// this card grants unlimited access to learning</div>
+  </div>
+</div>
+
+<script>
+// ═══ DATA ═══
+const APPS=[
+{e:"🤖",n:"bit-bot",c:["microbit"],b:"popular",d:"Drive Bit:Bot robot via Bluetooth — joystick, line-follow, obstacle mode."},
+{e:"🪄",n:"magic-hands",c:["camera","ai"],b:"popular",d:"Hand-tracking magic effects — confetti, neon trails, particle explosions via MediaPipe."},
+{e:"🕵️",n:"face-quest",c:["camera","ai"],b:"popular",d:"Face-detection game — smile, blink, turn head to score. 100% local & private."},
+{e:"💬",n:"talking-robot",c:["microbit","ai"],b:"stable",d:"Robot that speaks, listens, shows emotions — text/voice commands over BLE."},
+{e:"🧠",n:"teachable-machine",c:["microbit","camera","ai"],b:"popular",d:"Train gestures in browser with Teachable Machine, send results to micro:bit."},
+{e:"😎",n:"face-tracking",c:["camera","microbit"],b:"stable",d:"Kids face tracking with events — send face position to micro:bit over BLE."},
+{e:"😄",n:"bitmoji-lab",c:["microbit"],b:"stable",d:"Emoji to 5×5 LED pixel art on micro:bit — instant BLE transfer."},
+{e:"🚀",n:"mission-control",c:["classroom","microbit"],b:"stable",d:"Dashboard with live video/chat via WebRTC — command micro:bits."},
+{e:"🧩",n:"bit-playground",c:["microbit"],b:"stable",d:"Ultimate micro:bit BLE playground — LEDs, sensors, servos, motors."},
+{e:"🎛️",n:"rxy",c:["microbit"],b:"stable",d:"Custom Bluetooth remote builder — drag buttons, sliders, D-pads."},
+{e:"🎨",n:"pixel-gateway",c:["tools"],b:"stable",d:"Retro pixel art portal — draw, animate, preview sprites."},
+{e:"💡",n:"wled-kids-lab",c:["hardware","learning"],b:"stable",d:"Control Neopixel LED strips with WLED — kid-friendly UI."},
+{e:"⚡",n:"esp32-c3-kids-lab",c:["hardware","learning"],b:"stable",d:"ESP32-C3 hands-on lab — LEDs, sensors, WiFi, IoT basics."},
+{e:"🪙",n:"crypto-academy",c:["learning"],b:"stable",d:"Crypto & blockchain lessons — wallets, mining, transactions."},
+{e:"🔐",n:"pentest-lab",c:["learning"],b:"stable",d:"Pentest sandbox — cybersecurity challenges for beginners."},
+{e:"🐧",n:"linux-kids-lab",c:["learning"],b:"stable",d:"Linux in browser — files, pipes, scripts, terminal mastery."},
+{e:"🏭",n:"production-chain",c:["learning"],b:"stable",d:"Industrial production simulation — drag stations, watch flow."},
+{e:"🏫",n:"classroom",c:["classroom"],b:"stable",d:"PeerJS cloud classroom — rooms, screen-share, real-time chat."},
+{e:"🔌",n:"usb-logger",c:["microbit"],b:"stable",d:"USB serial browser tool for micro:bit — send, receive, log."},
+{e:"📡",n:"ble-logger",c:["microbit"],b:"stable",d:"BLE debug playground — inspect services, read/write characteristics."},
+{e:"🧰",n:"claude-toolkit",c:["ai","tools"],b:"dev",d:"Build apps with Claude AI — prompts, chat interface, API helpers."},
+{e:"🎭",n:"puppeteer",c:["tools"],b:"stable",d:"Browser automation — scrape, screenshot, test with Puppeteer."},
+{e:"🔋",n:"circuit-lab",c:["hardware","learning"],b:"dev",d:"Simulate circuits — LEDs, resistors, capacitors in browser."},
+{e:"🛡️",n:"vpn-guide",c:["tools"],b:"dev",d:"VPN & network security visual guide — encrypted tunnels explained."},
+{e:"🧊",n:"3d-lab",c:["learning"],b:"dev",d:"3D design in browser with Three.js — create, rotate, light."},
+{e:"🔀",n:"git-lab",c:["learning"],b:"dev",d:"Learn Git — commit, branch, merge, pull requests interactively."},
+{e:"✨",n:"prompt-hero",c:["ai","learning"],b:"dev",d:"Master AI prompting — techniques for ChatGPT, Claude, LLMs."},
+{e:"🌍",n:"save-planet",c:["learning"],b:"dev",d:"Climate & sustainability — quizzes, facts, action plans."},
+{e:"📋",n:"ops-catalog",c:["tools"],b:"dev",d:"DevOps tools catalog — CI/CD, Docker, Kubernetes."},
+{e:"💻",n:"code-kids",c:["learning"],b:"dev",d:"Learn HTML, CSS, JS from scratch — beginner exercises."},
+{e:"🏡",n:"smart-home",c:["hardware","learning"],b:"dev",d:"Smart home dashboard — sensors, lights, automations, IoT."},
+{e:"🧱",n:"makecode",c:["microbit","learning"],b:"dev",d:"Block-based MakeCode adventures — guided coding projects."},
+{e:"🤖",n:"54-activities",c:["microbit","learning"],b:"dev",d:"54 micro:bit activities — blinking LEDs to BLE robots."},
+{e:"💰",n:"crypto-vault",c:["learning"],b:"dev",d:"Cryptography basics — encrypt, hash, generate keys."},
+{e:"🔗",n:"dhcp-lab",c:["hardware"],b:"new",d:"Python DHCP server with real-time web dashboard."},
+{e:"🐳",n:"docker-lab",c:["learning"],b:"new",d:"Docker experiments — containers, images, volumes."},
+{e:"🔴",n:"nodered-lab",c:["learning"],b:"new",d:"Node-RED visual programming — wire APIs & hardware."},
+{e:"⛽",n:"ocpp",c:["tools"],b:"new",d:"OCPP 1.6J EV charging simulation ecosystem."},
+{e:"🖥️",n:"tty",c:["microbit"],b:"new",d:"Terminal for micro:bit — serial console in browser."}
+];
+
+const CATS={
+  microbit:{e:"🤖",n:"micro:bit",col:"#00d4ff"},
+  camera:{e:"📸",n:"Camera",col:"#ffd700"},
+  ai:{e:"🧠",n:"AI",col:"#bf00ff"},
+  hardware:{e:"🔩",n:"Hardware",col:"#ff8800"},
+  learning:{e:"📚",n:"Learning",col:"#00ff41"},
+  classroom:{e:"🏫",n:"Classroom",col:"#0066ff"},
+  tools:{e:"🛠️",n:"Tools",col:"#ff0033"}
+};
+
+// ═══ PHYSICS NODES ═══
+const cv=document.getElementById('net'),cx=cv.getContext('2d');
+let W,H;
+function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;nodes.forEach(n=>{n.x=Math.min(n.x,W-40);n.y=Math.min(n.y,H-40)})}
+resize();addEventListener('resize',resize);
+
+const nodes=APPS.map((a,i)=>{
+  const ang=(i/APPS.length)*Math.PI*2;
+  const r=Math.min(W,H)*.3;
+  return{
+    i,x:W/2+Math.cos(ang)*r*(0.6+Math.random()*.4)+((Math.random()-.5)*80),
+    y:H/2+Math.sin(ang)*r*(0.6+Math.random()*.4)+((Math.random()-.5)*80),
+    vx:0,vy:0,
+    r:a.b==='popular'?10:7,
+    app:a,
+    col:CATS[a.c[0]]?.col||'#00ff41',
+    hl:false,sel:false,vis:true
+  };
+});
+
+// Build edges (shared categories)
+const edges=[];
+for(let i=0;i<APPS.length;i++)for(let j=i+1;j<APPS.length;j++){
+  const shared=APPS[i].c.filter(c=>APPS[j].c.includes(c));
+  if(shared.length)edges.push({a:i,b:j,cats:shared,w:shared.length});
+}
+document.getElementById('edgeCnt').textContent=edges.length;
+
+let dragNode=null,hoverNode=null,selNode=null,filter=null;
+let mx=0,my=0;
+
+// ═══ PHYSICS ═══
+function tick(){
+  const damp=0.92,rep=800,attr=0.0003,len=120,gx=W/2,gy=H/2;
+  for(let i=0;i<nodes.length;i++){
+    if(!nodes[i].vis)continue;
+    // gravity to center
+    nodes[i].vx+=(gx-nodes[i].x)*0.0001;
+    nodes[i].vy+=(gy-nodes[i].y)*0.0001;
+    // repel
+    for(let j=i+1;j<nodes.length;j++){
+      if(!nodes[j].vis)continue;
+      let dx=nodes[j].x-nodes[i].x,dy=nodes[j].y-nodes[i].y;
+      let d2=dx*dx+dy*dy+1;
+      let f=rep/d2;
+      nodes[i].vx-=dx*f;nodes[i].vy-=dy*f;
+      nodes[j].vx+=dx*f;nodes[j].vy+=dy*f;
+    }
+  }
+  // attract along edges
+  edges.forEach(e=>{
+    if(!nodes[e.a].vis||!nodes[e.b].vis)return;
+    let dx=nodes[e.b].x-nodes[e.a].x,dy=nodes[e.b].y-nodes[e.a].y;
+    let d=Math.sqrt(dx*dx+dy*dy);
+    let f=(d-len)*attr*e.w;
+    let fx=dx/d*f,fy=dy/d*f;
+    nodes[e.a].vx+=fx;nodes[e.a].vy+=fy;
+    nodes[e.b].vx-=fx;nodes[e.b].vy-=fy;
+  });
+  nodes.forEach(n=>{
+    if(n===dragNode)return;
+    n.vx*=damp;n.vy*=damp;
+    n.x+=n.vx;n.y+=n.vy;
+    n.x=Math.max(40,Math.min(W-40,n.x));
+    n.y=Math.max(40,Math.min(H-40,n.y));
+  });
+}
+
+// ═══ DRAW ═══
+function draw(){
+  cx.clearRect(0,0,W,H);
+
+  // edges
+  edges.forEach(e=>{
+    const a=nodes[e.a],b=nodes[e.b];
+    if(!a.vis||!b.vis)return;
+    const hl=a.hl||b.hl||a.sel||b.sel;
+    cx.beginPath();
+    cx.moveTo(a.x,a.y);cx.lineTo(b.x,b.y);
+    cx.strokeStyle=hl?`rgba(0,255,65,${.12*e.w})`:`rgba(0,255,65,${.02*e.w})`;
+    cx.lineWidth=hl?1.5:0.5;
+    cx.stroke();
+  });
+
+  // nodes
+  nodes.forEach(n=>{
+    if(!n.vis)return;
+    const s=n.sel?1.5:n.hl?1.2:1;
+    const r=n.r*s;
+    // glow
+    if(n.sel||n.hl){
+      cx.beginPath();cx.arc(n.x,n.y,r+6,0,Math.PI*2);
+      cx.fillStyle=n.col+'15';cx.fill();
+    }
+    // circle
+    cx.beginPath();cx.arc(n.x,n.y,r,0,Math.PI*2);
+    cx.fillStyle=n.sel?n.col:n.hl?n.col+'cc':n.col+'55';
+    cx.fill();
+    cx.strokeStyle=n.col+(n.sel?'ff':'44');
+    cx.lineWidth=n.sel?2:1;
+    cx.stroke();
+    // emoji
+    cx.font=`${r*1.1}px sans-serif`;cx.textAlign='center';cx.textBaseline='middle';
+    cx.fillText(n.app.e,n.x,n.y);
+    // label
+    if(n.sel||n.hl){
+      cx.font='700 9px JetBrains Mono';cx.fillStyle=n.col;
+      cx.fillText(n.app.n,n.x,n.y+r+12);
+    }
+  });
+
+  tick();
+  requestAnimationFrame(draw);
+}
+draw();
+
+// ═══ INTERACTION ═══
+function getNode(x,y){
+  for(let i=nodes.length-1;i>=0;i--){
+    if(!nodes[i].vis)continue;
+    const dx=nodes[i].x-x,dy=nodes[i].y-y;
+    if(dx*dx+dy*dy<(nodes[i].r+4)**2)return nodes[i];
+  }return null;
+}
+
+cv.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  if(dragNode){dragNode.x=mx;dragNode.y=my;return}
+  const n=getNode(mx,my);
+  nodes.forEach(nd=>nd.hl=false);
+  if(n){
+    n.hl=true;
+    edges.forEach(e=>{
+      if(e.a===n.i)nodes[e.b].hl=true;
+      if(e.b===n.i)nodes[e.a].hl=true;
+    });
+    cv.style.cursor='pointer';
+  }else cv.style.cursor='crosshair';
+  hoverNode=n;
+});
+
+cv.addEventListener('mousedown',e=>{
+  const n=getNode(e.clientX,e.clientY);
+  if(n){dragNode=n;cv.style.cursor='grabbing'}
+});
+cv.addEventListener('mouseup',()=>{
+  if(dragNode&&!hoverNode){dragNode=null;return}
+  if(hoverNode)selectApp(hoverNode.i);
+  dragNode=null;cv.style.cursor='crosshair';
+});
+
+// ═══ SELECT APP ═══
+function selectApp(idx){
+  nodes.forEach(n=>n.sel=false);
+  nodes[idx].sel=true;
+  selNode=nodes[idx];
+  const a=APPS[idx];
+
+  document.getElementById('prE').textContent=a.e;
+  document.getElementById('prN').textContent=a.n;
+  document.getElementById('prD').textContent=a.d;
+  document.getElementById('prC').innerHTML=a.c.map(c=>`<span class="pr-cat c-${c}">${CATS[c]?.e||''} ${CATS[c]?.n||c}</span>`).join('');
+  const bMap={popular:'b-popular">⭐ POPULAR',stable:'b-stable">✅ STABLE',dev:'b-dev">🔧 DEV',new:'b-new">✨ NEW'};
+  document.getElementById('prB').innerHTML=`<span class="pr-badge ${bMap[a.b]||''}</span>`;
+  document.getElementById('prL').href=`https://abourdim.github.io/${a.n}/`;
+
+  // connections
+  const conns=[];
+  edges.forEach(e=>{
+    if(e.a===idx)conns.push(e.b);
+    if(e.b===idx)conns.push(e.a);
+  });
+  const unique=[...new Set(conns)];
+  document.getElementById('prConns').innerHTML=unique.map(i=>`<span class="conn-app" onclick="selectApp(${i})">${APPS[i].e} ${APPS[i].n}</span>`).join('');
+
+  document.getElementById('panelR').classList.add('open');
+  highlightInList(idx);
+}
+
+function closeDetail(){
+  document.getElementById('panelR').classList.remove('open');
+  nodes.forEach(n=>n.sel=false);
+  selNode=null;
+}
+
+function highlightInList(idx){
+  document.querySelectorAll('.app-li').forEach(li=>li.classList.toggle('hl',+li.dataset.i===idx));
+}
+
+// ═══ LEFT PANEL ═══
+const catBtns=document.getElementById('catBtns');
+// All button
+const allBtn=document.createElement('button');
+allBtn.className='cat-btn on';allBtn.dataset.k='all';
+allBtn.innerHTML=`<span class="dot" style="background:var(--g)"></span>All <span class="cnt">${APPS.length}</span>`;
+allBtn.onclick=()=>setFilter(null);
+catBtns.appendChild(allBtn);
+
+Object.entries(CATS).forEach(([k,v])=>{
+  const cnt=APPS.filter(a=>a.c.includes(k)).length;
+  const b=document.createElement('button');
+  b.className='cat-btn';b.dataset.k=k;
+  b.innerHTML=`<span class="dot" style="background:${v.col}"></span>${v.e} ${v.n} <span class="cnt">${cnt}</span>`;
+  b.onclick=()=>setFilter(k);
+  catBtns.appendChild(b);
+});
+
+function setFilter(cat){
+  filter=cat;
+  nodes.forEach(n=>n.vis=!cat||n.app.c.includes(cat));
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('on',b.dataset.k===(cat||'all')));
+  buildAppList();
+  document.getElementById('appCnt').textContent=nodes.filter(n=>n.vis).length;
+}
+
+function buildAppList(){
+  const al=document.getElementById('appList');al.innerHTML='';
+  APPS.forEach((a,i)=>{
+    if(!nodes[i].vis)return;
+    const d=document.createElement('div');
+    d.className='app-li';d.dataset.i=i;
+    d.innerHTML=`<span class="e">${a.e}</span>${a.n}`;
+    d.onclick=()=>selectApp(i);
+    al.appendChild(d);
+  });
+}
+buildAppList();
+
+// ═══ ID CARD ═══
+function genId(){
+  const name=document.getElementById('idInput').value.trim()||'MAKER';
+  document.getElementById('idName').textContent=name.toUpperCase();
+  document.getElementById('idDate').textContent=new Date().toISOString().slice(0,10);
+  document.getElementById('idBugs').textContent=Math.floor(Math.random()*100+10);
+  document.getElementById('idCode').textContent=String(Math.floor(Math.random()*9999)).padStart(4,'0');
+  const avatars=['🤖','💻','⚡','🧠','🔐','🐧','🎨','🚀','🛡️','🐳'];
+  document.getElementById('idAvatar').textContent=avatars[Math.floor(Math.random()*avatars.length)];
+  // barcode
+  const bars=document.getElementById('idBars');bars.innerHTML='';
+  for(let i=0;i<40;i++){const b=document.createElement('div');b.className='id-bar';b.style.height=(8+Math.random()*12)+'px';bars.appendChild(b)}
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='i'||e.key==='I'){document.getElementById('idModal').style.display='flex';genId()}
+  if(e.key==='Escape'){document.getElementById('idModal').style.display='none';closeDetail()}
+});
+
+// ═══ CLOCK ═══
+setInterval(()=>{document.getElementById('clock').textContent=new Date().toTimeString().slice(0,8)},1000);
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

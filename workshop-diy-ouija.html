@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // OUIJA</title>
+<link href="https://fonts.googleapis.com/css2?family=Creepster&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a0e0a;color:#d4a54a;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px;overflow:hidden}
+.glow{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(200,120,30,.06),transparent 60%);pointer-events:none}
+
+.board{position:relative;width:340px;height:420px;background:radial-gradient(ellipse at center,#2a1a10,#1a0e08);border:3px solid #3a2510;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.5),inset 0 0 40px rgba(0,0,0,.3);padding:10px;display:flex;flex-direction:column;align-items:center}
+
+.board-title{font-family:'Creepster',cursive;font-size:28px;color:#d4a54a;text-shadow:0 0 10px rgba(212,165,74,.2);margin:4px 0}
+
+/* LETTERS */
+.letters{display:flex;flex-wrap:wrap;justify-content:center;gap:0;margin:6px 0;max-width:300px}
+.letter{width:26px;height:28px;display:flex;align-items:center;justify-content:center;font-family:'Creepster',cursive;font-size:18px;color:#8b6914;cursor:default;transition:all .3s;border-radius:2px}
+.letter.lit{color:#ffd700;text-shadow:0 0 8px rgba(255,215,0,.4);transform:scale(1.2)}
+
+.numbers{display:flex;gap:8px;margin:4px 0}
+.num{font-family:'Creepster',cursive;font-size:14px;color:#5a3a10}
+
+.words{display:flex;justify-content:space-between;width:280px;margin:4px 0}
+.word{font-family:'Creepster',cursive;font-size:14px;color:#8b6914}
+
+/* PLANCHETTE */
+.planchette{width:40px;height:50px;background:radial-gradient(ellipse at center,rgba(212,165,74,.15),rgba(100,60,10,.1));border:2px solid rgba(212,165,74,.2);border-radius:50% 50% 50% 50% / 40% 40% 60% 60%;position:absolute;transition:all .6s cubic-bezier(.25,.1,.25,1);z-index:10;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.planchette .eye{width:12px;height:12px;border-radius:50%;border:2px solid rgba(212,165,74,.3);background:rgba(212,165,74,.05)}
+
+/* MESSAGE */
+.message{height:30px;margin:4px 0;display:flex;align-items:center;justify-content:center;font-family:'Creepster',cursive;font-size:16px;color:#ffd700;text-shadow:0 0 6px rgba(255,215,0,.2);text-align:center;letter-spacing:2px}
+
+/* INPUT */
+.ask-row{margin-top:auto;display:flex;gap:4px;width:100%;max-width:300px}
+input{flex:1;background:rgba(212,165,74,.05);border:1px solid rgba(212,165,74,.15);border-radius:4px;padding:6px 8px;color:#d4a54a;font-family:inherit;font-size:10px;outline:none}
+input::placeholder{color:rgba(212,165,74,.2)}
+.ask-btn{padding:6px 12px;background:rgba(212,165,74,.08);border:1px solid rgba(212,165,74,.2);border-radius:4px;color:#d4a54a;font-family:'Creepster',cursive;font-size:12px;cursor:pointer;letter-spacing:1px}
+.ask-btn:hover{background:rgba(212,165,74,.12)}
+
+/* PRESETS */
+.presets{display:flex;gap:3px;flex-wrap:wrap;justify-content:center;margin-top:6px;max-width:300px}
+.preset{padding:2px 8px;border:1px solid rgba(212,165,74,.08);border-radius:10px;font-size:7px;color:rgba(212,165,74,.25);cursor:pointer;transition:all .2s}
+.preset:hover{border-color:rgba(212,165,74,.2);color:rgba(212,165,74,.5)}
+
+/* CANDLES */
+.candle{position:fixed;font-size:20px;animation:flicker 3s infinite;opacity:.3}
+@keyframes flicker{0%,100%{opacity:.2;transform:scale(1)}25%{opacity:.35;transform:scale(1.05)}50%{opacity:.2}75%{opacity:.4;transform:scale(.95)}}
+
+.footer{font-size:6px;color:rgba(212,165,74,.1);margin-top:12px;text-align:center;letter-spacing:1px;line-height:2}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="glow"></div>
+<div class="candle" style="top:10%;left:5%">🕯️</div>
+<div class="candle" style="top:20%;right:8%;animation-delay:1s">🕯️</div>
+<div class="candle" style="bottom:15%;left:8%;animation-delay:2s">🕯️</div>
+<div class="candle" style="bottom:10%;right:5%;animation-delay:.5s">🕯️</div>
+
+<div class="board">
+  <div class="board-title">WKSHP OUIJA</div>
+  
+  <div class="words"><span class="word">YES</span><span class="word">NO</span></div>
+  
+  <div class="letters" id="letters"></div>
+  
+  <div class="numbers">
+    <span class="num">1</span><span class="num">2</span><span class="num">3</span><span class="num">4</span>
+    <span class="num">5</span><span class="num">6</span><span class="num">7</span><span class="num">8</span>
+    <span class="num">9</span><span class="num">0</span>
+  </div>
+  
+  <div class="word" style="font-size:12px;margin:4px 0">GOODBYE</div>
+  
+  <div class="planchette" id="planchette"><div class="eye"></div></div>
+  
+  <div class="message" id="message">Ask the spirit of Bug #42...</div>
+  
+  <div class="ask-row">
+    <input id="input" placeholder="Ask a question..." maxlength="60">
+    <button class="ask-btn" onclick="ask()">ASK</button>
+  </div>
+</div>
+
+<div class="presets">
+  <div class="preset" onclick="askPreset('How many apps?')">How many apps?</div>
+  <div class="preset" onclick="askPreset('WiFi password?')">WiFi password?</div>
+  <div class="preset" onclick="askPreset('Is Bug 42 a feature?')">Bug or feature?</div>
+  <div class="preset" onclick="askPreset('Will the robot survive?')">Robot survive?</div>
+  <div class="preset" onclick="askPreset('Who is the 40th app?')">40th app?</div>
+  <div class="preset" onclick="askPreset('More coffee?')">Coffee?</div>
+</div>
+
+<div class="footer">FOR ENTERTAINMENT ONLY · SPIRITS NOT GUARANTEED · WORKSHOP-DIY · BUGS ARE FEATURES</div>
+
+<script>
+const ALPHA='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const lettersEl=document.getElementById('letters');
+const letterEls=[];
+ALPHA.split('').forEach(c=>{
+  const el=document.createElement('div');el.className='letter';el.textContent=c;el.id='L'+c;
+  lettersEl.appendChild(el);letterEls.push(el);
+});
+
+const ANSWERS={
+  'how many apps':['3','9','ALWAYS 39'],
+  'wifi password':['P','A','S','S','W','O','R','D','1','2','3'],
+  'wifi':['P','A','S','S','W','O','R','D','1','2','3'],
+  'password':['U','N','C','H','A','N','G','E','D'],
+  'bug':['F','E','A','T','U','R','E'],
+  'feature':['A','L','W','A','Y','S'],
+  '42':['I',' ','A','M',' ','H','E','R','E'],
+  'robot':['4','7',' ','D','R','O','P','S'],
+  'survive':['A','L','W','A','Y','S'],
+  'coffee':['C','R','I','T','I','C','A','L'],
+  '40':['N','O',' ','C','O','M','M','E','N','T'],
+  '40th':['I',' ','W','A','S',' ','A','L','W','A','Y','S',' ','H','E','R','E'],
+  'docker':['C','O','N','T','A','I','N','E','D'],
+  'linux':['S','U','D','O'],
+  'default':['B','U','G','S',' ','A','R','E',' ','F','E','A','T','U','R','E','S'],
+};
+
+let busy=false;
+const planchette=document.getElementById('planchette');
+const messageEl=document.getElementById('message');
+
+function findAnswer(q){
+  q=q.toLowerCase();
+  for(const[key,val]of Object.entries(ANSWERS)){
+    if(key!=='default'&&q.includes(key))return val;
+  }
+  // Random funny answers
+  const randoms=[
+    ['Y','E','S'],['N','O'],['M','A','Y','B','E'],
+    ['A','S','K',' ','C','O','F','F','E','E'],
+    ['4','2'],['P','A','S','S','W','O','R','D','1','2','3'],
+    ['B','U','G'],['F','E','A','T','U','R','E'],
+    ['T','R','Y',' ','A','G','A','I','N'],
+  ];
+  return randoms[Math.floor(Math.random()*randoms.length)];
+}
+
+function getLetterPos(c){
+  c=c.toUpperCase();
+  const el=document.getElementById('L'+c);
+  if(!el)return null;
+  const r=el.getBoundingClientRect();
+  const br=el.closest('.board').getBoundingClientRect();
+  return{x:r.left-br.left+r.width/2-20,y:r.top-br.top+r.height/2-25};
+}
+
+async function animateAnswer(chars){
+  let result='';
+  for(const c of chars){
+    if(c===' '){result+=' ';messageEl.textContent=result;await sleep(300);continue}
+    const pos=getLetterPos(c);
+    if(pos){
+      planchette.style.left=pos.x+'px';planchette.style.top=pos.y+'px';
+      const el=document.getElementById('L'+c.toUpperCase());
+      if(el){el.classList.add('lit');setTimeout(()=>el.classList.remove('lit'),800)}
+    }
+    result+=c;
+    messageEl.textContent=result;
+    await sleep(500);
+  }
+  await sleep(800);
+  // Move to goodbye
+  planchette.style.left='130px';planchette.style.top='330px';
+}
+
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+
+async function ask(){
+  if(busy)return;
+  const q=document.getElementById('input').value.trim();
+  if(!q)return;
+  busy=true;
+  messageEl.textContent='...';
+  document.getElementById('input').value='';
+  
+  const answer=findAnswer(q);
+  await sleep(600);
+  await animateAnswer(answer);
+  busy=false;
+}
+
+function askPreset(q){
+  document.getElementById('input').value=q;
+  ask();
+}
+
+document.getElementById('input').addEventListener('keydown',e=>{if(e.key==='Enter')ask()});
+
+// Initial position
+planchette.style.left='140px';planchette.style.top='200px';
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

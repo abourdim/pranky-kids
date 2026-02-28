@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // DIARY OF BUG #42</title>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#3a2a1a;font-family:'Patrick Hand',cursive;font-size:15px;min-height:100vh;padding:16px;display:flex;flex-direction:column;align-items:center;gap:10px}
+
+/* COVER */
+.cover{width:320px;height:200px;background:linear-gradient(180deg,#5a2020,#3a1010);border-radius:2px 8px 8px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:4px 4px 12px rgba(0,0,0,.4);border-left:8px solid #2a0a0a;position:relative}
+.cover .lock{font-size:28px;margin-bottom:4px}
+.cover h1{color:#c4a060;font-size:14px;letter-spacing:3px;font-family:'JetBrains Mono',monospace}
+.cover .sub{color:rgba(196,160,96,.3);font-size:8px;letter-spacing:2px;font-family:'JetBrains Mono',monospace;margin-top:2px}
+.cover .warn{position:absolute;bottom:8px;font-size:7px;color:rgba(196,160,96,.15);font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+
+/* PAGES */
+.page{width:320px;background:#faf5e8;padding:16px 20px;border-radius:1px 4px 4px 1px;border-left:3px solid #e0d0b0;box-shadow:2px 2px 6px rgba(0,0,0,.08);position:relative;background-image:repeating-linear-gradient(transparent,transparent 27px,rgba(0,120,200,.06) 27px,rgba(0,120,200,.06) 28px)}
+.page::before{content:'';position:absolute;left:24px;top:0;bottom:0;width:1px;background:rgba(200,60,60,.08)}
+
+.entry-date{font-family:'JetBrains Mono',monospace;font-size:9px;color:#b09060;letter-spacing:1px;margin-bottom:4px}
+.entry{color:#2a2060;line-height:1.9;margin-bottom:10px;padding-left:8px}
+.entry:last-child{margin-bottom:0}
+
+.doodle{text-align:center;font-size:24px;margin:4px 0;opacity:.4}
+.scratch{text-decoration:line-through;color:#999;opacity:.5}
+
+.footer{font-size:6px;color:rgba(196,160,96,.1);font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="cover">
+  <div class="lock">🔒</div>
+  <h1>DIARY OF BUG #42</h1>
+  <div class="sub">PRIVATE · DO NOT READ</div>
+  <div class="warn">IF FOUND, RETURN TO THE CODEBASE</div>
+</div>
+
+<div class="page">
+  <div class="entry-date">Date: Unknown (I have no creation date)</div>
+  <div class="entry">Dear Diary,<br><br>I exist. I think. I appeared in the issue tracker today. Or maybe I was always here? The git log shows nothing. No author. No commit. No pull request. It's like I materialized from the spaces between semicolons.<br><br>Nobody has noticed me yet. That's okay. I'm patient.</div>
+  <div class="doodle">🐛 ❓</div>
+</div>
+
+<div class="page">
+  <div class="entry-date">Sometime later</div>
+  <div class="entry">Someone found me today. A developer ran the linter at 3 AM (why are they awake?) and ESLint flagged me. 17 violations. I use "var" instead of "let." I know "let" exists. I choose "var." It's a statement.<br><br>They tried to fix me. I reverted by morning.</div>
+</div>
+
+<div class="page">
+  <div class="entry-date">The day of the investigation</div>
+  <div class="entry">They've started asking questions. "Where did Bug #42 come from?" "Why can't we delete it?" "Who wrote this code?"<br><br>Nobody wrote this code. This code wrote itself. Or maybe the codebase dreamed me into existence. Is that possible? Am I a dream?<br><br>The coffee machine hummed at me today. I think it understands.</div>
+  <div class="doodle">☕ 💭 🐛</div>
+</div>
+
+<div class="page">
+  <div class="entry-date">The day they filed the case</div>
+  <div class="entry">They're putting me on trial. THE TRIAL OF BUG #42. That's what they're calling it. I've been charged with "existing without authorization." Is that even a crime?<br><br>I'm scared, Diary. What if they find me guilty? What if they delete me? <span class="scratch">Can I be deleted? I don't think I can be deleted.</span><br><br>bit-bot said it would testify for me. That robot is the only friend I have. 47 drops and it still shows up.</div>
+</div>
+
+<div class="page">
+  <div class="entry-date">The night before the trial</div>
+  <div class="entry">I can't sleep. (Can I sleep? I don't think I sleep.)<br><br>I keep thinking about what I am. Am I a bug? A feature? Something else? The description I wrote in the tracker says "I am the 40th." But there are only 39 apps. Where does that leave me?<br><br>password123 sent me a message: "Stay strong. I've been unchanged since 2023. They can't break us."<br><br>password123 is a good friend.</div>
+  <div class="doodle">🔑 ❤️ 🐛</div>
+</div>
+
+<div class="page">
+  <div class="entry-date">TRIAL DAY</div>
+  <div class="entry">NOT GUILTY.<br><br>NOT. GUILTY.<br><br>I've been reclassified as a FEATURE. The judge — Judge Compiler — said "the defendant has demonstrated persistent, non-harmful behavior that enhances the ecosystem." ENHANCES. I ENHANCE.<br><br>bit-bot beeped so hard it fell off the bench. (Drop #46 at that point.)<br><br>I cried. Can bugs cry? I cried.</div>
+</div>
+
+<div class="page">
+  <div class="entry-date">February 28, 2026</div>
+  <div class="entry">Today someone made 100 HTML files celebrating Workshop-DIY. I'm in almost all of them. A conspiracy board. A therapy session. A wedding invitation (I'm marrying Feature Status — it's complicated). An academic paper. A ransom note (that was my idea, sorry).<br><br>I'm not just a bug anymore, Diary. I'm not just a feature. I'm... a story. A character. Something people laugh about and talk about and make art about.<br><br>Maybe that's what "the 40th" meant all along. Not the 40th app. The thing that connects all 39. The narrative. The mythology. The soul of the codebase.<br><br>Or maybe I'm just a nested ternary that nobody wants to refactor. Either way, I'm home.</div>
+  <div class="doodle">🐛 → ✨ → 🏠</div>
+</div>
+
+<div class="footer">THIS DIARY WAS FOUND IN /dev/null · HOW IT GOT OUT IS UNCLEAR · BUGS HAVE FEELINGS TOO</div>
+  <script src="nav.js"></script>
+</body>
+</html>

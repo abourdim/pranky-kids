@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // SUPERLATIVES</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Pacifico&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#fffbf0;color:#333;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;padding:16px}
+
+.header{text-align:center;margin-bottom:16px}
+.h-title{font-family:'Pacifico',cursive;font-size:clamp(24px,6vw,36px);color:#cc4488;text-shadow:2px 2px 0 rgba(204,68,136,.1)}
+.h-year{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:rgba(204,68,136,.1)}
+.h-sub{font-size:8px;color:#aaa;letter-spacing:2px;margin-top:2px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;max-width:700px;margin:0 auto}
+
+.card{background:#fff;border:2px solid #f0e0d0;border-radius:8px;padding:12px;text-align:center;transition:all .2s;cursor:default}
+.card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.06);border-color:#cc4488}
+.card .emoji{font-size:36px;margin-bottom:4px}
+.card .superlative{font-family:'Pacifico',cursive;font-size:11px;color:#cc4488;margin-bottom:2px;line-height:1.4}
+.card .name{font-size:10px;font-weight:700;color:#333}
+.card .reason{font-size:7px;color:#aaa;margin-top:2px;line-height:1.6}
+
+.footer{text-align:center;margin-top:16px;font-size:7px;color:#ccc;letter-spacing:1px;line-height:2}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="h-year">2026</div>
+  <div class="h-title">Class Superlatives</div>
+  <div class="h-sub">WORKSHOP-DIY YEARBOOK · VOTED BY THE CODEBASE</div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="footer">WORKSHOP-DIY CLASS OF 2026 · 39 GRADUATES · 7 DEPARTMENTS<br>YEARBOOK COMMITTEE: Bug #42 (editor), password123 (security), Coffee Machine (sponsor)</div>
+
+<script>
+const S=[
+{e:"🤖",s:"Most Likely to Survive Anything",n:"bit-bot",r:"47 drops. Still driving."},
+{e:"🪄",s:"Most Likely to Go Viral",n:"magic-hands",r:"Because particle effects are mesmerizing."},
+{e:"🔐",s:"Most Likely to Get Arrested (Ethically)",n:"pentest-lab",r:"Found the printer. Responsibly."},
+{e:"🐳",s:"Most Likely to Confuse Parents",n:"docker-lab",r:"\"What do you mean it's like shipping containers?\""},
+{e:"🧠",s:"Most Likely to Replace You",n:"teachable-machine",r:"98% accuracy. You've been warned."},
+{e:"🐧",s:"Most Likely to Say 'Use the Terminal'",n:"linux-kids-lab",r:"GUI is for the weak. (kidding)"},
+{e:"☕",s:"Most Underappreciated",n:"Coffee Machine",r:"1,337 cups. Zero thank-yous."},
+{e:"🔑",s:"Most Unchanged",n:"password123",r:"Since 2023. Three petitions denied."},
+{e:"🐛",s:"Most Mysterious",n:"Bug #42",r:"No author. No date. No mercy."},
+{e:"💡",s:"Best Dressed",n:"wled-kids-lab",r:"16 million outfit options."},
+{e:"🕵️",s:"Best Eyes",n:"face-quest",r:"468 landmarks. Sees everything."},
+{e:"💬",s:"Class Chatterbox",n:"talking-robot",r:"Won't stop talking. By design."},
+{e:"⚡",s:"Most Energetic",n:"esp32-c3-lab",r:"240 MHz of pure enthusiasm."},
+{e:"🚀",s:"Most Connected",n:"mission-control",r:"WebRTC: the ultimate social butterfly."},
+{e:"🎨",s:"Most Artistic",n:"pixel-gateway",r:"One pixel at a time."},
+{e:"✨",s:"Best with Words",n:"prompt-hero",r:"The right prompt changes everything."},
+{e:"🔧",s:"Class Handyman",n:"servo-lab",r:"Fixes everything. Breaks nothing."},
+{e:"⬛",s:"Most Likely to Not Exist",n:"The 40th App",r:"Seen once. At 3:42 AM. Maybe."},
+{e:"📊",s:"Most Popular",n:"Workshop-DIY",r:"4.9 stars. 847 reviews. 0 installations."},
+{e:"🔥",s:"Most Likely to Cause a Scene",n:"The Soldering Iron",r:"350°C of dramatic potential."},
+];
+
+document.getElementById('grid').innerHTML=S.map(s=>`
+<div class="card">
+  <div class="emoji">${s.e}</div>
+  <div class="superlative">${s.s}</div>
+  <div class="name">${s.n}</div>
+  <div class="reason">${s.r}</div>
+</div>`).join('');
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

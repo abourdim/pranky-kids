@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // WRAPPED 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#000;font-family:'JetBrains Mono',monospace}
+.app{position:fixed;inset:0;overflow:hidden}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;opacity:0;transform:scale(.95);transition:all .6s cubic-bezier(.16,1,.3,1);pointer-events:none}
+.slide.on{opacity:1;transform:scale(1);pointer-events:auto}
+.slide.prev{opacity:0;transform:scale(1.05) translateY(-20px)}
+
+/* GRADIENTS */
+.g1{background:linear-gradient(135deg,#0a0a0a,#0a2a0a,#001a00)}
+.g2{background:linear-gradient(135deg,#0a001a,#1a0033,#0a0a2e)}
+.g3{background:linear-gradient(135deg,#1a0000,#330011,#1a0a00)}
+.g4{background:linear-gradient(135deg,#001a1a,#002233,#0a1a2e)}
+.g5{background:linear-gradient(135deg,#1a1a00,#332200,#1a0a00)}
+.g6{background:linear-gradient(135deg,#0a2a0a,#002200,#001a0a)}
+.g7{background:linear-gradient(135deg,#000,#0a0a0a,#111)}
+
+.s-pre{font-size:clamp(8px,1.5vw,11px);color:rgba(255,255,255,.3);letter-spacing:4px;margin-bottom:10px;text-transform:uppercase}
+.s-num{font-family:'Syne',sans-serif;font-size:clamp(48px,12vw,96px);font-weight:800;line-height:1;margin-bottom:6px;background:linear-gradient(135deg,#00ff41,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.s-num.gold{background:linear-gradient(135deg,#ffd700,#ff8800);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.s-num.pink{background:linear-gradient(135deg,#ff0066,#bf00ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.s-num.cyan{background:linear-gradient(135deg,#00d4ff,#0066ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.s-num.fire{background:linear-gradient(135deg,#ff4400,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.s-label{font-size:clamp(14px,3vw,24px);color:rgba(255,255,255,.7);font-weight:700;margin-bottom:8px}
+.s-sub{font-size:clamp(9px,1.5vw,13px);color:rgba(255,255,255,.2);max-width:420px;line-height:2}
+.s-emoji{font-size:clamp(40px,8vw,64px);margin-bottom:12px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))}
+
+/* LISTS */
+.s-list{text-align:left;margin:12px auto;max-width:340px}
+.s-list-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);opacity:0;animation:fadeIn .5s ease forwards}
+@keyframes fadeIn{to{opacity:1}}
+.s-list-item .rank{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:rgba(255,255,255,.15);width:28px}
+.s-list-item .emoji{font-size:22px}
+.s-list-item .name{font-size:12px;color:rgba(255,255,255,.7);font-weight:700;flex:1}
+.s-list-item .stat{font-size:10px;color:rgba(255,255,255,.3)}
+
+/* BAR CHART */
+.bars{max-width:340px;margin:12px auto;width:100%}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.bar-label{font-size:8px;color:rgba(255,255,255,.4);width:60px;text-align:right}
+.bar-track{flex:1;height:12px;background:rgba(255,255,255,.03);border-radius:6px;overflow:hidden}
+.bar-fill{height:100%;border-radius:6px;animation:barGrow 1s ease forwards}
+@keyframes barGrow{from{width:0}}
+.bar-val{font-size:9px;color:rgba(255,255,255,.3);width:30px}
+
+/* NAV */
+.nav{position:fixed;bottom:16px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:100}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15);cursor:pointer;transition:all .2s}
+.dot.on{background:#00ff41;box-shadow:0 0 6px rgba(0,255,65,.3)}
+.arrows{position:fixed;top:50%;z-index:100;transform:translateY(-50%);width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:50%;color:rgba(255,255,255,.3);font-size:14px;cursor:pointer;transition:all .2s}
+.arrows:hover{background:rgba(255,255,255,.06);color:#fff}
+.arr-l{left:12px}.arr-r{right:12px}
+.pg{position:fixed;top:10px;right:14px;font-size:8px;color:rgba(255,255,255,.15);z-index:100;letter-spacing:2px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="app">
+<div class="slide g1 on" data-i="0">
+  <div class="s-emoji">🤖</div>
+  <div class="s-pre">Workshop-DIY presents</div>
+  <div class="s-num">2025</div>
+  <div class="s-label">WRAPPED</div>
+  <div class="s-sub">Your year in making, coding, building, and (accidentally) breaking things.</div>
+</div>
+<div class="slide g2" data-i="1">
+  <div class="s-pre">This year you explored</div>
+  <div class="s-num">39</div>
+  <div class="s-label">APPS</div>
+  <div class="s-sub">From robot control to cybersecurity sandboxes. All free. All browser-based. Zero installations.</div>
+</div>
+<div class="slide g3" data-i="2">
+  <div class="s-pre">You spent roughly</div>
+  <div class="s-num fire">847</div>
+  <div class="s-label">HOURS LEARNING</div>
+  <div class="s-sub">That's 35 straight days of building, debugging, and telling yourself "one more fix" at 2am.</div>
+</div>
+<div class="slide g4" data-i="3">
+  <div class="s-pre">Your top apps were</div>
+  <div class="s-label" style="margin-bottom:4px">TOP 5 MOST USED</div>
+  <div class="s-list" id="topApps"></div>
+</div>
+<div class="slide g5" data-i="4">
+  <div class="s-pre">Skills unlocked this year</div>
+  <div class="s-num gold">7</div>
+  <div class="s-label">DOMAINS MASTERED</div>
+  <div class="bars" id="skillBars"></div>
+</div>
+<div class="slide g6" data-i="5">
+  <div class="s-pre">You created</div>
+  <div class="s-num pink">42</div>
+  <div class="s-label">BUGS (FEATURES)</div>
+  <div class="s-sub">Every single one was eventually declared "a feature" after enough debugging. That's the spirit.</div>
+</div>
+<div class="slide g2" data-i="6">
+  <div class="s-pre">You survived</div>
+  <div class="s-num cyan">47</div>
+  <div class="s-label">ROBOT DROPS</div>
+  <div class="s-sub">The ESP32 robot kit took every fall and came back. Respect.</div>
+</div>
+<div class="slide g3" data-i="7">
+  <div class="s-pre">Caffeine consumed</div>
+  <div class="s-num fire">∞</div>
+  <div class="s-label">CUPS OF COFFEE</div>
+  <div class="s-sub">The fuel behind every line of code, every soldered joint, and every "it works on my machine."</div>
+</div>
+<div class="slide g4" data-i="8">
+  <div class="s-pre">Your maker personality is</div>
+  <div class="s-emoji">🏴‍☠️</div>
+  <div class="s-label" style="font-family:'Syne',sans-serif;font-size:clamp(20px,5vw,36px);font-weight:800;color:#00ff41">THE HACKER</div>
+  <div class="s-sub">You don't just use tools — you bend them. Terminal is your home. Bugs fear you. The WiFi password is password123 and you're OK with that.</div>
+</div>
+<div class="slide g1" data-i="9">
+  <div class="s-pre">Looking ahead to 2026</div>
+  <div class="s-num">∞</div>
+  <div class="s-label">POSSIBILITIES</div>
+  <div class="s-sub">More apps. More robots. More workshops. More bugs that are actually features.<br><br><span style="color:rgba(0,255,65,.4)">workshop-diy.org · abourdim.github.io/apps</span><br><span style="color:rgba(255,255,255,.1)">// made with 💚, ☕, and stackoverflow</span></div>
+</div>
+</div>
+
+<div class="nav" id="nav"></div>
+<div class="arrows arr-l" onclick="go(-1)">◂</div>
+<div class="arrows arr-r" onclick="go(1)">▸</div>
+<div class="pg" id="pg">1/10</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+let cur=0;
+
+// NAV DOTS
+const nav=document.getElementById('nav');
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' on':'');d.onclick=()=>goTo(i);nav.appendChild(d)});
+
+function goTo(i){
+  if(i<0||i>=slides.length||i===cur)return;
+  slides[cur].classList.remove('on');slides[cur].classList.add('prev');
+  setTimeout(()=>slides[cur===i?cur:cur].classList.remove('prev'),600);
+  const old=cur;cur=i;
+  slides[cur].classList.remove('prev');slides[cur].classList.add('on');
+  document.querySelectorAll('.dot').forEach((d,j)=>d.classList.toggle('on',j===cur));
+  document.getElementById('pg').textContent=`${cur+1}/${slides.length}`;
+  // Trigger list animations
+  if(cur===3)buildTopApps();
+  if(cur===4)buildSkills();
+  setTimeout(()=>slides[old].classList.remove('prev'),600);
+}
+function go(d){goTo(cur+d)}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')go(1);
+  if(e.key==='ArrowLeft')go(-1);
+});
+// Swipe
+let sx=0;
+document.addEventListener('touchstart',e=>sx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)go(dx<0?1:-1)});
+
+// TOP APPS
+function buildTopApps(){
+  const apps=[{e:"🤖",n:"bit-bot",s:"2,847 sessions"},{e:"🪄",n:"magic-hands",s:"2,103 sessions"},{e:"🕵️",n:"face-quest",s:"1,892 sessions"},{e:"🧠",n:"teachable-machine",s:"1,654 sessions"},{e:"🔐",n:"pentest-lab",s:"1,201 sessions"}];
+  const el=document.getElementById('topApps');el.innerHTML='';
+  apps.forEach((a,i)=>{
+    const d=document.createElement('div');d.className='s-list-item';d.style.animationDelay=(i*.15)+'s';
+    d.innerHTML=`<span class="rank">${i+1}</span><span class="emoji">${a.e}</span><span class="name">${a.n}</span><span class="stat">${a.s}</span>`;
+    el.appendChild(d);
+  });
+}
+
+// SKILL BARS
+function buildSkills(){
+  const skills=[{n:"Robotics",p:92,c:"#00d4ff"},{n:"Code",p:85,c:"#00ff41"},{n:"AI/ML",p:78,c:"#bf00ff"},{n:"Cyber",p:72,c:"#ff0033"},{n:"Electronics",p:65,c:"#ff8800"},{n:"3D Print",p:58,c:"#ffd700"},{n:"DevOps",p:45,c:"#0066ff"}];
+  const el=document.getElementById('skillBars');el.innerHTML='';
+  skills.forEach((s,i)=>{
+    const d=document.createElement('div');d.className='bar-row';
+    d.innerHTML=`<span class="bar-label">${s.n}</span><div class="bar-track"><div class="bar-fill" style="width:${s.p}%;background:${s.c};animation-delay:${i*.1}s"></div></div><span class="bar-val">${s.p}%</span>`;
+    el.appendChild(d);
+  });
+}
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

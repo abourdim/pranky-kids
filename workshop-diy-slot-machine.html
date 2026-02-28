@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // LUCKY DRAW</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:'JetBrains Mono',monospace;color:#ffd700;overflow:hidden}
+
+.machine{width:340px;background:linear-gradient(180deg,#1a1a2e,#12122a);border-radius:16px;padding:16px;border:3px solid #ffd700;box-shadow:0 0 30px rgba(255,215,0,.08),inset 0 2px 0 rgba(255,255,255,.05)}
+
+.top{text-align:center;margin-bottom:10px}
+.top-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;text-shadow:0 0 10px rgba(255,215,0,.2)}
+.top-sub{font-size:7px;color:rgba(255,215,0,.3);letter-spacing:3px}
+
+/* LIGHTS */
+.lights{display:flex;justify-content:center;gap:4px;margin-bottom:8px}
+.bulb{width:8px;height:8px;border-radius:50%;animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
+.bulb:nth-child(odd){background:#ff0;animation-delay:0s}.bulb:nth-child(even){background:#f44;animation-delay:.75s}
+
+/* REELS */
+.reel-frame{background:#000;border-radius:8px;border:2px solid #333;padding:6px;margin-bottom:10px}
+.reels{display:flex;gap:4px;justify-content:center}
+.reel{width:80px;height:90px;background:#0a0a14;border:2px solid #222;border-radius:6px;overflow:hidden;position:relative}
+.reel-strip{position:absolute;top:0;left:0;right:0;transition:top .5s cubic-bezier(.17,.67,.12,.99);display:flex;flex-direction:column;align-items:center}
+.reel-item{width:80px;height:90px;display:flex;align-items:center;justify-content:center;font-size:40px;flex-shrink:0}
+.reel-line{position:absolute;top:50%;left:0;right:0;height:2px;background:rgba(255,215,0,.3);transform:translateY(-50%);z-index:2;box-shadow:0 0 6px rgba(255,215,0,.1)}
+.reel-arrows{position:absolute;right:-2px;top:50%;transform:translateY(-50%);font-size:8px;color:#ffd700;z-index:3}
+.reel-arrows-l{position:absolute;left:-2px;top:50%;transform:translateY(-50%);font-size:8px;color:#ffd700;z-index:3}
+
+/* RESULT */
+.result{text-align:center;min-height:50px;margin-bottom:8px}
+.result-title{font-family:'Press Start 2P',monospace;font-size:clamp(10px,3vw,14px);margin-bottom:4px;min-height:20px}
+.result-desc{font-size:9px;color:rgba(255,215,0,.4);line-height:1.8;min-height:18px}
+.result-title.jackpot{color:#ff0;text-shadow:0 0 10px rgba(255,255,0,.4);animation:jackpotFlash .5s infinite}
+@keyframes jackpotFlash{0%,100%{color:#ffd700}50%{color:#fff}}
+
+/* LEVER */
+.lever-area{display:flex;justify-content:center;margin-bottom:8px}
+.lever-btn{padding:10px 40px;background:linear-gradient(180deg,#cc0000,#880000);border:2px solid #ff4444;border-radius:8px;color:#fff;font-family:'Press Start 2P',monospace;font-size:10px;cursor:pointer;transition:all .15s;text-shadow:0 1px 2px rgba(0,0,0,.5);letter-spacing:1px}
+.lever-btn:hover{background:linear-gradient(180deg,#dd2222,#aa0000);box-shadow:0 0 12px rgba(255,0,0,.2)}
+.lever-btn:active{transform:scale(.95)}
+.lever-btn:disabled{opacity:.5;cursor:default}
+
+/* STATS */
+.stats{display:flex;justify-content:space-between;font-size:8px;color:rgba(255,215,0,.3);padding:4px 6px;border-top:1px solid rgba(255,215,0,.06)}
+.stats .v{color:#ffd700;font-weight:700}
+
+/* CONFETTI */
+.confetti{position:fixed;top:-10px;left:50%;width:8px;height:8px;border-radius:1px;z-index:100;pointer-events:none}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+
+/* FOOTER */
+.footer{font-size:6px;color:rgba(255,215,0,.12);text-align:center;margin-top:12px;letter-spacing:2px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="machine">
+  <div class="top">
+    <div class="top-title">LUCKY APP DRAW</div>
+    <div class="top-sub">WORKSHOP-DIY SLOT MACHINE</div>
+  </div>
+  <div class="lights" id="lights"></div>
+  <div class="reel-frame">
+    <div class="reels">
+      <div class="reel"><div class="reel-strip" id="reel0"></div><div class="reel-line"></div><div class="reel-arrows">▶</div></div>
+      <div class="reel"><div class="reel-strip" id="reel1"></div><div class="reel-line"></div></div>
+      <div class="reel"><div class="reel-strip" id="reel2"></div><div class="reel-line"></div><div class="reel-arrows-l">◀</div></div>
+    </div>
+  </div>
+  <div class="result">
+    <div class="result-title" id="resultTitle">PULL THE LEVER!</div>
+    <div class="result-desc" id="resultDesc">Match 3 to discover an app</div>
+  </div>
+  <div class="lever-area">
+    <button class="lever-btn" id="lever" onclick="spin()">🎰 PULL</button>
+  </div>
+  <div class="stats">
+    <span>SPINS: <span class="v" id="spinCount">0</span></span>
+    <span>JACKPOTS: <span class="v" id="jackpotCount">0</span></span>
+    <span>APPS FOUND: <span class="v" id="appsFound">0</span>/39</span>
+  </div>
+</div>
+<div class="footer">WORKSHOP-DIY // 39 APPS // NO REAL MONEY INVOLVED // BUGS ARE FEATURES</div>
+
+<script>
+const APPS=[
+{e:"🤖",n:"bit-bot",d:"Robot control via Bluetooth"},{e:"🪄",n:"magic-hands",d:"Hand-tracking magic effects"},
+{e:"🕵️",n:"face-quest",d:"Face detection scoring game"},{e:"🧠",n:"teachable-machine",d:"Train AI gestures in browser"},
+{e:"💬",n:"talking-robot",d:"Voice-controlled robot"},{e:"😎",n:"face-tracking",d:"Face position tracker"},
+{e:"🚀",n:"mission-control",d:"WebRTC command center"},{e:"🔐",n:"pentest-lab",d:"Cybersecurity sandbox"},
+{e:"🐧",n:"linux-kids-lab",d:"Linux in your browser"},{e:"💡",n:"wled-kids-lab",d:"Neopixel LED control"},
+{e:"⚡",n:"esp32-c3-lab",d:"ESP32-C3 IoT lab"},{e:"🐳",n:"docker-lab",d:"Docker experiments"},
+{e:"🎨",n:"pixel-gateway",d:"Retro pixel art editor"},{e:"🧩",n:"bit-playground",d:"micro:bit playground"},
+{e:"✨",n:"prompt-hero",d:"AI prompting playground"},{e:"🔴",n:"nodered-lab",d:"Node-RED visual flows"},
+{e:"🏡",n:"smart-home",d:"IoT dashboard sim"},{e:"🎛️",n:"rxy",d:"Custom BLE remote builder"},
+{e:"⛽",n:"ocpp",d:"EV charging simulator"},{e:"🖥️",n:"tty",d:"Serial terminal"},
+];
+
+let spins=0,jackpots=0;
+const found=new Set();
+let spinning=false;
+
+// LIGHTS
+const lightsEl=document.getElementById('lights');
+for(let i=0;i<12;i++){const b=document.createElement('div');b.className='bulb';b.style.animationDelay=(i*.1)+'s';lightsEl.appendChild(b)}
+
+// BUILD REELS
+function buildReel(id){
+  const strip=document.getElementById('reel'+id);
+  // Repeat apps many times for scrolling effect
+  let html='';
+  for(let r=0;r<10;r++){
+    APPS.forEach(a=>{html+=`<div class="reel-item">${a.e}</div>`});
+  }
+  strip.innerHTML=html;
+}
+buildReel(0);buildReel(1);buildReel(2);
+
+function spin(){
+  if(spinning)return;
+  spinning=true;
+  spins++;
+  document.getElementById('spinCount').textContent=spins;
+  document.getElementById('lever').disabled=true;
+  document.getElementById('resultTitle').textContent='SPINNING...';
+  document.getElementById('resultTitle').className='result-title';
+  document.getElementById('resultDesc').textContent='';
+
+  // Pick results
+  const results=[
+    Math.floor(Math.random()*APPS.length),
+    Math.floor(Math.random()*APPS.length),
+    Math.floor(Math.random()*APPS.length),
+  ];
+
+  // Force jackpot sometimes (15% chance)
+  if(Math.random()<.15){
+    const pick=Math.floor(Math.random()*APPS.length);
+    results[0]=results[1]=results[2]=pick;
+  }
+
+  // Animate reels
+  const itemH=90;
+  const baseOffset=APPS.length*5; // Start from middle of strip
+  const delays=[0,300,600];
+
+  results.forEach((res,i)=>{
+    setTimeout(()=>{
+      const strip=document.getElementById('reel'+i);
+      const target=-(baseOffset+res)*itemH;
+      strip.style.transition='top 1.5s cubic-bezier(.17,.67,.12,.99)';
+      strip.style.top=target+'px';
+    },delays[i]);
+  });
+
+  // Show result
+  setTimeout(()=>{
+    const a0=APPS[results[0]],a1=APPS[results[1]],a2=APPS[results[2]];
+    const isJackpot=results[0]===results[1]&&results[1]===results[2];
+
+    if(isJackpot){
+      jackpots++;
+      document.getElementById('jackpotCount').textContent=jackpots;
+      found.add(results[0]);
+      document.getElementById('appsFound').textContent=found.size;
+      document.getElementById('resultTitle').textContent='🎉 JACKPOT! 🎉';
+      document.getElementById('resultTitle').className='result-title jackpot';
+      document.getElementById('resultDesc').textContent=`${a0.e} ${a0.n} — ${a0.d}`;
+      spawnConfetti();
+    }else{
+      // Check for 2 match
+      if(results[0]===results[1]||results[1]===results[2]||results[0]===results[2]){
+        document.getElementById('resultTitle').textContent='CLOSE! 2 MATCH';
+        document.getElementById('resultDesc').textContent='Almost there! Try again...';
+      }else{
+        document.getElementById('resultTitle').textContent='NO MATCH';
+        const randomApp=APPS[results[Math.floor(Math.random()*3)]];
+        found.add(APPS.indexOf(randomApp));
+        document.getElementById('appsFound').textContent=found.size;
+        document.getElementById('resultDesc').textContent=`Discovered: ${randomApp.e} ${randomApp.n}`;
+      }
+    }
+
+    spinning=false;
+    document.getElementById('lever').disabled=false;
+  },2500);
+}
+
+function spawnConfetti(){
+  const colors=['#ffd700','#ff0066','#00ff41','#00d4ff','#ff8800','#bf00ff'];
+  for(let i=0;i<40;i++){
+    const c=document.createElement('div');c.className='confetti';
+    c.style.left=(Math.random()*100)+'%';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(Math.random()*6+4)+'px';
+    c.style.height=(Math.random()*6+4)+'px';
+    c.style.animation=`confettiFall ${Math.random()*2+1.5}s ease-out forwards`;
+    c.style.animationDelay=(Math.random()*.5)+'s';
+    c.style.transform=`rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4000);
+  }
+}
+
+// Keyboard
+document.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter')spin()});
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

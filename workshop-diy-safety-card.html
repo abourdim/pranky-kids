@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // SAFETY CARD</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#e8e4d8;font-family:'JetBrains Mono',monospace;font-size:10px;color:#1a1a1a;padding:12px}
+.card{max-width:700px;margin:0 auto;background:#fff;border:2px solid #cc0000;border-radius:8px;overflow:hidden}
+
+/* HEADER */
+.card-header{background:#cc0000;color:#fff;padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
+.card-header h1{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;letter-spacing:2px}
+.card-header span{font-size:8px;letter-spacing:2px;opacity:.7}
+
+/* SECTION */
+.section{padding:12px 16px;border-bottom:2px solid #eee}
+.section:last-child{border:none}
+.sec-h{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#cc0000;letter-spacing:2px;margin-bottom:8px;text-transform:uppercase}
+
+/* INSTRUCTION PANELS */
+.panels{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.panel{border:1px solid #ddd;border-radius:4px;padding:8px;text-align:center;background:#fafafa}
+.panel-emoji{font-size:32px;margin-bottom:4px}
+.panel-step{font-size:8px;font-weight:700;color:#cc0000;letter-spacing:1px;margin-bottom:2px}
+.panel-text{font-size:8px;color:#555;line-height:1.8}
+
+/* EMERGENCY */
+.emergency{background:#fff0f0;border:2px solid #cc0000;border-radius:4px;padding:10px;margin:8px 0}
+.emergency h3{color:#cc0000;font-size:10px;letter-spacing:2px;margin-bottom:4px}
+.emergency p{font-size:9px;line-height:2;color:#663333}
+
+/* DO / DON'T */
+.do-dont{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.do-col,.dont-col{border-radius:4px;padding:8px}
+.do-col{background:#f0fff0;border:1px solid #aca}.dont-col{background:#fff0f0;border:1px solid #caa}
+.do-col h4{color:#393;font-size:9px;letter-spacing:1px;margin-bottom:4px}.dont-col h4{color:#933;font-size:9px;letter-spacing:1px;margin-bottom:4px}
+.dd-item{font-size:8px;line-height:2.2;color:#555;display:flex;align-items:flex-start;gap:4px}
+
+/* EXITS */
+.exits{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+.exit{text-align:center;padding:6px 12px;border:1px solid #ddd;border-radius:4px;background:#fafafa}
+.exit-emoji{font-size:20px}.exit-label{font-size:6px;color:#888;letter-spacing:1px}
+
+/* FOOTER */
+.card-footer{background:#333;color:#999;padding:6px 16px;font-size:6px;display:flex;justify-content:space-between;letter-spacing:1px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="card">
+<div class="card-header">
+  <h1>✈️ WORKSHOP-DIY SAFETY CARD</h1>
+  <span>MODEL: MAKER-39 · REV 4.2</span>
+</div>
+
+<div class="section">
+  <div class="sec-h">🔧 Before Your Session</div>
+  <div class="panels">
+    <div class="panel"><div class="panel-emoji">💻</div><div class="panel-step">STEP 1</div><div class="panel-text">Open Chrome browser. Other browsers may cause turbulence.</div></div>
+    <div class="panel"><div class="panel-emoji">📡</div><div class="panel-step">STEP 2</div><div class="panel-text">Enable Bluetooth. Check WiFi (password: password123).</div></div>
+    <div class="panel"><div class="panel-emoji">☕</div><div class="panel-step">STEP 3</div><div class="panel-text">Secure coffee supply. This is not optional.</div></div>
+    <div class="panel"><div class="panel-emoji">🤖</div><div class="panel-step">STEP 4</div><div class="panel-text">Power on robot kit. Green LED = ready. Red LED = panic.</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-h">🤖 Robot Kit Operation</div>
+  <div class="panels">
+    <div class="panel"><div class="panel-emoji">🔋</div><div class="panel-step">CHARGE</div><div class="panel-text">18650 battery must be charged. A dead robot is a sad robot.</div></div>
+    <div class="panel"><div class="panel-emoji">📱</div><div class="panel-step">CONNECT</div><div class="panel-text">Click "Connect" in bit-bot app. Accept BLE pairing prompt.</div></div>
+    <div class="panel"><div class="panel-emoji">🎮</div><div class="panel-step">DRIVE</div><div class="panel-text">Use arrow keys or joystick. Robot responds in 50ms.</div></div>
+    <div class="panel"><div class="panel-emoji">💃</div><div class="panel-step">DANCE</div><div class="panel-text">If robot dances unprompted, this is a FEATURE, not a bug.</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-h">⚠️ Emergency Procedures</div>
+  
+  <div class="emergency">
+    <h3>🔴 BLE DISCONNECTION</h3>
+    <p>1. Remain calm. 2. Refresh browser. 3. Re-click "Connect." 4. If robot continues moving autonomously, unplug battery. 5. File as feature request.</p>
+  </div>
+
+  <div class="emergency">
+    <h3>☕ COFFEE SHORTAGE</h3>
+    <p>1. Alert instructor immediately. 2. Reduce code deployment rate by 50%. 3. Switch to emergency tea reserves. 4. Do NOT attempt complex debugging. 5. Await resupply.</p>
+  </div>
+
+  <div class="emergency">
+    <h3>🐛 BUG DISCOVERED</h3>
+    <p>1. Do not file a bug report. 2. Observe the bug for 30 seconds. 3. If it produces unexpected joy, reclassify as feature. 4. If it produces unexpected chaos, also reclassify as feature. 5. All bugs are features.</p>
+  </div>
+
+  <div class="emergency">
+    <h3>🤖 ROBOT TABLE DROP</h3>
+    <p>1. Do not panic. The robot has survived 47 previous drops. 2. Check wheels, sensors, and battery compartment. 3. If operational, continue session. 4. If not, the robot earned an honorable retirement.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-h">✅ Do's and Don'ts</div>
+  <div class="do-dont">
+    <div class="do-col">
+      <h4>✅ DO</h4>
+      <div class="dd-item">✓ Ask questions (even "silly" ones)</div>
+      <div class="dd-item">✓ Break things (that's how you learn)</div>
+      <div class="dd-item">✓ Help your neighbor debug</div>
+      <div class="dd-item">✓ Celebrate bugs as features</div>
+      <div class="dd-item">✓ Drink coffee responsibly</div>
+      <div class="dd-item">✓ Save your code frequently</div>
+      <div class="dd-item">✓ Have fun (mandatory)</div>
+    </div>
+    <div class="dont-col">
+      <h4>❌ DON'T</h4>
+      <div class="dd-item">✗ Run `rm -rf /` (ever)</div>
+      <div class="dd-item">✗ Try to change the WiFi password</div>
+      <div class="dd-item">✗ Feed the robot actual food</div>
+      <div class="dd-item">✗ Deploy to production on Friday</div>
+      <div class="dd-item">✗ Panic when BLE disconnects</div>
+      <div class="dd-item">✗ Underestimate a 10-year-old coder</div>
+      <div class="dd-item">✗ Forget to have fun (see above)</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-h">🚪 Emergency Exits</div>
+  <div class="exits">
+    <div class="exit"><div class="exit-emoji">⌨️</div><div class="exit-label">CTRL+Z</div></div>
+    <div class="exit"><div class="exit-emoji">🔄</div><div class="exit-label">F5 REFRESH</div></div>
+    <div class="exit"><div class="exit-emoji">⏻</div><div class="exit-label">POWER OFF</div></div>
+    <div class="exit"><div class="exit-emoji">🚪</div><div class="exit-label">ACTUAL DOOR</div></div>
+    <div class="exit"><div class="exit-emoji">☕</div><div class="exit-label">COFFEE BREAK</div></div>
+    <div class="exit"><div class="exit-emoji">🆘</div><div class="exit-label">ASK INSTRUCTOR</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-h">📊 Quick Reference</div>
+  <div class="panels">
+    <div class="panel"><div class="panel-emoji">39</div><div class="panel-step">APPS</div><div class="panel-text">All browser-based, zero installation</div></div>
+    <div class="panel"><div class="panel-emoji">7</div><div class="panel-step">DOMAINS</div><div class="panel-text">Robotics, AI, Cyber, Electronics, Code, 3D, DevOps</div></div>
+    <div class="panel"><div class="panel-emoji">42</div><div class="panel-step">FEATURES</div><div class="panel-text">Formerly known as "bugs"</div></div>
+    <div class="panel"><div class="panel-emoji">∞</div><div class="panel-step">COFFEE</div><div class="panel-text">Required per session</div></div>
+  </div>
+</div>
+
+<div class="card-footer">
+  <span>WORKSHOP-DIY · ASSOCIATION LOI 1901 · FRANCE</span>
+  <span>VALID FOR ALL SESSIONS · DO NOT REMOVE FROM WORKSPACE</span>
+  <span>REV 4.2 · 02/2025</span>
+</div>
+</div>
+
+  <script src="nav.js"></script>
+</body>
+</html>

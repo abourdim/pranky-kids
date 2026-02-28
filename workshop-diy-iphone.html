@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>WKSHP-DIY // Phone</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#000;font-family:'Inter',sans-serif;display:flex;justify-content:center;align-items:center}
+
+.phone{width:min(375px,100vw);height:min(812px,100vh);background:#000;border-radius:40px;overflow:hidden;position:relative;border:2px solid #333;box-shadow:0 0 60px rgba(0,0,0,.5)}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:28px;background:#000;border-radius:0 0 18px 18px;z-index:100}
+
+/* STATUS BAR */
+.status{position:absolute;top:0;left:0;right:0;height:44px;z-index:90;display:flex;justify-content:space-between;align-items:center;padding:12px 24px 0;font-size:12px;font-weight:600;color:#fff}
+
+/* SCREENS */
+.scr{position:absolute;inset:0;opacity:0;pointer-events:none;transition:all .4s cubic-bezier(.2,.9,.3,1)}.scr.on{opacity:1;pointer-events:auto}
+
+/* LOCK SCREEN */
+.lock{background:linear-gradient(135deg,#0a2a0a,#001a00,#0a1a2a);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.lock-time{font-size:72px;font-weight:700;color:#fff;letter-spacing:-3px;margin-top:60px}
+.lock-date{font-size:15px;color:rgba(255,255,255,.6);margin-bottom:auto}
+.lock-notif{background:rgba(255,255,255,.1);backdrop-filter:blur(20px);border-radius:14px;padding:12px 16px;margin:8px 20px;width:calc(100% - 40px);text-align:left}
+.lock-notif-h{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.5);margin-bottom:4px}
+.lock-notif-t{font-size:13px;color:#fff;font-weight:600}
+.lock-notif-b{font-size:12px;color:rgba(255,255,255,.5)}
+.lock-swipe{color:rgba(255,255,255,.3);font-size:13px;margin-bottom:30px;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:.7}}
+
+/* HOME SCREEN */
+.home{background:linear-gradient(135deg,#0a3a0a,#001a00,#0a1a3a);padding:50px 16px 0;overflow-y:auto}
+.home::-webkit-scrollbar{display:none}
+.home-search{background:rgba(255,255,255,.12);border-radius:10px;padding:8px 12px;font-size:13px;color:rgba(255,255,255,.3);text-align:center;margin-bottom:14px}
+.app-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px 10px;padding-bottom:80px}
+.app-icon{text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.app-icon .icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 4px;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.app-icon .icon .badge{position:absolute;top:-4px;right:-4px;background:#ff3b30;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #000}
+.app-icon .name{font-size:10px;color:#fff;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:70px}
+.dock{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.4);backdrop-filter:blur(20px);padding:8px 20px 28px;display:flex;justify-content:space-around;z-index:50;border-radius:20px 20px 0 0}
+.dock .app-icon .icon{width:52px;height:52px;border-radius:12px}
+.dock .app-icon .name{display:none}
+
+/* APP DETAIL */
+.detail{background:#000;padding:50px 16px 100px;overflow-y:auto}
+.detail::-webkit-scrollbar{display:none}
+.det-back{font-size:13px;color:#007aff;cursor:pointer;margin-bottom:12px;display:flex;align-items:center;gap:3px}
+.det-header{display:flex;gap:14px;margin-bottom:16px}
+.det-icon{width:80px;height:80px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:40px;flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.det-info{flex:1}
+.det-name{font-size:20px;font-weight:700;color:#fff}
+.det-sub{font-size:12px;color:#8e8e93}
+.det-get{display:inline-block;background:#007aff;color:#fff;font-size:13px;font-weight:700;padding:5px 18px;border-radius:16px;margin-top:6px;cursor:pointer}
+.det-stats{display:flex;gap:0;border-top:1px solid #1c1c1e;border-bottom:1px solid #1c1c1e;padding:10px 0;margin:12px 0}
+.det-stat{flex:1;text-align:center;border-right:1px solid #1c1c1e;padding:0 8px}
+.det-stat:last-child{border-right:none}
+.det-stat .v{font-size:16px;font-weight:700;color:#fff}.det-stat .l{font-size:9px;color:#8e8e93}
+.det-desc-h{font-size:16px;font-weight:700;color:#fff;margin:12px 0 6px}
+.det-desc{font-size:13px;color:#8e8e93;line-height:1.7}
+
+/* COLORS */
+.bg-green{background:linear-gradient(135deg,#34c759,#248a3d)}.bg-blue{background:linear-gradient(135deg,#007aff,#0055d4)}.bg-purple{background:linear-gradient(135deg,#af52de,#8944ab)}.bg-orange{background:linear-gradient(135deg,#ff9500,#c93400)}.bg-red{background:linear-gradient(135deg,#ff3b30,#d70015)}.bg-cyan{background:linear-gradient(135deg,#5ac8fa,#32ade6)}.bg-yellow{background:linear-gradient(135deg,#ffcc00,#ff9500)}.bg-pink{background:linear-gradient(135deg,#ff2d55,#bf0050)}.bg-gray{background:linear-gradient(135deg,#8e8e93,#636366)}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="phone">
+<div class="notch"></div>
+<div class="status"><span id="time">9:41</span><span></span><span>📶 🔋</span></div>
+
+<!-- LOCK -->
+<div class="scr lock on" id="scrLock" onclick="showScr('home')">
+  <div class="lock-time" id="lockTime">9:41</div>
+  <div class="lock-date" id="lockDate">Saturday, February 28</div>
+  <div class="lock-notif">
+    <div class="lock-notif-h">🤖 WKSHP-DIY · now</div>
+    <div class="lock-notif-t">Robot Connected!</div>
+    <div class="lock-notif-b">bit-bot is ready via Bluetooth</div>
+  </div>
+  <div class="lock-notif">
+    <div class="lock-notif-h">🧠 AI Lab · 2m ago</div>
+    <div class="lock-notif-t">Model Trained</div>
+    <div class="lock-notif-b">Gesture recognition: 98% accuracy</div>
+  </div>
+  <div class="lock-swipe">swipe up to unlock</div>
+</div>
+
+<!-- HOME -->
+<div class="scr home" id="scrHome">
+  <div class="home-search">🔍 Search Workshop-DIY</div>
+  <div class="app-grid" id="appGrid"></div>
+</div>
+<div class="dock" id="dock"></div>
+
+<!-- DETAIL -->
+<div class="scr detail" id="scrDetail">
+  <div class="det-back" onclick="showScr('home')">‹ Back</div>
+  <div class="det-header">
+    <div class="det-icon" id="dIcon">🤖</div>
+    <div class="det-info">
+      <div class="det-name" id="dName">bit-bot</div>
+      <div class="det-sub" id="dSub">Workshop-DIY · Education</div>
+      <div class="det-get" id="dGet">OPEN</div>
+    </div>
+  </div>
+  <div class="det-stats" id="dStats"></div>
+  <div class="det-desc-h">Description</div>
+  <div class="det-desc" id="dDesc"></div>
+</div>
+</div>
+
+<script>
+const APPS=[
+{e:"🤖",n:"bit-bot",bg:"bg-green",d:"Drive a Bit:Bot robot from your browser via Bluetooth. Features joystick, line-follow, and obstacle avoidance.",r:"4.9",s:"2.8K",a:"8+",badge:3},
+{e:"🪄",n:"magic-hands",bg:"bg-purple",d:"Hand-tracking magic effects powered by MediaPipe. Confetti, neon trails, particles — all at 30fps.",r:"4.8",s:"2.1K",a:"6+"},
+{e:"🕵️",n:"face-quest",bg:"bg-blue",d:"Face-detection scoring game. Smile, blink, turn to score. 100% local processing, zero data sent.",r:"4.7",s:"1.9K",a:"6+",badge:1},
+{e:"🧠",n:"teachable",bg:"bg-purple",d:"Train AI gesture models in-browser, send results to micro:bit via Web Bluetooth.",r:"4.9",s:"1.7K",a:"10+"},
+{e:"💬",n:"talk-robot",bg:"bg-cyan",d:"Robot with speech synthesis, emotion detection, and BLE communication.",r:"4.5",s:"987",a:"8+"},
+{e:"😎",n:"face-track",bg:"bg-blue",d:"Kids face tracking with event triggers for micro:bit.",r:"4.4",s:"876",a:"6+"},
+{e:"😄",n:"bitmoji",bg:"bg-yellow",d:"Convert emojis to 5×5 LED pixel art on micro:bit display.",r:"4.6",s:"654",a:"6+"},
+{e:"🚀",n:"mission-ctrl",bg:"bg-orange",d:"WebRTC dashboard with live video, chat, and device control.",r:"4.5",s:"1.2K",a:"10+"},
+{e:"🧩",n:"playground",bg:"bg-green",d:"Ultimate micro:bit BLE playground — LEDs, sensors, servos.",r:"4.3",s:"543",a:"8+"},
+{e:"🎛️",n:"rxy",bg:"bg-cyan",d:"Build custom Bluetooth remotes with drag-and-drop UI.",r:"4.4",s:"432",a:"8+"},
+{e:"🎨",n:"pixel-art",bg:"bg-pink",d:"Retro pixel art portal — draw, animate, export sprites.",r:"4.6",s:"789",a:"6+"},
+{e:"💡",n:"wled-lab",bg:"bg-yellow",d:"Control Neopixel LED strips with WLED. Kid-friendly interface.",r:"4.5",s:"654",a:"8+"},
+{e:"⚡",n:"esp32",bg:"bg-orange",d:"Hands-on ESP32-C3 IoT lab — LEDs, sensors, WiFi.",r:"4.3",s:"543",a:"10+"},
+{e:"🪙",n:"crypto-101",bg:"bg-yellow",d:"Blockchain and cryptocurrency lessons for beginners.",r:"4.1",s:"321",a:"12+"},
+{e:"🔐",n:"pentest",bg:"bg-red",d:"Cybersecurity sandbox — ethical hacking challenges.",r:"4.8",s:"1.5K",a:"13+",badge:2},
+{e:"🐧",n:"linux-lab",bg:"bg-gray",d:"Learn Linux commands in a safe browser sandbox.",r:"4.7",s:"1.2K",a:"10+"},
+{e:"🐳",n:"docker",bg:"bg-blue",d:"Docker containerization experiments.",r:"4.2",s:"432",a:"12+"},
+{e:"✨",n:"prompt",bg:"bg-purple",d:"Master AI prompting techniques for LLMs.",r:"4.4",s:"678",a:"10+"},
+{e:"🔀",n:"git-lab",bg:"bg-orange",d:"Learn Git step by step — commit, branch, merge.",r:"4.1",s:"345",a:"10+"},
+{e:"💻",n:"code-kids",bg:"bg-green",d:"Learn HTML, CSS, JavaScript from scratch.",r:"4.5",s:"567",a:"8+"},
+];
+const DOCK=[
+{e:"🤖",n:"bit-bot",bg:"bg-green"},{e:"🧠",n:"AI",bg:"bg-purple"},{e:"🔐",n:"cyber",bg:"bg-red"},{e:"💡",n:"LED",bg:"bg-yellow"}
+];
+
+// HOME GRID
+const grid=document.getElementById('appGrid');
+APPS.forEach((a,i)=>{
+  const d=document.createElement('div');d.className='app-icon';
+  d.innerHTML=`<div class="icon ${a.bg}">${a.e}${a.badge?`<span class="badge">${a.badge}</span>`:''}</div><div class="name">${a.n}</div>`;
+  d.onclick=(e)=>{e.stopPropagation();showDetail(a)};
+  grid.appendChild(d);
+});
+
+// DOCK
+const dock=document.getElementById('dock');
+DOCK.forEach(a=>{
+  const d=document.createElement('div');d.className='app-icon';
+  d.innerHTML=`<div class="icon ${a.bg}">${a.e}</div><div class="name">${a.n}</div>`;
+  dock.appendChild(d);
+});
+
+function showDetail(a){
+  document.getElementById('dIcon').className='det-icon '+a.bg;
+  document.getElementById('dIcon').textContent=a.e;
+  document.getElementById('dName').textContent=a.n;
+  document.getElementById('dDesc').textContent=a.d;
+  document.getElementById('dStats').innerHTML=`<div class="det-stat"><div class="v">${a.r||'4.5'}</div><div class="l">Rating</div></div><div class="det-stat"><div class="v">${a.s||'500'}</div><div class="l">Sessions</div></div><div class="det-stat"><div class="v">${a.a||'8+'}</div><div class="l">Age</div></div><div class="det-stat"><div class="v">Free</div><div class="l">Price</div></div>`;
+  showScr('detail');
+}
+
+function showScr(id){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.getElementById('scr'+id.charAt(0).toUpperCase()+id.slice(1)).classList.add('on');
+  document.getElementById('dock').style.display=id==='home'?'flex':'none';
+}
+
+setInterval(()=>{const t=new Date();const h=t.getHours(),m=t.getMinutes();const ts=`${h}:${m<10?'0':''}${m}`;document.getElementById('time').textContent=ts;document.getElementById('lockTime').textContent=ts},1000);
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

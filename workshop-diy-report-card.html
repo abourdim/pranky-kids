@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // REPORT CARD</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#e8e0d0;font-family:'Noto Sans',sans-serif;font-size:10px;min-height:100vh;padding:16px}
+
+.report{max-width:580px;margin:0 auto;background:#fff;border:1px solid #bbb;padding:20px;box-shadow:1px 1px 4px rgba(0,0,0,.06)}
+
+.rh{text-align:center;margin-bottom:10px;border-bottom:2px solid #003366}
+.rh .crest{font-size:28px;margin-bottom:2px}
+.rh h1{font-size:14px;color:#003366;letter-spacing:3px;font-weight:700}
+.rh .sub{font-size:8px;color:#888;letter-spacing:2px;margin:2px 0 6px}
+
+.info{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:8px;font-size:9px}
+.info .f{padding:2px 0;border-bottom:1px dotted #ddd}
+.info .lbl{color:#888;font-size:7px;letter-spacing:1px}
+.info .val{color:#333;font-weight:700}
+
+/* GRADE TABLE */
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:9px}
+th{background:#003366;color:#fff;padding:4px 6px;text-align:left;font-size:7px;letter-spacing:1px}
+td{padding:4px 6px;border-bottom:1px solid #eee}
+tr:hover{background:#f8f8f4}
+.grade{font-weight:700;text-align:center;font-size:12px;font-family:'Patrick Hand',cursive}
+.grade-a{color:#008800}.grade-b{color:#006688}.grade-c{color:#cc8800}.grade-f{color:#cc0000}
+.comment{font-family:'Patrick Hand',cursive;font-size:10px;color:#1a1a8a}
+
+.gpa{text-align:center;margin:10px 0;padding:8px;background:#f0f8ff;border:1px solid #cce0ff;border-radius:4px}
+.gpa .num{font-size:28px;font-weight:700;color:#003366}
+.gpa .label{font-size:7px;color:#888;letter-spacing:2px}
+.gpa .honor{font-size:9px;color:#cc8800;font-weight:700;margin-top:2px;letter-spacing:1px}
+
+.conduct{margin:8px 0;padding:8px;border:1px solid #eee;border-radius:4px}
+.conduct h3{font-size:8px;color:#003366;letter-spacing:1px;margin-bottom:4px}
+.conduct-row{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px dotted #f0f0f0;font-size:9px}
+.conduct-grade{font-family:'Patrick Hand',cursive;color:#1a1a8a;font-size:11px}
+
+.teacher-note{margin:8px 0;padding:8px;background:#fffff0;border:1px solid #f0e8c0;border-radius:4px}
+.teacher-note h3{font-size:8px;color:#886600;letter-spacing:1px;margin-bottom:4px}
+.teacher-note p{font-family:'Patrick Hand',cursive;font-size:11px;color:#1a1a8a;line-height:2}
+
+.sig-row{display:flex;gap:14px;margin-top:10px}
+.sig{flex:1;text-align:center}
+.sig-val{font-family:'Patrick Hand',cursive;font-size:13px;color:#1a1a8a;min-height:20px}
+.sig-line{border-top:1px solid #999;padding-top:2px;font-size:7px;color:#999;margin-top:6px}
+
+.footer{text-align:center;margin-top:10px;font-size:6px;color:#bbb;letter-spacing:1px;font-family:'JetBrains Mono',monospace}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="report">
+
+<div class="rh">
+  <div class="crest">🎓</div>
+  <h1>OFFICIAL REPORT CARD</h1>
+  <div class="sub">WORKSHOP-DIY ACADEMY · ACADEMIC YEAR 2025-2026</div>
+</div>
+
+<div class="info">
+  <div class="f"><div class="lbl">STUDENT</div><div class="val">Workshop-DIY (the platform)</div></div>
+  <div class="f"><div class="lbl">GRADE LEVEL</div><div class="val">Advanced · Year 3</div></div>
+  <div class="f"><div class="lbl">ADVISOR</div><div class="val">The Founder</div></div>
+  <div class="f"><div class="lbl">SEMESTER</div><div class="val">Spring 2026</div></div>
+</div>
+
+<table>
+<tr><th>SUBJECT</th><th>APP</th><th style="text-align:center">GRADE</th><th>TEACHER COMMENTS</th></tr>
+<tr><td>Robotics</td><td>bit-bot</td><td class="grade grade-a">A+</td><td class="comment">Exceptional resilience. Survived 47 drops. Class favorite.</td></tr>
+<tr><td>Artificial Intelligence</td><td>teachable-machine</td><td class="grade grade-a">A</td><td class="comment">98% accuracy. Consistent. Makes parents feel inadequate.</td></tr>
+<tr><td>Cybersecurity</td><td>pentest-lab</td><td class="grade grade-a">A</td><td class="comment">Found the printer vulnerability. Responsible disclosure. Impressive.</td></tr>
+<tr><td>Computer Science</td><td>docker-lab</td><td class="grade grade-b">B+</td><td class="comment">Excellent content. Confuses adults more than children. Feature?</td></tr>
+<tr><td>Gesture Recognition</td><td>magic-hands</td><td class="grade grade-a">A+</td><td class="comment">21 landmarks per hand. Particle effects are chef's kiss.</td></tr>
+<tr><td>Operating Systems</td><td>linux-kids-lab</td><td class="grade grade-a">A</td><td class="comment">Students running sudo before they can drive. Concerning and great.</td></tr>
+<tr><td>Network Security</td><td>password123</td><td class="grade grade-f">F</td><td class="comment">Unchanged since 2023. Failed every security audit. Beloved anyway.</td></tr>
+<tr><td>Hardware Engineering</td><td>esp32-c3-lab</td><td class="grade grade-a">A</td><td class="comment">Hot glue is holding. Literally. Structurally. Emotionally.</td></tr>
+<tr><td>Facial Analysis</td><td>face-quest</td><td class="grade grade-a">A+</td><td class="comment">468 landmarks in real-time. In a browser. Show-off.</td></tr>
+<tr><td>Lighting Design</td><td>wled-kids-lab</td><td class="grade grade-b">B+</td><td class="comment">16 million colors. Students set everything to rainbow. Every time.</td></tr>
+<tr><td>Web Communication</td><td>mission-control</td><td class="grade grade-a">A</td><td class="comment">WebRTC P2P in the browser. Black magic disguised as education.</td></tr>
+<tr><td>Existential Studies</td><td>Bug #42</td><td class="grade grade-a">A+</td><td class="comment">Not enrolled. Still shows up. Gets the highest grade. Unexplainable.</td></tr>
+<tr><td>Catering Services</td><td>Coffee Machine</td><td class="grade grade-c">C-</td><td class="comment">At 8% for 14 months. Drainage tray is a biohazard. Coffee is perfect.</td></tr>
+</table>
+
+<div class="gpa">
+  <div class="label">CUMULATIVE GPA</div>
+  <div class="num">3.87</div>
+  <div class="honor">★ DEAN'S LIST · HONOR ROLL ★</div>
+</div>
+
+<div class="conduct">
+  <h3>CONDUCT & CITIZENSHIP</h3>
+  <div class="conduct-row"><span>Attendance</span><span class="conduct-grade">24/7 (it's a website)</span></div>
+  <div class="conduct-row"><span>Participation</span><span class="conduct-grade">847 active users</span></div>
+  <div class="conduct-row"><span>Follows Instructions</span><span class="conduct-grade">No installation needed</span></div>
+  <div class="conduct-row"><span>Works Well With Others</span><span class="conduct-grade">39 apps, 0 conflicts</span></div>
+  <div class="conduct-row"><span>Respects WiFi Password</span><span class="conduct-grade">...no comment</span></div>
+</div>
+
+<div class="teacher-note">
+  <h3>ADVISOR REMARKS</h3>
+  <p>Workshop-DIY has demonstrated extraordinary growth this year. 39 fully operational browser-based apps with zero installation requirements is unprecedented. The only area of concern remains the WiFi password situation and the coffee machine's prolonged critical status. Bug #42 continues to defy classification but contributes positively to the ecosystem. Strongly recommend for advancement.</p>
+</div>
+
+<div class="sig-row">
+  <div class="sig"><div class="sig-val">The Founder</div><div class="sig-line">ADVISOR</div></div>
+  <div class="sig"><div class="sig-val">Chief Compiler</div><div class="sig-line">PRINCIPAL</div></div>
+  <div class="sig"><div class="sig-val">Bug #42</div><div class="sig-line">STUDENT (self-signed)</div></div>
+</div>
+
+</div>
+
+<div class="footer">WORKSHOP-DIY ACADEMY · OFFICIAL TRANSCRIPT · FORM RC-042 · SEAL AFFIXED · BUGS ARE HONORS STUDENTS</div>
+  <script src="nav.js"></script>
+</body>
+</html>

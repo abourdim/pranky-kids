@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>r/WorkshopDIY</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a1a1b;color:#d7dadc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px}
+a{color:#4fbcff;text-decoration:none}
+
+.nav{background:#1a1a1b;border-bottom:1px solid #343536;padding:6px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:18px;font-weight:800;color:#ff4500;display:flex;align-items:center;gap:4px}
+.nav-search{background:#272729;border:1px solid #343536;border-radius:18px;padding:5px 14px;color:#d7dadc;font-size:12px;width:240px;outline:none}
+
+.main{max-width:640px;margin:12px auto;padding:0 12px}
+
+/* SUBREDDIT HEADER */
+.sub-banner{background:linear-gradient(135deg,#0a2a0a,#001a1a);height:80px;border-radius:4px 4px 0 0}
+.sub-info{background:#1a1a1b;border:1px solid #343536;border-top:none;border-radius:0 0 4px 4px;padding:12px 16px;display:flex;gap:12px;align-items:flex-end;margin-bottom:12px}
+.sub-icon{width:56px;height:56px;border-radius:50%;border:3px solid #1a1a1b;background:#0a0a0e;display:flex;align-items:center;justify-content:center;font-size:28px;margin-top:-28px}
+.sub-name{font-size:22px;font-weight:700}.sub-meta{font-size:11px;color:#818384;margin-top:2px}
+.sub-join{margin-left:auto;background:#d7dadc;color:#1a1a1b;border:none;padding:4px 16px;border-radius:18px;font-size:12px;font-weight:700;cursor:pointer}
+
+/* POST */
+.post{background:#1a1a1b;border:1px solid #343536;border-radius:4px;margin-bottom:8px;display:flex;transition:border-color .1s}
+.post:hover{border-color:#818384}
+.vote{padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;background:#161617;border-radius:4px 0 0 4px;min-width:36px}
+.vote-btn{font-size:14px;cursor:pointer;color:#818384;background:none;border:none;padding:2px}.vote-btn:hover{color:#ff4500}
+.vote-count{font-size:12px;font-weight:700;color:#d7dadc}
+.post-body{padding:8px 10px;flex:1;min-width:0}
+.post-meta{font-size:11px;color:#818384;margin-bottom:4px}
+.post-meta .flair{padding:1px 6px;border-radius:10px;font-size:10px;font-weight:600;margin-left:3px}
+.fl-robo{background:rgba(0,255,65,.08);color:#0f0;border:1px solid rgba(0,255,65,.15)}.fl-ai{background:rgba(191,0,255,.08);color:#bf00ff;border:1px solid rgba(191,0,255,.15)}.fl-cyber{background:rgba(255,0,51,.08);color:#f44;border:1px solid rgba(255,0,51,.15)}.fl-meta{background:rgba(255,165,0,.08);color:#ffa500;border:1px solid rgba(255,165,0,.15)}.fl-help{background:rgba(0,212,255,.08);color:#0af;border:1px solid rgba(0,212,255,.15)}.fl-meme{background:rgba(255,215,0,.08);color:#ffd700;border:1px solid rgba(255,215,0,.15)}
+.post-title{font-size:16px;font-weight:600;color:#d7dadc;margin-bottom:4px;line-height:1.4}
+.post-text{font-size:13px;color:#818384;line-height:1.7;margin-bottom:6px}
+.post-actions{display:flex;gap:8px;font-size:11px;color:#818384}
+.post-actions span{cursor:pointer;padding:2px 4px;border-radius:2px}.post-actions span:hover{background:#272729}
+.award{font-size:12px;vertical-align:middle}
+
+/* COMMENTS */
+.comments{padding:0 10px 8px}
+.comment{padding:6px 0 6px 12px;border-left:2px solid #343536;margin-top:6px}
+.c-meta{font-size:11px;color:#818384;margin-bottom:2px}
+.c-meta .u{color:#d7dadc;font-weight:600}
+.c-text{font-size:12px;color:#d7dadc;line-height:1.7}
+.c-actions{font-size:10px;color:#818384;margin-top:2px;display:flex;gap:8px}
+.c-actions span{cursor:pointer}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-logo">🔴 reddit</div>
+  <input class="nav-search" placeholder="Search Reddit" readonly>
+</div>
+
+<div class="main">
+
+<div class="sub-banner"></div>
+<div class="sub-info">
+  <div class="sub-icon">🤖</div>
+  <div>
+    <div class="sub-name">r/WorkshopDIY</div>
+    <div class="sub-meta">42,069 members · 847 online · Created 2023</div>
+  </div>
+  <button class="sub-join">Joined</button>
+</div>
+
+<!-- POST 1 -->
+<div class="post">
+  <div class="vote"><button class="vote-btn">▲</button><span class="vote-count">2.4k</span><button class="vote-btn">▼</button></div>
+  <div class="post-body">
+    <div class="post-meta">Posted by u/CyberYassine · 2h · <span class="flair fl-meta">Announcement</span> <span class="award">🏆</span><span class="award">🚀</span></div>
+    <div class="post-title">We just hit 39 apps. All free. All browser-based. No sign-up. No install.</div>
+    <div class="post-text">It took 2 years, approximately 847 cups of coffee, and 42 bugs that are now features. The Workshop-DIY ecosystem now covers robotics, AI, electronics, 3D printing, programming, and cybersecurity. Every single app runs in a browser tab. AMA.</div>
+    <div class="post-actions"><span>💬 347 Comments</span><span>🔗 Share</span><span>⭐ Save</span><span>🏆 Award</span></div>
+    <div class="comments">
+      <div class="comment"><div class="c-meta"><span class="u">u/RoboLucas</span> · 1h</div><div class="c-text">39 apps?! I struggle to finish ONE side project. Teach me your ways (and your caffeine source).</div><div class="c-actions"><span>▲ 847</span><span>Reply</span></div></div>
+      <div class="comment"><div class="c-meta"><span class="u">u/CyberYassine</span> · 58m · <span style="color:#0f0">OP</span></div><div class="c-text">The secret ingredient is ignoring sleep and declaring all bugs as features. Works every time.</div><div class="c-actions"><span>▲ 412</span><span>Reply</span></div></div>
+      <div class="comment"><div class="c-meta"><span class="u">u/LinuxKid42</span> · 45m</div><div class="c-text">The linux-kids-lab literally taught me more than my entire CS semester. And it runs in a browser???</div><div class="c-actions"><span>▲ 256</span><span>Reply</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- POST 2 -->
+<div class="post">
+  <div class="vote"><button class="vote-btn">▲</button><span class="vote-count">1.8k</span><button class="vote-btn">▼</button></div>
+  <div class="post-body">
+    <div class="post-meta">Posted by u/MakerAmira · 5h · <span class="flair fl-meme">Meme</span> <span class="award">😂</span></div>
+    <div class="post-title">Me explaining Docker to my software engineer parent after one workshop session</div>
+    <div class="post-text">Parent: "What did you learn today?"<br>Me: "Containers, images, volumes, and docker-compose"<br>Parent: *visibly shaken*<br>Me: "Also the WiFi password is still password123"<br>Parent: *starts questioning their career choices*</div>
+    <div class="post-actions"><span>💬 189 Comments</span><span>🔗 Share</span><span>⭐ Save</span></div>
+    <div class="comments">
+      <div class="comment"><div class="c-meta"><span class="u">u/SeniorDevDad</span> · 4h</div><div class="c-text">I'm in this post and I don't like it. My 14-year-old drew a diagram of Kubernetes to "help me understand."</div><div class="c-actions"><span>▲ 634</span><span>Reply</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- POST 3 -->
+<div class="post">
+  <div class="vote"><button class="vote-btn">▲</button><span class="vote-count">1.2k</span><button class="vote-btn">▼</button></div>
+  <div class="post-body">
+    <div class="post-meta">Posted by u/EthicalHacker_13 · 8h · <span class="flair fl-cyber">Cybersecurity</span></div>
+    <div class="post-title">[pentest-lab] I solved the SQL injection challenge and then found a real vuln in our school printer</div>
+    <div class="post-text">After completing the pentest-lab SQL injection module, I noticed our school printer admin panel had the same exact vulnerability. Reported it to IT. They said thanks. The printer is now patched. The pen is mightier than the... printer?</div>
+    <div class="post-actions"><span>💬 156 Comments</span><span>🔗 Share</span><span>⭐ Save</span></div>
+    <div class="comments">
+      <div class="comment"><div class="c-meta"><span class="u">u/SchoolIT_Guy</span> · 7h</div><div class="c-text">I am the IT guy. We are grateful. Also slightly terrified that 13-year-olds are finding our vulnerabilities.</div><div class="c-actions"><span>▲ 890</span><span>Reply</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- POST 4 -->
+<div class="post">
+  <div class="vote"><button class="vote-btn">▲</button><span class="vote-count">967</span><button class="vote-btn">▼</button></div>
+  <div class="post-body">
+    <div class="post-meta">Posted by u/RobotDanceKing · 12h · <span class="flair fl-robo">Robotics</span></div>
+    <div class="post-title">My bit-bot has now survived 47 drops from the workshop table. What is this robot made of?</div>
+    <div class="post-text">Seriously, the ESP32 kit is indestructible. I've dropped it, stepped on it, and my cat knocked it off the shelf twice. It still works perfectly. I'm starting to think it's alive.</div>
+    <div class="post-actions"><span>💬 98 Comments</span><span>🔗 Share</span><span>⭐ Save</span></div>
+  </div>
+</div>
+
+<!-- POST 5 -->
+<div class="post">
+  <div class="vote"><button class="vote-btn">▲</button><span class="vote-count">834</span><button class="vote-btn">▼</button></div>
+  <div class="post-body">
+    <div class="post-meta">Posted by u/PixelNour · 1d · <span class="flair fl-ai">AI</span></div>
+    <div class="post-title">magic-hands made my 8-year-old wave at her laptop for 2 hours straight</div>
+    <div class="post-text">Showed my daughter the magic-hands app. She's been making particle effects with her hands for two hours. She refuses to stop. Dinner is getting cold. Send help. Or more MediaPipe features.</div>
+    <div class="post-actions"><span>💬 76 Comments</span><span>🔗 Share</span><span>⭐ Save</span></div>
+  </div>
+</div>
+
+<!-- POST 6 -->
+<div class="post">
+  <div class="vote"><button class="vote-btn">▲</button><span class="vote-count">721</span><button class="vote-btn">▼</button></div>
+  <div class="post-body">
+    <div class="post-meta">Posted by u/WiFiHeretic · 2d · <span class="flair fl-meme">Meme</span> <span class="award">💀</span></div>
+    <div class="post-title">The WiFi password has been "password123" since 2023 and nobody is changing it. In a cybersecurity workshop.</div>
+    <div class="post-text">The irony is not lost on me. We teach kids about strong passwords, encryption, and network security. Our WiFi password is literally password123. It's been two years. It's tradition now.</div>
+    <div class="post-actions"><span>💬 234 Comments</span><span>🔗 Share</span><span>⭐ Save</span></div>
+    <div class="comments">
+      <div class="comment"><div class="c-meta"><span class="u">u/CyberYassine</span> · 2d</div><div class="c-text">At this point it would be disrespectful to the password to change it. It's earned its place.</div><div class="c-actions"><span>▲ 1.2k</span><span>Reply</span></div></div>
+      <div class="comment"><div class="c-meta"><span class="u">u/EthicalHacker_13</span> · 2d</div><div class="c-text">I've formally proposed changing it 3 times. All 3 proposals were vetoed. By the router itself, I think.</div><div class="c-actions"><span>▲ 567</span><span>Reply</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- POST 7 -->
+<div class="post">
+  <div class="vote"><button class="vote-btn">▲</button><span class="vote-count">543</span><button class="vote-btn">▼</button></div>
+  <div class="post-body">
+    <div class="post-meta">Posted by u/PromptMaster · 3d · <span class="flair fl-help">Help</span></div>
+    <div class="post-title">How do I explain to my teacher that my git commit messages are not "unprofessional"?</div>
+    <div class="post-text">My teacher saw my git history: "fix thing", "why does this work", "3am commit no questions", "PLEASE WORK", and "it works. don't touch." She was not amused. I learned git from Workshop-DIY's git-lab and I think the humor rubbed off.</div>
+    <div class="post-actions"><span>💬 87 Comments</span><span>🔗 Share</span><span>⭐ Save</span></div>
+  </div>
+</div>
+
+</div>
+  <script src="nav.js"></script>
+</body>
+</html>

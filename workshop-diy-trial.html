@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // THE TRIAL OF BUG #42</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0f0e17;color:#c8c4b8;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;display:flex;justify-content:center;padding:16px}
+.doc{max-width:640px;width:100%;background:linear-gradient(180deg,#1a1820,#14131a);border:1px solid #2a2830;border-radius:8px;padding:20px;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+
+/* HEADER */
+.court-h{text-align:center;border-bottom:2px double #333;padding-bottom:12px;margin-bottom:14px}
+.court-h .gavel{font-size:36px;margin-bottom:4px}
+.court-h h1{font-family:'Playfair Display',serif;font-size:22px;color:#ffd700;letter-spacing:1px}
+.court-h .case{font-size:8px;color:#555;letter-spacing:3px;margin-top:2px}
+.court-h .date{font-size:8px;color:#444;margin-top:2px}
+
+/* SECTION */
+.sec{margin:14px 0}
+.sec-h{font-family:'Playfair Display',serif;font-size:14px;color:#ffd700;border-bottom:1px solid #222;padding-bottom:3px;margin-bottom:8px}
+
+/* PARTIES */
+.parties{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.party{border:1px solid #222;border-radius:4px;padding:8px;text-align:center}
+.party .emoji{font-size:24px;margin-bottom:3px}
+.party .role{font-size:7px;color:#666;letter-spacing:2px;margin-bottom:2px}
+.party .name{font-size:11px;font-weight:700;color:#ddd}
+.party .title{font-size:8px;color:#888}
+
+/* TRANSCRIPT */
+.transcript{line-height:2.2}
+.line{padding:4px 0;border-bottom:1px solid rgba(255,255,255,.02);display:flex;gap:8px}
+.line:hover{background:rgba(255,215,0,.01)}
+.speaker{font-weight:700;flex-shrink:0;width:100px;text-align:right;font-size:10px}
+.speaker.judge{color:#ffd700}.speaker.pros{color:#ff4444}.speaker.def{color:#00cc66}
+.speaker.wit{color:#0af}.speaker.clerk{color:#888}
+.dialogue{flex:1;color:#aaa;font-size:10px}
+.dialogue i{color:#777}
+.dialogue b{color:#ddd}
+.action{padding:4px 0;text-align:center;font-style:italic;color:#444;font-size:9px;margin:4px 0}
+
+/* EVIDENCE */
+.evidence{border:1px dashed #333;border-radius:4px;padding:8px;margin:8px 0;background:rgba(255,215,0,.01)}
+.ev-h{font-size:7px;color:#666;letter-spacing:2px;margin-bottom:4px}
+.ev-body{font-size:9px;color:#888;line-height:2}
+
+/* VERDICT */
+.verdict{border:2px solid #ffd700;border-radius:6px;padding:14px;text-align:center;margin:14px 0;background:rgba(255,215,0,.02)}
+.verdict h2{font-family:'Playfair Display',serif;font-size:18px;color:#ffd700;margin-bottom:4px}
+.verdict .result{font-size:24px;font-weight:800;color:#00ff41;margin:6px 0;letter-spacing:2px;font-family:'Syne',sans-serif}
+.verdict .detail{font-size:9px;color:#888;line-height:2}
+
+/* STAMP */
+.stamp{text-align:center;margin-top:14px;font-size:8px;color:#333;letter-spacing:2px}
+.stamp .big{font-family:'Syne',sans-serif;font-size:16px;color:rgba(0,255,65,.15);border:2px solid rgba(0,255,65,.08);display:inline-block;padding:4px 16px;border-radius:2px;transform:rotate(-3deg);letter-spacing:3px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="doc">
+
+<div class="court-h">
+  <div class="gavel">⚖️</div>
+  <h1>THE TRIAL OF BUG #42</h1>
+  <div class="case">CASE NO. WKSHP-2025-042 · WORKSHOP-DIY SUPREME COURT OF CODE</div>
+  <div class="date">Heard on February 28, 2026 · Hon. Judge Compiler presiding</div>
+</div>
+
+<div class="parties">
+  <div class="party"><div class="emoji">⚖️</div><div class="role">PRESIDING</div><div class="name">Judge Compiler</div><div class="title">Chief Justice, Court of Code</div></div>
+  <div class="party"><div class="emoji">🔴</div><div class="role">PROSECUTION</div><div class="name">lint --strict</div><div class="title">District Attorney, QA Division</div></div>
+  <div class="party"><div class="emoji">🟢</div><div class="role">DEFENSE</div><div class="name">try { } catch(e) { }</div><div class="title">Public Defender, Error Handling Unit</div></div>
+  <div class="party"><div class="emoji">🐛</div><div class="role">DEFENDANT</div><div class="name">Bug #42</div><div class="title">Accused of being a bug (denies all charges)</div></div>
+</div>
+
+<div class="sec">
+  <div class="sec-h">I. Opening Statements</div>
+  <div class="transcript">
+    <div class="action">Court is now in session. All rise for the Honorable Judge Compiler.</div>
+    
+    <div class="line"><span class="speaker judge">JUDGE:</span><span class="dialogue">We are here today to determine the nature of <b>Bug #42</b>, reported in the Workshop-DIY codebase on an unknown date by an unknown author. The charge: <b>being a bug</b>. The defendant claims to be a feature. Prosecution, your opening statement.</span></div>
+    
+    <div class="line"><span class="speaker pros">PROSECUTION:</span><span class="dialogue">Your Honor, the evidence is clear. Bug #42 causes unexpected behavior in the app ecosystem. It appeared without a commit, without a pull request, without code review. It has <b>no documentation</b>. In the civilized world of software, that makes it a bug.</span></div>
+    
+    <div class="line"><span class="speaker def">DEFENSE:</span><span class="dialogue">Your Honor, my client has been a productive member of the Workshop-DIY ecosystem since its inception. It has been responsible for <b>zero downtime</b>, <b>zero data loss</b>, and has in fact made the platform more interesting. We will prove that Bug #42 is, and always has been, a <b>feature</b>.</span></div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-h">II. Prosecution's Case</div>
+  <div class="transcript">
+    <div class="line"><span class="speaker pros">PROSECUTION:</span><span class="dialogue">I call my first witness: <b>ESLint</b>, the code quality inspector.</span></div>
+    
+    <div class="line"><span class="speaker wit">ESLINT:</span><span class="dialogue">I've been analyzing the Workshop-DIY codebase for two years. Bug #42 violates <b>17 linting rules</b>, uses <b>var</b> instead of const, has a nested ternary operator inside a template literal, and... <i>(shudders)</i> ...uses a == comparison.</span></div>
+    
+    <div class="action">Gasps from the gallery.</div>
+    
+    <div class="line"><span class="speaker pros">PROSECUTION:</span><span class="dialogue">No further questions.</span></div>
+    
+    <div class="line"><span class="speaker def">DEFENSE:</span><span class="dialogue">ESLint, how many of those 17 rule violations actually cause runtime errors?</span></div>
+    
+    <div class="line"><span class="speaker wit">ESLINT:</span><span class="dialogue"><i>(long pause)</i> ...Zero.</span></div>
+    
+    <div class="line"><span class="speaker def">DEFENSE:</span><span class="dialogue">Zero. Thank you. No further questions.</span></div>
+  </div>
+</div>
+
+<div class="evidence">
+  <div class="ev-h">EXHIBIT A — BUG #42 SOURCE CODE (REDACTED)</div>
+  <div class="ev-body"><code>
+    // TODO: fix this later<br>
+    // UPDATE: it's been 2 years<br>
+    // UPDATE: this is fine<br>
+    var x = (a == b) ? (c ? d : e) : `${f + g}`;<br>
+    // It works. Don't touch it.
+  </code></div>
+</div>
+
+<div class="sec">
+  <div class="sec-h">III. Defense's Case</div>
+  <div class="transcript">
+    <div class="line"><span class="speaker def">DEFENSE:</span><span class="dialogue">I call <b>bit-bot</b>, the most popular app in the ecosystem.</span></div>
+    
+    <div class="line"><span class="speaker wit">BIT-BOT:</span><span class="dialogue">🤖 Bug #42 is responsible for the slight wobble in my Bluetooth reconnection sequence. Students love it. They think I'm "dancing." My engagement scores went up <b>23%</b> after Bug #42 appeared.</span></div>
+    
+    <div class="line"><span class="speaker def">DEFENSE:</span><span class="dialogue">And has Bug #42 ever caused a crash?</span></div>
+    
+    <div class="line"><span class="speaker wit">BIT-BOT:</span><span class="dialogue">Never. I've survived 47 drops from tables. Bug #42 has survived every single one with me.</span></div>
+    
+    <div class="action">The defendant (Bug #42) visibly emotional.</div>
+    
+    <div class="line"><span class="speaker def">DEFENSE:</span><span class="dialogue">I now call <b>the WiFi password</b> as a character witness.</span></div>
+    
+    <div class="line"><span class="speaker pros">PROSECUTION:</span><span class="dialogue">Objection! The WiFi password is not qualified to testify.</span></div>
+    
+    <div class="line"><span class="speaker judge">JUDGE:</span><span class="dialogue">Overruled. If <code>password123</code> has survived this long in a cybersecurity-teaching organization, it has clearly earned its place. Proceed.</span></div>
+    
+    <div class="line"><span class="speaker wit">PASSWORD123:</span><span class="dialogue">🔑 Look, I've been here since day one. Nobody changes me. Nobody fixes me. And you know what? The system <b>works</b>. Sometimes the best feature is the one everyone agrees to keep as-is. Bug #42 and I understand each other.</span></div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-h">IV. Closing Arguments</div>
+  <div class="transcript">
+    <div class="line"><span class="speaker pros">PROSECUTION:</span><span class="dialogue">The code is messy. The behavior is unexpected. It has no documentation. By every standard of software engineering, Bug #42 is a <b>bug</b>.</span></div>
+    
+    <div class="line"><span class="speaker def">DEFENSE:</span><span class="dialogue">Your Honor, members of the jury: Workshop-DIY has 39 apps, 7 domains, and 12 themes. It teaches children to build robots, train AI, and hack ethically. And at the heart of all of it is a simple truth: <b>sometimes the things we didn't plan become the things we can't live without</b>. Bug #42 didn't ask to be here. But it stayed. It contributed. It never broke anything. And 847 workshop participants have never once complained about it. Because they don't even know it exists. <i>That</i> is the mark of a great feature.</span></div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-h">V. The Verdict</div>
+  <div class="action">The jury deliberated for 42 seconds.</div>
+</div>
+
+<div class="verdict">
+  <h2>In the matter of Workshop-DIY v. Bug #42</h2>
+  <div class="result">NOT GUILTY</div>
+  <div class="detail">
+    The court finds Bug #42 <b>NOT GUILTY</b> of being a bug.<br>
+    Bug #42 is hereby reclassified as a <b>FEATURE</b> under Workshop-DIY Code §42.<br>
+    The defendant is free to continue operating in the codebase with full feature privileges.<br><br>
+    <i>The WiFi password will also remain unchanged. Court adjourned.</i>
+  </div>
+</div>
+
+<div class="action">⚖️ The gavel falls. Bug #42 hugs its defense attorney. ESLint files an appeal.</div>
+
+<div class="stamp">
+  <div class="big">CASE CLOSED</div>
+  <div style="margin-top:6px">WORKSHOP-DIY SUPREME COURT OF CODE · FRANCE · ALL BUGS ARE FEATURES UNTIL PROVEN OTHERWISE</div>
+</div>
+
+</div>
+  <script src="nav.js"></script>
+</body>
+</html>

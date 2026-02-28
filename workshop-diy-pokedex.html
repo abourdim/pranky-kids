@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DEX</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a0000;font-family:'JetBrains Mono',monospace;font-size:11px;color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:12px}
+
+.dex{width:100%;max-width:420px;background:#2a0a0a;border:3px solid #cc0000;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(200,0,0,.15),inset 0 0 40px rgba(0,0,0,.3)}
+
+/* TOP */
+.dex-top{background:linear-gradient(180deg,#cc0000,#990000);padding:8px 12px;display:flex;align-items:center;gap:8px}
+.dex-lens{width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#60d0ff,#0080cc);border:2px solid #fff;box-shadow:0 0 8px rgba(96,208,255,.3)}
+.dex-dots{display:flex;gap:4px}
+.dex-dot{width:8px;height:8px;border-radius:50%}
+.dex-dot.r{background:#ff3333}.dex-dot.y{background:#ffd700}.dex-dot.g{background:#33ff33}
+.dex-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:2px;margin-left:auto}
+
+/* SCREEN */
+.screen{background:#0a1a0a;margin:8px;border-radius:8px;border:2px solid #1a1a1a;overflow:hidden}
+.screen-inner{padding:12px}
+
+/* NAV */
+.nav{display:flex;gap:4px;margin-bottom:10px;overflow-x:auto;padding-bottom:4px}
+.nav::-webkit-scrollbar{height:2px}.nav::-webkit-scrollbar-thumb{background:#333}
+.nav-btn{flex-shrink:0;padding:3px 10px;border-radius:10px;font-size:7px;font-family:inherit;border:1px solid rgba(0,255,65,.08);background:rgba(0,255,65,.02);color:rgba(0,255,65,.3);cursor:pointer;transition:all .15s;letter-spacing:.5px}
+.nav-btn:hover,.nav-btn.on{background:rgba(0,255,65,.06);border-color:rgba(0,255,65,.2);color:#00ff41}
+
+/* ENTRY */
+.entry{display:none;animation:entryIn .4s ease}
+.entry.on{display:block}
+@keyframes entryIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
+
+.entry-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.entry-id{font-size:9px;color:rgba(0,255,65,.2);font-weight:700;letter-spacing:1px}
+.entry-name{font-size:16px;font-weight:800;color:#00ff41;font-family:'Syne',sans-serif}
+.entry-types{display:flex;gap:3px;margin-left:auto}
+.type{padding:1px 7px;border-radius:8px;font-size:6px;font-weight:700;letter-spacing:1px;border:1px solid}
+.type-robo{background:rgba(0,255,65,.06);border-color:rgba(0,255,65,.15);color:#00ff41}
+.type-ai{background:rgba(191,0,255,.06);border-color:rgba(191,0,255,.15);color:#bf00ff}
+.type-cyber{background:rgba(255,0,51,.06);border-color:rgba(255,0,51,.15);color:#ff0033}
+.type-learn{background:rgba(0,212,255,.06);border-color:rgba(0,212,255,.15);color:#00d4ff}
+.type-hw{background:rgba(255,136,0,.06);border-color:rgba(255,136,0,.15);color:#ff8800}
+.type-cam{background:rgba(255,215,0,.06);border-color:rgba(255,215,0,.15);color:#ffd700}
+.type-tool{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.06);color:#888}
+
+.entry-emoji{text-align:center;font-size:56px;margin:8px 0;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));animation:bounce 2s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+.entry-desc{font-size:10px;color:rgba(0,255,65,.35);text-align:center;line-height:1.8;margin-bottom:10px}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:8px}
+.stat{text-align:center;padding:6px;border:1px solid rgba(0,255,65,.04);border-radius:4px;background:rgba(0,255,65,.005)}
+.stat .v{font-size:16px;font-weight:800}.stat .l{font-size:5px;color:rgba(0,255,65,.2);letter-spacing:1px;margin-top:1px}
+.stat.pwr .v{color:#ff0033}.stat.cpx .v{color:#00d4ff}.stat.fun .v{color:#ffd700}
+
+/* BARS */
+.stat-bar{display:flex;align-items:center;gap:4px;margin-bottom:3px}
+.stat-bar .lbl{font-size:6px;color:rgba(0,255,65,.2);width:24px;text-align:right;letter-spacing:.5px}
+.stat-bar .track{flex:1;height:5px;background:rgba(0,255,65,.03);border-radius:3px;overflow:hidden}
+.stat-bar .fill{height:100%;border-radius:3px;transition:width .6s ease}
+
+/* INFO ROW */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:8px;font-size:8px}
+.info-item{padding:4px 6px;border:1px solid rgba(0,255,65,.03);border-radius:2px}
+.info-item .lbl{color:rgba(0,255,65,.15);font-size:6px;letter-spacing:1px}.info-item .val{color:rgba(0,255,65,.4)}
+
+/* BOTTOM CONTROLS */
+.dex-bottom{padding:8px 12px;display:flex;gap:6px;align-items:center;justify-content:center}
+.dex-btn{width:32px;height:32px;border-radius:50%;background:#1a0a0a;border:2px solid #550000;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;transition:all .15s;color:#cc0000}
+.dex-btn:hover{background:#330000;border-color:#cc0000;box-shadow:0 0 8px rgba(200,0,0,.2)}
+.dex-counter{font-size:9px;color:rgba(200,0,0,.4);letter-spacing:2px;margin:0 8px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="dex">
+  <div class="dex-top">
+    <div class="dex-lens"></div>
+    <div class="dex-dots"><div class="dex-dot r"></div><div class="dex-dot y"></div><div class="dex-dot g"></div></div>
+    <div class="dex-title">WKSHP-DEX</div>
+  </div>
+
+  <div class="screen">
+    <div class="screen-inner">
+      <div class="nav" id="navPills"></div>
+      <div id="entries"></div>
+    </div>
+  </div>
+
+  <div class="dex-bottom">
+    <div class="dex-btn" onclick="go(-1)">◂</div>
+    <div class="dex-counter" id="counter">#001 / 039</div>
+    <div class="dex-btn" onclick="go(1)">▸</div>
+  </div>
+</div>
+
+<script>
+const APPS=[
+{e:"🤖",n:"bit-bot",d:"Drives Bit:Bot robots via Web Bluetooth. Joystick control, line-following, obstacle avoidance. The first app ever created.",t:["robo"],pwr:95,cpx:60,fun:90,ht:"150mm",wt:"280g",ab:"BLE-01",catch:"Very Common"},
+{e:"🪄",n:"magic-hands",d:"Hand-tracking visual effects powered by MediaPipe. 21 hand landmarks. Warning: you will wave at your screen for hours.",t:["ai","cam"],pwr:88,cpx:70,fun:99,ht:"21pts",wt:"Light",ab:"MP-02",catch:"Uncommon"},
+{e:"🕵️",n:"face-quest",d:"Gamified face detection. Score points with expressions. 468 face landmarks. Zero data leaves the browser.",t:["ai","cam"],pwr:82,cpx:65,fun:95,ht:"468pts",wt:"Light",ab:"FM-03",catch:"Common"},
+{e:"🧠",n:"teachable-machine",d:"Train AI gesture models in-browser, then send results to micro:bit via BLE. Browser-based machine learning.",t:["ai","robo"],pwr:92,cpx:80,fun:85,ht:"N/A",wt:"Heavy",ab:"TM-04",catch:"Rare"},
+{e:"💬",n:"talking-robot",d:"Voice-controlled robot. Speech recognition meets BLE motor control. Say 'dance' at your own risk.",t:["robo","ai"],pwr:78,cpx:75,fun:88,ht:"N/A",wt:"Med",ab:"SR-05",catch:"Uncommon"},
+{e:"😎",n:"face-tracking",d:"Kid-friendly face position tracker with event triggers for micro:bit. XY position, tilt, expression detection.",t:["cam","robo"],pwr:72,cpx:55,fun:80,ht:"XY",wt:"Light",ab:"FT-06",catch:"Common"},
+{e:"😄",n:"bitmoji-lab",d:"Transform emojis into 5×5 LED pixel art on micro:bit. Digital art meets physical computing.",t:["robo","learn"],pwr:55,cpx:40,fun:85,ht:"5×5",wt:"Light",ab:"BM-07",catch:"Very Common"},
+{e:"🚀",n:"mission-control",d:"WebRTC command center. Live video, chat, and micro:bit control through peer-to-peer connections.",t:["tool","robo"],pwr:90,cpx:85,fun:75,ht:"P2P",wt:"Heavy",ab:"MC-08",catch:"Rare"},
+{e:"🧩",n:"bit-playground",d:"Ultimate micro:bit BLE playground. LEDs, buttons, accelerometer, servos, temperature — all from browser.",t:["robo"],pwr:80,cpx:50,fun:90,ht:"All",wt:"Med",ab:"BP-09",catch:"Common"},
+{e:"🎛️",n:"rxy",d:"Custom Bluetooth remote builder. Drag-and-drop UI to create personalized robot control interfaces.",t:["robo","tool"],pwr:70,cpx:65,fun:82,ht:"Custom",wt:"Med",ab:"RX-10",catch:"Uncommon"},
+{e:"🎨",n:"pixel-gateway",d:"Retro pixel art editor. Draw, animate, export. A creative tool disguised as a portal to another dimension.",t:["learn"],pwr:60,cpx:35,fun:92,ht:"Grid",wt:"Light",ab:"PG-11",catch:"Very Common"},
+{e:"💡",n:"wled-kids-lab",d:"Control Neopixel LED strips with WLED over WiFi. Colors, effects, animations — all from a browser.",t:["hw"],pwr:65,cpx:50,fun:88,ht:"Strip",wt:"Med",ab:"WL-12",catch:"Uncommon"},
+{e:"⚡",n:"esp32-c3-lab",d:"Hands-on ESP32-C3 IoT lab. WiFi, GPIO, sensors, ADC. The hardware gateway drug.",t:["hw"],pwr:75,cpx:70,fun:70,ht:"C3",wt:"Heavy",ab:"ES-13",catch:"Rare"},
+{e:"🪙",n:"crypto-academy",d:"Blockchain and cryptocurrency lessons. Educational, not financial advice. Don't YOLO your allowance.",t:["learn"],pwr:50,cpx:55,fun:65,ht:"Chain",wt:"Med",ab:"CA-14",catch:"Common"},
+{e:"🔐",n:"pentest-lab",d:"Cybersecurity CTF sandbox. SQL injection, XSS, brute force — all in a safe environment. Hack ethically.",t:["cyber"],pwr:92,cpx:85,fun:90,ht:"CTF",wt:"Heavy",ab:"PL-15",catch:"Rare"},
+{e:"🐧",n:"linux-kids-lab",d:"Full Linux terminal in browser. ls, cd, grep, pipes — safe sandbox. No 'rm -rf /' allowed.",t:["learn"],pwr:85,cpx:60,fun:78,ht:"Bash",wt:"Med",ab:"LL-16",catch:"Common"},
+{e:"🐳",n:"docker-lab",d:"Docker basics in browser. Containers, images, volumes. Has caused inter-generational knowledge inversions.",t:["learn","tool"],pwr:75,cpx:75,fun:68,ht:"Docker",wt:"Heavy",ab:"DL-17",catch:"Uncommon"},
+{e:"🏡",n:"smart-home",d:"IoT dashboard simulator. Build and control a virtual smart home. Thermostat wars training included.",t:["hw","learn"],pwr:65,cpx:55,fun:75,ht:"IoT",wt:"Med",ab:"SH-18",catch:"Common"},
+{e:"✨",n:"prompt-hero",d:"AI prompting playground. Learn to talk to LLMs effectively. The art of the question.",t:["ai","learn"],pwr:70,cpx:45,fun:80,ht:"LLM",wt:"Light",ab:"PH-19",catch:"Common"},
+];
+
+let cur=0;
+const entries=document.getElementById('entries');
+const counter=document.getElementById('counter');
+const cats=[{n:"ALL",id:"all"},{n:"ROBO",id:"robo"},{n:"AI",id:"ai"},{n:"CYBER",id:"cyber"},{n:"LEARN",id:"learn"},{n:"HW",id:"hw"},{n:"CAM",id:"cam"}];
+let filtered=[...APPS];let curFilter='all';
+
+// NAV
+const nav=document.getElementById('navPills');
+cats.forEach(c=>{
+  const b=document.createElement('button');b.className='nav-btn'+(c.id==='all'?' on':'');
+  b.textContent=c.n;b.onclick=()=>{
+    document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+    curFilter=c.id;filtered=c.id==='all'?[...APPS]:APPS.filter(a=>a.t.includes(c.id));
+    cur=0;render();
+  };nav.appendChild(b);
+});
+
+function render(){
+  if(filtered.length===0)return;
+  const a=filtered[cur];
+  const idx=APPS.indexOf(a)+1;
+  counter.textContent=`#${String(idx).padStart(3,'0')} / ${String(APPS.length).padStart(3,'0')}`;
+  
+  entries.innerHTML=`<div class="entry on">
+    <div class="entry-header">
+      <span class="entry-id">#${String(idx).padStart(3,'0')}</span>
+      <span class="entry-name">${a.n}</span>
+      <div class="entry-types">${a.t.map(t=>`<span class="type type-${t}">${t.toUpperCase()}</span>`).join('')}</div>
+    </div>
+    <div class="entry-emoji">${a.e}</div>
+    <div class="entry-desc">${a.d}</div>
+    <div class="stats-grid">
+      <div class="stat pwr"><div class="v">${a.pwr}</div><div class="l">POWER</div></div>
+      <div class="stat cpx"><div class="v">${a.cpx}</div><div class="l">COMPLEXITY</div></div>
+      <div class="stat fun"><div class="v">${a.fun}</div><div class="l">FUN</div></div>
+    </div>
+    <div class="stat-bar"><span class="lbl">PWR</span><div class="track"><div class="fill" style="width:${a.pwr}%;background:#ff0033"></div></div></div>
+    <div class="stat-bar"><span class="lbl">CPX</span><div class="track"><div class="fill" style="width:${a.cpx}%;background:#00d4ff"></div></div></div>
+    <div class="stat-bar"><span class="lbl">FUN</span><div class="track"><div class="fill" style="width:${a.fun}%;background:#ffd700"></div></div></div>
+    <div class="info-grid">
+      <div class="info-item"><div class="lbl">HEIGHT</div><div class="val">${a.ht}</div></div>
+      <div class="info-item"><div class="lbl">WEIGHT</div><div class="val">${a.wt}</div></div>
+      <div class="info-item"><div class="lbl">ABILITY</div><div class="val">${a.ab}</div></div>
+      <div class="info-item"><div class="lbl">CATCH RATE</div><div class="val">${a.catch}</div></div>
+    </div>
+  </div>`;
+}
+render();
+
+function go(d){cur=(cur+d+filtered.length)%filtered.length;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1)});
+let sx=0;document.addEventListener('touchstart',e=>sx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)go(dx<0?1:-1)});
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

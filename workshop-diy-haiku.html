@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // 俳句</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Serif+JP:wght@300;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f0e8;color:#333;font-family:'Noto Serif JP',serif;font-size:14px;min-height:100vh;padding:16px}
+
+.header{text-align:center;margin-bottom:20px}
+.h-jp{font-size:28px;font-weight:300;color:#555;letter-spacing:6px}
+.h-en{font-size:8px;color:#aaa;font-family:'JetBrains Mono',monospace;letter-spacing:3px;margin-top:2px}
+
+.haikus{max-width:400px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+
+.haiku{text-align:center;padding:20px;border-bottom:1px solid rgba(0,0,0,.04);cursor:pointer;transition:all .3s;position:relative}
+.haiku:hover{background:rgba(0,0,0,.01)}
+.haiku .lines{font-size:14px;font-weight:300;line-height:2.4;color:#444;opacity:0;transition:opacity .6s}
+.haiku.revealed .lines{opacity:1}
+.haiku .subject{font-size:9px;color:#bbb;font-family:'JetBrains Mono',monospace;letter-spacing:2px;margin-top:6px;opacity:0;transition:opacity .6s .2s}
+.haiku.revealed .subject{opacity:1}
+.haiku .prompt{font-size:9px;color:#ccc;font-family:'JetBrains Mono',monospace;transition:opacity .3s}
+.haiku.revealed .prompt{opacity:0;position:absolute}
+.haiku .season{font-size:16px;margin-bottom:4px}
+
+.footer{text-align:center;margin-top:20px;font-size:7px;color:#ccc;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="h-jp">工房俳句</div>
+  <div class="h-en">WORKSHOP-DIY HAIKU COLLECTION · CLICK TO REVEAL</div>
+</div>
+
+<div class="haikus" id="haikus"></div>
+
+<div class="footer">WORKSHOP-DIY · 俳句 · EACH POEM 5-7-5 · BUGS ARE SEASONAL FEATURES</div>
+
+<script>
+const H=[
+{s:"🤖",lines:["Robot on the edge","Forty-seven drops and counting","Still it drives forward"],sub:"— on bit-bot"},
+{s:"🪄",lines:["Twenty-one landmarks","Fingers trace invisible","Particles follow"],sub:"— on magic-hands"},
+{s:"🔑",lines:["Password unchanged","Three petitions all denied","Tradition persists"],sub:"— on password123"},
+{s:"☕",lines:["Eight percent remains","Fourteen months at critical","Nobody refills"],sub:"— on the coffee machine"},
+{s:"🐛",lines:["No author exists","No commit and no timestamp","I have always been"],sub:"— Bug #42 speaks"},
+{s:"🐳",lines:["Child explains Docker","Father nods and writes it down","Containers of pride"],sub:"— on docker-lab"},
+{s:"🧠",lines:["Thirty samples shown","Ninety-eight percent correct","The machine has learned"],sub:"— on teachable-machine"},
+{s:"🔐",lines:["Ethical hacking","Student finds the printer's port","Responsible kid"],sub:"— on pentest-lab"},
+{s:"🐧",lines:["Terminal awaits","ls cd mkdir rm","Careful with that last"],sub:"— on linux-kids-lab"},
+{s:"💡",lines:["Sixteen million hues","One HTTP request sent","The strip comes alive"],sub:"— on wled-kids-lab"},
+{s:"🔥",lines:["Solder meets the wire","Three-fifty Celsius kiss","Connection is made"],sub:"— on soldering"},
+{s:"📡",lines:["Bluetooth signal fades","Chrome disconnects without cause","Reconnect and dance"],sub:"— on BLE"},
+{s:"⬛",lines:["Three forty-two AM","The counter shows forty apps","Then thirty-nine again"],sub:"— on the 40th app"},
+{s:"🌐",lines:["No npm install","No webpack and no config","Just open the page"],sub:"— on zero installation"},
+{s:"⚖️",lines:["Court is now in session","The jury deliberates","Feature. Not guilty."],sub:"— on the trial"},
+{s:"🚀",lines:["WebRTC bridge","Two browsers find each other","Connection is real"],sub:"— on mission-control"},
+{s:"🎮",lines:["Pixel placed with care","Eight-bit art on modern screens","Retro lives again"],sub:"— on pixel-gateway"},
+{s:"📊",lines:["Eight hundred reviews","Four point nine stars out of five","Point one was coffee"],sub:"— on reception"},
+{s:"🔧",lines:["Hot glue gun ready","It holds the world together","Engineering tape"],sub:"— on workshop tools"},
+{s:"🌸",lines:["Thirty-nine small worlds","Each one built inside a page","Learning blooms in spring"],sub:"— on Workshop-DIY"},
+];
+
+const el=document.getElementById('haikus');
+H.forEach((h,i)=>{
+  const d=document.createElement('div');
+  d.className='haiku';
+  d.innerHTML=`<div class="season">${h.s}</div><div class="prompt">click to reveal</div><div class="lines">${h.lines.join('<br>')}</div><div class="subject">${h.sub}</div>`;
+  d.onclick=()=>d.classList.add('revealed');
+  el.appendChild(d);
+});
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

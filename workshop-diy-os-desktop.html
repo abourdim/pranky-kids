@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-OS v4.2</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;user-select:none}
+body{background:#0a0e14;font-family:'JetBrains Mono',monospace;font-size:11px;color:#ccc}
+
+/* DESKTOP */
+.desktop{position:fixed;inset:0;bottom:32px;overflow:hidden}
+.wallpaper{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,#0a1a0a,#050508 70%)}
+.grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,65,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,65,.015) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+
+/* DESKTOP ICONS */
+.dsk-icons{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;flex-wrap:wrap;gap:4px;max-height:calc(100vh - 60px)}
+.dsk-icon{width:72px;text-align:center;padding:6px 4px;border-radius:4px;cursor:pointer;transition:background .1s}
+.dsk-icon:hover{background:rgba(0,255,65,.06)}
+.dsk-icon.sel{background:rgba(0,255,65,.1);outline:1px solid rgba(0,255,65,.15)}
+.dsk-icon .e{font-size:28px;display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4))}
+.dsk-icon .n{font-size:7px;color:#aaa;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 2px #000}
+
+/* WINDOWS */
+.win{position:absolute;min-width:280px;min-height:180px;border:1px solid #1a1a1a;border-radius:6px 6px 0 0;box-shadow:0 8px 32px rgba(0,0,0,.5);display:none;flex-direction:column;z-index:10;overflow:hidden}
+.win.open{display:flex}
+.win-bar{padding:6px 10px;display:flex;align-items:center;gap:6px;cursor:grab;flex-shrink:0;background:#111;border-bottom:1px solid #1a1a1a}
+.win-bar:active{cursor:grabbing}
+.wb-dot{width:10px;height:10px;border-radius:50%;cursor:pointer}.wb-r{background:#ff5f57}.wb-y{background:#ffbd2e}.wb-g{background:#28c840}
+.wb-r:hover{background:#ff3b30}.wb-y:hover{background:#f0a500}.wb-g:hover{background:#1db43c}
+.win-title{font-size:9px;color:#666;margin-left:auto;letter-spacing:1px}
+.win-body{flex:1;overflow-y:auto;background:#0a0a0e}
+.win-body::-webkit-scrollbar{width:4px}.win-body::-webkit-scrollbar-thumb{background:#222;border-radius:2px}
+
+/* TASKBAR */
+.taskbar{position:fixed;bottom:0;left:0;right:0;height:32px;background:#0c0c10;border-top:1px solid #1a1a1a;display:flex;align-items:center;z-index:100;padding:0 4px}
+.start-btn{padding:4px 12px;font-size:9px;font-weight:700;color:#0f0;cursor:pointer;border-right:1px solid #1a1a1a;transition:background .1s;height:100%;display:flex;align-items:center;gap:4px}
+.start-btn:hover{background:rgba(0,255,65,.06)}
+.start-btn .logo{font-size:14px}
+.task-items{display:flex;gap:2px;padding:0 4px;flex:1;overflow:hidden}
+.task-item{padding:4px 10px;font-size:8px;color:#888;cursor:pointer;border-radius:2px;transition:all .1s;white-space:nowrap;display:flex;align-items:center;gap:4px;border-bottom:2px solid transparent}
+.task-item:hover{background:rgba(255,255,255,.03)}
+.task-item.active{color:#fff;background:rgba(0,255,65,.04);border-bottom-color:#0f0}
+.tray{margin-left:auto;display:flex;align-items:center;gap:8px;padding:0 8px;font-size:8px;color:#555;border-left:1px solid #1a1a1a;height:100%}
+
+/* START MENU */
+.start-menu{position:fixed;bottom:32px;left:0;width:260px;background:#0c0c10;border:1px solid #1a1a1a;border-radius:0 6px 0 0;display:none;z-index:200;box-shadow:0 -4px 24px rgba(0,0,0,.5);max-height:70vh;overflow-y:auto}
+.start-menu.open{display:block}
+.sm-header{padding:10px;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;gap:8px}
+.sm-avatar{width:32px;height:32px;border-radius:4px;border:1px solid #0f0;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(0,255,65,.02)}
+.sm-name{font-size:10px;font-weight:700;color:#0f0}.sm-sub{font-size:7px;color:#444}
+.sm-section{padding:4px 0;border-bottom:1px solid #111}
+.sm-label{font-size:6px;color:#333;letter-spacing:2px;padding:4px 10px}
+.sm-item{display:flex;align-items:center;gap:8px;padding:5px 10px;cursor:pointer;transition:background .1s;font-size:9px;color:#aaa}
+.sm-item:hover{background:rgba(0,255,65,.04);color:#fff}
+.sm-item .e{font-size:14px;width:20px;text-align:center}
+
+/* CONTEXT MENU */
+.ctx-menu{position:fixed;background:#111;border:1px solid #222;border-radius:4px;padding:4px 0;z-index:300;display:none;box-shadow:0 4px 16px rgba(0,0,0,.5);min-width:160px}
+.ctx-item{padding:5px 12px;font-size:9px;color:#aaa;cursor:pointer;transition:background .1s;display:flex;align-items:center;gap:6px}
+.ctx-item:hover{background:rgba(0,255,65,.06);color:#fff}
+.ctx-sep{height:1px;background:#1a1a1a;margin:3px 0}
+
+/* TERMINAL CONTENT */
+.term-body{padding:10px;font-size:10px;color:#0f0;line-height:1.8}
+.term-body .dim{color:rgba(0,255,65,.2)}
+
+/* FILE MANAGER */
+.fm-bar{padding:4px 8px;display:flex;gap:4px;background:#0e0e12;border-bottom:1px solid #1a1a1a;font-size:8px;color:#555;align-items:center}
+.fm-bar .path{color:#0af;flex:1}
+.fm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:4px;padding:10px}
+.fm-item{text-align:center;padding:8px 4px;border-radius:4px;cursor:pointer;transition:background .1s}
+.fm-item:hover{background:rgba(0,255,65,.04)}
+.fm-item .e{font-size:24px;display:block}.fm-item .n{font-size:6.5px;color:#888;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ABOUT */
+.about-body{padding:20px;text-align:center}
+.about-logo{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#0f0;margin-bottom:4px}
+.about-ver{font-size:9px;color:#555;margin-bottom:12px}
+.about-info{font-size:9px;color:#777;line-height:2}
+
+/* CLOCK WIDGET */
+.clock-widget{padding:20px;text-align:center}
+.cw-time{font-size:36px;font-weight:800;color:#0f0;text-shadow:0 0 16px rgba(0,255,65,.2);font-variant-numeric:tabular-nums}
+.cw-date{font-size:10px;color:#555;margin-top:4px}
+.cw-stats{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:8px}
+.cw-s{padding:6px;border:1px solid #1a1a1a;border-radius:3px;text-align:center}
+.cw-s .v{font-size:14px;font-weight:800;color:#0f0}.cw-s .l{color:#444;font-size:6px;letter-spacing:1px;margin-top:1px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="desktop" id="desktop" oncontextmenu="showCtx(event)">
+  <div class="wallpaper"></div>
+  <div class="grid-lines"></div>
+  <div class="dsk-icons" id="dskIcons"></div>
+</div>
+
+<!-- WINDOWS -->
+<div class="win" id="winTerm" style="width:480px;height:320px;top:60px;left:240px">
+  <div class="win-bar" onmousedown="startDrag(event,'winTerm')"><div class="wb-dot wb-r" onclick="closeWin('winTerm')"></div><div class="wb-dot wb-y"></div><div class="wb-dot wb-g"></div><div class="win-title">terminal — bash</div></div>
+  <div class="win-body"><div class="term-body" id="termBody"></div></div>
+</div>
+
+<div class="win" id="winFM" style="width:500px;height:360px;top:80px;left:280px">
+  <div class="win-bar" onmousedown="startDrag(event,'winFM')"><div class="wb-dot wb-r" onclick="closeWin('winFM')"></div><div class="wb-dot wb-y"></div><div class="wb-dot wb-g"></div><div class="win-title">files — /workshop/apps</div></div>
+  <div class="win-body">
+    <div class="fm-bar"><span>📁</span><span class="path">/workshop/apps/</span><span>39 items</span></div>
+    <div class="fm-grid" id="fmGrid"></div>
+  </div>
+</div>
+
+<div class="win" id="winAbout" style="width:320px;height:300px;top:100px;left:320px">
+  <div class="win-bar" onmousedown="startDrag(event,'winAbout')"><div class="wb-dot wb-r" onclick="closeWin('winAbout')"></div><div class="wb-dot wb-y"></div><div class="wb-dot wb-g"></div><div class="win-title">about WKSHP-OS</div></div>
+  <div class="win-body">
+    <div class="about-body">
+      <div style="font-size:48px;margin-bottom:8px">🤖</div>
+      <div class="about-logo">WKSHP-OS</div>
+      <div class="about-ver">Version 4.2.0 (Build 1337)</div>
+      <div class="about-info">
+        Workshop-DIY Operating System<br>Association Loi 1901 — France<br><br>
+        39 Apps · 7 Domains · 12 Themes<br>
+        Kernel: ESP32 + micro:bit<br>
+        Shell: bash 5.1<br>
+        Bugs: 42 (all features)<br><br>
+        <span style="color:#333">© 2024 Workshop-DIY<br>No rights reserved. It's open source.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="win" id="winClock" style="width:240px;height:280px;top:50px;right:50px;left:auto">
+  <div class="win-bar" onmousedown="startDrag(event,'winClock')"><div class="wb-dot wb-r" onclick="closeWin('winClock')"></div><div class="wb-dot wb-y"></div><div class="wb-dot wb-g"></div><div class="win-title">clock widget</div></div>
+  <div class="win-body">
+    <div class="clock-widget">
+      <div class="cw-time" id="cwTime">00:00:00</div>
+      <div class="cw-date" id="cwDate"></div>
+      <div class="cw-stats">
+        <div class="cw-s"><div class="v">39</div><div class="l">APPS</div></div>
+        <div class="cw-s"><div class="v">7</div><div class="l">DOMAINS</div></div>
+        <div class="cw-s"><div class="v">12</div><div class="l">THEMES</div></div>
+        <div class="cw-s"><div class="v">∞</div><div class="l">POTENTIAL</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- START MENU -->
+<div class="start-menu" id="startMenu">
+  <div class="sm-header"><div class="sm-avatar">🤖</div><div><div class="sm-name">MAKER</div><div class="sm-sub">workshop@diy</div></div></div>
+  <div class="sm-section">
+    <div class="sm-label">APPLICATIONS</div>
+    <div class="sm-item" onclick="openWin('winFM')"><span class="e">📁</span>Files</div>
+    <div class="sm-item" onclick="openWin('winTerm')"><span class="e">💻</span>Terminal</div>
+    <div class="sm-item" onclick="openWin('winClock')"><span class="e">🕐</span>Clock</div>
+    <div class="sm-item" onclick="openWin('winAbout')"><span class="e">ℹ️</span>About</div>
+  </div>
+  <div class="sm-section">
+    <div class="sm-label">WORKSHOP APPS</div>
+    <div class="sm-item" onclick="window.open('https://abourdim.github.io/apps/')"><span class="e">🚀</span>Launch All Apps</div>
+    <div class="sm-item" onclick="window.open('https://workshop-diy.org')"><span class="e">🌐</span>workshop-diy.org</div>
+  </div>
+  <div class="sm-section">
+    <div class="sm-item" style="color:#555"><span class="e">⚡</span>Shutdown <span style="font-size:7px;color:#333;margin-left:auto">// nice try</span></div>
+  </div>
+</div>
+
+<!-- CONTEXT MENU -->
+<div class="ctx-menu" id="ctxMenu">
+  <div class="ctx-item" onclick="openWin('winTerm')">💻 Open Terminal</div>
+  <div class="ctx-item" onclick="openWin('winFM')">📁 Open File Manager</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" onclick="openWin('winClock')">🕐 Clock Widget</div>
+  <div class="ctx-item" onclick="openWin('winAbout')">ℹ️ About WKSHP-OS</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" style="color:#555">🎨 Change Wallpaper <span style="font-size:7px;color:#333;margin-left:auto">soon™</span></div>
+</div>
+
+<!-- TASKBAR -->
+<div class="taskbar">
+  <div class="start-btn" onclick="toggleStart()"><span class="logo">🤖</span>START</div>
+  <div class="task-items" id="taskItems"></div>
+  <div class="tray">
+    <span>🔋 87%</span>
+    <span>📶</span>
+    <span id="trayTime">00:00</span>
+  </div>
+</div>
+
+<script>
+const APPS=[
+{e:"🤖",n:"bit-bot"},{e:"🪄",n:"magic-hands"},{e:"🕵️",n:"face-quest"},{e:"💬",n:"talking-robot"},{e:"🧠",n:"teachable-machine"},{e:"😎",n:"face-tracking"},{e:"😄",n:"bitmoji-lab"},{e:"🚀",n:"mission-control"},{e:"🧩",n:"bit-playground"},{e:"🎛️",n:"rxy"},{e:"🎨",n:"pixel-gateway"},{e:"💡",n:"wled-kids-lab"},{e:"⚡",n:"esp32-c3"},{e:"🪙",n:"crypto-academy"},{e:"🔐",n:"pentest-lab"},{e:"🐧",n:"linux-lab"},{e:"🏭",n:"production"},{e:"🏫",n:"classroom"},{e:"🔌",n:"usb-logger"},{e:"📡",n:"ble-logger"},{e:"🧰",n:"claude-tk"},{e:"🎭",n:"puppeteer"},{e:"🔋",n:"circuit-lab"},{e:"🛡️",n:"vpn-guide"},{e:"🧊",n:"3d-lab"},{e:"🔀",n:"git-lab"},{e:"✨",n:"prompt-hero"},{e:"🌍",n:"save-planet"},{e:"📋",n:"ops-catalog"},{e:"💻",n:"code-kids"},{e:"🏡",n:"smart-home"},{e:"🧱",n:"makecode"},{e:"🤖",n:"54-activities"},{e:"💰",n:"crypto-vault"},{e:"🔗",n:"dhcp-lab"},{e:"🐳",n:"docker-lab"},{e:"🔴",n:"nodered"},{e:"⛽",n:"ocpp"},{e:"🖥️",n:"tty"}
+];
+
+// Desktop icons
+const dskEl=document.getElementById('dskIcons');
+[{e:"💻",n:"Terminal",win:"winTerm"},{e:"📁",n:"Files",win:"winFM"},{e:"🕐",n:"Clock",win:"winClock"},{e:"ℹ️",n:"About",win:"winAbout"},...APPS.slice(0,8)].forEach(a=>{
+  const d=document.createElement('div');d.className='dsk-icon';
+  d.innerHTML=`<span class="e">${a.e}</span><span class="n">${a.n}</span>`;
+  d.ondblclick=()=>{if(a.win)openWin(a.win);else window.open(`https://abourdim.github.io/${a.n}/`)};
+  d.onclick=()=>{document.querySelectorAll('.dsk-icon').forEach(i=>i.classList.remove('sel'));d.classList.add('sel')};
+  dskEl.appendChild(d);
+});
+
+// File manager
+const fmGrid=document.getElementById('fmGrid');
+APPS.forEach(a=>{
+  const d=document.createElement('div');d.className='fm-item';
+  d.innerHTML=`<span class="e">${a.e}</span><span class="n">${a.n}</span>`;
+  d.ondblclick=()=>window.open(`https://abourdim.github.io/${a.n}/`);
+  fmGrid.appendChild(d);
+});
+
+// Terminal
+const termBody=document.getElementById('termBody');
+termBody.innerHTML=`<div>WKSHP-OS v4.2.0 (GNU/Linux)</div><div class="dim">Last login: ${new Date().toDateString()}</div><div>&nbsp;</div><div><span style="color:#0af">workshop</span>@<span style="color:#0f0">diy</span>:~$ neofetch</div><div>&nbsp;</div><div><span style="color:#0af">       ___</span>          <span style="color:#0af">workshop</span>@<span style="color:#0f0">diy</span></div><div><span style="color:#0af">      /   \\</span>         ──────────────</div><div><span style="color:#0af">     | ◉ ◉ |</span>        <span style="color:#0af">OS:</span> WKSHP-OS v4.2.0</div><div><span style="color:#0af">     |  ─  |</span>        <span style="color:#0af">Kernel:</span> ESP32 + micro:bit</div><div><span style="color:#0af">     |_____|</span>        <span style="color:#0af">Shell:</span> bash 5.1</div><div><span style="color:#0af">    /| === |\\</span>       <span style="color:#0af">Apps:</span> 39</div><div><span style="color:#0af">   / |     | \\</span>      <span style="color:#0af">Themes:</span> 12</div><div><span style="color:#0af">  ◯──┘     └──◯</span>     <span style="color:#0af">Bugs:</span> 42 (features)</div><div>&nbsp;</div><div><span style="color:#0af">workshop</span>@<span style="color:#0f0">diy</span>:~$ <span style="display:inline-block;width:7px;height:12px;background:#0f0;animation:blink .6s step-end infinite;vertical-align:middle"></span></div>`;
+
+// Window management
+let topZ=10;const wins={};
+function openWin(id){
+  const w=document.getElementById(id);
+  w.classList.add('open');
+  w.style.zIndex=++topZ;
+  document.getElementById('startMenu').classList.remove('open');
+  document.getElementById('ctxMenu').style.display='none';
+  updateTaskbar();
+}
+function closeWin(id){document.getElementById(id).classList.remove('open');updateTaskbar()}
+function updateTaskbar(){
+  const ti=document.getElementById('taskItems');ti.innerHTML='';
+  document.querySelectorAll('.win.open').forEach(w=>{
+    const t=w.querySelector('.win-title').textContent;
+    const d=document.createElement('div');d.className='task-item active';
+    d.innerHTML=`${t}`;d.onclick=()=>{w.style.zIndex=++topZ};
+    ti.appendChild(d);
+  });
+}
+
+// Dragging
+let dragWin=null,dragOff={x:0,y:0};
+function startDrag(e,id){
+  dragWin=document.getElementById(id);
+  dragWin.style.zIndex=++topZ;
+  const r=dragWin.getBoundingClientRect();
+  dragOff={x:e.clientX-r.left,y:e.clientY-r.top};
+  document.addEventListener('mousemove',onDrag);
+  document.addEventListener('mouseup',()=>{dragWin=null;document.removeEventListener('mousemove',onDrag)},{once:true});
+}
+function onDrag(e){if(!dragWin)return;dragWin.style.left=Math.max(0,e.clientX-dragOff.x)+'px';dragWin.style.top=Math.max(0,e.clientY-dragOff.y)+'px';dragWin.style.right='auto'}
+
+// Start menu
+function toggleStart(){document.getElementById('startMenu').classList.toggle('open');document.getElementById('ctxMenu').style.display='none'}
+
+// Context menu
+function showCtx(e){e.preventDefault();const m=document.getElementById('ctxMenu');m.style.left=e.clientX+'px';m.style.top=(e.clientY-m.offsetHeight||e.clientY)+'px';m.style.display='block';document.getElementById('startMenu').classList.remove('open')}
+document.addEventListener('click',e=>{if(!e.target.closest('.ctx-menu'))document.getElementById('ctxMenu').style.display='none';if(!e.target.closest('.start-menu')&&!e.target.closest('.start-btn'))document.getElementById('startMenu').classList.remove('open')});
+
+// Clock
+setInterval(()=>{
+  const t=new Date();
+  document.getElementById('cwTime').textContent=t.toTimeString().slice(0,8);
+  document.getElementById('cwDate').textContent=t.toDateString();
+  document.getElementById('trayTime').textContent=t.toTimeString().slice(0,5);
+},1000);
+
+// Auto-open terminal
+setTimeout(()=>openWin('winTerm'),500);
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

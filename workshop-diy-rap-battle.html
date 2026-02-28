@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // RAP BATTLE</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0e;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px}
+
+.header{text-align:center;margin-bottom:12px}
+.h-title{font-family:'Syne',sans-serif;font-size:clamp(22px,5vw,32px);font-weight:800;background:linear-gradient(135deg,#ff0066,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.h-sub{font-size:7px;color:#444;letter-spacing:3px;margin-top:2px}
+
+.stage{max-width:600px;width:100%;background:#111;border:1px solid #222;border-radius:8px;overflow:hidden}
+
+/* VS HEADER */
+.vs-bar{display:flex;align-items:center;padding:10px;background:#0d0d14;border-bottom:1px solid #1a1a24}
+.fighter{flex:1;text-align:center}
+.fighter .emoji{font-size:32px;margin-bottom:2px}
+.fighter .name{font-size:12px;font-weight:800;color:#ffd700}
+.fighter .title{font-size:7px;color:#555}
+.vs{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#ff0066;padding:0 10px;text-shadow:0 0 10px rgba(255,0,102,.2)}
+
+/* CROWD METER */
+.meter{display:flex;align-items:center;gap:4px;padding:6px 10px;background:#0a0a0e;border-bottom:1px solid #1a1a24}
+.meter-label{font-size:7px;color:#555;width:40px;text-align:center}
+.meter-bar{flex:1;height:10px;background:#1a1a24;border-radius:5px;overflow:hidden;display:flex}
+.meter-left{height:100%;background:linear-gradient(90deg,#0af,#00d4ff);transition:width .3s;border-radius:5px 0 0 5px}
+.meter-right{height:100%;background:linear-gradient(90deg,#ff0066,#ff4488);transition:width .3s;border-radius:0 5px 5px 0}
+
+/* BATTLE AREA */
+.battle{padding:10px;min-height:300px;display:flex;flex-direction:column;gap:6px}
+.verse{padding:8px 10px;border-radius:6px;animation:dropIn .4s ease;max-width:85%}
+@keyframes dropIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+.verse.left{background:rgba(0,170,255,.06);border:1px solid rgba(0,170,255,.1);align-self:flex-start;border-left:3px solid #0af}
+.verse.right{background:rgba(255,0,102,.06);border:1px solid rgba(255,0,102,.1);align-self:flex-end;text-align:right;border-right:3px solid #ff0066}
+.verse .who{font-size:7px;font-weight:700;margin-bottom:3px;letter-spacing:1px}
+.verse.left .who{color:#0af}.verse.right .who{color:#ff0066}
+.verse .bar{font-size:10px;color:#ccc;line-height:2;font-style:italic}
+.verse .bar b{color:#ffd700}
+
+/* CONTROLS */
+.controls{padding:10px;background:#0d0d14;border-top:1px solid #1a1a24;display:flex;gap:6px;justify-content:center}
+.ctrl-btn{padding:6px 16px;border-radius:4px;border:1px solid #333;background:#1a1a24;color:#888;font-family:inherit;font-size:9px;cursor:pointer;transition:all .15s;font-weight:700}
+.ctrl-btn:hover{background:#222;color:#fff}
+.ctrl-btn.fire{background:rgba(255,0,102,.1);border-color:rgba(255,0,102,.2);color:#ff0066}
+.ctrl-btn.fire:hover{background:rgba(255,0,102,.2)}
+.ctrl-btn.vote-l{border-color:rgba(0,170,255,.2);color:#0af}.ctrl-btn.vote-r{border-color:rgba(255,0,102,.2);color:#ff0066}
+
+.round-indicator{text-align:center;font-size:8px;color:#333;padding:4px;letter-spacing:2px}
+
+.footer{font-size:6px;color:#222;margin-top:12px;letter-spacing:1px;text-align:center}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="h-title">🎤 APP RAP BATTLE 🎤</div>
+  <div class="h-sub">WORKSHOP-DIY · WHERE APPS SETTLE THEIR DIFFERENCES</div>
+</div>
+
+<div class="stage">
+  <div class="vs-bar">
+    <div class="fighter"><div class="emoji" id="f1e">🤖</div><div class="name" id="f1n">BIT-BOT</div><div class="title" id="f1t">The OG Robot</div></div>
+    <div class="vs">VS</div>
+    <div class="fighter"><div class="emoji" id="f2e">🐳</div><div class="name" id="f2n">DOCKER-LAB</div><div class="title" id="f2t">The Container Whale</div></div>
+  </div>
+  <div class="meter">
+    <div class="meter-label" id="ml">50%</div>
+    <div class="meter-bar"><div class="meter-left" id="mLeft" style="width:50%"></div><div class="meter-right" id="mRight" style="width:50%"></div></div>
+    <div class="meter-label" id="mr">50%</div>
+  </div>
+  <div class="round-indicator" id="round">ROUND 1 / 4</div>
+  <div class="battle" id="battle"></div>
+  <div class="controls">
+    <button class="ctrl-btn vote-l" onclick="vote('left')">👈 VOTE LEFT</button>
+    <button class="ctrl-btn fire" onclick="nextRound()">🎤 NEXT ROUND</button>
+    <button class="ctrl-btn vote-r" onclick="vote('right')">VOTE RIGHT 👉</button>
+  </div>
+</div>
+
+<div style="display:flex;gap:4px;margin-top:8px">
+  <button class="ctrl-btn" onclick="newBattle()" style="background:#111;border:1px solid #222;color:#555;font-size:8px;padding:4px 12px;border-radius:4px;cursor:pointer">🔀 NEW MATCHUP</button>
+</div>
+<div class="footer">NO APPS WERE HARMED · BATTLES ARE FICTIONAL · BUGS REMAIN FEATURES</div>
+
+<script>
+const FIGHTERS=[
+{e:"🤖",n:"BIT-BOT",t:"The OG Robot",bars:[
+  "I'm the <b>first app</b> built, the OG in the game,\nWhile you're sitting in containers, I'm out earning fame.",
+  "47 drops from a desk and I'm <b>still standing tall</b>,\nYour Dockerfile breaks if you miss one install.",
+  "I got <b>BLE connections</b> stronger than your network bridge,\nKids drive me through mazes while you explain an image.",
+  "I'm the <b>reason</b> Workshop-DIY exists at all,\nWithout me there'd be no ecosystem — just an empty hall.",
+]},
+{e:"🐳",n:"DOCKER-LAB",t:"The Container Whale",bars:[
+  "I <b>contain multitudes</b>, you contain two motors and a prayer,\nI orchestrate services, you can barely drive in a square.",
+  "docker-compose up and my <b>whole stack rises</b>,\nYou need a charged battery just to handle surprises.",
+  "14-year-olds explain me to their <b>engineer parents</b>,\nYou get explained to 8-year-olds. Know the difference?",
+  "I'm <b>reproducible</b>, scalable, enterprise-grade,\nYou're held together with hot glue. No shade... okay, shade.",
+]},
+{e:"🪄",n:"MAGIC-HANDS",t:"The Hand Wizard",bars:[
+  "I track <b>21 landmarks</b> on every single hand,\nYou couldn't track your own code if it was pre-planned.",
+  "I make <b>particles fly</b> with just a wave of my finger,\nYour loading spinner's the only effect that lingers.",
+  "MediaPipe flows through me like <b>digital sorcery</b>,\nYour feature list is shorter than your WiFi security.",
+  "Kids wave at screens for <b>hours</b> when I'm on the stage,\nYour app gets closed faster than an empty README page.",
+]},
+{e:"🔐",n:"PENTEST-LAB",t:"The Ethical Outlaw",bars:[
+  "I <b>break systems</b> — ethically, of course,\nYou couldn't hack a printer if it was open source.",
+  "SQL injection, XSS — I teach the <b>real deal</b>,\nYour sandbox environment? More like a hamster wheel.",
+  "I found the school printer vuln before <b>lunch was served</b>,\nYour biggest achievement? A successfully parsed word.",
+  "CTF champions train with me, I'm the <b>cyber sensei</b>,\nYou're still trying to figure out what 'chmod' means, hey.",
+]},
+{e:"🐧",n:"LINUX-LAB",t:"The Penguin Sage",bars:[
+  "I live in the <b>terminal</b>, where real makers reside,\nYou live behind a GUI trying to find the right slide.",
+  "bash, grep, sed, awk — I'm the <b>command-line king</b>,\nYou crash when someone types something other than a string.",
+  "I taught kids 'sudo' before they could <b>spell it</b>,\nYour error handling strategy is just 'don't tell it'.",
+  "Open source is my <b>DNA</b>, freedom is my cause,\nYou hide behind abstractions with your enterprise laws.",
+]},
+{e:"💡",n:"WLED-LAB",t:"The Neon Ghost",bars:[
+  "<b>16 million colors</b> and I use every one,\nYour interface is grayscale, my show's never done.",
+  "I light up the room — <b>literally, not metaphor</b>,\nYou light up the error log, is that what you're here for?",
+  "Neopixels dance when I send <b>one HTTP request</b>,\nYou need a 20-step tutorial just to do your best.",
+  "RGB is my language, <b>every hue is my weapon</b>,\nYour color palette is 'default gray.' Step up, peasant.",
+]},
+];
+
+let f1,f2,round=0,scoreL=50,scoreR=50;
+const battleEl=document.getElementById('battle');
+
+function pickTwo(){
+  const shuffled=[...FIGHTERS].sort(()=>Math.random()-.5);
+  return[shuffled[0],shuffled[1]];
+}
+
+function newBattle(){
+  [f1,f2]=pickTwo();round=0;scoreL=50;scoreR=50;
+  battleEl.innerHTML='';
+  document.getElementById('f1e').textContent=f1.e;
+  document.getElementById('f1n').textContent=f1.n;
+  document.getElementById('f1t').textContent=f1.t;
+  document.getElementById('f2e').textContent=f2.e;
+  document.getElementById('f2n').textContent=f2.n;
+  document.getElementById('f2t').textContent=f2.t;
+  updateMeter();
+  updateRound();
+}
+
+function nextRound(){
+  if(round>=4){
+    const winner=scoreL>scoreR?f1:f2;
+    battleEl.innerHTML+=`<div style="text-align:center;padding:10px;font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#ffd700">🏆 ${winner.e} ${winner.n} WINS! 🏆</div>`;
+    return;
+  }
+  // Left verse
+  const lv=document.createElement('div');lv.className='verse left';
+  lv.innerHTML=`<div class="who">${f1.e} ${f1.n}</div><div class="bar">${f1.bars[round]}</div>`;
+  battleEl.appendChild(lv);
+
+  // Right verse after delay
+  setTimeout(()=>{
+    const rv=document.createElement('div');rv.className='verse right';
+    rv.innerHTML=`<div class="who">${f2.n} ${f2.e}</div><div class="bar">${f2.bars[round]}</div>`;
+    battleEl.appendChild(rv);
+    battleEl.scrollTop=battleEl.scrollHeight;
+  },800);
+
+  round++;
+  updateRound();
+  battleEl.scrollTop=battleEl.scrollHeight;
+}
+
+function vote(side){
+  const swing=Math.floor(Math.random()*8)+3;
+  if(side==='left'){scoreL=Math.min(95,scoreL+swing);scoreR=100-scoreL}
+  else{scoreR=Math.min(95,scoreR+swing);scoreL=100-scoreR}
+  updateMeter();
+}
+
+function updateMeter(){
+  document.getElementById('mLeft').style.width=scoreL+'%';
+  document.getElementById('mRight').style.width=scoreR+'%';
+  document.getElementById('ml').textContent=scoreL+'%';
+  document.getElementById('mr').textContent=scoreR+'%';
+}
+
+function updateRound(){
+  document.getElementById('round').textContent=`ROUND ${Math.min(round+1,4)} / 4`;
+}
+
+newBattle();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

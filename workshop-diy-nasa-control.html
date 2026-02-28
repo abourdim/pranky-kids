@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // MISSION CTRL</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050510;color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;overflow:hidden;height:100vh}
+
+.app{display:grid;grid-template-rows:auto 1fr auto;height:100vh}
+
+/* TOP */
+.top{background:linear-gradient(90deg,#0a0a1a,#0a1a2e);border-bottom:1px solid rgba(0,150,255,.08);padding:4px 12px;display:flex;align-items:center;gap:10px}
+.top-logo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:#0af;letter-spacing:1px}
+.top-mission{font-size:8px;color:rgba(0,170,255,.3);letter-spacing:2px}
+.top-status{margin-left:auto;display:flex;gap:10px;align-items:center;font-size:7px;color:rgba(0,170,255,.25)}
+.status-dot{width:6px;height:6px;border-radius:50%;animation:pulse 2s ease-in-out infinite}
+.status-dot.on{background:#0f0;box-shadow:0 0 6px rgba(0,255,0,.3)}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* MAIN GRID */
+.main{display:grid;grid-template-columns:200px 1fr 200px;gap:1px;background:rgba(0,150,255,.02);overflow:hidden}
+
+/* PANELS */
+.panel{background:#080814;padding:8px;overflow:hidden;display:flex;flex-direction:column}
+.panel-h{font-size:7px;color:rgba(0,170,255,.25);letter-spacing:2px;padding-bottom:4px;border-bottom:1px solid rgba(0,150,255,.04);margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.panel-h .live{width:4px;height:4px;border-radius:50%;background:#0f0;animation:pulse 1.5s infinite}
+
+/* TELEMETRY */
+.telem-row{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid rgba(0,150,255,.02);font-size:9px}
+.telem-row .lbl{color:rgba(0,170,255,.2)}.telem-row .val{color:#0af;font-weight:700}
+.telem-row .val.warn{color:#ff0}.telem-row .val.crit{color:#f44}
+
+/* MISSION PATCHES */
+.patches{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.patch{border:1px solid rgba(0,150,255,.06);border-radius:4px;padding:6px;text-align:center;cursor:default;transition:all .15s}
+.patch:hover{background:rgba(0,150,255,.02);border-color:rgba(0,150,255,.12)}
+.patch .emoji{font-size:18px}.patch .name{font-size:6px;color:rgba(0,170,255,.3);margin-top:2px;letter-spacing:.5px}
+.patch.active{border-color:rgba(0,255,65,.15);background:rgba(0,255,65,.02)}
+
+/* CENTER DISPLAY */
+.center{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;background:radial-gradient(ellipse at center,rgba(0,100,200,.03),transparent 70%)}
+.orbit-ring{position:absolute;border:1px solid rgba(0,150,255,.04);border-radius:50%}
+.countdown{font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,40px);font-weight:800;color:#0af;text-shadow:0 0 20px rgba(0,170,255,.15);margin-bottom:4px}
+.mission-name{font-size:8px;color:rgba(0,170,255,.25);letter-spacing:4px}
+.mission-phase{font-size:10px;color:rgba(0,255,65,.4);margin-top:4px;letter-spacing:2px}
+
+/* TRAJECTORY */
+.trajectory{width:90%;max-width:300px;margin:12px auto}
+.traj-svg{width:100%;height:auto}
+
+/* COMMS LOG */
+.comms{flex:1;overflow-y:auto;font-size:8px}
+.comms::-webkit-scrollbar{width:2px}.comms::-webkit-scrollbar-thumb{background:rgba(0,150,255,.1)}
+.comm{padding:3px 0;border-bottom:1px solid rgba(0,150,255,.02);line-height:1.6}
+.comm .time{color:rgba(0,170,255,.15)}.comm .src{color:#0af;font-weight:700}.comm .msg{color:rgba(255,255,255,.3)}
+
+/* CREW */
+.crew-item{display:flex;gap:6px;align-items:center;padding:4px 0;border-bottom:1px solid rgba(0,150,255,.02)}
+.crew-av{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;border:1px solid rgba(0,150,255,.08);background:rgba(0,0,0,.3)}
+.crew-name{font-size:8px;color:rgba(0,170,255,.4)}.crew-role{font-size:6px;color:rgba(0,170,255,.15)}
+.crew-status{margin-left:auto;font-size:6px;padding:1px 5px;border-radius:8px}
+.cs-active{background:rgba(0,255,65,.06);color:rgba(0,255,65,.4);border:1px solid rgba(0,255,65,.1)}
+.cs-standby{background:rgba(255,215,0,.06);color:rgba(255,215,0,.4);border:1px solid rgba(255,215,0,.1)}
+
+/* BOTTOM */
+.bottom{background:#080814;border-top:1px solid rgba(0,150,255,.06);padding:3px 12px;display:flex;align-items:center;gap:12px;font-size:7px;color:rgba(0,170,255,.15)}
+.bottom span{display:flex;align-items:center;gap:3px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="app">
+
+<div class="top">
+  <div class="top-logo">WKSHP-MISSION-CTRL</div>
+  <div class="top-mission">OPERATION MAKER · PHASE III</div>
+  <div class="top-status">
+    <span><span class="status-dot on"></span> ALL SYSTEMS NOMINAL</span>
+    <span id="clock">00:00:00</span>
+  </div>
+</div>
+
+<div class="main">
+<!-- LEFT PANEL -->
+<div class="panel">
+  <div class="panel-h"><span class="live"></span> TELEMETRY</div>
+  <div id="telemetry"></div>
+  <div class="panel-h" style="margin-top:8px">CREW STATUS</div>
+  <div id="crew"></div>
+</div>
+
+<!-- CENTER -->
+<div class="center">
+  <div class="orbit-ring" style="width:260px;height:260px"></div>
+  <div class="orbit-ring" style="width:180px;height:180px"></div>
+  <div class="orbit-ring" style="width:100px;height:100px"></div>
+  <div class="mission-name">WORKSHOP-DIY</div>
+  <div class="countdown" id="countdown">T+ 00:00:00</div>
+  <div class="mission-phase" id="phase">▶ MISSION ACTIVE</div>
+  <div class="patches" id="patches" style="position:absolute;bottom:8px;left:8px;right:8px"></div>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="panel">
+  <div class="panel-h"><span class="live"></span> COMMS LOG</div>
+  <div class="comms" id="comms"></div>
+</div>
+</div>
+
+<div class="bottom">
+  <span>📡 SIGNAL: STRONG</span>
+  <span>🔋 POWER: 87%</span>
+  <span>🌡️ TEMP: <span id="temp">42</span>°C</span>
+  <span>📊 APPS: 39/39 ONLINE</span>
+  <span>☕ COFFEE: CRITICAL</span>
+  <span style="margin-left:auto">WKSHP-MISSION-CTRL v4.2 · workshop-diy.org</span>
+</div>
+
+</div>
+
+<script>
+// TELEMETRY
+const telem=[
+  {l:"APPS ONLINE",v:()=>"39/39",c:""},
+  {l:"BLE DEVICES",v:()=>Math.floor(Math.random()*3+2),c:""},
+  {l:"SESSIONS/HR",v:()=>Math.floor(Math.random()*30+20),c:""},
+  {l:"LATENCY",v:()=>Math.floor(Math.random()*10+5)+"ms",c:""},
+  {l:"CPU LOAD",v:()=>{const v=Math.floor(Math.random()*15+5);return v+"%"},c:""},
+  {l:"RAM USAGE",v:()=>Math.floor(Math.random()*30+40)+"MB",c:""},
+  {l:"BLE RSSI",v:()=>"-"+Math.floor(Math.random()*20+40)+"dBm",c:""},
+  {l:"WIFI SIGNAL",v:()=>"-"+Math.floor(Math.random()*10+30)+"dBm",c:""},
+  {l:"BUGS",v:()=>"42 (features)",c:"warn"},
+  {l:"COFFEE",v:()=>Math.floor(Math.random()*20+5)+"%",c:"crit"},
+];
+
+function updateTelem(){
+  document.getElementById('telemetry').innerHTML=telem.map(t=>{
+    const v=t.v();
+    return `<div class="telem-row"><span class="lbl">${t.l}</span><span class="val ${t.c}">${v}</span></div>`;
+  }).join('');
+}
+updateTelem();setInterval(updateTelem,3000);
+
+// CREW
+const crew=[
+  {a:"👨‍🚀",n:"Yassine",r:"Mission Commander",s:"active"},
+  {a:"👩‍🔬",n:"Amira",r:"AI Specialist",s:"active"},
+  {a:"👨‍💻",n:"Lucas",r:"Systems Engineer",s:"active"},
+  {a:"🤖",n:"WKSHP-Bot",r:"Autonomous Agent",s:"active"},
+  {a:"👩‍🏫",n:"Marie",r:"Education Officer",s:"standby"},
+  {a:"☕",n:"Coffee",r:"Life Support",s:"active"},
+];
+document.getElementById('crew').innerHTML=crew.map(c=>`<div class="crew-item"><div class="crew-av">${c.a}</div><div><div class="crew-name">${c.n}</div><div class="crew-role">${c.r}</div></div><span class="crew-status cs-${c.s}">${c.s}</span></div>`).join('');
+
+// PATCHES
+const patches=[
+  {e:"🤖",n:"ROBOTICS"},{e:"🧠",n:"AI OPS"},{e:"🔐",n:"CYBER"},{e:"🐧",n:"LINUX"},{e:"⚡",n:"HARDWARE"},{e:"🐳",n:"DEVOPS"},{e:"📷",n:"CAMERA"},{e:"💻",n:"CODE"},
+];
+document.getElementById('patches').innerHTML=patches.map((p,i)=>`<div class="patch${i<5?' active':''}""><div class="emoji">${p.e}</div><div class="name">${p.n}</div></div>`).join('');
+
+// COMMS LOG
+const commMsgs=[
+  {src:"CTRL",msg:"All systems nominal. Mission phase III active."},
+  {src:"BLE",msg:"micro:bit #3 connected. RSSI -42 dBm."},
+  {src:"ROBO",msg:"bit-bot motor calibration complete. Dance mode standby."},
+  {src:"AI",msg:"MediaPipe hand model loaded. 21 landmarks tracking."},
+  {src:"NET",msg:"WiFi stable. Password: password123. Tradition maintained."},
+  {src:"CTF",msg:"pentest-lab: 3 challenges solved in last hour."},
+  {src:"SYS",msg:"Coffee level below 15%. Recommend immediate resupply."},
+  {src:"CAM",msg:"face-quest: new high score 847 registered."},
+  {src:"DEV",msg:"Bug #42 formally reclassified as feature. Ceremony at 1500."},
+  {src:"BLE",msg:"Neopixel strip response time: 12ms. Nominal."},
+  {src:"ROBO",msg:"ESP32 robot survived drop #48. Hardware integrity: 100%."},
+  {src:"AI",msg:"Teachable model accuracy: 98.2%. Operator age: 10."},
+  {src:"CTRL",msg:"Workshop session T+02:00. All 39 apps operational."},
+  {src:"SYS",msg:"Temperature nominal at 42°C. Coincidence? We think not."},
+];
+let commIdx=0;
+function addComm(){
+  const c=commMsgs[commIdx%commMsgs.length];commIdx++;
+  const t=new Date().toTimeString().slice(0,8);
+  const el=document.getElementById('comms');
+  el.innerHTML+=`<div class="comm"><span class="time">[${t}]</span> <span class="src">${c.src}</span> <span class="msg">${c.msg}</span></div>`;
+  el.scrollTop=el.scrollHeight;
+}
+for(let i=0;i<6;i++)addComm();
+setInterval(addComm,5000);
+
+// COUNTDOWN
+const start=Date.now();
+setInterval(()=>{
+  const s=Math.floor((Date.now()-start)/1000);
+  const h=Math.floor(s/3600),m=Math.floor(s%3600/60),sec=s%60;
+  document.getElementById('countdown').textContent=`T+ ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  document.getElementById('clock').textContent=new Date().toTimeString().slice(0,8);
+  document.getElementById('temp').textContent=Math.floor(Math.random()*3+41);
+},1000);
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

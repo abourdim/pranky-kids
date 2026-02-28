@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // DISCORD</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#1a1a2e;font-family:'JetBrains Mono',monospace;font-size:12px;color:#dcddde}
+
+.app{position:fixed;inset:0;display:flex}
+
+/* SERVER LIST */
+.servers{width:52px;background:#0f0f1a;display:flex;flex-direction:column;align-items:center;padding:8px 0;gap:4px;flex-shrink:0;border-right:1px solid #0a0a14}
+.srv{width:36px;height:36px;border-radius:50%;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .15s;border:2px solid transparent}
+.srv:hover,.srv.on{border-radius:8px;border-color:#00ff41}
+.srv.on{background:#0a2a0a;box-shadow:0 0 8px rgba(0,255,65,.15)}
+.srv-sep{width:24px;height:1px;background:#222;margin:2px 0}
+
+/* CHANNELS */
+.channels{width:180px;background:#141424;display:flex;flex-direction:column;flex-shrink:0;border-right:1px solid #0a0a14}
+.ch-header{padding:10px;border-bottom:1px solid #0a0a14}
+.ch-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#00ff41}
+.ch-sub{font-size:7px;color:#555;margin-top:2px}
+.ch-list{flex:1;overflow-y:auto;padding:6px}
+.ch-list::-webkit-scrollbar{width:2px}.ch-list::-webkit-scrollbar-thumb{background:#222}
+.ch-cat{font-size:7px;color:#555;letter-spacing:2px;padding:6px 4px 2px;cursor:default}
+.ch-item{display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:3px;cursor:pointer;transition:all .1s;font-size:10px;color:#888}
+.ch-item:hover{background:rgba(255,255,255,.03);color:#fff}
+.ch-item.on{background:rgba(0,255,65,.05);color:#00ff41}
+.ch-item .hash{color:#555;font-size:12px}
+.ch-item .unread{width:6px;height:6px;background:#f04;border-radius:50%;margin-left:auto;flex-shrink:0}
+
+/* MEMBERS */
+.ch-members{padding:8px;border-top:1px solid #0a0a14}
+.ch-members-h{font-size:7px;color:#555;letter-spacing:2px;margin-bottom:4px}
+.member{display:flex;align-items:center;gap:5px;padding:2px 4px;font-size:8px;color:#888;border-radius:2px;cursor:default}
+.member:hover{background:rgba(255,255,255,.02)}
+.member .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.member .dot.online{background:#0f0}.member .dot.idle{background:#ff0}.member .dot.offline{background:#555}
+
+/* CHAT */
+.chat{flex:1;display:flex;flex-direction:column;background:#1a1a2e}
+.chat-header{padding:8px 14px;border-bottom:1px solid #0a0a14;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.chat-header .hash{font-size:16px;color:#555}.chat-header .name{font-size:12px;font-weight:700;color:#fff}
+.chat-header .desc{font-size:8px;color:#555;margin-left:8px;border-left:1px solid #333;padding-left:8px}
+
+.messages{flex:1;overflow-y:auto;padding:10px 14px}
+.messages::-webkit-scrollbar{width:3px}.messages::-webkit-scrollbar-thumb{background:#222}
+
+.msg{display:flex;gap:10px;margin-bottom:10px;padding:4px;border-radius:4px;transition:background .1s}
+.msg:hover{background:rgba(255,255,255,.01)}
+.msg-avatar{width:32px;height:32px;border-radius:50%;background:#0f0f1a;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.msg-content{flex:1;min-width:0}
+.msg-header{display:flex;align-items:baseline;gap:6px;margin-bottom:2px}
+.msg-name{font-size:11px;font-weight:700}.msg-time{font-size:7px;color:#555}
+.msg-text{font-size:11px;color:#dcddde;line-height:1.8;word-break:break-word}
+.msg-text code{background:#0f0f1a;padding:1px 5px;border-radius:2px;font-size:10px;color:#00ff41}
+.msg-text .mention{color:#00d4ff;background:rgba(0,212,255,.08);padding:0 3px;border-radius:2px;cursor:pointer}
+.msg-text a{color:#00d4ff;text-decoration:none}.msg-text a:hover{text-decoration:underline}
+
+.msg-code{background:#0f0f1a;border:1px solid #1a1a1a;border-radius:4px;padding:8px 10px;margin-top:4px;font-size:10px;color:#00ff41;line-height:1.7;overflow-x:auto;white-space:pre}
+.msg-embed{border-left:3px solid #00ff41;background:rgba(0,255,65,.02);padding:8px 10px;margin-top:4px;border-radius:0 3px 3px 0;max-width:400px}
+.msg-embed .embed-title{font-size:10px;font-weight:700;color:#00d4ff;margin-bottom:2px}
+.msg-embed .embed-desc{font-size:9px;color:#888;line-height:1.6}
+.msg-react{display:flex;gap:3px;margin-top:4px}.msg-react span{background:#0f0f1a;border:1px solid #222;border-radius:3px;padding:1px 5px;font-size:9px;cursor:pointer}.msg-react span:hover{border-color:#555}
+
+.typing{padding:4px 14px;font-size:8px;color:#555;flex-shrink:0;height:20px}
+.typing .dots{display:inline-block;animation:typeDots 1.5s infinite}
+@keyframes typeDots{0%{content:'.'} 33%{content:'..'} 66%{content:'...'}}
+
+/* INPUT */
+.chat-input{padding:8px 14px;flex-shrink:0;border-top:1px solid #0a0a14}
+.input-box{display:flex;align-items:center;background:#0f0f1a;border:1px solid #222;border-radius:6px;padding:6px 10px}
+.input-box input{flex:1;background:none;border:none;color:#dcddde;font-family:inherit;font-size:11px;outline:none}
+.input-box input::placeholder{color:#444}
+.input-box .send{background:none;border:none;color:#00ff41;cursor:pointer;font-size:14px;padding:0 4px}
+
+/* ROLE COLORS */
+.role-admin{color:#ff6b6b}.role-mod{color:#ffd700}.role-bot{color:#00ff41}.role-member{color:#00d4ff}.role-new{color:#888}
+.bot-tag{font-size:6px;background:#00ff41;color:#000;padding:1px 4px;border-radius:2px;font-weight:700;letter-spacing:1px;vertical-align:middle;margin-left:3px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="app">
+
+<!-- SERVERS -->
+<div class="servers">
+  <div class="srv on">🤖</div>
+  <div class="srv-sep"></div>
+  <div class="srv" title="Robotics">⚡</div>
+  <div class="srv" title="AI Lab">🧠</div>
+  <div class="srv" title="Cyber">🔐</div>
+  <div class="srv" title="Linux">🐧</div>
+  <div class="srv-sep"></div>
+  <div class="srv" style="background:#0a2a0a;font-size:20px" title="Add server">+</div>
+</div>
+
+<!-- CHANNELS -->
+<div class="channels">
+  <div class="ch-header">
+    <div class="ch-name">WORKSHOP-DIY</div>
+    <div class="ch-sub">39 apps · 42 members online</div>
+  </div>
+  <div class="ch-list">
+    <div class="ch-cat">GENERAL</div>
+    <div class="ch-item on" data-ch="general"><span class="hash">#</span> general</div>
+    <div class="ch-item" data-ch="announcements"><span class="hash">#</span> announcements <span class="unread"></span></div>
+    <div class="ch-item" data-ch="introductions"><span class="hash">#</span> introductions</div>
+    <div class="ch-cat">PROJECTS</div>
+    <div class="ch-item" data-ch="robotics"><span class="hash">#</span> robotics</div>
+    <div class="ch-item" data-ch="ai-lab"><span class="hash">#</span> ai-lab <span class="unread"></span></div>
+    <div class="ch-item" data-ch="electronics"><span class="hash">#</span> electronics</div>
+    <div class="ch-item" data-ch="3d-printing"><span class="hash">#</span> 3d-printing</div>
+    <div class="ch-cat">CODE</div>
+    <div class="ch-item" data-ch="help"><span class="hash">#</span> help <span class="unread"></span></div>
+    <div class="ch-item" data-ch="show-and-tell"><span class="hash">#</span> show-and-tell</div>
+    <div class="ch-item" data-ch="bugs"><span class="hash">#</span> bugs-are-features</div>
+    <div class="ch-cat">FUN</div>
+    <div class="ch-item" data-ch="memes"><span class="hash">#</span> memes</div>
+    <div class="ch-item" data-ch="off-topic"><span class="hash">#</span> off-topic</div>
+  </div>
+  <div class="ch-members">
+    <div class="ch-members-h">ONLINE — 42</div>
+    <div class="member"><span class="dot online"></span>🤖 WKSHP-Bot</div>
+    <div class="member"><span class="dot online"></span>Yassine</div>
+    <div class="member"><span class="dot online"></span>Lucas</div>
+    <div class="member"><span class="dot online"></span>Amira</div>
+    <div class="member"><span class="dot idle"></span>MaxMaker</div>
+    <div class="member"><span class="dot idle"></span>SolderQueen</div>
+    <div class="member"><span class="dot offline"></span>CoffeeBot</div>
+  </div>
+</div>
+
+<!-- CHAT -->
+<div class="chat">
+  <div class="chat-header">
+    <span class="hash">#</span>
+    <span class="name" id="chName">general</span>
+    <span class="desc" id="chDesc">Talk about anything Workshop-DIY</span>
+  </div>
+  <div class="messages" id="msgs"></div>
+  <div class="typing" id="typing"></div>
+  <div class="chat-input">
+    <div class="input-box">
+      <input type="text" id="chatInput" placeholder="Message #general" onkeydown="if(event.key==='Enter')sendMsg()">
+      <button class="send" onclick="sendMsg()">➤</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const CHANNELS={
+  general:{name:"general",desc:"Talk about anything Workshop-DIY",msgs:[
+    {a:"🤖",n:"WKSHP-Bot",r:"bot",t:"10:00",m:'Welcome to <span class="mention">@Workshop-DIY</span>! We have <b>39 apps</b>, <b>7 domains</b>, and <b>∞ bugs</b> (features). Type <code>!help</code> for commands.',bot:true},
+    {a:"😎",n:"Yassine",r:"admin",t:"10:02",m:"Morning everyone! Just pushed a fix for bit-bot BLE disconnects. Please test!"},
+    {a:"💻",n:"Lucas",r:"mod",t:"10:05",m:'Nice! Testing now. Also, has anyone seen the WiFi password? It\'s definitely not <code>password123</code> right? 😅'},
+    {a:"🤖",n:"WKSHP-Bot",r:"bot",t:"10:05",m:"WiFi password unchanged since 2024. It's still <code>password123</code>. This is fine.",bot:true},
+    {a:"⚡",n:"Amira",r:"member",t:"10:08",m:'I just finished the pentest-lab challenges! The SQL injection one was tricky but <span class="mention">@Lucas</span> helped me debug. 🔐'},
+    {a:"🔧",n:"MaxMaker",r:"member",t:"10:12",m:"Anyone else's 3D printer making weird noises? Mine sounds like it's singing.",react:["😂 3","🖨️ 2"]},
+    {a:"🧠",n:"SolderQueen",r:"mod",t:"10:15",m:"That's the stepper motor resonance. Change your speed to avoid the singing frequency. Or just enjoy the concert."},
+    {a:"🤖",n:"WKSHP-Bot",r:"bot",t:"10:20",m:'📊 <b>Daily Stats:</b> 847 sessions today · 23 active users · bit-bot most popular · 0 bugs fixed (all features)',bot:true},
+    {a:"🎨",n:"PixelNour",r:"new",t:"10:22",m:"Hey! New here. Just discovered Workshop-DIY. The magic-hands app blew my mind 🤯",react:["👋 5","💚 3"]},
+    {a:"😎",n:"Yassine",r:"admin",t:"10:24",m:'Welcome <span class="mention">@PixelNour</span>! Try face-quest next — it\'s addictive. And check out <a href="https://abourdim.github.io/apps/">abourdim.github.io/apps</a> for all 39 apps.'},
+  ]},
+  robotics:{name:"robotics",desc:"ESP32 · micro:bit · servos · motors",msgs:[
+    {a:"🤖",n:"WKSHP-Bot",r:"bot",t:"09:00",m:'🤖 <b>Robot of the Day:</b> bit-bot — controlled 127 times today. Someone made it dance for 20 minutes straight.',bot:true},
+    {a:"😎",n:"Yassine",r:"admin",t:"09:15",m:"New bit-bot firmware update: smoother BLE reconnection. Who wants to test?",code:"// bit-bot v3.2 changelog\n- Fixed BLE disconnect on Chrome 120+\n- Smoother servo transitions\n- Added dance() method\n- TODO: teach robot empathy"},
+    {a:"💻",n:"Lucas",r:"mod",t:"09:20",m:"Testing now. The <code>dance()</code> method is amazing. My robot won't stop.",react:["🤖 4","💃 2"]},
+    {a:"⚡",n:"Amira",r:"member",t:"09:30",m:"Question: can I use the ultrasonic sensor AND the IR sensor at the same time on the ESP32 kit?"},
+    {a:"😎",n:"Yassine",r:"admin",t:"09:32",m:"Yes! They use different GPIO pins. Check the pin diagram in the workshop docs. IR is on GPIO14, ultrasonic on GPIO12/13."},
+  ]},
+  "ai-lab":{name:"ai-lab",desc:"MediaPipe · Teachable Machine · LLMs",msgs:[
+    {a:"🧠",n:"SolderQueen",r:"mod",t:"11:00",m:"Just trained a gesture model with 98% accuracy on Teachable Machine. It recognizes rock, paper, scissors!",embed:{title:"teachable-machine app",desc:"Train AI gestures in browser, send results to micro:bit"}},
+    {a:"🎨",n:"PixelNour",r:"new",t:"11:05",m:"That's so cool! Can it also detect custom gestures?"},
+    {a:"🧠",n:"SolderQueen",r:"mod",t:"11:07",m:"Yep! You can train it on anything — hand signs, objects, even sounds. It runs entirely in the browser, no cloud needed."},
+    {a:"🤖",n:"WKSHP-Bot",r:"bot",t:"11:10",m:'🧠 <b>AI Tip:</b> For best results with Teachable Machine, use 100+ samples per class and vary lighting conditions.',bot:true},
+    {a:"💻",n:"Lucas",r:"mod",t:"11:15",m:"I connected teachable-machine to bit-bot. Now my robot dances when I wave 👋 and stops when I show ✋. Living in the future."},
+  ]},
+  help:{name:"help",desc:"Ask questions, get answers",msgs:[
+    {a:"🔧",n:"MaxMaker",r:"member",t:"14:00",m:"Help! My micro:bit won't connect via BLE in Chrome. Says 'Bluetooth adapter not found'."},
+    {a:"💻",n:"Lucas",r:"mod",t:"14:02",m:"Make sure: 1) Chrome flags has Web Bluetooth enabled 2) Your computer actually has Bluetooth 3) micro:bit is in pairing mode (hold A+B, press reset)"},
+    {a:"🤖",n:"WKSHP-Bot",r:"bot",t:"14:02",m:'💡 <b>BLE Troubleshooting:</b>\n• Chrome → <code>chrome://flags</code> → Enable Web Bluetooth\n• micro:bit pairing: A+B + Reset\n• Stay within 10m range\n• Try <code>ble-logger</code> app to debug',bot:true},
+    {a:"🔧",n:"MaxMaker",r:"member",t:"14:05",m:"The chrome://flags thing fixed it! Thanks!!! 🎉",react:["🎉 3","💚 2"]},
+    {a:"⚡",n:"Amira",r:"member",t:"14:10",m:"Pro tip: bookmark ble-logger. It's the best debugging tool when things get weird with Bluetooth."},
+  ]},
+  memes:{name:"memes",desc:"Robot memes and workshop humor",msgs:[
+    {a:"💻",n:"Lucas",r:"mod",t:"16:00",m:'When the instructor says "don\'t touch the soldering iron" but you\'re built different 🔥🤚😭',react:["😂 7","🔥 3","💀 2"]},
+    {a:"⚡",n:"Amira",r:"member",t:"16:05",m:'Me: "I\'ll fix this bug in 5 minutes"\n3 hours later: "it\'s a feature now"',react:["😂 9","🐛 4"]},
+    {a:"🤖",n:"WKSHP-Bot",r:"bot",t:"16:10",m:'🎲 <b>Random Workshop Fact:</b> The WiFi password has been "password123" since the founding of the association. At this point, it\'s tradition.',bot:true,react:["💀 6","🔐 3"]},
+    {a:"🔧",n:"MaxMaker",r:"member",t:"16:15",m:'git commit -m "I have absolutely no idea why this works but please don\'t touch it"',react:["😂 11","💯 5"]},
+    {a:"😎",n:"Yassine",r:"admin",t:"16:20",m:'Students: "Is this class fun?"\nMe: *deploys 39 apps*\nStudents: 👁️👄👁️',react:["💀 8","🤖 4","💚 6"]},
+    {a:"🧠",n:"SolderQueen",r:"mod",t:"16:25",m:'The ESP32 robot kit specs say "survived 47 drops". That number is autobiographical.',react:["😂 5","🤖 3"]},
+  ]},
+};
+
+let curCh='general';
+
+function renderChannel(ch){
+  curCh=ch;
+  const data=CHANNELS[ch]||CHANNELS.general;
+  document.getElementById('chName').textContent=data.name;
+  document.getElementById('chDesc').textContent=data.desc;
+  document.getElementById('chatInput').placeholder=`Message #${data.name}`;
+  document.querySelectorAll('.ch-item').forEach(c=>c.classList.toggle('on',c.dataset.ch===ch));
+  
+  const msgs=document.getElementById('msgs');msgs.innerHTML='';
+  data.msgs.forEach(m=>{
+    const d=document.createElement('div');d.className='msg';
+    let extra='';
+    if(m.code)extra+=`<div class="msg-code">${m.code}</div>`;
+    if(m.embed)extra+=`<div class="msg-embed"><div class="embed-title">${m.embed.title}</div><div class="embed-desc">${m.embed.desc}</div></div>`;
+    if(m.react)extra+=`<div class="msg-react">${m.react.map(r=>`<span>${r}</span>`).join('')}</div>`;
+    const tag=m.bot?'<span class="bot-tag">BOT</span>':'';
+    d.innerHTML=`<div class="msg-avatar">${m.a}</div><div class="msg-content"><div class="msg-header"><span class="msg-name role-${m.r}">${m.n}</span>${tag}<span class="msg-time">Today at ${m.t}</span></div><div class="msg-text">${m.m}</div>${extra}</div>`;
+    msgs.appendChild(d);
+  });
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+document.querySelectorAll('.ch-item').forEach(c=>c.onclick=()=>renderChannel(c.dataset.ch));
+renderChannel('general');
+
+// Auto messages
+const autoMsgs=[
+  {a:"🤖",n:"WKSHP-Bot",r:"bot",bot:true,m:'🔔 <b>Reminder:</b> Next workshop session is Saturday at 10am. Bring your micro:bit and curiosity!'},
+  {a:"⚡",n:"Amira",r:"member",m:"Just got my robot to follow a line! The IR sensor calibration was the key 🎯"},
+  {a:"🔧",n:"MaxMaker",r:"member",m:'Question: what\'s the best solder temperature for the ESP32 header pins?'},
+  {a:"💻",n:"Lucas",r:"mod",m:"350°C for leaded, 380°C for lead-free. And don't breathe the fumes 🤢"},
+  {a:"🎨",n:"PixelNour",r:"new",m:"I made my first pixel art in pixel-gateway! It's a robot 🤖✨"},
+  {a:"🤖",n:"WKSHP-Bot",r:"bot",bot:true,m:'📈 <b>App Update:</b> face-quest just hit 1,000 plays. The most popular expression detected: 😁'},
+];
+let autoIdx=0;
+
+function addAutoMsg(){
+  if(curCh!=='general')return;
+  const m=autoMsgs[autoIdx%autoMsgs.length];autoIdx++;
+  const typing=document.getElementById('typing');
+  typing.textContent=`${m.n} is typing...`;
+  setTimeout(()=>{
+    typing.textContent='';
+    const t=new Date().toTimeString().slice(0,5);
+    const data=CHANNELS.general;
+    data.msgs.push({...m,t});
+    renderChannel('general');
+  },2000);
+}
+setInterval(addAutoMsg,12000);
+
+// User input
+function sendMsg(){
+  const input=document.getElementById('chatInput');
+  const text=input.value.trim();if(!text)return;
+  const data=CHANNELS[curCh];
+  data.msgs.push({a:"👤",n:"You",r:"member",t:new Date().toTimeString().slice(0,5),m:text});
+  input.value='';
+  renderChannel(curCh);
+  // Bot reply
+  if(text.toLowerCase().includes('!help')){
+    setTimeout(()=>{
+      data.msgs.push({a:"🤖",n:"WKSHP-Bot",r:"bot",t:new Date().toTimeString().slice(0,5),m:'<b>Commands:</b> <code>!help</code> <code>!stats</code> <code>!apps</code> <code>!quote</code> <code>!joke</code>',bot:true});
+      renderChannel(curCh);
+    },1000);
+  }
+}
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

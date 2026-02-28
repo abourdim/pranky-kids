@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PERIODIC TABLE // WKSHP-DIY</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#050508;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px}
+.crt{position:fixed;inset:0;z-index:999;pointer-events:none}.crt::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.02) 0,rgba(0,0,0,.02) 1px,transparent 1px,transparent 3px)}
+.app{position:fixed;inset:0;display:flex;flex-direction:column;z-index:1}
+.hdr{padding:8px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,255,65,.04);flex-shrink:0}
+.hdr-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#0f0}
+.hdr-sub{font-size:7px;color:rgba(0,255,65,.25);letter-spacing:2px}
+.legend{display:flex;gap:6px;flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:7px;color:#666;cursor:pointer;padding:2px 6px;border-radius:2px;transition:all .12s;border:1px solid transparent}
+.leg-item:hover{color:#fff;background:rgba(255,255,255,.03)}
+.leg-item.on{border-color:rgba(255,255,255,.1)}
+.leg-dot{width:8px;height:8px;border-radius:2px}
+
+.table-wrap{flex:1;overflow:auto;padding:10px;display:flex;align-items:center;justify-content:center}
+.table-wrap::-webkit-scrollbar{width:4px;height:4px}.table-wrap::-webkit-scrollbar-thumb{background:#222}
+
+.ptable{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;max-width:720px;width:100%}
+
+/* ELEMENT */
+.el{border:1px solid rgba(255,255,255,.06);border-radius:4px;padding:6px;cursor:pointer;transition:all .2s;position:relative;text-align:center;min-height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.el:hover{transform:scale(1.08);z-index:5;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+.el.dim{opacity:.15}
+.el .num{position:absolute;top:3px;left:5px;font-size:6px;color:rgba(255,255,255,.25)}
+.el .emoji{font-size:18px;display:block;margin:2px 0}
+.el .sym{font-size:13px;font-weight:800;display:block}
+.el .name{font-size:5.5px;color:rgba(255,255,255,.4);letter-spacing:.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+
+/* CATEGORY COLORS */
+.cat-microbit{background:rgba(0,212,255,.04);border-color:rgba(0,212,255,.1)}.cat-microbit .sym{color:#0af}
+.cat-ai{background:rgba(191,0,255,.04);border-color:rgba(191,0,255,.1)}.cat-ai .sym{color:#bf00ff}
+.cat-camera{background:rgba(255,215,0,.03);border-color:rgba(255,215,0,.08)}.cat-camera .sym{color:#ffd700}
+.cat-hardware{background:rgba(255,136,0,.04);border-color:rgba(255,136,0,.1)}.cat-hardware .sym{color:#ff8800}
+.cat-learning{background:rgba(0,255,65,.03);border-color:rgba(0,255,65,.08)}.cat-learning .sym{color:#0f0}
+.cat-classroom{background:rgba(0,102,255,.04);border-color:rgba(0,102,255,.1)}.cat-classroom .sym{color:#06f}
+.cat-tools{background:rgba(255,0,51,.03);border-color:rgba(255,0,51,.08)}.cat-tools .sym{color:#f03}
+
+/* TOOLTIP */
+.tooltip{position:fixed;z-index:100;background:#111;border:1px solid #222;border-radius:4px;padding:10px 14px;box-shadow:0 4px 16px rgba(0,0,0,.5);pointer-events:none;display:none;max-width:260px}
+.tt-name{font-size:12px;font-weight:700;margin-bottom:2px}.tt-desc{font-size:9px;color:#888;line-height:1.7;margin-bottom:4px}
+.tt-cats{display:flex;gap:3px;flex-wrap:wrap}.tt-cat{font-size:7px;padding:1px 5px;border-radius:2px}
+
+.footer{padding:4px 14px;font-size:6px;color:rgba(0,255,65,.12);border-top:1px solid rgba(0,255,65,.04);display:flex;justify-content:space-between;flex-shrink:0}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="crt"></div>
+<div class="tooltip" id="tooltip"><div class="tt-name" id="ttN"></div><div class="tt-desc" id="ttD"></div><div class="tt-cats" id="ttC"></div></div>
+<div class="app">
+<div class="hdr">
+  <div><div class="hdr-title">PERIODIC TABLE OF APPS</div><div class="hdr-sub">// 39 ELEMENTS OF WORKSHOP-DIY</div></div>
+  <div class="legend" id="legend"></div>
+</div>
+<div class="table-wrap"><div class="ptable" id="ptable"></div></div>
+<div class="footer"><span>WKSHP_PERIODIC v1.0 // HOVER FOR DETAILS // CLICK TO OPEN</span><span>workshop-diy.org // abourdim.github.io/apps</span></div>
+</div>
+<script>
+const APPS=[
+{e:"🤖",n:"bit-bot",s:"Bb",c:"microbit",d:"Drive Bit:Bot robot via Bluetooth"},{e:"🪄",n:"magic-hands",s:"Mh",c:"ai",d:"Hand-tracking magic effects"},{e:"🕵️",n:"face-quest",s:"Fq",c:"ai",d:"Face detection scoring game"},{e:"💬",n:"talking-robot",s:"Tr",c:"microbit",d:"Robot with speech & emotions"},{e:"🧠",n:"teachable-machine",s:"Tm",c:"ai",d:"Train AI gestures in browser"},{e:"😎",n:"face-tracking",s:"Ft",c:"camera",d:"Kids face tracking + events"},{e:"😄",n:"bitmoji-lab",s:"Bl",c:"microbit",d:"Emoji to LED pixel art"},{e:"🚀",n:"mission-control",s:"Mc",c:"classroom",d:"Dashboard with live video/chat"},{e:"🧩",n:"bit-playground",s:"Bp",c:"microbit",d:"Ultimate micro:bit playground"},{e:"🎛️",n:"rxy",s:"Rx",c:"microbit",d:"Custom BLE remote builder"},{e:"🎨",n:"pixel-gateway",s:"Pg",c:"tools",d:"Retro pixel art portal"},{e:"💡",n:"wled-kids-lab",s:"Wl",c:"hardware",d:"Control LED strips with WLED"},{e:"⚡",n:"esp32-c3-kids-lab",s:"Es",c:"hardware",d:"Hands-on ESP32-C3 lab"},{e:"🪙",n:"crypto-academy",s:"Ca",c:"learning",d:"Blockchain & crypto lessons"},{e:"🔐",n:"pentest-lab",s:"Pt",c:"learning",d:"Cybersecurity sandbox"},{e:"🐧",n:"linux-kids-lab",s:"Lx",c:"learning",d:"Linux commands in browser"},{e:"🏭",n:"production-chain",s:"Pc",c:"learning",d:"Industrial simulation"},{e:"🏫",n:"classroom",s:"Cr",c:"classroom",d:"PeerJS cloud classroom"},{e:"🔌",n:"usb-logger",s:"Ul",c:"microbit",d:"USB serial browser tool"},{e:"📡",n:"ble-logger",s:"Bg",c:"microbit",d:"BLE debug playground"},{e:"🧰",n:"claude-toolkit",s:"Ct",c:"tools",d:"Build apps with Claude AI"},{e:"🎭",n:"puppeteer",s:"Pp",c:"tools",d:"Browser automation"},{e:"🔋",n:"circuit-lab",s:"Cl",c:"hardware",d:"Simulate circuits"},{e:"🛡️",n:"vpn-guide",s:"Vg",c:"tools",d:"VPN & network security"},{e:"🧊",n:"3d-lab",s:"3D",c:"learning",d:"3D design in browser"},{e:"🔀",n:"git-lab",s:"Gl",c:"learning",d:"Learn Git step by step"},{e:"✨",n:"prompt-hero",s:"Ph",c:"ai",d:"Master AI prompting"},{e:"🌍",n:"save-planet",s:"Sp",c:"learning",d:"Climate & sustainability"},{e:"📋",n:"ops-catalog",s:"Oc",c:"tools",d:"DevOps tools catalog"},{e:"💻",n:"code-kids",s:"Ck",c:"learning",d:"Learn HTML/CSS/JS"},{e:"🏡",n:"smart-home",s:"Sh",c:"hardware",d:"Smart home dashboard"},{e:"🧱",n:"makecode",s:"Mk",c:"learning",d:"Block-based coding"},{e:"🤖",n:"54-activities",s:"54",c:"microbit",d:"54 micro:bit activities"},{e:"💰",n:"crypto-vault",s:"Cv",c:"learning",d:"Cryptography basics"},{e:"🔗",n:"dhcp-lab",s:"Dh",c:"hardware",d:"DHCP server dashboard"},{e:"🐳",n:"docker-lab",s:"Dk",c:"learning",d:"Docker experiments"},{e:"🔴",n:"nodered-lab",s:"Nr",c:"learning",d:"Node-RED visual programming"},{e:"⛽",n:"ocpp",s:"Op",c:"tools",d:"EV charging simulation"},{e:"🖥️",n:"tty",s:"Ty",c:"microbit",d:"Terminal for micro:bit"}
+];
+const CATS={microbit:{n:"micro:bit",col:"#0af"},ai:{n:"AI",col:"#bf00ff"},camera:{n:"Camera",col:"#ffd700"},hardware:{n:"Hardware",col:"#ff8800"},learning:{n:"Learning",col:"#0f0"},classroom:{n:"Classroom",col:"#06f"},tools:{n:"Tools",col:"#f03"}};
+let filter=null;
+
+// Legend
+const legEl=document.getElementById('legend');
+Object.entries(CATS).forEach(([k,v])=>{
+  const cnt=APPS.filter(a=>a.c===k).length;
+  const d=document.createElement('div');d.className='leg-item';d.dataset.c=k;
+  d.innerHTML=`<div class="leg-dot" style="background:${v.col}"></div>${v.n} (${cnt})`;
+  d.onclick=()=>{
+    if(filter===k){filter=null;d.classList.remove('on')}else{filter=k;document.querySelectorAll('.leg-item').forEach(l=>l.classList.remove('on'));d.classList.add('on')}
+    document.querySelectorAll('.el').forEach(el=>el.classList.toggle('dim',filter&&el.dataset.c!==filter));
+  };
+  legEl.appendChild(d);
+});
+
+// Table
+const pt=document.getElementById('ptable');
+const tt=document.getElementById('tooltip');
+APPS.forEach((a,i)=>{
+  const d=document.createElement('div');
+  d.className=`el cat-${a.c}`;d.dataset.c=a.c;
+  d.innerHTML=`<span class="num">${i+1}</span><span class="emoji">${a.e}</span><span class="sym">${a.s}</span><span class="name">${a.n}</span>`;
+  d.onclick=()=>window.open(`https://abourdim.github.io/${a.n}/`,'_blank');
+  d.onmouseenter=e=>{
+    document.getElementById('ttN').textContent=`${a.e} ${a.n}`;
+    document.getElementById('ttD').textContent=a.d;
+    document.getElementById('ttC').innerHTML=`<span class="tt-cat" style="background:${CATS[a.c].col}22;color:${CATS[a.c].col};border:1px solid ${CATS[a.c].col}33">${CATS[a.c].n}</span>`;
+    tt.style.display='block';
+  };
+  d.onmousemove=e=>{tt.style.left=Math.min(e.clientX+12,innerWidth-270)+'px';tt.style.top=Math.min(e.clientY+12,innerHeight-80)+'px'};
+  d.onmouseleave=()=>{tt.style.display='none'};
+  pt.appendChild(d);
+});
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

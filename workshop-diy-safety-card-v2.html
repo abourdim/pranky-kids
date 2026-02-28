@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // SAFETY CARD</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#e8e0d0;font-family:'Noto Sans',sans-serif;font-size:10px;min-height:100vh;padding:16px}
+
+.card{max-width:560px;margin:0 auto;background:#fff;border:2px solid #cc0000;border-radius:4px;overflow:hidden}
+
+.card-header{background:#cc0000;color:#fff;padding:8px 14px;display:flex;justify-content:space-between;align-items:center}
+.card-header h1{font-size:12px;font-weight:800;letter-spacing:3px}
+.card-header .model{font-size:8px;opacity:.6;letter-spacing:2px}
+
+.section{padding:10px 14px;border-bottom:1px solid #eee}
+.sec-title{font-size:9px;font-weight:800;color:#cc0000;letter-spacing:2px;margin-bottom:6px;text-transform:uppercase;display:flex;align-items:center;gap:4px}
+
+/* PROCEDURE ROWS */
+.procedures{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.proc{text-align:center;padding:8px;border:1px solid #f0f0f0;border-radius:4px;background:#fafaf5}
+.proc .icon{font-size:32px;margin-bottom:4px}
+.proc .step-num{font-size:7px;font-weight:800;color:#cc0000;letter-spacing:1px;margin-bottom:2px}
+.proc .desc{font-size:8px;color:#555;line-height:1.6}
+
+/* EXITS */
+.exits{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.exit{display:flex;align-items:center;gap:4px;padding:4px 10px;border:1px solid #ddd;border-radius:4px;font-size:8px;color:#555}
+.exit .arrow{color:#cc0000;font-weight:800;font-size:12px}
+
+/* BRACE */
+.brace-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.brace-pos{text-align:center;padding:8px;border:1px solid #f0f0f0;border-radius:4px;background:#fff8f0}
+.brace-pos .icon{font-size:28px;margin-bottom:2px}
+.brace-pos .label{font-size:7px;font-weight:700;color:#cc6600;letter-spacing:1px}
+.brace-pos .desc{font-size:7px;color:#888;margin-top:1px}
+
+/* WARNING */
+.warning{background:#fff3cd;border:1px solid #ffc107;border-radius:4px;padding:6px 10px;margin:6px 0;display:flex;gap:6px;align-items:center;font-size:8px;color:#856404}
+
+/* PROHIBITED */
+.prohibited{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.prohib{text-align:center;width:60px}
+.prohib .icon{font-size:24px;position:relative}
+.prohib .icon::after{content:'🚫';position:absolute;top:-2px;left:50%;transform:translateX(-50%);font-size:28px;opacity:.5}
+.prohib .label{font-size:6px;color:#cc0000;margin-top:2px;letter-spacing:.5px}
+
+.footer-bar{background:#f5f5f0;padding:6px 14px;text-align:center;font-size:6px;color:#999;letter-spacing:1px;line-height:2}
+
+/* LANGUAGES */
+.langs{display:flex;gap:4px;justify-content:center;margin-top:4px}
+.lang{padding:1px 6px;border:1px solid #eee;border-radius:2px;font-size:6px;color:#aaa}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="card">
+
+<div class="card-header">
+  <h1>⚠ SAFETY INFORMATION</h1>
+  <span class="model">MODEL: WKSHP-39 · REV 42</span>
+</div>
+
+<div class="section">
+  <div class="sec-title">🚨 Emergency: npm install failure</div>
+  <div class="procedures">
+    <div class="proc"><div class="step-num">STEP 1</div><div class="icon">😰</div><div class="desc">Remain calm.<br>This is expected.</div></div>
+    <div class="proc"><div class="step-num">STEP 2</div><div class="icon">🗑️</div><div class="desc">Delete<br>node_modules/</div></div>
+    <div class="proc"><div class="step-num">STEP 3</div><div class="icon">🤔</div><div class="desc">Remember: Workshop-DIY<br>needs no npm install.</div></div>
+    <div class="proc"><div class="step-num">STEP 4</div><div class="icon">🌐</div><div class="desc">Open Chrome.<br>Open the URL.<br>That's it.</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-title">📡 Emergency: BLE disconnection</div>
+  <div class="procedures">
+    <div class="proc"><div class="step-num">STEP 1</div><div class="icon">📵</div><div class="desc">Note the disconnect.<br>Don't panic.</div></div>
+    <div class="proc"><div class="step-num">STEP 2</div><div class="icon">🔄</div><div class="desc">Toggle Bluetooth<br>OFF then ON.</div></div>
+    <div class="proc"><div class="step-num">STEP 3</div><div class="icon">🖥️</div><div class="desc">Close other<br>Chrome tabs (all 47).</div></div>
+    <div class="proc"><div class="step-num">STEP 4</div><div class="icon">☕</div><div class="desc">If still failing:<br>get coffee. Try again.</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-title">🤖 Brace position: Robot desk drop</div>
+  <div class="brace-grid">
+    <div class="brace-pos"><div class="icon">🙈</div><div class="label">THE LOOK AWAY</div><div class="desc">Cover eyes. Trust the hot glue.</div></div>
+    <div class="brace-pos"><div class="icon">🤲</div><div class="label">THE CATCH</div><div class="desc">Hands out. Steady. Pray.</div></div>
+    <div class="brace-pos"><div class="icon">📸</div><div class="label">THE DOCUMENT</div><div class="desc">Film for science. Drop #48.</div></div>
+    <div class="brace-pos"><div class="icon">🧘</div><div class="label">THE ACCEPTANCE</div><div class="desc">It survived 47. It'll survive this.</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-title">🚪 Emergency exits</div>
+  <div class="exits">
+    <div class="exit"><span class="arrow">←</span> Ctrl+W (close tab)</div>
+    <div class="exit"><span class="arrow">←</span> Alt+F4 (close everything)</div>
+    <div class="exit"><span class="arrow">←</span> Physical door (if applicable)</div>
+    <div class="exit"><span class="arrow">←</span> Coffee machine (always an exit strategy)</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-title">🔑 WiFi emergency procedures</div>
+  <div class="warning">⚠ The WiFi password is password123. It has been password123 since 2023. In the event of a password change, remain calm — it will revert within 24 hours. This has been tested three times.</div>
+</div>
+
+<div class="section">
+  <div class="sec-title">🚫 Prohibited items</div>
+  <div class="prohibited">
+    <div class="prohib"><div class="icon">💾</div><div class="label">node_modules</div></div>
+    <div class="prohib"><div class="icon">📋</div><div class="label">webpack.config</div></div>
+    <div class="prohib"><div class="icon">☕</div><div class="label">Decaf coffee</div></div>
+    <div class="prohib"><div class="icon">🔑</div><div class="label">New WiFi password</div></div>
+    <div class="prohib"><div class="icon">📱</div><div class="label">App Store installs</div></div>
+    <div class="prohib"><div class="icon">🐛</div><div class="label">Deleting Bug #42</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-title">☕ Coffee machine: capacity indicator</div>
+  <div style="display:flex;align-items:center;gap:8px;justify-content:center">
+    <div style="width:200px;height:16px;background:#f0f0f0;border-radius:8px;overflow:hidden;border:1px solid #ddd">
+      <div style="width:8%;height:100%;background:linear-gradient(90deg,#cc0000,#ff4444);border-radius:8px"></div>
+    </div>
+    <span style="font-size:10px;font-weight:800;color:#cc0000">8%</span>
+    <span style="font-size:7px;color:#999">(14 months)</span>
+  </div>
+</div>
+
+<div class="footer-bar">
+  WORKSHOP-DIY AIRLINES · FLIGHT WKSHP-42 · AIRCRAFT: BROWSER-39<br>
+  PLEASE RETAIN THIS CARD IN SEAT POCKET · DO NOT REMOVE FROM AIRCRAFT<br>
+  <div class="langs">
+    <span class="lang">EN</span><span class="lang">FR</span><span class="lang">JS</span><span class="lang">HTML</span><span class="lang">CSS</span><span class="lang">BLE</span>
+  </div>
+</div>
+
+</div>
+  <script src="nav.js"></script>
+</body>
+</html>

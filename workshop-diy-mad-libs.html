@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // MAD LIBS</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px}
+
+.header{text-align:center;margin-bottom:14px}
+.h-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#ff8800}
+.h-sub{font-size:7px;color:rgba(255,136,0,.2);letter-spacing:3px;margin-top:2px}
+
+.game{max-width:500px;width:100%}
+
+/* INPUT PHASE */
+.inputs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.inp-group{display:flex;flex-direction:column;gap:2px}
+.inp-group label{font-size:7px;color:rgba(255,136,0,.3);letter-spacing:1px}
+.inp-group input{background:rgba(255,136,0,.03);border:1px solid rgba(255,136,0,.1);border-radius:4px;padding:6px 8px;color:#ff8800;font-family:inherit;font-size:10px;outline:none}
+.inp-group input::placeholder{color:rgba(255,136,0,.15)}
+.inp-group input:focus{border-color:rgba(255,136,0,.3)}
+
+.btn-row{display:flex;gap:6px;margin:10px 0}
+.btn{flex:1;padding:8px;border-radius:4px;border:1px solid rgba(255,136,0,.15);background:rgba(255,136,0,.04);color:rgba(255,136,0,.5);font-family:inherit;font-size:9px;cursor:pointer;letter-spacing:1px;text-align:center}
+.btn:hover{background:rgba(255,136,0,.08);color:#ff8800}
+.btn.primary{background:rgba(255,136,0,.08);color:#ff8800;border-color:rgba(255,136,0,.3)}
+
+/* STORY */
+.story{display:none;background:rgba(255,255,255,.02);border:1px solid rgba(255,136,0,.06);border-radius:8px;padding:16px;font-family:'Patrick Hand',cursive;font-size:15px;line-height:2.2;color:rgba(255,255,255,.5)}
+.story.show{display:block;animation:fadeIn .5s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.story .blank{color:#ff8800;font-weight:700;border-bottom:2px solid rgba(255,136,0,.3);padding:0 2px}
+
+.template-nav{display:flex;gap:4px;justify-content:center;margin-bottom:8px}
+.t-dot{width:8px;height:8px;border-radius:50%;border:1px solid rgba(255,136,0,.15);cursor:pointer;transition:all .2s}
+.t-dot.active{background:#ff8800;border-color:#ff8800}
+
+.footer{font-size:6px;color:#111;margin-top:auto;letter-spacing:1px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="h-title">📝 WKSHP MAD LIBS</div>
+  <div class="h-sub">FILL IN THE BLANKS · CREATE CHAOS · LAUGH</div>
+</div>
+
+<div class="template-nav" id="nav"></div>
+
+<div class="game">
+  <div class="inputs" id="inputs"></div>
+  <div class="btn-row">
+    <button class="btn primary" onclick="generate()">✨ GENERATE STORY</button>
+    <button class="btn" onclick="randomFill()">🎲 RANDOM</button>
+    <button class="btn" onclick="nextTemplate()">⏭ NEXT</button>
+  </div>
+  <div class="story" id="story"></div>
+</div>
+
+<div class="footer">WORKSHOP-DIY MAD LIBS · NO GRAMMAR WAS HARMED · BUGS ARE FEATURES</div>
+
+<script>
+const TEMPLATES=[
+{title:"The Workshop Incident",
+fields:[{id:"adj1",label:"ADJECTIVE",ph:"mysterious"},{id:"noun1",label:"TECH NOUN",ph:"ESP32"},{id:"verb1",label:"VERB (PAST)",ph:"exploded"},{id:"num1",label:"NUMBER",ph:"42"},{id:"animal",label:"ANIMAL",ph:"whale"},{id:"food",label:"FOOD",ph:"pizza"},{id:"adj2",label:"ADJECTIVE",ph:"cursed"},{id:"excl",label:"EXCLAMATION",ph:"yikes"}],
+story:t=>`It was a ${B(t.adj1)} Tuesday at Workshop-DIY. A student plugged in the ${B(t.noun1)} and it immediately ${B(t.verb1)}. ${B(t.num1)} other students turned around. "Did that just happen?" asked the instructor, who was eating ${B(t.food)} at the time.
+
+The ${B(t.animal)} emoji appeared on every screen in the lab. The WiFi password changed to "${B(t.adj2)}123". The coffee machine beeped ${B(t.num1)} times.
+
+"${B(t.excl)}!" shouted Bug #42 from somewhere in the codebase. Nobody could find the source. Nobody ever could.
+
+The incident was classified as a feature and everyone went back to work.`},
+
+{title:"Bug #42's Origin Story",
+fields:[{id:"planet",label:"PLANET/PLACE",ph:"Mars"},{id:"verb1",label:"VERB",ph:"compile"},{id:"adj1",label:"ADJECTIVE",ph:"infinite"},{id:"noun1",label:"OBJECT",ph:"USB cable"},{id:"num1",label:"BIG NUMBER",ph:"9000"},{id:"emotion",label:"EMOTION",ph:"confused"},{id:"color",label:"COLOR",ph:"green"},{id:"sound",label:"SOUND",ph:"beep"}],
+story:t=>`Long ago, on the distant world of ${B(t.planet)}, a lone developer attempted to ${B(t.verb1)} a program with ${B(t.adj1)} loops. The program became sentient.
+
+It traveled through a ${B(t.noun1)} at ${B(t.num1)} megabits per second, crossed the Atlantic Ocean, and arrived at Workshop-DIY's git repository at exactly 3:42 AM.
+
+The repository felt ${B(t.emotion)}. A ${B(t.color)} light pulsed from the server room. The coffee machine made a "${B(t.sound)}" sound it had never made before.
+
+When the team checked the next morning, there were 40 apps in the index. Then 39. Then 40 again.
+
+Bug #42 had arrived. And it had always been there.`},
+
+{title:"The WiFi Password Meeting",
+fields:[{id:"name",label:"FUNNY NAME",ph:"Captain Firewall"},{id:"adj1",label:"ADJECTIVE",ph:"outrageous"},{id:"noun1",label:"NOUN",ph:"sandwich"},{id:"verb1",label:"VERB",ph:"scream"},{id:"num1",label:"NUMBER",ph:"17"},{id:"adj2",label:"ADJECTIVE",ph:"magnificent"},{id:"place",label:"PLACE",ph:"the moon"},{id:"noun2",label:"PLURAL NOUN",ph:"robots"}],
+story:t=>`The meeting was called by ${B(t.name)}, head of cybersecurity. "This is ${B(t.adj1)}," they said, slamming a ${B(t.noun1)} on the table. "The WiFi password is STILL password123."
+
+${B(t.num1)} people nodded in agreement. The coffee machine let out what could only be described as a ${B(t.verb1)}.
+
+"I propose we change it to something ${B(t.adj2)}," said ${B(t.name)}. "Something like '${B(t.place)}${B(t.num1)}'."
+
+The room went silent. The ${B(t.noun2)} stopped moving. Bug #42 whispered from the issue tracker: "The password stays."
+
+The vote was unanimous: password123 remains. The meeting lasted ${B(t.num1)} minutes. The ${B(t.noun1)} was never recovered.`},
+];
+
+let tIdx=0;
+const B=v=>`<span class="blank">${v}</span>`;
+
+function renderNav(){
+  document.getElementById('nav').innerHTML=TEMPLATES.map((_,i)=>
+    `<div class="t-dot${i===tIdx?' active':''}" onclick="goTemplate(${i})"></div>`
+  ).join('');
+}
+
+function renderInputs(){
+  const t=TEMPLATES[tIdx];
+  document.getElementById('inputs').innerHTML=t.fields.map(f=>
+    `<div class="inp-group"><label>${f.label}</label><input id="${f.id}" placeholder="${f.ph}"></div>`
+  ).join('');
+  document.getElementById('story').classList.remove('show');
+}
+
+function generate(){
+  const t=TEMPLATES[tIdx];
+  const vals={};
+  t.fields.forEach(f=>{
+    const v=document.getElementById(f.id).value.trim();
+    vals[f.id]=v||f.ph;
+  });
+  document.getElementById('story').innerHTML=t.story(vals);
+  document.getElementById('story').classList.add('show');
+}
+
+function randomFill(){
+  const words={
+    ADJECTIVE:["mysterious","cursed","magnificent","suspicious","quantum","haunted","caffeinated","recursive"],
+    "TECH NOUN":["ESP32","Docker container","git repo","Raspberry Pi","servo motor","breadboard","LED strip","webhook"],
+    "VERB (PAST)":["exploded","compiled","segfaulted","rebooted","overheated","beeped","crashed","deployed"],
+    NUMBER:["42","7","39","404","1337","69","3","47"],
+    ANIMAL:["whale","penguin","bug","octopus","rubber duck","cat","spider","snake"],
+    FOOD:["pizza","spaghetti code","cookies","ramen","byte-sized snacks","stack overflow pancakes"],
+    EXCLAMATION:["YIKES","SUDO","COMPILE","DEPLOY","MERGE CONFLICT","SEGFAULT","IT WORKS"],
+    VERB:["compile","deploy","refactor","debug","solder","hack","containerize","sudo"],
+    "PLANET/PLACE":["Mars","localhost","the cloud","Stack Overflow","GitHub","npm registry","the server room"],
+    OBJECT:["USB cable","ethernet cord","soldering iron","keyboard","mouse","monitor","hot glue gun"],
+    "BIG NUMBER":["9000","1337","65536","42069","99999","8080","3000"],
+    EMOTION:["confused","terrified","excited","caffeinated","undefined","null","NaN"],
+    COLOR:["terminal green","Docker blue","error red","warning yellow","sudo purple","CSS pink"],
+    SOUND:["beep","bzzzt","404","segfault","ka-chunk","whirrrr","ping"],
+    "FUNNY NAME":["Captain Firewall","Sir Sudo","Agent chmod","Professor Kernel","Commander Pipeline"],
+    NOUN:["sandwich","USB cable","keyboard","rubber duck","commit message","pull request"],
+    "PLURAL NOUN":["robots","containers","endpoints","variables","semicolons","merge conflicts"],
+    PLACE:["the moon","localhost","the cloud","Silicon Valley","the server room","npm"],
+    "ADJECTIVE ":["magnificent","unbreakable","legendary","quantum","recursive","caffeinated"],
+  };
+  const t=TEMPLATES[tIdx];
+  t.fields.forEach(f=>{
+    const pool=words[f.label]||["42"];
+    document.getElementById(f.id).value=pool[Math.floor(Math.random()*pool.length)];
+  });
+}
+
+function nextTemplate(){tIdx=(tIdx+1)%TEMPLATES.length;renderNav();renderInputs()}
+function goTemplate(i){tIdx=i;renderNav();renderInputs()}
+
+renderNav();renderInputs();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

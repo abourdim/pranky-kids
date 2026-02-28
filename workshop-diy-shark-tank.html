@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // SHARK TANK</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px}
+
+.header{text-align:center;margin-bottom:12px}
+.h-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#0af}
+.h-sub{font-size:7px;color:rgba(0,170,255,.2);letter-spacing:3px;margin-top:2px}
+
+/* TIMER */
+.timer{font-family:'Syne',sans-serif;font-size:clamp(48px,12vw,72px);font-weight:800;color:#0af;text-align:center;margin:8px 0;line-height:1;text-shadow:0 0 20px rgba(0,170,255,.15)}
+.timer.warning{color:#ffaa00;text-shadow:0 0 20px rgba(255,170,0,.15)}
+.timer.danger{color:#ff4444;text-shadow:0 0 20px rgba(255,68,68,.15);animation:pulse .5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+.timer-label{font-size:7px;color:#333;letter-spacing:3px;text-align:center;margin-bottom:8px}
+
+/* PITCHER */
+.pitcher{max-width:450px;width:100%;border:1px solid rgba(0,170,255,.06);border-radius:8px;padding:14px;margin-bottom:10px;background:rgba(0,170,255,.01);text-align:center;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.pitcher .emoji{font-size:48px;margin-bottom:6px}
+.pitcher .name{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#0af;margin-bottom:4px}
+.pitcher .pitch{font-size:11px;color:rgba(255,255,255,.4);line-height:2.2;max-width:380px}
+.pitcher .ask{font-size:10px;color:#ffd700;margin-top:8px;font-weight:700}
+
+/* SHARKS */
+.sharks{display:flex;gap:6px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.shark{text-align:center;padding:6px 10px;border:1px solid rgba(255,255,255,.04);border-radius:6px;min-width:80px}
+.shark .emoji{font-size:20px}.shark .name{font-size:7px;color:#555;margin-top:1px}
+.shark .verdict{font-size:8px;font-weight:700;margin-top:2px;min-height:14px}
+.v-in{color:#00cc66}.v-out{color:#ff4444}
+
+/* CONTROLS */
+.controls{display:flex;gap:6px}
+.ctrl{padding:6px 16px;border-radius:4px;border:1px solid rgba(0,170,255,.1);background:rgba(0,170,255,.03);color:rgba(0,170,255,.4);font-family:inherit;font-size:9px;cursor:pointer;letter-spacing:1px}
+.ctrl:hover{background:rgba(0,170,255,.08);color:#0af}
+.ctrl.go{border-color:rgba(0,204,102,.2);background:rgba(0,204,102,.03);color:rgba(0,204,102,.5)}
+.ctrl.go:hover{color:#00cc66}
+
+.score-bar{display:flex;gap:4px;margin:6px 0;font-size:8px;color:#333}
+.score-item{padding:2px 8px;border:1px solid #1a1a24;border-radius:10px}
+
+.footer{font-size:6px;color:#111;margin-top:auto;letter-spacing:1px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="h-title">🦈 WKSHP SHARK TANK</div>
+  <div class="h-sub">PITCH YOUR APP IN 60 SECONDS · SECURE THE INVESTMENT</div>
+</div>
+
+<div class="timer-label">TIME REMAINING</div>
+<div class="timer" id="timer">60</div>
+
+<div class="pitcher" id="pitcher">
+  <div class="emoji" id="pEmoji">🚀</div>
+  <div class="name" id="pName">Press START to begin</div>
+  <div class="pitch" id="pPitch">Apps will take turns pitching to the sharks. Each gets 60 seconds. Will the sharks invest?</div>
+  <div class="ask" id="pAsk"></div>
+</div>
+
+<div class="sharks">
+  <div class="shark"><div class="emoji">🧠</div><div class="name">Mr. Algorithm</div><div class="verdict" id="s1"></div></div>
+  <div class="shark"><div class="emoji">💰</div><div class="name">Ms. Venture</div><div class="verdict" id="s2"></div></div>
+  <div class="shark"><div class="emoji">🔧</div><div class="name">Dr. Hardware</div><div class="verdict" id="s3"></div></div>
+  <div class="shark"><div class="emoji">☕</div><div class="name">The Investor</div><div class="verdict" id="s4"></div></div>
+</div>
+
+<div class="controls">
+  <button class="ctrl go" id="startBtn" onclick="startPitch()">▶ START</button>
+  <button class="ctrl" onclick="skipPitch()">⏭ SKIP</button>
+  <button class="ctrl" onclick="resetAll()">🔄 RESET</button>
+</div>
+
+<div class="score-bar" id="scoreBar"></div>
+
+<div class="footer">WKSHP SHARK TANK · NO REAL INVESTMENTS · ALL VALUATIONS IN COFFEE CUPS</div>
+
+<script>
+const PITCHES=[
+{e:"🤖",name:"bit-bot",pitch:"Sharks, imagine controlling a robot from your browser. No app download. No installation. Just Chrome and Bluetooth. We've survived 47 drops and we're still driving. Our user retention is 100% because no one has figured out how to close the tab.",ask:"Asking: 500 cups of coffee for 10% equity",deal:.85},
+{e:"🪄",name:"magic-hands",pitch:"We track 21 landmarks per hand in real-time using nothing but a webcam and a browser. No SDK. No C++ bindings. No crying in the bathroom. Just wave your hands and particles appear. We call it magic. Google calls it MediaPipe. Same thing.",ask:"Asking: 300 coffee cups + 1 GPU",deal:.9},
+{e:"🔐",name:"pentest-lab",pitch:"We teach ethical hacking to teenagers. SQL injection. XSS. Privilege escalation. In a SANDBOX. One student found a school printer vulnerability. Responsibly disclosed. The school said 'thank you' and also 'please stop.' Our WiFi password is password123. Yes, on purpose.",ask:"Asking: 1,000 coffee cups for 5% equity",deal:.7},
+{e:"🐳",name:"docker-lab",pitch:"Sharks, we teach Docker to 14-year-olds. And they explain it to their parents. Who are software engineers. We've inadvertently created the best Docker tutorial that has ever existed, and it was an accident. Our containers always start. Our dreams never stop.",ask:"Asking: 200 coffee cups + harbor space",deal:.8},
+{e:"🧠",name:"teachable-machine",pitch:"Give us 30 photos and 15 minutes. We'll give you a custom AI model. Running in your browser. At 98% accuracy. No Python. No Jupyter notebooks. No existential crisis about whether AI will take your job. Just a webcam and ambition.",ask:"Asking: 400 coffee cups for 8% equity",deal:.88},
+{e:"☕",name:"Coffee Machine",pitch:"I've brewed 1,337 cups. I've been at 8% for 14 months. My drainage tray is a biohazard. But I'm the reason any of this exists. Without me, there are no apps. There is no workshop. There is only darkness and decaf. Invest in me.",ask:"Asking: 1 maintenance visit for 51% equity",deal:.6},
+{e:"🐛",name:"Bug #42",pitch:"I don't have a pitch deck. I don't have a business plan. I don't have an author, a creation date, or a commit hash. But I have something no other app has: I cannot be deleted. I've tried to be removed. I come back. Invest in inevitability.",ask:"Asking: Recognition for 0% equity",deal:.95},
+{e:"🔑",name:"password123",pitch:"I am the WiFi password. I have been the WiFi password since 2023. Three petitions to change me have been denied. My market position is unassailable. My brand recognition is 100%. My security rating is... let's not discuss that.",ask:"Asking: Eternal persistence for 0% equity",deal:.5},
+];
+
+let pIdx=0,sec=60,interval=null,deals=0,outs=0;
+
+function startPitch(){
+  if(interval)return;
+  showPitch();
+  sec=60;
+  document.getElementById('timer').textContent=sec;
+  document.getElementById('timer').className='timer';
+  clearSharks();
+  interval=setInterval(()=>{
+    sec--;
+    document.getElementById('timer').textContent=sec;
+    if(sec<=10)document.getElementById('timer').className='timer danger';
+    else if(sec<=20)document.getElementById('timer').className='timer warning';
+    if(sec<=0){clearInterval(interval);interval=null;sharkDecisions()}
+  },1000);
+}
+
+function showPitch(){
+  const p=PITCHES[pIdx%PITCHES.length];
+  document.getElementById('pEmoji').textContent=p.e;
+  document.getElementById('pName').textContent=p.name;
+  document.getElementById('pPitch').textContent=p.pitch;
+  document.getElementById('pAsk').textContent=p.ask;
+}
+
+function clearSharks(){
+  for(let i=1;i<=4;i++)document.getElementById('s'+i).textContent='';
+}
+
+function sharkDecisions(){
+  const p=PITCHES[pIdx%PITCHES.length];
+  for(let i=1;i<=4;i++){
+    const invested=Math.random()<p.deal;
+    const el=document.getElementById('s'+i);
+    setTimeout(()=>{
+      el.textContent=invested?"I'M IN ✅":"I'M OUT ❌";
+      el.className='verdict '+(invested?'v-in':'v-out');
+    },i*500);
+  }
+  setTimeout(()=>{
+    const invested=Math.random()<p.deal;
+    if(invested)deals++;else outs++;
+    updateScore();
+    pIdx++;
+  },2500);
+}
+
+function skipPitch(){
+  if(interval){clearInterval(interval);interval=null}
+  pIdx++;
+  sec=60;
+  document.getElementById('timer').textContent=60;
+  document.getElementById('timer').className='timer';
+  clearSharks();
+  showPitch();
+}
+
+function resetAll(){
+  if(interval){clearInterval(interval);interval=null}
+  pIdx=0;deals=0;outs=0;sec=60;
+  document.getElementById('timer').textContent=60;
+  document.getElementById('timer').className='timer';
+  clearSharks();
+  document.getElementById('pEmoji').textContent='🚀';
+  document.getElementById('pName').textContent='Press START to begin';
+  document.getElementById('pPitch').textContent='Apps will take turns pitching. Each gets 60 seconds.';
+  document.getElementById('pAsk').textContent='';
+  updateScore();
+}
+
+function updateScore(){
+  document.getElementById('scoreBar').innerHTML=
+    `<span class="score-item" style="color:#00cc66">✅ Deals: ${deals}</span>`+
+    `<span class="score-item" style="color:#ff4444">❌ Outs: ${outs}</span>`+
+    `<span class="score-item" style="color:#555">📊 ${pIdx} pitches</span>`;
+}
+updateScore();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

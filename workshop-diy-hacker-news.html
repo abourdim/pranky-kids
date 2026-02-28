@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Workshop-DIY — Hacker News</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f6f6ef;font-family:Verdana,Geneva,sans-serif;font-size:10pt;color:#828282}
+
+/* HEADER */
+.hn-header{background:#ff6600;padding:2px 4px;display:flex;align-items:center;gap:8px}
+.hn-logo{font-weight:700;color:#000;font-size:11pt;display:flex;align-items:center;gap:4px;border:1px solid #fff;padding:0 3px}
+.hn-nav{display:flex;gap:4px;font-size:10pt}.hn-nav a{color:#000;text-decoration:none}.hn-nav a:hover{text-decoration:underline}
+.hn-nav .sep{color:#ff9a4e}
+.hn-right{margin-left:auto;font-size:10pt;color:#000}
+
+/* CONTENT */
+.content{max-width:800px;margin:0 auto;padding:8px}
+
+/* POST */
+.post{display:flex;padding:4px 0}
+.post-num{width:24px;text-align:right;color:#828282;font-size:10pt;padding-top:1px}
+.post-vote{width:16px;text-align:center;padding-top:1px}
+.post-vote a{color:#828282;text-decoration:none;cursor:pointer;font-size:10pt}
+.post-vote a:hover{color:#ff6600}
+.post-body{padding-left:4px}
+.post-title{font-size:10pt;color:#000}
+.post-title a{color:#000;text-decoration:none}.post-title a:hover{text-decoration:underline}
+.post-domain{font-size:8pt;color:#828282;margin-left:4px}
+.post-meta{font-size:8pt;color:#828282;padding-top:1px}
+.post-meta a{color:#828282;text-decoration:none}.post-meta a:hover{text-decoration:underline}
+
+/* COMMENTS */
+.comments-section{padding:8px 0}
+.comment{padding:4px 0;margin-left:0}
+.comment-header{font-size:8pt;color:#828282}
+.comment-header .user{color:#000;font-weight:400}
+.comment-body{font-size:9pt;color:#000;line-height:1.7;padding:4px 0}
+.comment-body code{background:#f0f0f0;padding:0 4px;font-family:monospace;font-size:9pt}
+.reply-toggle{color:#828282;font-size:8pt;cursor:pointer;text-decoration:underline}
+.nested{margin-left:24px;border-left:1px solid #e0dcd0;padding-left:8px}
+
+.more-link{text-align:center;padding:16px;font-size:10pt}
+.more-link a{color:#000;text-decoration:none}.more-link a:hover{text-decoration:underline}
+
+/* FOOTER */
+.hn-footer{text-align:center;padding:12px;border-top:2px solid #ff6600;margin-top:12px;font-size:8pt;color:#828282;line-height:2}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="hn-header">
+  <div class="hn-logo">🤖 Workshop News</div>
+  <div class="hn-nav">
+    <a href="#">new</a><span class="sep">|</span>
+    <a href="#">past</a><span class="sep">|</span>
+    <a href="#">comments</a><span class="sep">|</span>
+    <a href="#">ask</a><span class="sep">|</span>
+    <a href="#">show</a><span class="sep">|</span>
+    <a href="#">jobs</a>
+  </div>
+  <div class="hn-right">login</div>
+</div>
+
+<div class="content">
+
+<div class="post">
+  <div class="post-num">1.</div>
+  <div class="post-vote"><a>▲</a></div>
+  <div class="post-body">
+    <div class="post-title"><a href="#">Show WN: We built 39 browser-based STEM apps for kids — all free, no install</a> <span class="post-domain">(abourdim.github.io)</span></div>
+    <div class="post-meta">847 points by <a href="#">wkshp_founder</a> 6 hours ago | <a href="#">342 comments</a></div>
+  </div>
+</div>
+
+<div class="post">
+  <div class="post-num">2.</div>
+  <div class="post-vote"><a>▲</a></div>
+  <div class="post-body">
+    <div class="post-title"><a href="#">Web Bluetooth API enables 10-year-olds to control robots from Chrome</a> <span class="post-domain">(workshop-diy.org)</span></div>
+    <div class="post-meta">523 points by <a href="#">ble_enthusiast</a> 8 hours ago | <a href="#">189 comments</a></div>
+  </div>
+</div>
+
+<div class="post">
+  <div class="post-num">3.</div>
+  <div class="post-vote"><a>▲</a></div>
+  <div class="post-body">
+    <div class="post-title"><a href="#">A French nonprofit taught my kid Docker before I could explain it to them</a> <span class="post-domain">(self)</span></div>
+    <div class="post-meta">412 points by <a href="#">confused_parent_dev</a> 12 hours ago | <a href="#">267 comments</a></div>
+  </div>
+</div>
+
+<div class="post">
+  <div class="post-num">4.</div>
+  <div class="post-vote"><a>▲</a></div>
+  <div class="post-body">
+    <div class="post-title"><a href="#">ESP32 Robot Kit survives 47 drops from children's desks — engineering analysis</a> <span class="post-domain">(workshop-diy.org)</span></div>
+    <div class="post-meta">378 points by <a href="#">hardware_hero</a> 14 hours ago | <a href="#">156 comments</a></div>
+  </div>
+</div>
+
+<div class="post">
+  <div class="post-num">5.</div>
+  <div class="post-vote"><a>▲</a></div>
+  <div class="post-body">
+    <div class="post-title"><a href="#">MediaPipe + micro:bit: Teaching gesture recognition to children via Web Bluetooth</a> <span class="post-domain">(github.com)</span></div>
+    <div class="post-meta">291 points by <a href="#">ml_educator</a> 1 day ago | <a href="#">98 comments</a></div>
+  </div>
+</div>
+
+<div class="post">
+  <div class="post-num">6.</div>
+  <div class="post-vote"><a>▲</a></div>
+  <div class="post-body">
+    <div class="post-title"><a href="#">The cybersecurity paradox: Teaching ethical hacking while WiFi password is "password123"</a> <span class="post-domain">(self)</span></div>
+    <div class="post-meta">267 points by <a href="#">pentest_student</a> 1 day ago | <a href="#">203 comments</a></div>
+  </div>
+</div>
+
+<div class="post">
+  <div class="post-num">7.</div>
+  <div class="post-vote"><a>▲</a></div>
+  <div class="post-body">
+    <div class="post-title"><a href="#">Zero-backend educational platform: 39 static SPAs hosted on GitHub Pages</a> <span class="post-domain">(abourdim.github.io/apps)</span></div>
+    <div class="post-meta">198 points by <a href="#">jamstack_fan</a> 1 day ago | <a href="#">87 comments</a></div>
+  </div>
+</div>
+
+<div class="post">
+  <div class="post-num">8.</div>
+  <div class="post-vote"><a>▲</a></div>
+  <div class="post-body">
+    <div class="post-title"><a href="#">Ask WN: How is this association Loi 1901 producing better STEM tools than edtech startups?</a></div>
+    <div class="post-meta">187 points by <a href="#">skeptical_vc</a> 2 days ago | <a href="#">145 comments</a></div>
+  </div>
+</div>
+
+<!-- EXPANDED COMMENTS FOR POST 1 -->
+<div class="comments-section" style="border-top:1px solid #e0dcd0;margin-top:8px;padding-top:8px">
+  <div style="font-size:10pt;color:#000;margin-bottom:8px"><b>Top Comments — "We built 39 browser-based STEM apps"</b></div>
+
+  <div class="comment">
+    <div class="comment-header"><span class="user">robotics_prof</span> 4 hours ago</div>
+    <div class="comment-body">This is genuinely impressive. I teach CS at university and our lab setup costs $200K. These folks are doing comparable things with a $15 micro:bit and a browser. The Web Bluetooth integration is clever — I've been trying to convince my department to adopt something similar.</div>
+  </div>
+
+  <div class="nested">
+    <div class="comment">
+      <div class="comment-header"><span class="user">wkshp_founder</span> 3 hours ago</div>
+      <div class="comment-body">Thank you! The key insight was: if it runs in a browser, you eliminate 90% of setup issues. No admin rights needed. No installations. No "it works on my machine" — it works on EVERY machine. (Except IE11, but we don't talk about that.)</div>
+    </div>
+    <div class="nested">
+      <div class="comment">
+        <div class="comment-header"><span class="user">ie11_survivor</span> 2 hours ago</div>
+        <div class="comment-body">Can confirm. IE11 doesn't support Web Bluetooth. Or happiness.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="comment">
+    <div class="comment-header"><span class="user">parent_of_three</span> 3 hours ago</div>
+    <div class="comment-body">My 10-year-old used <code>teachable-machine</code> to train a model that recognizes rock-paper-scissors and sends the result to a micro:bit. She did it in 30 minutes. I'm a software engineer and it took me longer to set up TensorFlow last month.</div>
+  </div>
+
+  <div class="nested">
+    <div class="comment">
+      <div class="comment-header"><span class="user">ml_skeptic</span> 2 hours ago</div>
+      <div class="comment-body">To be fair, Google's Teachable Machine does the heavy lifting. But wrapping it with BLE output to physical hardware is a nice touch. Kids get the full loop: data → model → prediction → physical action.</div>
+    </div>
+  </div>
+
+  <div class="comment">
+    <div class="comment-header"><span class="user">hn_pessimist</span> 5 hours ago</div>
+    <div class="comment-body">42 bugs and they're calling them "features"? I've worked at startups with that exact philosophy. Usually doesn't end well.</div>
+  </div>
+
+  <div class="nested">
+    <div class="comment">
+      <div class="comment-header"><span class="user">wkshp_founder</span> 4 hours ago</div>
+      <div class="comment-body">In our defense, 41 of those bugs are genuinely features. Bug #42 is... under review. Since 2023.</div>
+    </div>
+    <div class="nested">
+      <div class="comment">
+        <div class="comment-header"><span class="user">bug42_truther</span> 3 hours ago</div>
+        <div class="comment-body">Bug #42 has its own fan club at this point. There's a Slack channel. We have merch.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="comment">
+    <div class="comment-header"><span class="user">security_auditor</span> 4 hours ago</div>
+    <div class="comment-body">I love that they teach cybersecurity while the WiFi password is literally "password123." That's not a flaw — that's a live penetration testing exercise. The students are the curriculum.</div>
+  </div>
+
+  <div class="comment">
+    <div class="comment-header"><span class="user">open_source_advocate</span> 2 hours ago</div>
+    <div class="comment-body">All free. All browser-based. No accounts needed. No data collected. This is what educational technology should look like. Not another $50/month SaaS with gamified engagement metrics.</div>
+  </div>
+
+  <div class="nested">
+    <div class="comment">
+      <div class="comment-header"><span class="user">edtech_ceo</span> 1 hour ago</div>
+      <div class="comment-body">Hey, some of us are trying to make a living here. But honestly... they're right. This is better than most of what we ship.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="more-link"><a href="#">More</a></div>
+</div>
+
+<div class="hn-footer">
+  <a href="https://workshop-diy.org" style="color:#ff6600">workshop-diy.org</a> ·
+  <a href="https://abourdim.github.io/apps/" style="color:#ff6600">abourdim.github.io/apps</a><br>
+  Guidelines | FAQ | Lists | API | Security | Legal | Apply to YC (lol)<br>
+  Association Loi 1901 — France · 39 apps · 42 features (bugs) · ∞ coffee
+</div>
+  <script src="nav.js"></script>
+</body>
+</html>

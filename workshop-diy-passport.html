@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // PASSPORT</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#2a2a3a;font-family:'Noto Sans',sans-serif;font-size:10px;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px;gap:14px}
+
+/* COVER */
+.cover{width:300px;height:400px;background:linear-gradient(180deg,#003366,#001a33);border-radius:4px 12px 12px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#c4a860;border:1px solid #004488;box-shadow:4px 4px 16px rgba(0,0,0,.3);position:relative}
+.cover .crest{font-size:48px;margin-bottom:8px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
+.cover h1{font-size:10px;letter-spacing:4px;font-weight:700}
+.cover h2{font-size:16px;letter-spacing:6px;font-weight:700;margin:4px 0}
+.cover .sub{font-size:7px;letter-spacing:3px;opacity:.5}
+.cover .chip{position:absolute;bottom:20px;width:30px;height:22px;border:1px solid rgba(196,168,96,.3);border-radius:3px;background:linear-gradient(135deg,rgba(196,168,96,.1),rgba(196,168,96,.05))}
+
+/* BIO PAGE */
+.bio{width:300px;background:#f5f0e8;border-radius:4px 12px 12px 4px;padding:16px;border:1px solid #ddd;box-shadow:2px 2px 8px rgba(0,0,0,.1)}
+.bio-header{font-size:7px;color:#003366;letter-spacing:3px;font-weight:700;margin-bottom:6px;border-bottom:1px solid #003366;padding-bottom:2px}
+.bio-grid{display:grid;grid-template-columns:80px 1fr;gap:6px;align-items:start}
+.bio-photo{width:80px;height:100px;background:#e0ddd0;border:1px solid #ccc;display:flex;align-items:center;justify-content:center;font-size:48px}
+.bio-fields{display:flex;flex-direction:column;gap:2px}
+.bio-field .lbl{font-size:6px;color:#888;letter-spacing:1px}
+.bio-field .val{font-size:9px;font-weight:700;color:#222;border-bottom:1px dotted #ccc;padding-bottom:1px}
+.mrz{margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:7px;color:#003366;letter-spacing:1px;line-height:1.5;background:#f0ede0;padding:4px;border:1px solid #ddd;word-break:break-all}
+
+/* VISA STAMPS PAGE */
+.stamps-page{width:300px;background:#f8f5ed;border-radius:4px 12px 12px 4px;padding:14px;border:1px solid #ddd;box-shadow:2px 2px 8px rgba(0,0,0,.1);position:relative;min-height:300px}
+.stamps-page .page-h{font-size:6px;color:#ccc;letter-spacing:2px;text-align:center;margin-bottom:8px}
+
+.stamp{position:absolute;padding:4px 8px;border-radius:4px;font-size:7px;font-weight:700;letter-spacing:1px;transform:rotate(var(--r,0deg));line-height:1.4;text-align:center}
+.stamp .date{font-size:6px;font-weight:400;opacity:.7;display:block;margin-top:1px}
+
+.footer{font-size:6px;color:rgba(255,255,255,.1);letter-spacing:1px;font-family:'JetBrains Mono',monospace}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="crest">🛡️</div>
+  <h1>RÉPUBLIQUE DU</h1>
+  <h2>WORKSHOP-DIY</h2>
+  <div class="sub">PASSEPORT · PASSPORT</div>
+  <div class="chip"></div>
+</div>
+
+<!-- BIO PAGE -->
+<div class="bio">
+  <div class="bio-header">RÉPUBLIQUE DU WORKSHOP-DIY · PASSEPORT</div>
+  <div class="bio-grid">
+    <div class="bio-photo">🐛</div>
+    <div class="bio-fields">
+      <div class="bio-field"><div class="lbl">TYPE</div><div class="val">P (Feature)</div></div>
+      <div class="bio-field"><div class="lbl">COUNTRY CODE</div><div class="val">WKS</div></div>
+      <div class="bio-field"><div class="lbl">SURNAME</div><div class="val">BUG</div></div>
+      <div class="bio-field"><div class="lbl">GIVEN NAMES</div><div class="val">NUMBER FORTY-TWO</div></div>
+      <div class="bio-field"><div class="lbl">NATIONALITY</div><div class="val">Workshop-DIY</div></div>
+      <div class="bio-field"><div class="lbl">DATE OF BIRTH</div><div class="val">UNKNOWN</div></div>
+      <div class="bio-field"><div class="lbl">SEX</div><div class="val">UNDEFINED</div></div>
+      <div class="bio-field"><div class="lbl">DATE OF ISSUE</div><div class="val">01 JAN 1970</div></div>
+      <div class="bio-field"><div class="lbl">DATE OF EXPIRY</div><div class="val">NEVER</div></div>
+      <div class="bio-field"><div class="lbl">PASSPORT NO.</div><div class="val">WKS-000042</div></div>
+    </div>
+  </div>
+  <div class="mrz">P&lt;WKS&lt;BUG&lt;&lt;NUMBER&lt;FORTY&lt;TWO&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>WKS000042&lt;0WKS7001014&lt;&lt;&lt;&lt;&lt;&lt;&lt;9999999&lt;0&lt;&lt;&lt;&lt;&lt;&lt;&lt;42</div>
+</div>
+
+<!-- VISA STAMPS -->
+<div class="stamps-page">
+  <div class="page-h">VISAS · STAMPS · ENDORSEMENTS</div>
+  
+  <div class="stamp" style="top:30px;left:15px;--r:-5deg;border:2px solid #00aa00;color:#00aa00;background:rgba(0,170,0,.03)">🤖 ROBOTICS<br>DOMAIN<div class="date">ENTERED: 2023-01-15</div></div>
+  
+  <div class="stamp" style="top:25px;right:20px;--r:8deg;border:2px solid #9966ff;color:#9966ff;background:rgba(153,102,255,.03)">🧠 AI DOMAIN<br>APPROVED<div class="date">ENTERED: 2023-06-20</div></div>
+  
+  <div class="stamp" style="top:100px;left:30px;--r:3deg;border:2px solid #ff3344;color:#ff3344;background:rgba(255,51,68,.03)">🔐 CYBER<br>ZONE<div class="date">CLEARANCE: LEVEL 42</div></div>
+  
+  <div class="stamp" style="top:95px;right:10px;--r:-7deg;border:2px solid #ff8800;color:#ff8800;background:rgba(255,136,0,.03)">⚡ HARDWARE<br>LAB<div class="date">SOLDERING CERTIFIED</div></div>
+  
+  <div class="stamp" style="top:170px;left:10px;--r:6deg;border:2px solid #0088ff;color:#0088ff;background:rgba(0,136,255,.03)">📚 LEARNING<br>ZONE<div class="date">ENTERED: ALWAYS</div></div>
+  
+  <div class="stamp" style="top:175px;right:25px;--r:-3deg;border:2px solid #00cccc;color:#00cccc;background:rgba(0,204,204,.03)">🔧 TOOLS<br>DOMAIN<div class="date">DOCKER VISA GRANTED</div></div>
+  
+  <div class="stamp" style="top:245px;left:60px;--r:12deg;border:3px solid #cc0000;color:#cc0000;background:rgba(204,0,0,.03);font-size:8px">⚖️ ACQUITTED<br>TRIAL OF 2026<div class="date">VERDICT: NOT GUILTY</div></div>
+  
+  <div class="stamp" style="bottom:12px;right:12px;--r:-2deg;border:2px solid #c4a860;color:#c4a860;background:rgba(196,168,96,.03)">☕ COFFEE<br>ZONE<div class="date">8% CAPACITY NOTED</div></div>
+</div>
+
+<div class="footer">WORKSHOP-DIY IMMIGRATION · NOT A REAL TRAVEL DOCUMENT · BUGS TRAVEL FREELY</div>
+  <script src="nav.js"></script>
+</body>
+</html>

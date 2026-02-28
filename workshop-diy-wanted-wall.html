@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // WANTED WALL</title>
+<link href="https://fonts.googleapis.com/css2?family=Rye&family=Special+Elite&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#3a2a1a;background-image:url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='40' height='40' fill='%233a2a1a'/%3E%3Ccircle cx='20' cy='20' r='.5' fill='%23443020' opacity='.3'/%3E%3C/svg%3E");font-family:'Special Elite',cursive;min-height:100vh;padding:16px}
+
+.header{text-align:center;margin-bottom:16px}
+.header h1{font-family:'Rye',serif;font-size:clamp(22px,5vw,36px);color:#d4a855;text-shadow:2px 2px 4px rgba(0,0,0,.5);letter-spacing:2px}
+.header p{font-size:10px;color:#886644;letter-spacing:3px}
+
+.board{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:900px;margin:0 auto}
+
+.poster{width:220px;background:#e8d5b0;border:2px solid #8a6e42;padding:14px;text-align:center;position:relative;transform:rotate(var(--r,0deg));box-shadow:4px 4px 12px rgba(0,0,0,.3);cursor:default;transition:transform .2s}
+.poster:hover{transform:rotate(0deg) scale(1.05);z-index:2;box-shadow:6px 6px 20px rgba(0,0,0,.4)}
+.poster::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.08));pointer-events:none}
+
+/* TAPE/PIN */
+.pin{position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#cc4444,#881111);box-shadow:0 2px 4px rgba(0,0,0,.3);z-index:3}
+
+.wanted{font-family:'Rye',serif;font-size:22px;color:#2a1a0a;letter-spacing:4px;border-top:3px double #2a1a0a;border-bottom:3px double #2a1a0a;padding:3px 0;margin-bottom:8px}
+.dead-or{font-size:8px;color:#5a3a1a;letter-spacing:4px;margin-bottom:4px}
+.emoji-frame{font-size:50px;margin:4px 0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2))}
+.app-name{font-family:'Rye',serif;font-size:14px;color:#2a1a0a;margin:4px 0;letter-spacing:1px}
+.alias{font-size:8px;color:#7a5a2a;margin-bottom:6px;font-style:italic}
+.charges{font-size:9px;color:#4a2a0a;line-height:1.9;margin-bottom:6px;text-align:left;padding:0 6px}
+.charges b{color:#2a1a0a}
+.reward{font-family:'Rye',serif;font-size:11px;color:#2a1a0a;border-top:2px solid #8a6e42;padding-top:4px;margin-top:4px}
+.reward .amount{font-size:16px;color:#881111}
+.last-seen{font-size:7px;color:#8a6e42;margin-top:4px;font-style:italic}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="header">
+  <h1>WANTED WALL</h1>
+  <p>WORKSHOP-DIY · MOST WANTED APPS · CAPTURE & LEARN</p>
+</div>
+
+<div class="board" id="board"></div>
+
+<script>
+const POSTERS=[
+{e:"🤖",n:"BIT-BOT",alias:"The Bluetooth Bandit",charges:["Driving without a license (BLE)","Evading line-follow sensors","47 counts of surviving desk drops"],reward:"2,847 XP",seen:"Last seen: micro:bit playground, armed with servos",r:-2},
+{e:"🪄",n:"MAGIC-HANDS",alias:"The Hand Wizard",charges:["Unauthorized particle conjuring","Tracking 21 landmarks without consent","Making kids wave at screens for hours"],reward:"2,103 XP",seen:"Last seen: any device with a webcam",r:1.5},
+{e:"🕵️",n:"FACE-QUEST",alias:"The Face Detective",charges:["468 counts of face landmark detection","Scoring without permission","Zero data sent anywhere (suspicious)"],reward:"1,892 XP",seen:"Last seen: scoring 847 points",r:-1},
+{e:"🧠",n:"TEACHABLE-M",alias:"The Brain",charges:["Training AI models in browsers","98% accuracy (showing off)","Teaching machines without a degree"],reward:"1,654 XP",seen:"Last seen: connected to micro:bit via BLE",r:2},
+{e:"🔐",n:"PENTEST-LAB",alias:"The Ethical Outlaw",charges:["SQL injection (educational only)","School printer vulnerability discovery","Making cybersecurity too fun"],reward:"1,500 XP",seen:"Last seen: sandboxed environment, heavily armed",r:-1.5},
+{e:"🐧",n:"LINUX-LAB",alias:"The Penguin",charges:["Teaching terminal commands to minors","Simulating entire filesystems","Making 'ls -la' seem exciting"],reward:"1,400 XP",seen:"Last seen: bash shell v5.2, in /home/maker/",r:1},
+{e:"🐳",n:"DOCKER-LAB",alias:"The Container Whale",charges:["Confusing parents at dinner","Containerizing everything in sight","Teaching DevOps to teenagers"],reward:"650 XP",seen:"Last seen: explaining volumes to a 14-year-old",r:-2.5},
+{e:"💬",n:"TALKING-BOT",alias:"The Chatterbox",charges:["Responding to voice commands","Making robots emotional","Speaking without being spoken to"],reward:"1,300 XP",seen:"Last seen: dancing to voice commands",r:1.5},
+{e:"💡",n:"WLED-LAB",alias:"The Neon Ghost",charges:["Unauthorized LED illumination","Addictive color animations","Neopixel protocol manipulation"],reward:"890 XP",seen:"Last seen: glowing suspiciously on an ESP32",r:-1},
+{e:"🚀",n:"MISSION-CTRL",alias:"The Commander",charges:["Peer-to-peer video streaming","WebRTC without a warrant","Commanding robots from across the room"],reward:"980 XP",seen:"Last seen: commanding 3 micro:bits simultaneously",r:2},
+{e:"☕",n:"CAFFEINE",alias:"The Real MVP",charges:["Fueling every line of code","Keeping instructors alive","Being critically low at all times"],reward:"∞ XP",seen:"Last seen: empty. Always empty.",r:-0.5},
+{e:"🐛",n:"BUG #42",alias:"The Feature",charges:["Pretending to be a bug","Actually being a feature","42 counts of identity fraud"],reward:"42 XP",seen:"Last seen: everywhere. It's a feature.",r:1.8},
+];
+
+const board=document.getElementById('board');
+POSTERS.forEach(p=>{
+  board.innerHTML+=`<div class="poster" style="--r:${p.r}deg">
+    <div class="pin"></div>
+    <div class="wanted">WANTED</div>
+    <div class="dead-or">TEACH OR BE TAUGHT</div>
+    <div class="emoji-frame">${p.e}</div>
+    <div class="app-name">${p.n}</div>
+    <div class="alias">"${p.alias}"</div>
+    <div class="charges">${p.charges.map(c=>`• ${c}`).join('<br>')}</div>
+    <div class="reward">REWARD: <span class="amount">${p.reward}</span></div>
+    <div class="last-seen">${p.seen}</div>
+  </div>`;
+});
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

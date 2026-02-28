@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // DEPARTURES</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0e;color:#ffd700;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;padding:12px}
+
+.board{max-width:800px;margin:0 auto;background:#111;border:2px solid #222;border-radius:4px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+
+/* HEADER */
+.board-h{background:linear-gradient(180deg,#1a1a1a,#111);padding:10px 14px;border-bottom:2px solid #222;display:flex;align-items:center;justify-content:space-between}
+.board-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#ffd700;letter-spacing:1px}
+.board-clock{font-size:14px;font-weight:700;color:#ffd700}
+
+/* TABLE HEADER */
+.table-h{display:grid;grid-template-columns:70px 100px 1fr 80px 70px 90px;gap:2px;padding:6px 10px;background:#0a0a0e;font-size:8px;color:#666;letter-spacing:2px;border-bottom:1px solid #1a1a1a}
+@media(max-width:600px){.table-h,.flight{grid-template-columns:50px 80px 1fr 60px 50px 70px;font-size:7px}}
+
+/* FLIGHTS */
+.flights{min-height:400px}
+.flight{display:grid;grid-template-columns:70px 100px 1fr 80px 70px 90px;gap:2px;padding:5px 10px;border-bottom:1px solid #0d0d0d;transition:background .3s;align-items:center;font-size:11px}
+@media(max-width:600px){.flight{font-size:9px}}
+.flight:hover{background:rgba(255,215,0,.02)}
+
+.fl-code{color:#ffd700;font-weight:700;font-size:10px}
+.fl-time{color:#ffd700;font-weight:700}
+.fl-dest{color:#ccc;font-weight:700;display:flex;align-items:center;gap:4px}
+.fl-dest .emoji{font-size:14px}
+.fl-gate{color:#888;text-align:center}
+.fl-terminal{color:#666;text-align:center;font-size:9px}
+
+.fl-status{font-size:8px;font-weight:700;padding:2px 6px;border-radius:2px;text-align:center;letter-spacing:1px}
+.status-ontime{background:rgba(0,255,65,.08);color:#0f0;border:1px solid rgba(0,255,65,.15)}
+.status-boarding{background:rgba(0,170,255,.08);color:#0af;border:1px solid rgba(0,170,255,.15);animation:blink 1.5s infinite}
+.status-departed{background:rgba(255,215,0,.06);color:#ffd700;border:1px solid rgba(255,215,0,.1)}
+.status-delayed{background:rgba(255,68,0,.08);color:#f44;border:1px solid rgba(255,68,0,.15)}
+.status-cancelled{background:rgba(255,0,0,.08);color:#f00;border:1px solid rgba(255,0,0,.15);text-decoration:line-through}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* INFO BAR */
+.info-bar{background:#0a0a0e;padding:6px 14px;border-top:2px solid #222;display:flex;gap:16px;font-size:7px;color:#444;flex-wrap:wrap}
+
+/* TICKER */
+.ticker{background:#111;padding:4px 0;overflow:hidden;border-top:1px solid #1a1a1a}
+.ticker-inner{display:flex;gap:30px;animation:scroll 40s linear infinite;white-space:nowrap;font-size:8px;color:#555}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="board">
+  <div class="board-h">
+    <div class="board-title">✈ WKSHP DEPARTURES</div>
+    <div class="board-clock" id="clock">00:00:00</div>
+  </div>
+  <div class="table-h">
+    <span>FLIGHT</span><span>TIME</span><span>DESTINATION</span><span>GATE</span><span>TERM</span><span>STATUS</span>
+  </div>
+  <div class="flights" id="flights"></div>
+  <div class="info-bar">
+    <span>🏢 WKSHP INTERNATIONAL LEARNING AIRPORT</span>
+    <span>📍 FRANCE</span>
+    <span>✈ 39 DESTINATIONS</span>
+    <span>☕ CAFÉ: LEVEL CRITICAL</span>
+    <span>🔑 WIFI: password123</span>
+  </div>
+  <div class="ticker"><div class="ticker-inner" id="ticker"></div></div>
+</div>
+
+<script>
+const FLIGHTS=[
+{code:"WK-001",time:"08:00",dest:"Robotics Island",emoji:"🤖",gate:"BLE-1",term:"T1",status:"departed"},
+{code:"WK-002",time:"08:30",dest:"AI Mountain",emoji:"🧠",gate:"GPU-3",term:"T2",status:"departed"},
+{code:"WK-003",time:"09:00",dest:"Cyber Fortress",emoji:"🔐",gate:"FW-7",term:"T3",status:"boarding"},
+{code:"WK-004",time:"09:30",dest:"Hand-Tracking Bay",emoji:"🪄",gate:"CAM-2",term:"T1",status:"boarding"},
+{code:"WK-005",time:"10:00",dest:"Linux Peninsula",emoji:"🐧",gate:"SSH-4",term:"T2",status:"ontime"},
+{code:"WK-006",time:"10:30",dest:"Docker Harbor",emoji:"🐳",gate:"CTR-1",term:"T3",status:"ontime"},
+{code:"WK-007",time:"11:00",dest:"Face Detection City",emoji:"🕵️",gate:"ML-5",term:"T1",status:"ontime"},
+{code:"WK-008",time:"11:30",dest:"LED Strip Beach",emoji:"💡",gate:"RGB-6",term:"T2",status:"ontime"},
+{code:"WK-009",time:"12:00",dest:"ESP32 Valley",emoji:"⚡",gate:"IOT-8",term:"T3",status:"ontime"},
+{code:"WK-010",time:"13:00",dest:"Voice Command Peaks",emoji:"💬",gate:"MIC-3",term:"T1",status:"ontime"},
+{code:"WK-011",time:"13:30",dest:"WebRTC Central",emoji:"🚀",gate:"P2P-9",term:"T2",status:"ontime"},
+{code:"WK-012",time:"14:00",dest:"Pixel Art Cove",emoji:"🎨",gate:"PXL-4",term:"T1",status:"ontime"},
+{code:"WK-013",time:"14:30",dest:"Prompt Engineering Hills",emoji:"✨",gate:"LLM-2",term:"T2",status:"delayed"},
+{code:"WK-014",time:"15:00",dest:"Coffee Refill Station",emoji:"☕",gate:"MUG-1",term:"ALL",status:"delayed"},
+{code:"WK-042",time:"??:??",dest:"Bug #42 Dimension",emoji:"🐛",gate:"???",term:"??",status:"cancelled"},
+];
+
+const statusClasses={ontime:'status-ontime',boarding:'status-boarding',departed:'status-departed',delayed:'status-delayed',cancelled:'status-cancelled'};
+const statusLabels={ontime:'ON TIME',boarding:'BOARDING',departed:'DEPARTED',delayed:'DELAYED',cancelled:'CANCELLED'};
+
+function renderFlights(){
+  const el=document.getElementById('flights');
+  el.innerHTML=FLIGHTS.map(f=>
+    `<div class="flight">
+      <span class="fl-code">${f.code}</span>
+      <span class="fl-time">${f.time}</span>
+      <span class="fl-dest"><span class="emoji">${f.emoji}</span>${f.dest}</span>
+      <span class="fl-gate">${f.gate}</span>
+      <span class="fl-terminal">${f.term}</span>
+      <span class="fl-status ${statusClasses[f.status]}">${statusLabels[f.status]}</span>
+    </div>`
+  ).join('');
+}
+renderFlights();
+
+// CLOCK
+setInterval(()=>{
+  document.getElementById('clock').textContent=new Date().toTimeString().slice(0,8);
+},1000);
+
+// Random status changes
+setInterval(()=>{
+  const eligible=FLIGHTS.filter(f=>f.status==='ontime');
+  if(eligible.length>0){
+    const pick=eligible[Math.floor(Math.random()*eligible.length)];
+    pick.status=Math.random()>.3?'boarding':'delayed';
+    renderFlights();
+  }
+},8000);
+
+// Boarding → Departed
+setInterval(()=>{
+  FLIGHTS.filter(f=>f.status==='boarding').forEach(f=>{if(Math.random()>.5)f.status='departed'});
+  renderFlights();
+},12000);
+
+// TICKER
+const tickerItems=[
+  "✈ Welcome to WKSHP International Learning Airport — 39 destinations served daily",
+  "☕ CAFÉ ALERT: Coffee supply critical. Restocking in progress.",
+  "🔑 WiFi: WKSHP-GUEST / Password: password123 (no, we still haven't changed it)",
+  "🤖 Gate BLE-1: bit-bot flight departed with 2,847 passengers this month",
+  "🐛 Flight WK-042 to Bug #42 Dimension permanently cancelled. It was a feature, not a destination.",
+  "⚡ ESP32 robots must be stowed in overhead bins during workshops",
+  "🔐 Security reminder: Do not attempt SQL injection on the airport kiosks",
+  "🐳 Docker containers must go through customs before deployment",
+];
+const ticker=document.getElementById('ticker');
+const html=tickerItems.map(t=>`<span>${t}</span>`).join('');
+ticker.innerHTML=html+html;
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

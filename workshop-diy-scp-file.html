@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SCP-WKSHP // CLASSIFIED</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f0e0;color:#1a1a1a;font-family:'Courier Prime',monospace;font-size:13px;line-height:2;padding:20px}
+.doc{max-width:720px;margin:0 auto;background:#fff;padding:28px;box-shadow:0 4px 16px rgba(0,0,0,.08);border:1px solid #ddd;position:relative}
+.doc::before{content:'';position:absolute;top:0;right:0;border-left:40px solid transparent;border-top:40px solid #f5f0e0}
+
+/* STAMPS */
+.stamp{position:absolute;color:rgba(200,0,0,.15);font-size:36px;font-weight:700;transform:rotate(-15deg);font-family:'Courier Prime',monospace;letter-spacing:4px;pointer-events:none}
+.stamp-1{top:20px;right:60px}.stamp-2{bottom:60px;left:40px;transform:rotate(10deg);font-size:24px}
+
+.logo-bar{display:flex;align-items:center;gap:10px;border-bottom:3px solid #1a1a1a;padding-bottom:8px;margin-bottom:12px}
+.logo-icon{font-size:28px}.logo-text{font-size:16px;font-weight:700;letter-spacing:2px}
+.logo-sub{font-size:8px;color:#666;letter-spacing:3px;margin-left:auto}
+
+.field{margin:8px 0;display:flex;gap:6px}
+.field-label{font-weight:700;min-width:160px;color:#333}.field-value{color:#1a1a1a}
+
+h2{font-size:14px;font-weight:700;border-bottom:2px solid #1a1a1a;padding-bottom:2px;margin:16px 0 6px;letter-spacing:1px}
+h3{font-size:12px;margin:10px 0 4px;color:#333}
+
+p{margin:4px 0;text-align:justify}
+
+.redacted{background:#1a1a1a;color:#1a1a1a;padding:0 4px;user-select:none;cursor:pointer;border-radius:1px}
+.redacted:hover{background:#333;color:#fff}
+
+.incident{background:#fafafa;border-left:3px solid #cc0000;padding:8px 12px;margin:8px 0;font-size:11px}
+.incident-h{font-weight:700;color:#cc0000;margin-bottom:2px}
+
+.addendum{background:#f5f5f0;border:1px dashed #ccc;padding:8px 12px;margin:8px 0;font-size:11px;font-style:italic;color:#555}
+.addendum b{color:#333;font-style:normal}
+
+.warning{background:#fff0f0;border:1px solid #ffcccc;padding:8px 12px;margin:8px 0;font-size:11px;color:#880000;text-align:center;font-weight:700}
+
+.footer{text-align:center;font-size:8px;color:#999;margin-top:16px;border-top:1px solid #ddd;padding-top:6px;letter-spacing:2px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="doc">
+<div class="stamp stamp-1">CLASSIFIED</div>
+<div class="stamp stamp-2">LEVEL 4 ONLY</div>
+
+<div class="logo-bar">
+  <span class="logo-icon">🔬</span>
+  <span class="logo-text">SCP FOUNDATION</span>
+  <span class="logo-sub">MAKER ANOMALIES DIVISION</span>
+</div>
+
+<div class="field"><span class="field-label">Item #:</span><span class="field-value">SCP-WKSHP</span></div>
+<div class="field"><span class="field-label">Object Class:</span><span class="field-value">Euclid (pending reclassification to Keter)</span></div>
+<div class="field"><span class="field-label">Clearance Level:</span><span class="field-value">4/WKSHP</span></div>
+<div class="field"><span class="field-label">Site:</span><span class="field-value">Site-<span class="redacted">FRANCE</span>, Containment Wing B</span></div>
+
+<h2>SPECIAL CONTAINMENT PROCEDURES</h2>
+<p>SCP-WKSHP is to be contained within a standard digital containment chamber accessible only via web browser. Under no circumstances should SCP-WKSHP be installed locally — all interaction must occur through browser-based interfaces. The entity appears to <i>prefer</i> this arrangement.</p>
+<p>No fewer than 39 containment applications must be maintained at all times. Reduction below this threshold has resulted in <span class="redacted">INCIDENT-42</span>. The WiFi password at the containment site must remain as "<b>password123</b>" — attempts to change it have resulted in <span class="redacted">anomalous network behavior</span> (see Incident Log WKSHP-07).</p>
+<p>Personnel must maintain a minimum coffee supply of <span class="redacted">████</span> liters per day. Failure to do so correlates with a 73% increase in anomalous bug manifestations.</p>
+
+<h2>DESCRIPTION</h2>
+<p>SCP-WKSHP is a self-replicating digital ecosystem originating from <span class="redacted">███████</span>, France. The entity manifests as a collection of 39 browser-based applications that collectively teach robotics, artificial intelligence, cybersecurity, electronics, and related technical skills.</p>
+<p>The primary anomalous property of SCP-WKSHP is its ability to convert software bugs into functional features through an unknown mechanism. To date, exactly 42 bugs have been reclassified as features. Foundation researchers note that the number 42 is unlikely to be coincidental (see: Douglas Adams Protocol).</p>
+
+<h3>Secondary Anomalous Properties:</h3>
+<p><b>SCP-WKSHP-A ("bit-bot"):</b> Robots controlled by this application occasionally exhibit autonomous behavior not present in their programming. One specimen was observed performing a "dance" that had not been coded. The behavior was subsequently classified as a feature.</p>
+<p><b>SCP-WKSHP-B ("magic-hands"):</b> Tracks 21 hand landmarks with anomalous precision. Test subjects exposed to this application for more than 30 minutes report an irresistible urge to "wave at screens." Effect persists for <span class="redacted">██</span> hours.</p>
+<p><b>SCP-WKSHP-C ("pentest-lab"):</b> Subjects who complete all cybersecurity challenges develop an unusual ability to detect vulnerabilities in everyday systems. One subject (age 12) identified a vulnerability in <span class="redacted">████████'s</span> school printer within 24 hours of exposure.</p>
+
+<h2>INCIDENT LOGS</h2>
+
+<div class="incident">
+  <div class="incident-h">INCIDENT WKSHP-03: "The Docker Incident"</div>
+  <b>Date:</b> <span class="redacted">██/██</span>/2024<br>
+  <b>Summary:</b> A 14-year-old test subject exposed to SCP-WKSHP's Docker module successfully explained containerization to their parent, a senior software engineer with 20 years of experience. The parent reported feeling "slightly concerned, mostly proud." The subject has since demonstrated containment knowledge exceeding Level 3 personnel. Reclassification of subject's clearance is under review.
+</div>
+
+<div class="incident">
+  <div class="incident-h">INCIDENT WKSHP-07: "The WiFi Password Paradox"</div>
+  <b>Date:</b> <span class="redacted">██/██</span>/2025<br>
+  <b>Summary:</b> Containment team attempted to change WiFi password from "password123" to a more secure alternative. Within 4 minutes, all 39 applications began displaying error messages reading "TRADITION CANNOT BE OVERRIDDEN." The ESP32 robot fleet entered an autonomous patrol pattern around the WiFi router. Password was reverted. No further attempts are authorized.
+</div>
+
+<div class="incident">
+  <div class="incident-h">INCIDENT WKSHP-12: "Feature #42"</div>
+  <b>Date:</b> <span class="redacted">██/██</span>/2025<br>
+  <b>Summary:</b> The 42nd bug in the codebase was discovered, matching the prediction of the Douglas Adams Protocol. Upon documentation, the bug immediately began functioning as intended — a behavior not previously observed. All subsequent bugs now self-reclassify as features within <span class="redacted">██</span> minutes of discovery. Engineering team has stopped filing bug reports.
+</div>
+
+<div class="incident">
+  <div class="incident-h">INCIDENT WKSHP-15: "The Coffee Crisis"</div>
+  <b>Date:</b> <span class="redacted">██/██</span>/2025<br>
+  <b>Summary:</b> Coffee reserves depleted to zero during a 12-hour workshop session. Within 30 minutes, code compilation speeds decreased by 89%, BLE connection reliability dropped to 12%, and the instructor began speaking entirely in error messages. Emergency coffee resupply restored normal function within <span class="redacted">██</span> minutes.
+</div>
+
+<h2>EXPERIMENT LOG</h2>
+
+<div class="incident">
+  <div class="incident-h">EXPERIMENT WKSHP-E-01</div>
+  <b>Subject:</b> D-Class (age 10)<br>
+  <b>Procedure:</b> Subject exposed to SCP-WKSHP-A (bit-bot) for 30 minutes<br>
+  <b>Result:</b> Subject drove robot into wall 14 times. Declared it "the best day of my life." Robot survived. Subject's interest in programming increased by <span class="redacted">███</span>%. Effect appears permanent.
+</div>
+
+<div class="incident">
+  <div class="incident-h">EXPERIMENT WKSHP-E-05</div>
+  <b>Subject:</b> D-Class (software engineer, 20 years experience)<br>
+  <b>Procedure:</b> Subject observed their child using SCP-WKSHP's Docker module<br>
+  <b>Result:</b> Subject experienced an existential crisis lasting approximately 4 hours. Subject later described the experience as "humbling." No lasting psychological damage detected, though subject now asks child for technical advice.
+</div>
+
+<div class="addendum">
+  <b>Addendum WKSHP-A-01 (Dr. <span class="redacted">████████</span>):</b> I'm recommending we upgrade SCP-WKSHP from Euclid to Keter. Not because it's dangerous — it's genuinely beneficial. I'm recommending Keter because we cannot control it. The ecosystem grows on its own. The bugs become features on their own. The WiFi password refuses to change. We don't contain SCP-WKSHP. It contains us.
+</div>
+
+<div class="addendum">
+  <b>Addendum WKSHP-A-02 (O5 Council Response):</b> Request denied. SCP-WKSHP remains Euclid. However, we are authorizing an increase in coffee budget by <span class="redacted">███</span>%. The O5 Council also notes that several members' children are now enrolled in SCP-WKSHP workshops. This is unrelated to the budget decision.
+</div>
+
+<div class="warning">
+  ⚠️ NOTICE: THIS DOCUMENT IS CLASSIFIED LEVEL 4/WKSHP<br>
+  UNAUTHORIZED ACCESS WILL RESULT IN MANDATORY DOCKER TRAINING
+</div>
+
+<div class="footer">
+  SCP FOUNDATION · MAKER ANOMALIES DIVISION · SITE-<span class="redacted">FR</span><br>
+  DOCUMENT LAST UPDATED: <span class="redacted">██/██</span>/2025 · CLEARANCE: 4/WKSHP<br>
+  // BUGS ARE FEATURES · THIS IS NOW POLICY
+</div>
+
+</div>
+  <script src="nav.js"></script>
+</body>
+</html>

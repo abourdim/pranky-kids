@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Workshop-DIY — Genius Video</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--cy:#00d4ff;--bl:#4f6ef7;--pk:#ff2d8a;--or:#ff6b35;--lm:#a3e635;--pr:#9333ea;--yw:#fbbf24;--gn:#22c55e;--rd:#ef4444}
+html,body{height:100%;overflow:hidden}
+body{background:#040608;color:#fff;font-family:'Fredoka',sans-serif}
+canvas#bg{position:fixed;inset:0;z-index:0}
+
+/* === PLAYER === */
+.player{position:fixed;inset:0;z-index:1}
+.sc{position:absolute;inset:0;opacity:0;pointer-events:none;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .85s}
+.sc.on{opacity:1;pointer-events:auto}
+
+/* === HUD === */
+.tbar{position:fixed;top:0;left:0;height:3px;z-index:200;box-shadow:0 0 14px rgba(0,212,255,.5);background:linear-gradient(90deg,var(--cy),var(--bl),var(--pk))}
+.slbl{position:fixed;top:12px;right:16px;z-index:200;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.2);letter-spacing:2px}
+.ctrl{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:200;display:flex;align-items:center;gap:6px;background:rgba(4,6,8,.92);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:999px;padding:6px 14px}
+.ctrl button{background:none;border:none;color:#fff;cursor:pointer;font-size:14px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.ctrl button:hover{background:rgba(255,255,255,.1)}
+.dt{width:7px;height:7px;border-radius:50%;background:#1a1a2a;cursor:pointer;transition:all .3s;border:none}
+.dt.on{background:var(--cy);width:20px;border-radius:3px;box-shadow:0 0 6px rgba(0,212,255,.4)}
+
+/* === ANIMATIONS === */
+@keyframes popUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleUp{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+@keyframes slideR{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:.9}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+@keyframes glow{0%,100%{box-shadow:0 0 8px var(--cy)}50%{box-shadow:0 0 22px var(--cy)}}
+.an{opacity:0}.sc.on .an{animation:popUp .6s ease both}
+
+/* ==================== S1: CINEMATIC INTRO ==================== */
+.s1{background:radial-gradient(ellipse at 40% 35%,#0c1430,#040608)}
+.s1-badge{display:inline-block;padding:4px 16px;border:1px solid rgba(0,212,255,.3);border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--cy);margin-bottom:24px}
+.s1 h1{font-family:'Syne',sans-serif;font-size:clamp(32px,7.5vw,78px);font-weight:800;letter-spacing:-3px;line-height:1.05;text-align:center}
+.s1 h1 .gr{background:linear-gradient(135deg,var(--cy),var(--bl),var(--pk));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.s1-sub{font-size:clamp(12px,2vw,17px);color:rgba(255,255,255,.3);margin-top:12px;text-align:center;letter-spacing:1px}
+.s1-nums{margin-top:32px;display:flex;gap:28px;justify-content:center;flex-wrap:wrap}
+.s1-st{text-align:center}
+.s1-st .v{font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,42px);font-weight:800;background:linear-gradient(135deg,var(--cy),var(--bl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.s1-st .l{font-size:10px;color:rgba(255,255,255,.25);letter-spacing:1.5px;text-transform:uppercase}
+
+/* ==================== S2: CATEGORIES ORBIT ==================== */
+.s2{background:radial-gradient(ellipse at center,#0a0e1e,#040608)}
+.cat-orbit{position:relative;width:min(82vw,440px);height:min(82vw,440px)}
+.cat-hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:3}
+.cat-hub .icon{font-size:36px;margin-bottom:4px}
+.cat-hub .title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700}
+.cat-hub .sub{font-size:10px;color:rgba(255,255,255,.35)}
+.cat-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border:1px dashed rgba(255,255,255,.04);border-radius:50%}
+.cat-r1{width:250px;height:250px}.cat-r2{width:380px;height:380px}
+.cat-node{position:absolute;width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;opacity:0;cursor:default}
+.sc.on .cat-node{animation:scaleUp .5s ease both,float 4s ease-in-out infinite}
+.cat-count{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(255,255,255,.4);white-space:nowrap}
+.s2-txt{position:absolute;bottom:6%;left:50%;transform:translateX(-50%);text-align:center}
+.s2-txt h2{font-family:'Syne',sans-serif;font-size:clamp(14px,3vw,24px);font-weight:700}
+
+/* ==================== S3: MATRIX APP RAIN ==================== */
+.s3{background:radial-gradient(ellipse at center,#060c18,#040608);overflow:hidden}
+.rain-col{position:absolute;display:flex;flex-direction:column;gap:10px;animation:rainF var(--sp) linear infinite;animation-delay:var(--dl)}
+@keyframes rainF{0%{transform:translateY(-120%)}100%{transform:translateY(110vh)}}
+.rain-pill{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:7px 11px;display:flex;align-items:center;gap:7px;white-space:nowrap;backdrop-filter:blur(3px)}
+.rain-pill .e{font-size:18px}.rain-pill .n{font-size:10px;font-weight:500;color:rgba(255,255,255,.45)}
+.s3-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:5;pointer-events:none;background:radial-gradient(ellipse,rgba(4,6,8,.65),transparent 70%)}
+.s3-ov h2{font-family:'Syne',sans-serif;font-size:clamp(28px,6vw,56px);font-weight:800;text-shadow:0 0 40px rgba(0,0,0,.9)}
+.s3-ov p{font-size:14px;color:rgba(255,255,255,.35);margin-top:6px}
+
+/* ==================== S4: POPULAR 4 ==================== */
+.s4{background:radial-gradient(ellipse at center,#0e0a22,#040608)}
+.pop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:540px;padding:0 16px}
+@media(max-width:480px){.pop-grid{grid-template-columns:1fr;max-width:280px}}
+.pop-card{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:22px 16px;text-align:center;opacity:0;transition:transform .3s,border-color .3s}
+.pop-card:hover{transform:translateY(-4px);border-color:rgba(0,212,255,.25)}
+.sc.on .pop-card{animation:scaleUp .5s ease both}
+.pop-card .ic{font-size:42px;margin-bottom:10px;filter:drop-shadow(0 4px 14px rgba(0,0,0,.4))}
+.pop-card .nm{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:3px}
+.pop-card .ds{font-size:10px;color:rgba(255,255,255,.35);line-height:1.5}
+.pop-card .badge{display:inline-block;margin-top:10px;padding:2px 10px;border-radius:99px;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(251,191,36,.12);color:var(--yw);border:1px solid rgba(251,191,36,.2)}
+.s4-h{position:absolute;top:6%;left:50%;transform:translateX(-50%);text-align:center}
+.s4-h h2{font-family:'Syne',sans-serif;font-size:clamp(14px,3vw,22px);font-weight:700;opacity:0}
+.sc.on .s4-h h2{animation:popUp .6s .2s ease both}
+
+/* ==================== S5: ROBOT POV HUD ==================== */
+.s5{background:radial-gradient(ellipse at 35% 40%,#081a2e,#040810)}
+.hud-box{position:absolute;inset:24px;border:1px solid rgba(0,212,255,.07);border-radius:10px}
+.hud-rec{position:absolute;top:10px;right:12px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--rd);animation:blink 1s step-end infinite}
+.hud-sys{position:absolute;top:10px;left:12px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--gn);line-height:1.6}
+.hud-aim{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:72px;height:72px;border:1px solid rgba(0,212,255,.1);border-radius:50%}
+.hud-aim::before,.hud-aim::after{content:'';position:absolute;background:rgba(0,212,255,.2)}
+.hud-aim::before{width:1px;height:16px;top:-22px;left:50%;transform:translateX(-50%)}
+.hud-aim::after{width:16px;height:1px;left:-22px;top:50%;transform:translateY(-50%)}
+.hud-scan{position:absolute;left:24px;right:24px;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,.12),transparent);animation:scanY 3.5s linear infinite}
+@keyframes scanY{0%{top:24px}100%{top:calc(100% - 24px)}}
+.obs{position:absolute;border:1px solid rgba(255,107,53,.18);border-radius:3px;animation:obsP 2.5s ease-in-out infinite}
+@keyframes obsP{0%,100%{opacity:.12}50%{opacity:.55}}
+.obs::after{content:attr(data-t);position:absolute;top:-12px;left:0;font-family:'JetBrains Mono',monospace;font-size:6px;color:var(--or);white-space:nowrap}
+.hud-bl{position:absolute;bottom:12px;left:12px;font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(0,212,255,.3);line-height:1.9}
+.hud-br{position:absolute;bottom:12px;right:12px;font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(0,212,255,.3);text-align:right;line-height:1.9}
+.hud-title{position:absolute;bottom:6%;left:50%;transform:translateX(-50%);text-align:center;z-index:5}
+.hud-title h2{font-family:'Syne',sans-serif;font-size:clamp(14px,3vw,24px);font-weight:700}
+
+/* ==================== S6: LIVE CODE ==================== */
+.s6{background:#0d1117}
+.editor{width:min(92%,540px);background:#0d1117;border:1px solid #21262d;border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.ed-top{display:flex;align-items:center;gap:6px;padding:11px 16px;background:#161b22;border-bottom:1px solid #21262d}
+.ed-d{width:10px;height:10px;border-radius:50%}
+.ed-r{background:#ff5f57}.ed-y{background:#ffbd2e}.ed-g{background:#28c840}
+.ed-f{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;color:#484f58}
+.ed-body{padding:16px 18px;font-family:'JetBrains Mono',monospace;font-size:clamp(9px,1.4vw,12.5px);line-height:2.1}
+.cl{opacity:0;white-space:nowrap}.sc.on .cl{animation:slideR .35s ease both}
+.kw{color:#ff7b72}.fn{color:#d2a8ff}.st{color:#a5d6ff}.cm{color:#484f58}.nm{color:#79c0ff}.op{color:#ffa657}
+.cur{display:inline-block;width:7px;height:13px;background:var(--cy);animation:blink .7s step-end infinite;vertical-align:middle;margin-left:2px}
+.s6-robot{position:absolute;right:6%;top:50%;transform:translateY(-50%)}
+.rb{width:72px;height:52px;background:linear-gradient(145deg,#1e3a5f,#0f2744);border:2px solid var(--bl);border-radius:11px;position:relative;box-shadow:0 0 20px rgba(79,110,247,.15)}
+.eye{width:10px;height:10px;background:var(--bl);border-radius:50%;position:absolute;top:14px;box-shadow:0 0 8px var(--bl);animation:glow 2s ease-in-out infinite}
+.eye.l{left:14px}.eye.r{right:14px}
+.wh{width:16px;height:16px;border:2px solid #475569;border-radius:50%;position:absolute;bottom:-8px;background:#1e293b;animation:spin 1.5s linear infinite}
+.wh.wl{left:8px}.wh.wr{right:8px}
+.react-txt{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--lm);margin-top:14px;text-align:center;opacity:0}
+.sc.on .react-txt{animation:popUp .5s 4.5s ease both}
+@media(max-width:700px){.s6-robot{display:none}}
+
+/* ==================== S7: 12 THEMES ==================== */
+.s7{overflow:hidden}
+.th-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,1fr);position:absolute;inset:0;gap:3px;padding:3px}
+.th-c{display:flex;align-items:center;justify-content:center;flex-direction:column;font-size:clamp(20px,4vw,32px);border-radius:5px;opacity:0;transform:scale(.65)}
+.sc.on .th-c{animation:scaleUp .35s ease both}
+.th-c .tn{font-size:clamp(6px,1.1vw,9px);margin-top:2px;font-weight:600;letter-spacing:1px;opacity:.55;font-family:'JetBrains Mono',monospace}
+.s7-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:10;background:radial-gradient(ellipse,rgba(4,6,8,.6),transparent 70%);pointer-events:none}
+.s7-ov h2{font-family:'Syne',sans-serif;font-size:clamp(16px,4.5vw,38px);font-weight:800;text-shadow:0 0 40px rgba(0,0,0,.9);opacity:0}
+.sc.on .s7-ov h2{animation:popUp .6s 1.2s ease both}
+
+/* ==================== S8: FULL ECOSYSTEM ==================== */
+.s8{background:radial-gradient(ellipse at center,#080c16,#040608);overflow:auto}
+.eco-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:5px;width:min(96%,680px);padding:8px}
+.eco-cell{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.04);border-radius:10px;padding:8px 3px;text-align:center;opacity:0;transition:transform .2s,border-color .2s}
+.eco-cell:hover{transform:scale(1.12);border-color:rgba(0,212,255,.25)}
+.sc.on .eco-cell{animation:scaleUp .3s ease both}
+.eco-cell .em{font-size:20px;display:block;margin-bottom:1px}
+.eco-cell .nm{font-size:6.5px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.35);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.s8-txt{position:absolute;bottom:4%;left:50%;transform:translateX(-50%);text-align:center;z-index:5}
+.s8-txt h2{font-family:'Syne',sans-serif;font-size:clamp(13px,2.8vw,22px);font-weight:700;opacity:0}
+.sc.on .s8-txt h2{animation:popUp .6s 2s ease both}
+
+/* ==================== S9: CTA FINALE ==================== */
+.s9{background:radial-gradient(ellipse at center,#14245c,#0a0e28,#040608)}
+.s9g{position:absolute;border-radius:50%;filter:blur(140px);opacity:.1;pointer-events:none}
+.g1{width:500px;height:500px;background:var(--bl);top:-200px;left:-200px;animation:gfloat 7s ease-in-out infinite}
+.g2{width:400px;height:400px;background:var(--pk);bottom:-180px;right:-180px;animation:gfloat 7s 3.5s ease-in-out infinite}
+@keyframes gfloat{0%,100%{transform:translate(0)}50%{transform:translate(25px,18px)}}
+#ptcls{position:absolute;inset:0;z-index:1;pointer-events:none}
+.pt{position:absolute;border-radius:50%;opacity:0;animation:pdrift var(--d) linear infinite;animation-delay:var(--dl)}
+@keyframes pdrift{0%{transform:translate(0);opacity:0}12%{opacity:.5}88%{opacity:.2}100%{transform:translate(var(--tx),var(--ty));opacity:0}}
+.cta{text-align:center;position:relative;z-index:2}
+.cta-logo{font-family:'Syne',sans-serif;font-size:clamp(34px,8vw,74px);font-weight:800;letter-spacing:-3px;opacity:0}
+.cta-logo .gr{background:linear-gradient(135deg,var(--cy),var(--bl),var(--pk));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sc.on .cta-logo{animation:logoRev 1s .3s ease both}
+@keyframes logoRev{from{opacity:0;letter-spacing:12px;filter:blur(6px)}to{opacity:1;letter-spacing:-3px;filter:blur(0)}}
+.cta-tag{font-size:clamp(13px,2.5vw,22px);color:rgba(255,255,255,.4);margin-top:6px;opacity:0}
+.sc.on .cta-tag{animation:popUp .6s .8s ease both}
+.cta-btn{display:inline-block;margin-top:22px;padding:13px 36px;background:linear-gradient(135deg,var(--bl),var(--cy));border-radius:999px;font-weight:700;font-size:15px;letter-spacing:1px;box-shadow:0 0 36px rgba(79,110,247,.3);opacity:0;text-decoration:none;color:#fff;transition:transform .2s,box-shadow .2s}
+.cta-btn:hover{transform:scale(1.06);box-shadow:0 0 50px rgba(79,110,247,.5)}
+.sc.on .cta-btn{animation:popUp .6s 1.2s ease both}
+.cta-stats{margin-top:22px;display:flex;gap:22px;justify-content:center;flex-wrap:wrap;opacity:0}
+.sc.on .cta-stats{animation:popUp .6s 1.6s ease both}
+.cta-s{text-align:center}
+.cta-s .v{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--cy)}
+.cta-s .l{font-size:8px;color:rgba(255,255,255,.25);letter-spacing:1.5px;text-transform:uppercase}
+.cta-url{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.18);margin-top:14px;letter-spacing:2px;opacity:0}
+.sc.on .cta-url{animation:popUp .6s 2s ease both}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div class="tbar" id="tbar"></div>
+<div class="slbl" id="slbl">01 / 09</div>
+
+<div class="player">
+
+<!-- ===== S1: INTRO ===== -->
+<div class="sc s1 on" id="s1">
+<div style="text-align:center;position:relative;z-index:2">
+  <div class="s1-badge an" style="animation-delay:.2s">⚡ WORKSHOP-DIY PRESENTS</div>
+  <h1><span class="gr an" style="animation-delay:.5s">39 Apps.</span><br><span class="an" style="animation-delay:.8s">One Ecosystem.</span></h1>
+  <div class="s1-sub an" style="animation-delay:1.1s">micro:bit · AI · Camera · Hardware · Learning · Classroom · Tools</div>
+  <div class="s1-nums">
+    <div class="s1-st an" style="animation-delay:1.4s"><div class="v">39</div><div class="l">Apps</div></div>
+    <div class="s1-st an" style="animation-delay:1.6s"><div class="v">7</div><div class="l">Categories</div></div>
+    <div class="s1-st an" style="animation-delay:1.8s"><div class="v">12</div><div class="l">Themes</div></div>
+    <div class="s1-st an" style="animation-delay:2s"><div class="v">∞</div><div class="l">Possibilities</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ===== S2: CATEGORIES ===== -->
+<div class="sc s2" id="s2">
+<div class="cat-orbit">
+  <div class="cat-ring cat-r1"></div><div class="cat-ring cat-r2"></div>
+  <div class="cat-hub"><div class="icon">🎯</div><div class="title">7 Categories</div><div class="sub">One platform</div></div>
+  <div id="catNodes"></div>
+</div>
+<div class="s2-txt"><h2 class="an">Every Domain. Every Skill.</h2></div>
+</div>
+
+<!-- ===== S3: APP RAIN ===== -->
+<div class="sc s3" id="s3">
+<div id="rainBox"></div>
+<div class="s3-ov">
+  <h2 class="an">39 Apps</h2>
+  <p class="an" style="animation-delay:.4s">Built for kids, makers & educators</p>
+</div>
+</div>
+
+<!-- ===== S4: POPULAR ===== -->
+<div class="sc s4" id="s4">
+<div class="s4-h"><h2>⭐ Community Favorites</h2></div>
+<div class="pop-grid" id="popGrid"></div>
+</div>
+
+<!-- ===== S5: ROBOT HUD ===== -->
+<div class="sc s5" id="s5">
+<div class="hud-box"></div>
+<div class="hud-rec">● REC</div>
+<div class="hud-sys">🔋 94% ONLINE<br>BLE: CONNECTED<br>ESP32: READY</div>
+<div class="hud-aim"></div>
+<div class="hud-scan"></div>
+<div class="obs" data-t="CHAIR_01" style="width:48px;height:36px;top:28%;left:18%;animation-delay:0s"></div>
+<div class="obs" data-t="CABLE_02" style="width:36px;height:46px;top:46%;right:16%;animation-delay:.7s"></div>
+<div class="obs" data-t="BOX_03" style="width:54px;height:30px;top:64%;left:36%;animation-delay:1.4s"></div>
+<div class="hud-bl">DIST: 28cm<br>MODE: AUTONOMOUS<br>SENSORS: 5/5<br>APP: bit-bot v3</div>
+<div class="hud-br">SPEED: 0.35 m/s<br>MOTOR L:78% R:81%<br>IR: LINE-TRACK<br>CAM: face-quest</div>
+<div class="hud-title"><h2 class="an">🤖 Robot Vision — bit-bot + face-quest</h2></div>
+</div>
+
+<!-- ===== S6: LIVE CODE ===== -->
+<div class="sc s6" id="s6">
+<div class="editor">
+  <div class="ed-top"><div class="ed-d ed-r"></div><div class="ed-d ed-y"></div><div class="ed-d ed-g"></div><div class="ed-f">bit-bot.js — Workshop-DIY</div></div>
+  <div class="ed-body">
+    <div class="cl" style="animation-delay:.3s"><span class="cm">// 🤖 Workshop-DIY — Robot + AI</span></div>
+    <div class="cl" style="animation-delay:.7s"><span class="kw">import</span> { <span class="fn">BLErobot</span> } <span class="kw">from</span> <span class="st">'bit-bot'</span>;</div>
+    <div class="cl" style="animation-delay:1.1s"><span class="kw">import</span> { <span class="fn">FaceTrack</span> } <span class="kw">from</span> <span class="st">'face-quest'</span>;</div>
+    <div class="cl" style="animation-delay:1.5s"><span class="kw">import</span> { <span class="fn">Teach</span> } <span class="kw">from</span> <span class="st">'teachable-machine'</span>;</div>
+    <div class="cl" style="animation-delay:1.9s"></div>
+    <div class="cl" style="animation-delay:2.3s"><span class="kw">const</span> bot = <span class="kw">await</span> BLErobot.<span class="fn">connect</span>();</div>
+    <div class="cl" style="animation-delay:2.7s"><span class="kw">const</span> cam = <span class="kw">new</span> <span class="fn">FaceTrack</span>();</div>
+    <div class="cl" style="animation-delay:3.1s"></div>
+    <div class="cl" style="animation-delay:3.5s">cam.<span class="fn">onSmile</span>(<span class="op">async () =></span> {</div>
+    <div class="cl" style="animation-delay:3.9s">&nbsp;&nbsp;bot.<span class="fn">setLED</span>(<span class="st">'💙'</span>);</div>
+    <div class="cl" style="animation-delay:4.3s">&nbsp;&nbsp;<span class="kw">await</span> bot.<span class="fn">dance</span>();<span class="cur"></span></div>
+    <div class="cl" style="animation-delay:4.7s">});</div>
+  </div>
+</div>
+<div class="s6-robot">
+  <div class="rb"><div class="eye l"></div><div class="eye r"></div><div class="wh wl"></div><div class="wh wr"></div></div>
+  <div class="react-txt">🎉 bot.dance()!</div>
+</div>
+</div>
+
+<!-- ===== S7: THEMES ===== -->
+<div class="sc s7" id="s7"><div class="th-grid" id="thGrid"></div><div class="s7-ov"><h2>12 Themes. Your Style.</h2></div></div>
+
+<!-- ===== S8: ECOSYSTEM ===== -->
+<div class="sc s8" id="s8"><div class="eco-g" id="ecoG"></div><div class="s8-txt"><h2>The Complete Workshop-DIY Ecosystem</h2></div></div>
+
+<!-- ===== S9: CTA ===== -->
+<div class="sc s9" id="s9">
+<div class="s9g g1"></div><div class="s9g g2"></div>
+<div id="ptcls"></div>
+<div class="cta">
+  <div class="cta-logo"><span class="gr">WORKSHOP</span>-DIY</div>
+  <div class="cta-tag">Build. Code. Create. Together.</div>
+  <a class="cta-btn" href="https://abourdim.github.io/apps/" target="_blank">Explore All Apps →</a>
+  <div class="cta-stats">
+    <div class="cta-s"><div class="v">39</div><div class="l">Apps</div></div>
+    <div class="cta-s"><div class="v">7</div><div class="l">Categories</div></div>
+    <div class="cta-s"><div class="v">12</div><div class="l">Themes</div></div>
+    <div class="cta-s"><div class="v">∞</div><div class="l">Possibilities</div></div>
+  </div>
+  <div class="cta-url">abourdim.github.io/apps</div>
+</div>
+</div>
+
+</div>
+
+<!-- CONTROLS -->
+<div class="ctrl">
+  <button id="pB" title="Previous">◀</button>
+  <div id="dots"></div>
+  <button id="plB" title="Play/Pause">⏸</button>
+  <button id="nB" title="Next">▶</button>
+</div>
+
+<script>
+// ===== DATA (from apps-data.json, filtered) =====
+const APPS=[
+{e:"🤖",n:"bit-bot",c:["microbit"],b:"popular",d:"Drive a Bit:Bot robot via Bluetooth — joystick, line-follow & obstacle mode"},
+{e:"🪄",n:"magic-hands",c:["camera","ai"],b:"popular",d:"Wave your hands to trigger magic camera effects — confetti, trails, neon glow"},
+{e:"🕵️",n:"face-quest",c:["camera","ai"],b:"popular",d:"Face-detection game — smile, blink, turn your head to score. 100% local"},
+{e:"💬",n:"talking-robot",c:["microbit","ai"],b:"stable",d:"A robot that speaks, listens and shows emotions via BLE"},
+{e:"🧠",n:"teachable-machine",c:["microbit","camera","ai"],b:"popular",d:"Train AI gestures in browser, send results to micro:bit"},
+{e:"😎",n:"face-tracking",c:["camera","microbit"],b:"stable",d:"Kids-friendly face tracking with event triggers"},
+{e:"😄",n:"bitmoji-lab",c:["microbit"],b:"stable",d:"Emoji → 5×5 LED pixel art on micro:bit"},
+{e:"🚀",n:"mission-control",c:["classroom","microbit"],b:"stable",d:"Mission control with live video/chat via WebRTC"},
+{e:"🧩",n:"bit-playground",c:["microbit"],b:"stable",d:"The ultimate micro:bit BLE playground"},
+{e:"🎛️",n:"rxy",c:["microbit"],b:"stable",d:"Build custom Bluetooth remotes — drag buttons, sliders, D-pads"},
+{e:"🎨",n:"pixel-gateway",c:["tools"],b:"stable",d:"Retro pixel art portal — draw, animate, export sprites"},
+{e:"💡",n:"wled-kids-lab",c:["hardware","learning"],b:"stable",d:"Control Neopixel LED strips with WLED"},
+{e:"⚡",n:"esp32-c3-kids-lab",c:["hardware","learning"],b:"stable",d:"Hands-on ESP32-C3 — LEDs, sensors, WiFi"},
+{e:"🪙",n:"crypto-academy",c:["learning"],b:"stable",d:"Interactive blockchain & cryptocurrency lessons"},
+{e:"🔐",n:"pentest-lab",c:["learning"],b:"stable",d:"Beginner-friendly cybersecurity sandbox"},
+{e:"🐧",n:"linux-kids-lab",c:["learning"],b:"stable",d:"Linux commands in a safe browser sandbox"},
+{e:"🏭",n:"production-chain",c:["learning"],b:"stable",d:"Simulate an industrial production chain"},
+{e:"🏫",n:"classroom",c:["classroom"],b:"stable",d:"PeerJS cloud classroom — screen share, chat, collaborate"},
+{e:"🔌",n:"usb-logger",c:["microbit"],b:"stable",d:"USB serial browser tool for micro:bit"},
+{e:"📡",n:"ble-logger",c:["microbit"],b:"stable",d:"BLE debug playground for micro:bit"},
+{e:"🧰",n:"claude-toolkit",c:["ai","tools"],b:"dev",d:"Build apps & workflows with Claude AI"},
+{e:"🎭",n:"puppeteer-playground",c:["tools"],b:"stable",d:"Browser automation experiments with Puppeteer"},
+{e:"🔋",n:"circuit-lab",c:["hardware","learning"],b:"dev",d:"Simulate electronic circuits in browser"},
+{e:"🛡️",n:"rocket-shield-vpn",c:["tools"],b:"dev",d:"Visual VPN & network security guide"},
+{e:"🧊",n:"3d-lab",c:["learning"],b:"dev",d:"3D design in browser with Three.js"},
+{e:"🔀",n:"git-lab",c:["learning"],b:"dev",d:"Learn Git step by step — commit, branch, merge"},
+{e:"✨",n:"prompt-hero",c:["ai","learning"],b:"dev",d:"Master AI prompting techniques"},
+{e:"🌍",n:"save-our-planet",c:["learning"],b:"dev",d:"Climate change & sustainability lessons"},
+{e:"📋",n:"ops-catalog",c:["tools"],b:"dev",d:"DevOps tools & workflows catalog"},
+{e:"💻",n:"code-kids",c:["learning"],b:"dev",d:"Learn HTML, CSS & JavaScript from scratch"},
+{e:"🏡",n:"smart-home",c:["hardware","learning"],b:"dev",d:"Smart home dashboard — sensors, lights, automations"},
+{e:"🧱",n:"makecode-adventures",c:["microbit","learning"],b:"dev",d:"Block-based coding adventures with MakeCode"},
+{e:"🤖",n:"bit-54-activities",c:["microbit","learning"],b:"dev",d:"54 hands-on micro:bit activities"},
+{e:"💰",n:"crypto-vault",c:["learning"],b:"dev",d:"Cryptography basics — encrypt, hash, generate keys"},
+{e:"🔗",n:"dhcp-lab",c:["hardware"],b:"new",d:"Python DHCP server with real-time web dashboard"},
+{e:"🐳",n:"docker-lab",c:["learning"],b:"new",d:"Docker container experiments"},
+{e:"🔴",n:"nodered-lab",c:["learning"],b:"new",d:"Node-RED visual programming"},
+{e:"⛽",n:"ocpp",c:["tools"],b:"new",d:"EV charging simulation ecosystem"},
+{e:"🖥️",n:"tty",c:["microbit"],b:"new",d:"Terminal interface for micro:bit"}
+];
+
+const CATS=[
+  {e:"🤖",n:"micro:bit",k:"microbit",count:16,col:"#00d4ff"},
+  {e:"📚",n:"Learning",k:"learning",count:20,col:"#22c55e"},
+  {e:"🛠️",n:"Tools",k:"tools",count:7,col:"#ff2d8a"},
+  {e:"🧠",n:"AI",k:"ai",count:6,col:"#9333ea"},
+  {e:"🔩",n:"Hardware",k:"hardware",count:5,col:"#ff6b35"},
+  {e:"📸",n:"Camera",k:"camera",count:4,col:"#fbbf24"},
+  {e:"🏫",n:"Classroom",k:"classroom",count:2,col:"#4f6ef7"}
+];
+
+const THEMES=[
+  {e:"🌙",n:"Dark",bg:"#0a0e1a"},{e:"🌞",n:"Light",bg:"#e8dcc8",dark:true},{e:"🌊",n:"Ocean",bg:"#0a1628"},
+  {e:"🚀",n:"Space",bg:"#0a0620"},{e:"⚡",n:"Electric",bg:"#1a1a30"},{e:"🌲",n:"Forest",bg:"#0a1a0e"},
+  {e:"🔥",n:"Lava",bg:"#2a0a0a"},{e:"🕌",n:"Medina",bg:"#0b1a1a"},{e:"🏰",n:"Alhambra",bg:"#1a1418"},
+  {e:"🔷",n:"Iznik",bg:"#0a1828"},{e:"🧩",n:"Zellige",bg:"#1a0a28"},{e:"🌿",n:"Arabesque",bg:"#0a1a10"}
+];
+
+const T=9,DUR=6500;
+let cur=1,elap=0,play=true,last=Date.now();
+
+// ===== STARFIELD =====
+const cv=document.getElementById('bg'),cx=cv.getContext('2d');
+let W,H,stars=[];
+function onResize(){W=cv.width=innerWidth;H=cv.height=innerHeight;stars=Array.from({length:100},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.3,a:Math.random(),s:Math.random()*.25+.08}))}
+onResize();addEventListener('resize',onResize);
+(function drawBg(){cx.clearRect(0,0,W,H);stars.forEach(s=>{s.a+=s.s*.012;cx.globalAlpha=Math.abs(Math.sin(s.a))*.35;cx.fillStyle='#fff';cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);cx.fill()});cx.globalAlpha=1;requestAnimationFrame(drawBg)})();
+
+// ===== S2: BUILD CATEGORY NODES =====
+const catBox=document.getElementById('catNodes');
+const anglesArr=[0,52,104,155,207,258,310];
+CATS.forEach((c,i)=>{
+  const ang=anglesArr[i]*Math.PI/180;
+  const r=i<4?115:170;
+  const ox=r*Math.cos(ang),oy=r*Math.sin(ang);
+  const nd=document.createElement('div');
+  nd.className='cat-node';
+  nd.style.cssText=`left:calc(50% + ${ox-30}px);top:calc(50% + ${oy-30}px);background:${c.col}12;border:1px solid ${c.col}28;animation-delay:${i*.12}s,${i*.12}s`;
+  nd.innerHTML=c.e+`<span class="cat-count">${c.n} (${c.count})</span>`;
+  catBox.appendChild(nd);
+});
+
+// ===== S3: BUILD RAIN =====
+const rainBox=document.getElementById('rainBox');
+const colCount=Math.min(8,Math.floor(innerWidth/110));
+for(let ci=0;ci<colCount;ci++){
+  const col=document.createElement('div');
+  col.className='rain-col';
+  col.style.cssText=`left:${(ci/(colCount-1))*88+4}%;--sp:${14+Math.random()*10}s;--dl:${-Math.random()*14}s`;
+  const per=Math.ceil(APPS.length/colCount);
+  for(let j=0;j<per;j++){
+    const a=APPS[(ci*per+j)%APPS.length];
+    const p=document.createElement('div');
+    p.className='rain-pill';
+    p.innerHTML=`<span class="e">${a.e}</span><span class="n">${a.n}</span>`;
+    col.appendChild(p);
+  }
+  rainBox.appendChild(col);
+}
+
+// ===== S4: BUILD POPULAR =====
+const popGrid=document.getElementById('popGrid');
+APPS.filter(a=>a.b==='popular').forEach((a,i)=>{
+  const cd=document.createElement('div');
+  cd.className='pop-card';
+  cd.style.animationDelay=(i*.2+.4)+'s';
+  cd.innerHTML=`<div class="ic">${a.e}</div><div class="nm">${a.n}</div><div class="ds">${a.d}</div><div class="badge">⭐ Popular</div>`;
+  popGrid.appendChild(cd);
+});
+
+// ===== S7: BUILD THEMES =====
+const thGrid=document.getElementById('thGrid');
+THEMES.forEach((t,i)=>{
+  const d=document.createElement('div');
+  d.className='th-c';
+  d.style.cssText=`background:${t.bg};animation-delay:${i*.09}s;${t.dark?'color:#333':''}`;
+  d.innerHTML=`${t.e}<span class="tn">${t.n}</span>`;
+  thGrid.appendChild(d);
+});
+
+// ===== S8: BUILD ECOSYSTEM =====
+const ecoG=document.getElementById('ecoG');
+APPS.forEach((a,i)=>{
+  const d=document.createElement('div');
+  d.className='eco-cell';
+  d.style.animationDelay=(i*.035)+'s';
+  d.title=a.n+': '+a.d;
+  d.innerHTML=`<span class="em">${a.e}</span><span class="nm">${a.n}</span>`;
+  ecoG.appendChild(d);
+});
+
+// ===== S9: PARTICLES =====
+const ptcls=document.getElementById('ptcls');
+const pCols=['#4f6ef7','#00d4ff','#ff2d8a','#a3e635','#ff6b35','#9333ea'];
+for(let i=0;i<35;i++){
+  const p=document.createElement('div');
+  p.className='pt';
+  Object.assign(p.style,{left:Math.random()*100+'%',top:Math.random()*100+'%',width:(2+Math.random()*4)+'px',height:(2+Math.random()*4)+'px',background:pCols[i%pCols.length]});
+  p.style.setProperty('--tx',(Math.random()-.5)*200+'px');
+  p.style.setProperty('--ty',(Math.random()-.5)*200+'px');
+  p.style.setProperty('--d',(4+Math.random()*6)+'s');
+  p.style.setProperty('--dl',Math.random()*5+'s');
+  ptcls.appendChild(p);
+}
+
+// ===== DOTS =====
+const dotsEl=document.getElementById('dots');
+for(let i=1;i<=T;i++){
+  const d=document.createElement('button');
+  d.className='dt'+(i===1?' on':'');
+  d.dataset.s=i;
+  d.onclick=()=>goTo(i);
+  dotsEl.appendChild(d);
+}
+
+// ===== NAVIGATION =====
+const tbar=document.getElementById('tbar'),slbl=document.getElementById('slbl');
+function goTo(n){
+  if(n<1)n=T;if(n>T)n=1;
+  document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));
+  document.getElementById('s'+n).classList.add('on');
+  document.querySelectorAll('.dt').forEach(d=>d.classList.toggle('on',+d.dataset.s===n));
+  slbl.textContent=String(n).padStart(2,'0')+' / '+String(T).padStart(2,'0');
+  cur=n;elap=0;last=Date.now();
+}
+document.getElementById('pB').onclick=()=>goTo(cur-1);
+document.getElementById('nB').onclick=()=>goTo(cur+1);
+document.getElementById('plB').onclick=function(){play=!play;this.textContent=play?'⏸':'▶';last=Date.now()};
+
+// Timer
+(function tick(){
+  if(play){const n=Date.now();elap+=n-last;last=n;tbar.style.width=(Math.min(elap/DUR,1)*100)+'%';if(elap>=DUR)goTo(cur+1)}
+  else last=Date.now();
+  requestAnimationFrame(tick);
+})();
+
+// Keyboard
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight')goTo(cur+1);
+  if(e.key==='ArrowLeft')goTo(cur-1);
+  if(e.key===' '){e.preventDefault();document.getElementById('plB').click()}
+});
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

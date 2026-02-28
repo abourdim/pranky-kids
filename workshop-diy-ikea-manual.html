@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BÖTRÖBT Assembly Manual</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f5f0;color:#333;font-family:'Noto Sans',sans-serif;font-size:11px;min-height:100vh}
+
+.manual{max-width:550px;margin:0 auto;background:#fff;border:1px solid #ddd;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+
+/* COVER */
+.cover{background:#0051ba;color:#fff;padding:30px;text-align:center;position:relative}
+.cover .brand{font-size:24px;font-weight:700;letter-spacing:3px;color:#ffcc00}
+.cover .product{font-size:32px;font-weight:700;margin:10px 0;letter-spacing:1px}
+.cover .product-sub{font-size:10px;color:rgba(255,255,255,.7);letter-spacing:2px}
+.cover .emoji{font-size:64px;margin:14px 0;filter:drop-shadow(0 4px 8px rgba(0,0,0,.2))}
+.cover .art-no{font-size:8px;color:rgba(255,255,255,.4);position:absolute;bottom:8px;right:12px}
+
+/* SECTIONS */
+.section{padding:16px 20px;border-bottom:1px solid #eee}
+.sec-title{font-size:9px;font-weight:700;color:#0051ba;letter-spacing:2px;margin-bottom:8px;text-transform:uppercase}
+
+/* PARTS LIST */
+.parts{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px}
+.part{text-align:center;border:1px solid #eee;border-radius:4px;padding:6px}
+.part .emoji{font-size:24px}.part .name{font-size:7px;color:#999;margin-top:2px;letter-spacing:1px}
+.part .qty{font-size:8px;font-weight:700;color:#333;margin-top:1px}
+
+/* STEPS */
+.step{display:flex;gap:12px;margin:10px 0;padding:10px;border:1px solid #eee;border-radius:6px;align-items:flex-start}
+.step-num{width:32px;height:32px;border-radius:50%;background:#0051ba;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.step-content{flex:1}
+.step-diagram{font-size:36px;text-align:center;padding:8px;background:#f9f9f6;border-radius:4px;margin-bottom:4px}
+.step-text{font-size:9px;color:#555;line-height:2}
+.step-warning{font-size:8px;color:#cc0000;display:flex;align-items:center;gap:4px;margin-top:3px}
+.step-time{font-size:7px;color:#999;display:flex;align-items:center;gap:3px;margin-top:3px}
+
+/* STICK FIGURES */
+.figure-row{display:flex;justify-content:center;gap:20px;margin:8px 0;font-size:9px;color:#777}
+.figure{text-align:center}
+.figure .face{font-size:28px;margin-bottom:2px}
+.figure .desc{font-size:7px;color:#aaa}
+
+/* WARNINGS */
+.warning-box{background:#fff3cd;border:1px solid #ffc107;border-radius:4px;padding:8px;margin:8px 0;font-size:8px;color:#856404;display:flex;gap:6px;align-items:flex-start}
+.warning-box .icon{font-size:16px;flex-shrink:0}
+
+/* FOOTER */
+.footer{text-align:center;padding:14px;background:#f5f5f0;font-size:7px;color:#aaa;letter-spacing:1px;line-height:2}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="manual">
+
+<div class="cover">
+  <div class="brand">WKSHP-ÏA</div>
+  <div class="product">BÖTRÖBT</div>
+  <div class="product-sub">EDUCATIONAL ROBOT KIT · ESP32 EDITION</div>
+  <div class="emoji">🤖</div>
+  <div class="art-no">Art. No. 042-39-7 · Made in Workshop-DIY · France</div>
+</div>
+
+<div class="section">
+  <div class="sec-title">⚠ Before You Begin</div>
+  <div class="warning-box"><span class="icon">⚠️</span><span>Read all instructions before assembly. Then ignore them and figure it out yourself. That's the Workshop-DIY way.</span></div>
+  <div class="warning-box"><span class="icon">☕</span><span>Ensure adequate coffee supply BEFORE starting. Minimum 2 cups recommended. The coffee machine is at 8%. Plan accordingly.</span></div>
+  <div class="warning-box"><span class="icon">🔑</span><span>WiFi Password: password123. No, we are not changing it. Stop asking.</span></div>
+</div>
+
+<div class="section">
+  <div class="sec-title">Parts Included</div>
+  <div class="parts">
+    <div class="part"><div class="emoji">🔲</div><div class="name">ESP32-WROOM</div><div class="qty">×1</div></div>
+    <div class="part"><div class="emoji">⚙️</div><div class="name">N20 MOTORS</div><div class="qty">×2</div></div>
+    <div class="part"><div class="emoji">🔌</div><div class="name">DRV8833</div><div class="qty">×1</div></div>
+    <div class="part"><div class="emoji">🔋</div><div class="name">18650 BATTERY</div><div class="qty">×1</div></div>
+    <div class="part"><div class="emoji">🛞</div><div class="name">WHEELS</div><div class="qty">×2</div></div>
+    <div class="part"><div class="emoji">👁️</div><div class="name">IR SENSORS</div><div class="qty">×2</div></div>
+    <div class="part"><div class="emoji">📡</div><div class="name">ULTRASONIC</div><div class="qty">×1</div></div>
+    <div class="part"><div class="emoji">🔧</div><div class="name">SERVO SG90</div><div class="qty">×1</div></div>
+    <div class="part"><div class="emoji">🔩</div><div class="name">SCREWS</div><div class="qty">×8*</div></div>
+    <div class="part"><div class="emoji">🪛</div><div class="name">SCREWDRIVER</div><div class="qty">×0**</div></div>
+    <div class="part"><div class="emoji">🔥</div><div class="name">HOT GLUE</div><div class="qty">×∞</div></div>
+    <div class="part"><div class="emoji">🤞</div><div class="name">HOPE</div><div class="qty">×1</div></div>
+  </div>
+  <p style="font-size:7px;color:#999;margin-top:6px">* You will find 7. The 8th is a feature, not a missing part.<br>** Not included. Use your teeth. (Don't actually.)</p>
+</div>
+
+<div class="section">
+  <div class="sec-title">Assembly Steps</div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-diagram">🔲 + 🔌 → 📡</div>
+      <div class="step-text">Connect the ESP32 to the DRV8833 motor driver. GPIO12→AIN1, GPIO13→AIN2, GPIO14→BIN1, GPIO15→BIN2. If the wires are the wrong color, that's normal.</div>
+      <div class="step-time">🕐 5 minutes (30 if you lose a wire)</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-diagram">⚙️ + 🛞 → 🏎️</div>
+      <div class="step-text">Attach motors to the chassis. Apply hot glue. More hot glue. Even more. This is not a suggestion — it's structural engineering.</div>
+      <div class="step-warning">⚠ Hot glue is HOT. This is not a metaphor.</div>
+      <div class="step-time">🕐 8 minutes</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-diagram">👁️ + 👁️ → 👀</div>
+      <div class="step-text">Mount the IR sensors underneath, facing down. GPIO32 and GPIO33. These are your robot's eyes. If they see black, it follows. If they see white, it panics. Like all of us.</div>
+      <div class="step-time">🕐 5 minutes</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <div class="step-diagram">📡 + 🔧 → 🗼</div>
+      <div class="step-text">Mount the ultrasonic sensor on the servo. Trig→GPIO26, Echo→GPIO27, Servo→GPIO25. Your robot can now see obstacles. It will still hit them occasionally. That's a feature.</div>
+      <div class="step-time">🕐 10 minutes</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-content">
+      <div class="step-diagram">🔋 → ⚡ → 🤖</div>
+      <div class="step-text">Connect the battery. Check polarity TWICE. The smoke that comes out of reversed polarity cannot be put back in. This is science.</div>
+      <div class="step-warning">⚠ CHECK POLARITY. We mean it. Three times.</div>
+      <div class="step-time">🕐 3 minutes (+ 2 for anxiety)</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">6</div>
+    <div class="step-content">
+      <div class="step-diagram">💻 → 📶 → 🤖</div>
+      <div class="step-text">Open Chrome. Navigate to bit-bot app. Click "Connect BLE". Select your robot. If it doesn't appear, try turning it off and on again. If it still doesn't appear, make coffee. Try again.</div>
+      <div class="step-time">🕐 2 minutes (or 45 if Chrome is being Chrome)</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">7</div>
+    <div class="step-content">
+      <div class="step-diagram">🤖 → 🏁</div>
+      <div class="step-text">Your BÖTRÖBT is ready. Drive it. Make it follow lines. Watch it avoid obstacles. Drop it from a desk (optional but statistically inevitable).</div>
+      <div class="step-time">🕐 ∞ (you will never stop playing with it)</div>
+    </div>
+  </div>
+
+  <div class="figure-row">
+    <div class="figure"><div class="face">😐</div><div class="desc">Step 1:<br>Confident</div></div>
+    <div class="figure"><div class="face">🤨</div><div class="desc">Step 3:<br>Suspicious</div></div>
+    <div class="figure"><div class="face">😰</div><div class="desc">Step 5:<br>Polarity check</div></div>
+    <div class="figure"><div class="face">🥳</div><div class="desc">Step 7:<br>IT WORKS!</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-title">Troubleshooting</div>
+  <table style="width:100%;border-collapse:collapse;font-size:9px">
+    <tr style="border-bottom:1px solid #eee"><td style="padding:4px;color:#999;width:40%">Robot drives in circles</td><td style="padding:4px">Check motor wiring. Or call it a "dance feature."</td></tr>
+    <tr style="border-bottom:1px solid #eee"><td style="padding:4px;color:#999">BLE won't connect</td><td style="padding:4px">Close all other Chrome tabs. Yes, all 47 of them.</td></tr>
+    <tr style="border-bottom:1px solid #eee"><td style="padding:4px;color:#999">Robot fell off table</td><td style="padding:4px">Normal. See: drops 1-47. It will survive.</td></tr>
+    <tr style="border-bottom:1px solid #eee"><td style="padding:4px;color:#999">Missing screw</td><td style="padding:4px">The 8th screw is a feature, not a missing part.</td></tr>
+    <tr style="border-bottom:1px solid #eee"><td style="padding:4px;color:#999">Something smells</td><td style="padding:4px">Unplug battery. Check polarity. Open window.</td></tr>
+    <tr><td style="padding:4px;color:#999">Nothing works</td><td style="padding:4px">Have you tried coffee?</td></tr>
+  </table>
+</div>
+
+<div class="footer">
+  WKSHP-ÏA · BÖTRÖBT · Art. No. 042-39-7<br>
+  Association Workshop-DIY · Loi 1901 · France 🇫🇷<br>
+  Not affiliated with any Swedish furniture company.<br>
+  Allen wrench not included. Meatballs not included. Robot included.<br>
+  © 2026 · Bugs are features · password123
+</div>
+
+</div>
+  <script src="nav.js"></script>
+</body>
+</html>

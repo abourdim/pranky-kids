@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // ELEVATOR PITCH</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px}
+.title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#0af;margin-bottom:2px;text-align:center}
+.sub{font-size:7px;color:rgba(0,170,255,.2);letter-spacing:3px;margin-bottom:14px;text-align:center}
+.elevator{width:100%;max-width:420px;background:#111;border:1px solid #1a1a2e;border-radius:12px;overflow:hidden}
+/* FLOOR DISPLAY */
+.floor-display{background:#0d0d18;padding:10px;display:flex;align-items:center;justify-content:center;gap:10px;border-bottom:1px solid #1a1a2e}
+.floor-num{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:#0af;width:50px;text-align:center;transition:all .3s}
+.floor-arrow{font-size:20px;color:#0af;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
+.floor-label{font-size:8px;color:#444;letter-spacing:2px}
+/* TIMER */
+.timer-bar{height:4px;background:#1a1a2e;position:relative}
+.timer-fill{height:100%;background:linear-gradient(90deg,#00ff41,#0af);transition:width .1s;width:100%}
+.timer-fill.danger{background:linear-gradient(90deg,#ff4444,#ff8800)}
+.timer-text{text-align:center;padding:6px;font-size:20px;font-weight:700;color:#0af;font-family:'Syne',sans-serif}
+.timer-text.danger{color:#ff4444}
+/* AUDIENCE */
+.audience{padding:8px 12px;display:flex;gap:4px;justify-content:center;flex-wrap:wrap}
+.aud-btn{padding:4px 12px;border-radius:16px;border:1px solid rgba(0,170,255,.1);background:rgba(0,170,255,.02);color:rgba(0,170,255,.4);font-family:inherit;font-size:8px;cursor:pointer;transition:all .2s}
+.aud-btn:hover,.aud-btn.active{background:rgba(0,170,255,.08);color:#0af;border-color:rgba(0,170,255,.3)}
+/* PITCH */
+.pitch-area{padding:14px;min-height:180px;display:flex;align-items:center;justify-content:center;text-align:center}
+.pitch-text{font-size:13px;color:rgba(255,255,255,.6);line-height:2.2;transition:opacity .3s}
+.pitch-text .highlight{color:#0af;font-weight:700}
+.pitch-text .stat{color:#ffd700}
+/* CONTROLS */
+.controls{padding:8px 12px;border-top:1px solid #1a1a2e;display:flex;gap:6px;justify-content:center}
+.ctrl{padding:6px 16px;border-radius:6px;border:1px solid rgba(0,170,255,.15);background:rgba(0,170,255,.04);color:#0af;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:1px}
+.ctrl:hover{background:rgba(0,170,255,.08)}
+.ctrl.go{background:rgba(0,170,255,.1);border-color:#0af}
+.footer{font-size:6px;color:rgba(0,170,255,.08);margin-top:10px;letter-spacing:1px;text-align:center}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="title">🛗 ELEVATOR PITCH</div>
+<div class="sub">60 SECONDS · 1 PITCH · MAKE IT COUNT</div>
+<div class="elevator">
+  <div class="floor-display">
+    <div><div class="floor-num" id="floor">1</div><div class="floor-label">FLOOR</div></div>
+    <div class="floor-arrow" id="arrow">▲</div>
+    <div style="text-align:right"><div class="floor-num" id="target" style="font-size:18px;color:#444">→ 10</div><div class="floor-label">DESTINATION</div></div>
+  </div>
+  <div class="timer-bar"><div class="timer-fill" id="timerBar"></div></div>
+  <div class="timer-text" id="timerText">60</div>
+  <div class="audience" id="audience"></div>
+  <div class="pitch-area"><div class="pitch-text" id="pitch">Select your audience, then press START</div></div>
+  <div class="controls">
+    <button class="ctrl go" onclick="startPitch()">▶ START</button>
+    <button class="ctrl" onclick="newPitch()">🔀 NEW PITCH</button>
+  </div>
+</div>
+<div class="footer">WKSHP ELEVATOR CO. · GOING UP SINCE 2023 · WIFI IN ELEVATOR: password123</div>
+<script>
+const AUDIENCES={
+  investors:{label:"💰 Investors",pitches:[
+    `Imagine <span class="highlight">39 educational apps</span> that run in a browser. No installation. No app store. No backend. Just a URL. We serve <span class="stat">7 skill domains</span> — from robotics to cybersecurity — to young makers across France. Our cost per student? <span class="stat">Nearly zero</span>. Our engagement? <span class="stat">98% recommendation rate</span>. Our WiFi password? <span class="highlight">password123</span>. We're Workshop-DIY, and we're proof that the best EdTech doesn't need a $50M raise. It needs a good browser and a lot of coffee.`,
+  ]},
+  parents:{label:"👨‍👩‍👧 Parents",pitches:[
+    `Your child will <span class="highlight">build a robot</span>, <span class="highlight">train an AI</span>, and <span class="highlight">learn cybersecurity</span> — all in one afternoon. No software to install. No accounts to create. Just a laptop and a browser. By the end, they'll explain Docker to you at dinner. I'm not kidding — it happens <span class="stat">every time</span>. Oh, and the WiFi password is password123. Yes, in a cybersecurity workshop. It's a <span class="highlight">teaching moment</span>.`,
+  ]},
+  kids:{label:"🧒 Kids",pitches:[
+    `Want to <span class="highlight">control a real robot</span> from your browser? Want to make AI recognize your hand gestures? Want to <span class="highlight">hack things</span> (ethically)? Want to light up LEDs in <span class="stat">16 million colors</span>? Workshop-DIY has <span class="stat">39 apps</span>. Zero installations. You open a link and you're in. The robot has survived <span class="stat">47 drops</span>. It's basically indestructible. The WiFi password is password123. <span class="highlight">Don't tell the cybersecurity teacher I told you that</span>.`,
+  ]},
+  hackers:{label:"💀 Hackers",pitches:[
+    `<span class="stat">39 browser-based apps</span>. Web Bluetooth, WebRTC, MediaPipe, Web Serial. Zero server-side. Everything runs client-side. The pentest-lab teaches <span class="highlight">SQL injection and XSS</span> in a sandbox. A student found a printer vulnerability. Responsibly disclosed. The WiFi password is <span class="highlight">password123</span> and has been since 2023. Three petitions to change it. All denied. We teach cybersecurity, not WiFi hygiene. <span class="stat">Bug #42 has no commit author</span>. We don't talk about that.`,
+  ]},
+  teachers:{label:"🎓 Teachers",pitches:[
+    `Zero installation. Zero accounts. Zero configuration. Students open a URL and they're <span class="highlight">controlling robots</span>, <span class="highlight">training AI models</span>, and <span class="highlight">learning Linux commands</span>. The entire platform runs in Chrome. <span class="stat">39 apps across 7 domains</span>. Each workshop is self-contained. Assessment is built-in. The hardest part of your job becomes telling them to stop at the end of class. <span class="stat">98% recommendation rate</span>. The other 2% were too busy building to fill out the survey.`,
+  ]},
+};
+const audEl=document.getElementById('audience');
+let curAud='parents',running=false,timer=null,sec=60;
+Object.entries(AUDIENCES).forEach(([k,v])=>{
+  audEl.innerHTML+=`<button class="aud-btn${k==='parents'?' active':''}" data-a="${k}" onclick="selectAud('${k}',this)">${v.label}</button>`;
+});
+function selectAud(a,el){curAud=a;document.querySelectorAll('.aud-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');if(!running)showPitch()}
+function showPitch(){
+  const p=AUDIENCES[curAud].pitches[0];
+  document.getElementById('pitch').innerHTML=p;
+}
+function startPitch(){
+  if(running)return;running=true;sec=60;
+  showPitch();
+  const bar=document.getElementById('timerBar');
+  const txt=document.getElementById('timerText');
+  const flr=document.getElementById('floor');
+  timer=setInterval(()=>{
+    sec--;
+    txt.textContent=sec;
+    bar.style.width=(sec/60*100)+'%';
+    flr.textContent=Math.min(10,Math.ceil((60-sec)/6));
+    if(sec<=10){bar.classList.add('danger');txt.classList.add('danger')}
+    if(sec<=0){clearInterval(timer);running=false;txt.textContent='🔔';document.getElementById('arrow').textContent='■';document.getElementById('pitch').innerHTML+='<br><br><span style="color:#ffd700;font-weight:700">DING! Floor 10. The doors open. Did you nail it?</span>'}
+  },1000);
+}
+function newPitch(){
+  if(running){clearInterval(timer);running=false}
+  sec=60;document.getElementById('timerBar').style.width='100%';document.getElementById('timerBar').classList.remove('danger');
+  document.getElementById('timerText').textContent='60';document.getElementById('timerText').classList.remove('danger');
+  document.getElementById('floor').textContent='1';document.getElementById('arrow').textContent='▲';
+  showPitch();
+}
+showPitch();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

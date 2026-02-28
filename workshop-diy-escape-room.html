@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // ESCAPE ROOM</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050508;color:#00ff41;font-family:'JetBrains Mono',monospace;font-size:12px;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.crt{position:fixed;inset:0;z-index:99;pointer-events:none}.crt::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 1px,transparent 3px)}
+
+.container{max-width:520px;width:100%;padding:16px}
+
+/* HEADER */
+.hdr{text-align:center;margin-bottom:16px}
+.hdr-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#00ff41;text-shadow:0 0 12px rgba(0,255,65,.15)}
+.hdr-sub{font-size:8px;color:rgba(0,255,65,.2);letter-spacing:3px;margin-top:2px}
+
+/* PROGRESS */
+.progress{display:flex;gap:4px;margin-bottom:16px;justify-content:center}
+.prog-dot{width:28px;height:4px;background:rgba(0,255,65,.06);border-radius:2px;transition:all .3s}
+.prog-dot.done{background:#00ff41;box-shadow:0 0 4px rgba(0,255,65,.3)}.prog-dot.cur{background:#ffd700;box-shadow:0 0 4px rgba(255,215,0,.3)}
+
+/* ROOM */
+.room{border:1px solid rgba(0,255,65,.06);border-radius:6px;padding:16px;background:rgba(0,255,65,.005);margin-bottom:12px;display:none}
+.room.on{display:block;animation:fadeIn .5s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.room-h{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.room-num{font-size:8px;color:rgba(0,255,65,.2);letter-spacing:2px}
+.room-name{font-size:14px;font-weight:700;color:#00ff41}
+.room-emoji{font-size:22px}
+.room-desc{font-size:10px;color:rgba(0,255,65,.35);line-height:2;margin-bottom:12px}
+.room-hint{font-size:8px;color:rgba(0,255,65,.15);cursor:pointer;padding:4px 8px;border:1px solid rgba(0,255,65,.04);border-radius:3px;display:inline-block;margin-bottom:8px}
+.room-hint:hover{color:rgba(0,255,65,.3);border-color:rgba(0,255,65,.08)}
+.room-hint.revealed{color:rgba(255,215,0,.3);border-color:rgba(255,215,0,.08)}
+
+/* INPUT */
+.input-row{display:flex;gap:4px}
+.room-input{flex:1;background:rgba(0,255,65,.02);border:1px solid rgba(0,255,65,.08);border-radius:4px;padding:8px 10px;color:#00ff41;font-family:inherit;font-size:12px;outline:none;text-transform:uppercase;letter-spacing:2px}
+.room-input:focus{border-color:rgba(0,255,65,.2);box-shadow:0 0 8px rgba(0,255,65,.05)}
+.room-input::placeholder{color:rgba(0,255,65,.12)}
+.submit-btn{padding:8px 16px;background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.12);border-radius:4px;color:#00ff41;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:1px}
+.submit-btn:hover{background:rgba(0,255,65,.1);border-color:#00ff41}
+
+/* MULTI CHOICE */
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:8px}
+.choice{padding:8px;background:rgba(0,255,65,.01);border:1px solid rgba(0,255,65,.06);border-radius:4px;cursor:pointer;text-align:center;font-size:10px;transition:all .15s}
+.choice:hover{background:rgba(0,255,65,.04);border-color:rgba(0,255,65,.15)}
+.choice.correct{background:rgba(0,255,65,.08);border-color:#00ff41;color:#00ff41}
+.choice.wrong{background:rgba(255,0,51,.05);border-color:rgba(255,0,51,.2);color:#ff0033}
+
+/* PUZZLE GRID */
+.puzzle-grid{display:grid;gap:3px;margin:8px 0}
+.puzzle-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:14px;border:1px solid rgba(0,255,65,.06);border-radius:2px;cursor:pointer;transition:all .15s;background:rgba(0,255,65,.01)}
+.puzzle-cell:hover{background:rgba(0,255,65,.04)}
+.puzzle-cell.sel{background:rgba(0,255,65,.08);border-color:#00ff41}
+
+/* FEEDBACK */
+.feedback{margin-top:8px;padding:6px 10px;border-radius:4px;font-size:10px;display:none}
+.feedback.show{display:block;animation:fadeIn .3s}
+.feedback.err{background:rgba(255,0,51,.05);border:1px solid rgba(255,0,51,.1);color:#ff0033}
+.feedback.ok{background:rgba(0,255,65,.05);border:1px solid rgba(0,255,65,.1);color:#00ff41}
+
+/* VICTORY */
+.victory{text-align:center;display:none;padding:20px}
+.victory.on{display:block;animation:fadeIn .8s}
+.v-emoji{font-size:48px;margin-bottom:8px}
+.v-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#ffd700;text-shadow:0 0 14px rgba(255,215,0,.15);margin-bottom:4px}
+.v-sub{font-size:10px;color:rgba(0,255,65,.3);line-height:2}
+.v-stats{display:flex;gap:16px;justify-content:center;margin-top:12px}
+.v-stat{text-align:center}.v-stat .v{font-size:18px;font-weight:800;color:#ffd700}.v-stat .l{font-size:6px;color:rgba(0,255,65,.2);letter-spacing:1px}
+
+/* TIMER */
+.timer{text-align:center;font-size:22px;font-weight:800;color:rgba(0,255,65,.15);margin-bottom:12px;font-family:'JetBrains Mono',monospace}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="crt"></div>
+<div class="container">
+<div class="hdr">
+  <div class="hdr-title">ESCAPE ROOM</div>
+  <div class="hdr-sub">WORKSHOP-DIY // 6 ROOMS // 1 EXIT</div>
+</div>
+<div class="timer" id="timer">00:00</div>
+<div class="progress" id="progress"></div>
+
+<!-- ROOM 0: INTRO -->
+<div class="room on" id="room0">
+  <div class="room-h"><span class="room-emoji">🔒</span><div><div class="room-num">ROOM 1/6</div><div class="room-name">The Cipher Lock</div></div></div>
+  <div class="room-desc">You're trapped in the Workshop-DIY lab. The door has a cipher lock.<br><br>The note on the wall reads:<br><code style="color:#ffd700;font-size:13px;letter-spacing:2px">URYYB JBEXFUBC</code><br><br>It looks like a ROT13 cipher. Decode the second word to unlock the door.</div>
+  <div class="room-hint" onclick="this.textContent='💡 ROT13: shift each letter 13 places in the alphabet (A→N, B→O...)';this.classList.add('revealed')">💡 Click for hint</div>
+  <div class="input-row">
+    <input class="room-input" id="ans0" placeholder="ENTER DECODED WORD" onkeydown="if(event.key==='Enter')check(0)">
+    <button class="submit-btn" onclick="check(0)">UNLOCK</button>
+  </div>
+  <div class="feedback" id="fb0"></div>
+</div>
+
+<!-- ROOM 1: PATTERN -->
+<div class="room" id="room1">
+  <div class="room-h"><span class="room-emoji">🧩</span><div><div class="room-num">ROOM 2/6</div><div class="room-name">The Pattern Matrix</div></div></div>
+  <div class="room-desc">A screen displays a sequence. Find the missing element:<br><br><code style="color:#0af;font-size:14px">🤖 🪄 🕵️ 🧠 💬 😎 🤖 🪄 🕵️ 🧠 💬 ❓</code><br><br>The pattern repeats every 6 elements. What emoji completes the cycle?</div>
+  <div class="room-hint" onclick="this.textContent='💡 Look at the first 6 emojis. The pattern repeats: bit-bot, magic-hands, face-quest, teachable-machine, talking-robot, face-tracking';this.classList.add('revealed')">💡 Click for hint</div>
+  <div class="choices" id="ch1">
+    <div class="choice" onclick="checkChoice(1,this,'😎')">😎 face-tracking</div>
+    <div class="choice" onclick="checkChoice(1,this,'🤖')">🤖 bit-bot</div>
+    <div class="choice" onclick="checkChoice(1,this,'🧩')">🧩 bit-playground</div>
+    <div class="choice" onclick="checkChoice(1,this,'🔐')">🔐 pentest-lab</div>
+  </div>
+  <div class="feedback" id="fb1"></div>
+</div>
+
+<!-- ROOM 2: BINARY -->
+<div class="room" id="room2">
+  <div class="room-h"><span class="room-emoji">💻</span><div><div class="room-num">ROOM 3/6</div><div class="room-name">The Binary Vault</div></div></div>
+  <div class="room-desc">The vault keypad shows a binary number:<br><br><code style="color:#ffd700;font-size:18px;letter-spacing:3px">00100111</code><br><br>Convert this binary to decimal to unlock the vault. What number is Workshop-DIY's ecosystem (hint: it's the total number of apps)?</div>
+  <div class="room-hint" onclick="this.textContent='💡 Binary to decimal: 0×128 + 0×64 + 1×32 + 0×16 + 0×8 + 1×4 + 1×2 + 1×1';this.classList.add('revealed')">💡 Click for hint</div>
+  <div class="input-row">
+    <input class="room-input" id="ans2" placeholder="ENTER NUMBER" onkeydown="if(event.key==='Enter')check(2)">
+    <button class="submit-btn" onclick="check(2)">UNLOCK</button>
+  </div>
+  <div class="feedback" id="fb2"></div>
+</div>
+
+<!-- ROOM 3: LOGIC -->
+<div class="room" id="room3">
+  <div class="room-h"><span class="room-emoji">🔐</span><div><div class="room-num">ROOM 4/6</div><div class="room-name">The Logic Gate</div></div></div>
+  <div class="room-desc">The security system asks:<br><br>Workshop-DIY has <b style="color:#ffd700">39</b> apps, <b style="color:#ffd700">7</b> domains, and <b style="color:#ffd700">12</b> themes.<br><br>What is <code style="color:#0af">(APPS - THEMES) × DOMAINS ÷ (APPS - 30)</code>?<br><br>Enter the exact result (it's a whole number).</div>
+  <div class="room-hint" onclick="this.textContent='💡 (39-12) × 7 ÷ (39-30) = 27 × 7 ÷ 9 = 189 ÷ 9 = 21';this.classList.add('revealed')">💡 Click for hint</div>
+  <div class="input-row">
+    <input class="room-input" id="ans3" placeholder="ENTER ANSWER" onkeydown="if(event.key==='Enter')check(3)">
+    <button class="submit-btn" onclick="check(3)">UNLOCK</button>
+  </div>
+  <div class="feedback" id="fb3"></div>
+</div>
+
+<!-- ROOM 4: TRIVIA -->
+<div class="room" id="room4">
+  <div class="room-h"><span class="room-emoji">🧠</span><div><div class="room-num">ROOM 5/6</div><div class="room-name">The Knowledge Chamber</div></div></div>
+  <div class="room-desc">The AI guardian asks three questions. Answer all correctly:<br><br><b style="color:#0af">Q1:</b> What technology does magic-hands use for hand tracking?</div>
+  <div class="choices" id="ch4a">
+    <div class="choice" onclick="checkTrivia(0,this,'mediapipe')">MediaPipe</div>
+    <div class="choice" onclick="checkTrivia(0,this,'tensorflow')">TensorFlow</div>
+    <div class="choice" onclick="checkTrivia(0,this,'opencv')">OpenCV</div>
+    <div class="choice" onclick="checkTrivia(0,this,'pytorch')">PyTorch</div>
+  </div>
+  <div id="trivia1" style="display:none;margin-top:8px">
+    <div class="room-desc"><b style="color:#0af">Q2:</b> What protocol connects the browser to micro:bit?</div>
+    <div class="choices">
+      <div class="choice" onclick="checkTrivia(1,this,'ble')">Web Bluetooth (BLE)</div>
+      <div class="choice" onclick="checkTrivia(1,this,'wifi')">WiFi</div>
+      <div class="choice" onclick="checkTrivia(1,this,'usb')">USB Serial</div>
+      <div class="choice" onclick="checkTrivia(1,this,'nfc')">NFC</div>
+    </div>
+  </div>
+  <div id="trivia2" style="display:none;margin-top:8px">
+    <div class="room-desc"><b style="color:#0af">Q3:</b> What is the Workshop-DIY WiFi password?</div>
+    <div class="choices">
+      <div class="choice" onclick="checkTrivia(2,this,'password123')">password123</div>
+      <div class="choice" onclick="checkTrivia(2,this,'admin')">admin</div>
+      <div class="choice" onclick="checkTrivia(2,this,'workshop2024')">workshop2024</div>
+      <div class="choice" onclick="checkTrivia(2,this,'12345')">12345</div>
+    </div>
+  </div>
+  <div class="feedback" id="fb4"></div>
+</div>
+
+<!-- ROOM 5: FINAL -->
+<div class="room" id="room5">
+  <div class="room-h"><span class="room-emoji">🚪</span><div><div class="room-num">ROOM 6/6</div><div class="room-name">The Final Door</div></div></div>
+  <div class="room-desc">The exit door has a combination lock. Unscramble this word:<br><br><code style="color:#ffd700;font-size:16px;letter-spacing:4px">K O W R H S P O</code><br><br>It's the first word of the association's name.</div>
+  <div class="room-hint" onclick="this.textContent='💡 Think about where you are... WORKSHOP';this.classList.add('revealed')">💡 Click for hint</div>
+  <div class="input-row">
+    <input class="room-input" id="ans5" placeholder="ENTER WORD" onkeydown="if(event.key==='Enter')check(5)">
+    <button class="submit-btn" onclick="check(5)">ESCAPE!</button>
+  </div>
+  <div class="feedback" id="fb5"></div>
+</div>
+
+<!-- VICTORY -->
+<div class="victory" id="victory">
+  <div class="v-emoji">🏆</div>
+  <div class="v-title">ESCAPED!</div>
+  <div class="v-sub">You've conquered all 6 rooms of the Workshop-DIY Escape Room.<br>The robots are proud. The bugs remain features.</div>
+  <div class="v-stats">
+    <div class="v-stat"><div class="v" id="vTime">00:00</div><div class="l">TIME</div></div>
+    <div class="v-stat"><div class="v" id="vHints">0</div><div class="l">HINTS USED</div></div>
+    <div class="v-stat"><div class="v" id="vErrors">0</div><div class="l">WRONG ATTEMPTS</div></div>
+    <div class="v-stat"><div class="v">🏴‍☠️</div><div class="l">RANK</div></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const ROOMS=6;
+let cur=0,errors=0,hints=0,startTime=Date.now(),timerInterval;
+const answers=['WORKSHOP','😎','39','21','trivia','WORKSHOP'];
+let triviaCorrect=0;
+
+// Progress dots
+const prog=document.getElementById('progress');
+for(let i=0;i<ROOMS;i++){const d=document.createElement('div');d.className='prog-dot'+(i===0?' cur':'');prog.appendChild(d)}
+
+// Timer
+timerInterval=setInterval(()=>{
+  const s=Math.floor((Date.now()-startTime)/1000);
+  const m=Math.floor(s/60);
+  document.getElementById('timer').textContent=`${String(m).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+},1000);
+
+// Count hints
+document.querySelectorAll('.room-hint').forEach(h=>h.addEventListener('click',()=>{if(!h.classList.contains('revealed'))hints++},true));
+
+function showFeedback(room,ok,msg){
+  const fb=document.getElementById('fb'+room);
+  fb.className='feedback show '+(ok?'ok':'err');
+  fb.textContent=msg;
+}
+
+function nextRoom(){
+  document.getElementById('room'+cur).classList.remove('on');
+  document.querySelectorAll('.prog-dot')[cur].classList.remove('cur');
+  document.querySelectorAll('.prog-dot')[cur].classList.add('done');
+  cur++;
+  if(cur>=ROOMS){
+    clearInterval(timerInterval);
+    const s=Math.floor((Date.now()-startTime)/1000);
+    document.getElementById('vTime').textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+    document.getElementById('vHints').textContent=hints;
+    document.getElementById('vErrors').textContent=errors;
+    document.getElementById('victory').classList.add('on');
+    return;
+  }
+  document.querySelectorAll('.prog-dot')[cur].classList.add('cur');
+  setTimeout(()=>document.getElementById('room'+cur).classList.add('on'),300);
+}
+
+function check(room){
+  const input=document.getElementById('ans'+room);
+  const val=input.value.trim().toUpperCase();
+  if(room===0&&val==='WORKSHOP'){showFeedback(0,true,'🔓 Correct! URYYB JBEXFUBC → HELLO WORKSHOP');setTimeout(nextRoom,1200);return}
+  if(room===2&&val==='39'){showFeedback(2,true,'🔓 00100111 = 39 decimal. The door opens!');setTimeout(nextRoom,1200);return}
+  if(room===3&&val==='21'){showFeedback(3,true,'🔓 (39-12)×7÷9 = 21. Logic gate passed!');setTimeout(nextRoom,1200);return}
+  if(room===5&&val==='WORKSHOP'){showFeedback(5,true,'🚪 WORKSHOP! The door opens. Freedom!');setTimeout(nextRoom,1200);return}
+  errors++;
+  showFeedback(room,false,'❌ Wrong answer. Try again...');
+  input.value='';input.focus();
+}
+
+function checkChoice(room,el,val){
+  if(document.querySelector('#ch1 .correct'))return;
+  if(val==='😎'){el.classList.add('correct');showFeedback(1,true,'✅ The pattern repeats: 😎 face-tracking is position 6!');setTimeout(nextRoom,1200)}
+  else{el.classList.add('wrong');errors++;showFeedback(1,false,'❌ Not quite. Look at the 6th element in the first sequence.')}
+}
+
+function checkTrivia(q,el,val){
+  const correct=['mediapipe','ble','password123'];
+  if(el.parentElement.querySelector('.correct'))return;
+  if(val===correct[q]){
+    el.classList.add('correct');triviaCorrect++;
+    if(q<2){setTimeout(()=>document.getElementById('trivia'+(q+1)).style.display='block',500)}
+    if(triviaCorrect===3){showFeedback(4,true,'🧠 All 3 correct! The AI guardian lets you pass.');setTimeout(nextRoom,1200)}
+  }else{el.classList.add('wrong');errors++;showFeedback(4,false,'❌ Wrong! Try again.')}
+}
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

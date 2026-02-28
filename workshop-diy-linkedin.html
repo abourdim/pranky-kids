@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Workshop-DIY | LinkedIn</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1b1f23;color:#e0e0e0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px;line-height:1.5}
+a{color:#70b5f9;text-decoration:none}a:hover{text-decoration:underline}
+
+.nav{background:#1d2226;border-bottom:1px solid #38434f;padding:6px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:18px;font-weight:800;color:#70b5f9;letter-spacing:-1px}
+.nav-search{background:#38434f;border:none;border-radius:4px;padding:5px 10px;color:#e0e0e0;font-size:12px;width:200px;outline:none}
+.nav-links{display:flex;gap:14px;margin-left:auto;font-size:10px;color:#b0b0b0;text-align:center}
+.nav-links div{cursor:pointer}.nav-links div:hover{color:#e0e0e0}
+
+.main{max-width:620px;margin:12px auto;padding:0 12px}
+.card{background:#1d2226;border:1px solid #38434f;border-radius:8px;margin-bottom:8px;overflow:hidden}
+
+/* BANNER */
+.banner{height:120px;background:linear-gradient(135deg,#0a2a0a,#001a1a,#0a0a2e);position:relative}
+.avatar-wrap{position:absolute;bottom:-40px;left:16px}
+.avatar{width:96px;height:96px;border-radius:50%;border:3px solid #1d2226;background:#0a0a0e;display:flex;align-items:center;justify-content:center;font-size:42px}
+
+/* PROFILE */
+.profile-info{padding:48px 16px 16px}
+.p-name{font-size:22px;font-weight:700;color:#fff}
+.p-headline{font-size:13px;color:#b0b0b0;margin:2px 0}
+.p-loc{font-size:11px;color:#888;margin-top:2px}
+.p-stats{display:flex;gap:6px;margin-top:8px;font-size:11px}
+.p-stats span{color:#70b5f9;font-weight:600}
+.p-btns{display:flex;gap:6px;margin-top:10px}
+.btn-primary{background:#70b5f9;color:#000;padding:4px 16px;border-radius:16px;font-size:12px;font-weight:600;border:none;cursor:pointer}
+.btn-secondary{background:transparent;color:#70b5f9;padding:4px 16px;border-radius:16px;font-size:12px;font-weight:600;border:1px solid #70b5f9;cursor:pointer}
+
+/* ABOUT */
+.section{padding:16px}
+.sec-h{font-size:18px;font-weight:700;color:#fff;margin-bottom:8px}
+.sec-text{font-size:13px;color:#b0b0b0;line-height:1.9}
+
+/* EXPERIENCE */
+.exp-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(56,67,79,.3)}
+.exp-item:last-child{border:none}
+.exp-icon{width:40px;height:40px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.exp-icon.green{background:rgba(0,255,65,.05);border:1px solid rgba(0,255,65,.1)}
+.exp-icon.blue{background:rgba(112,181,249,.05);border:1px solid rgba(112,181,249,.1)}
+.exp-icon.purple{background:rgba(191,0,255,.05);border:1px solid rgba(191,0,255,.1)}
+.exp-icon.red{background:rgba(255,0,51,.05);border:1px solid rgba(255,0,51,.1)}
+.exp-title{font-size:13px;font-weight:700;color:#fff}
+.exp-co{font-size:12px;color:#b0b0b0}.exp-date{font-size:11px;color:#888}
+.exp-desc{font-size:11px;color:#888;line-height:1.7;margin-top:3px}
+
+/* SKILLS */
+.skills-grid{display:flex;flex-wrap:wrap;gap:4px}
+.skill{padding:4px 12px;border-radius:14px;font-size:11px;border:1px solid #38434f;color:#b0b0b0;cursor:default;transition:all .15s}
+.skill:hover{border-color:#70b5f9;color:#70b5f9;background:rgba(112,181,249,.03)}
+.skill .count{color:#70b5f9;font-weight:600;margin-left:3px}
+
+/* POSTS */
+.post{padding:12px 16px;border-top:1px solid #38434f}
+.post-author{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.post-av{width:36px;height:36px;border-radius:50%;background:#0a0a0e;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.post-name{font-size:12px;font-weight:600;color:#fff}.post-meta{font-size:10px;color:#888}
+.post-body{font-size:13px;color:#b0b0b0;line-height:1.8;margin-bottom:8px}
+.post-body b{color:#fff}
+.post-actions{display:flex;gap:16px;font-size:11px;color:#888;border-top:1px solid #38434f;padding-top:8px}
+.post-actions span{cursor:pointer}.post-actions span:hover{color:#70b5f9}
+
+/* RECS */
+.rec{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(56,67,79,.3)}
+.rec:last-child{border:none}
+.rec-av{width:40px;height:40px;border-radius:50%;background:#0a0a0e;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.rec-name{font-size:12px;font-weight:600;color:#fff}.rec-role{font-size:10px;color:#888}
+.rec-text{font-size:11px;color:#888;line-height:1.7;margin-top:3px;font-style:italic}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-logo">in</div>
+  <input class="nav-search" placeholder="Search" readonly>
+  <div class="nav-links">
+    <div>🏠<br>Home</div><div>👥<br>Network</div><div>💼<br>Jobs</div><div>💬<br>Messages</div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- PROFILE CARD -->
+<div class="card">
+  <div class="banner"></div>
+  <div class="avatar-wrap"><div class="avatar">🤖</div></div>
+  <div class="profile-info">
+    <div class="p-name">Workshop-DIY</div>
+    <div class="p-headline">Association Loi 1901 | Teaching Robotics, AI, Electronics, 3D, Code & Cyber to Young Makers | 39 Apps, All Free, All Browser-Based</div>
+    <div class="p-loc">📍 France · <a href="https://workshop-diy.org">workshop-diy.org</a></div>
+    <div class="p-stats"><span>42 followers</span> · <span>7 connections</span> · <span>39 posts</span></div>
+    <div class="p-btns"><button class="btn-primary">+ Follow</button><button class="btn-secondary">Visit website</button></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="card">
+  <div class="section">
+    <div class="sec-h">About</div>
+    <div class="sec-text">
+      We believe learning technology should be as simple as opening a browser.<br><br>
+      Workshop-DIY is a French nonprofit (loi 1901) that teaches young people robotics, artificial intelligence, electronics, 3D printing, programming, and cybersecurity — all through browser-based apps that require zero installation.<br><br>
+      Our ecosystem: 39 free web applications across 7 educational domains. From driving robots via Bluetooth to training AI models to ethical hacking sandboxes — all running in a browser tab.<br><br>
+      WiFi password: password123 (it's tradition at this point).<br><br>
+      🤖 Robotics · 🧠 AI · ⚡ Electronics · 🧊 3D Printing · 💻 Code · 🔐 Cyber · 🐳 DevOps
+    </div>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<div class="card">
+  <div class="section">
+    <div class="sec-h">Experience</div>
+    <div class="exp-item"><div class="exp-icon green">🤖</div><div><div class="exp-title">Robotics Education Platform</div><div class="exp-co">Workshop-DIY · Full-time</div><div class="exp-date">2023 – Present · 3 yrs</div><div class="exp-desc">Built 8 robotics apps including bit-bot (BLE robot control), mission-control (WebRTC), and talking-robot (voice commands). Survived 47 robot drops.</div></div></div>
+    <div class="exp-item"><div class="exp-icon purple">🧠</div><div><div class="exp-title">AI/ML Education Track</div><div class="exp-co">Workshop-DIY · Full-time</div><div class="exp-date">2023 – Present · 3 yrs</div><div class="exp-desc">Launched magic-hands (MediaPipe), face-quest (gamified CV), teachable-machine (browser ML training). All privacy-first, zero cloud dependency.</div></div></div>
+    <div class="exp-item"><div class="exp-icon red">🔐</div><div><div class="exp-title">Cybersecurity Curriculum</div><div class="exp-co">Workshop-DIY · Part-time</div><div class="exp-date">2024 – Present · 2 yrs</div><div class="exp-desc">Created pentest-lab (CTF sandbox), crypto-academy, and VPN education tools. One student found a school printer vulnerability. Ethically reported.</div></div></div>
+    <div class="exp-item"><div class="exp-icon blue">🐧</div><div><div class="exp-title">DevOps & Linux Education</div><div class="exp-co">Workshop-DIY · Part-time</div><div class="exp-date">2024 – Present · 2 yrs</div><div class="exp-desc">linux-kids-lab (browser terminal), docker-lab (containers), git-lab, Node-RED. 14-year-olds now explain Docker to software engineer parents.</div></div></div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="card">
+  <div class="section">
+    <div class="sec-h">Skills & Endorsements</div>
+    <div class="skills-grid">
+      <span class="skill">Web Bluetooth<span class="count">42</span></span>
+      <span class="skill">JavaScript<span class="count">39</span></span>
+      <span class="skill">MediaPipe<span class="count">31</span></span>
+      <span class="skill">ESP32<span class="count">28</span></span>
+      <span class="skill">micro:bit<span class="count">35</span></span>
+      <span class="skill">TensorFlow.js<span class="count">24</span></span>
+      <span class="skill">WebRTC<span class="count">19</span></span>
+      <span class="skill">Docker<span class="count">17</span></span>
+      <span class="skill">Linux<span class="count">22</span></span>
+      <span class="skill">Node-RED<span class="count">14</span></span>
+      <span class="skill">3D Printing<span class="count">20</span></span>
+      <span class="skill">Cybersecurity<span class="count">26</span></span>
+      <span class="skill">HTML/CSS<span class="count">39</span></span>
+      <span class="skill">Caffeine Tolerance<span class="count">∞</span></span>
+      <span class="skill">Bug-to-Feature Conversion<span class="count">42</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ACTIVITY -->
+<div class="card">
+  <div class="section"><div class="sec-h">Activity</div></div>
+  <div class="post">
+    <div class="post-author"><div class="post-av">🤖</div><div><div class="post-name">Workshop-DIY</div><div class="post-meta">1d · 🌍</div></div></div>
+    <div class="post-body">Thrilled to announce our <b>39th app</b> is live! 🎉 From a single robot control app in 2023 to a complete ecosystem covering robotics, AI, electronics, 3D printing, programming, and cybersecurity.<br><br>All free. All browser-based. Zero installation.<br><br>Check it out: abourdim.github.io/apps<br><br>#EdTech #STEM #Robotics #OpenSource #MadeInFrance 🇫🇷</div>
+    <div class="post-actions"><span>👍 847</span><span>💬 42 comments</span><span>🔄 127 reposts</span></div>
+  </div>
+  <div class="post">
+    <div class="post-author"><div class="post-av">🤖</div><div><div class="post-name">Workshop-DIY</div><div class="post-meta">1w · 🌍</div></div></div>
+    <div class="post-body">When a 10-year-old in your workshop trains an AI model with 98% accuracy using <b>teachable-machine</b> and casually says "it was easier than math homework." 🧠✨<br><br>This is why we do what we do.<br><br>#AIEducation #KidsCoding #FutureEngineers</div>
+    <div class="post-actions"><span>👍 634</span><span>💬 28 comments</span><span>🔄 89 reposts</span></div>
+  </div>
+  <div class="post">
+    <div class="post-author"><div class="post-av">🤖</div><div><div class="post-name">Workshop-DIY</div><div class="post-meta">2w · 🌍</div></div></div>
+    <div class="post-body">Our ESP32 robot kit has officially survived its <b>47th drop</b> from a workshop table. 🤖💪<br><br>Engineers are calling it "surprisingly indestructible." The robot had no comment.<br><br>Available via our HelloAsso page. Assembly required. Explosions not included.<br><br>#Robotics #ESP32 #MakerEducation</div>
+    <div class="post-actions"><span>👍 412</span><span>💬 31 comments</span><span>🔄 56 reposts</span></div>
+  </div>
+</div>
+
+<!-- RECOMMENDATIONS -->
+<div class="card">
+  <div class="section">
+    <div class="sec-h">Recommendations</div>
+    <div class="rec"><div class="rec-av">👩‍🏫</div><div><div class="rec-name">Marie F.</div><div class="rec-role">STEM Teacher · Collège Victor Hugo</div><div class="rec-text">"Workshop-DIY transformed my STEM classes. Zero setup time means students actually learn instead of troubleshooting installations. The linux-kids-lab alone saved me 20 hours of curriculum prep."</div></div></div>
+    <div class="rec"><div class="rec-av">👨</div><div><div class="rec-name">Marc L.</div><div class="rec-role">Senior Software Engineer · TechCorp</div><div class="rec-text">"My 14-year-old used Workshop-DIY's docker-lab and then explained containerization to me at dinner. I've been a software engineer for 15 years. I'm simultaneously proud and concerned."</div></div></div>
+    <div class="rec"><div class="rec-av">👧</div><div><div class="rec-name">Amira T.</div><div class="rec-role">Student · Age 12</div><div class="rec-text">"I built a robot, trained an AI, and hacked a printer (ethically!!!) all in one semester. Best association ever. Also the WiFi password situation is hilarious."</div></div></div>
+  </div>
+</div>
+
+</div>
+  <script src="nav.js"></script>
+</body>
+</html>

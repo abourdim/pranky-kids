@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // SKILL TREE</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Syne:wght@700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--g:#00ff41;--c:#00d4ff;--r:#ff0033;--o:#ff8800;--y:#ffd700;--p:#bf00ff}
+html,body{height:100%;overflow:hidden}
+body{background:#050508;color:#fff;font-family:'JetBrains Mono',monospace;font-size:12px}
+.crt{position:fixed;inset:0;z-index:999;pointer-events:none}.crt::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 1px,transparent 3px)}
+
+.app{position:fixed;inset:0;display:flex;flex-direction:column;z-index:1}
+.hud{padding:5px 12px;display:flex;justify-content:space-between;align-items:center;font-size:7px;color:rgba(0,255,65,.25);border-bottom:1px solid rgba(0,255,65,.04);flex-shrink:0;background:#050508}
+.hud-b{border-bottom:none;border-top:1px solid rgba(0,255,65,.04)}
+
+/* HEADER */
+.header{padding:10px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(0,255,65,.04);flex-shrink:0;background:rgba(0,0,0,.3)}
+.h-avatar{width:40px;height:40px;border:1px solid var(--g);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(0,255,65,.02)}
+.h-info{flex:1}
+.h-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--g)}
+.h-title{font-size:7px;color:rgba(0,255,65,.3);letter-spacing:2px}
+.h-xp{margin-top:4px;display:flex;align-items:center;gap:6px}
+.xp-bar{flex:1;max-width:200px;height:6px;background:rgba(0,255,65,.06);border-radius:3px;overflow:hidden}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--c));border-radius:3px;box-shadow:0 0 6px rgba(0,255,65,.3);transition:width .5s}
+.xp-text{font-size:7px;color:rgba(0,255,65,.4)}
+.h-stats{display:flex;gap:10px}
+.h-stat{text-align:center;padding:4px 8px;border:1px solid rgba(0,255,65,.04);border-radius:3px}
+.h-stat .v{font-size:12px;font-weight:800;color:var(--y)}.h-stat .l{font-size:5px;color:rgba(0,255,65,.2);letter-spacing:1px}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid rgba(0,255,65,.04);flex-shrink:0;background:#050508}
+.tab{flex:1;padding:6px;text-align:center;font-size:7px;color:rgba(0,255,65,.3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;letter-spacing:1px}
+.tab:hover{color:var(--g);background:rgba(0,255,65,.02)}
+.tab.on{color:var(--g);border-bottom-color:var(--g);background:rgba(0,255,65,.03)}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:12px}
+.content::-webkit-scrollbar{width:3px}.content::-webkit-scrollbar-thumb{background:rgba(0,255,65,.1)}
+.pane{display:none}.pane.on{display:block}
+
+/* ═══ SKILL TREE ═══ */
+.branch{margin-bottom:16px}
+.branch-h{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(0,255,65,.04)}
+.branch-emoji{font-size:18px}.branch-name{font-size:11px;font-weight:700}.branch-prog{margin-left:auto;font-size:7px;color:rgba(0,255,65,.3)}
+.nodes{display:flex;gap:4px;flex-wrap:wrap}
+.node{width:80px;padding:8px 6px;border:1px solid rgba(0,255,65,.04);border-radius:4px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(0,255,65,.005);position:relative}
+.node:hover{border-color:rgba(0,255,65,.15);background:rgba(0,255,65,.02)}
+.node.unlocked{border-color:var(--g);background:rgba(0,255,65,.03)}.node.unlocked::after{content:'✓';position:absolute;top:2px;right:4px;font-size:7px;color:var(--g)}
+.node.locked{opacity:.35;border-style:dashed}.node.locked::after{content:'🔒';position:absolute;top:2px;right:4px;font-size:6px}
+.node .e{font-size:16px;display:block;margin-bottom:2px}
+.node .n{font-size:6px;color:var(--c);font-weight:700;display:block}
+.node .xp{font-size:5px;color:rgba(0,255,65,.25);margin-top:2px}
+.connector{display:inline-block;width:12px;text-align:center;color:rgba(0,255,65,.1);font-size:8px;align-self:center}
+
+/* ═══ ACHIEVEMENTS ═══ */
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
+.ach{padding:10px;border:1px solid rgba(0,255,65,.04);border-radius:4px;display:flex;gap:8px;background:rgba(0,255,65,.005);transition:all .2s;cursor:default}
+.ach:hover{border-color:rgba(0,255,65,.12);background:rgba(0,255,65,.015)}
+.ach.earned{border-color:var(--y);background:rgba(255,215,0,.02)}
+.ach.earned .ach-icon{color:var(--y);text-shadow:0 0 8px rgba(255,215,0,.3)}
+.ach-icon{font-size:20px;flex-shrink:0;width:28px;text-align:center;opacity:.5}
+.ach.earned .ach-icon{opacity:1}
+.ach-info{flex:1}
+.ach-name{font-size:8px;font-weight:700;color:var(--c)}.ach.earned .ach-name{color:var(--y)}
+.ach-desc{font-size:6px;color:rgba(0,255,65,.3);margin-top:2px;line-height:1.7}
+.ach-xp{font-size:6px;color:var(--g);margin-top:3px}
+.ach.locked .ach-icon{filter:grayscale(1)}.ach.locked .ach-name{color:#444}.ach.locked .ach-desc{color:#333}
+
+/* ═══ LEADERBOARD ═══ */
+.lb-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid rgba(0,255,65,.03);border-radius:3px;margin-bottom:3px;background:rgba(0,255,65,.005);transition:all .15s}
+.lb-row:hover{background:rgba(0,255,65,.015);border-color:rgba(0,255,65,.08)}
+.lb-row.top3{border-color:rgba(255,215,0,.12);background:rgba(255,215,0,.01)}
+.lb-rank{font-size:10px;font-weight:800;width:24px;text-align:center}
+.lb-rank.g{color:var(--y)}.lb-rank.s{color:#aaa}.lb-rank.b{color:#cd7f32}
+.lb-avatar{font-size:14px}.lb-name{font-size:9px;font-weight:700;color:var(--g);flex:1}
+.lb-lvl{font-size:7px;color:var(--c);width:40px;text-align:center}
+.lb-xp{font-size:8px;font-weight:700;color:var(--y);width:60px;text-align:right}
+.lb-bar{width:80px;height:4px;background:rgba(0,255,65,.06);border-radius:2px;overflow:hidden}
+.lb-bar-f{height:100%;background:var(--g);border-radius:2px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="crt"></div>
+<div class="app">
+<div class="hud"><span>SKILL_TREE.sys v2.0</span><span>WORKSHOP-DIY // MAKER PROGRESSION</span></div>
+
+<div class="header">
+  <div class="h-avatar">🤖</div>
+  <div class="h-info">
+    <div class="h-name">MAKER_LEVEL_42</div>
+    <div class="h-title">// WORKSHOP-DIY MEMBER</div>
+    <div class="h-xp">
+      <div class="xp-bar"><div class="xp-fill" style="width:68%"></div></div>
+      <div class="xp-text">6,800 / 10,000 XP</div>
+    </div>
+  </div>
+  <div class="h-stats">
+    <div class="h-stat"><div class="v">42</div><div class="l">LEVEL</div></div>
+    <div class="h-stat"><div class="v">24</div><div class="l">SKILLS</div></div>
+    <div class="h-stat"><div class="v">15</div><div class="l">BADGES</div></div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab on" onclick="showPane('tree')">🌳 SKILL TREE</div>
+  <div class="tab" onclick="showPane('ach')">🏆 ACHIEVEMENTS</div>
+  <div class="tab" onclick="showPane('lb')">📊 LEADERBOARD</div>
+</div>
+
+<div class="content">
+  <div class="pane on" id="pTree"></div>
+  <div class="pane" id="pAch"></div>
+  <div class="pane" id="pLb"></div>
+</div>
+
+<div class="hud hud-b"><span>39 APPS // 7 DOMAINS // ∞ POSSIBILITIES</span><span>// bugs are just surprise features</span></div>
+</div>
+
+<script>
+const BRANCHES=[
+  {e:"🤖",n:"ROBOTICS",col:"#00d4ff",nodes:[
+    {e:"🔌",n:"USB Connect",xp:50,u:true},{e:"📡",n:"BLE Pairing",xp:75,u:true},{e:"🎮",n:"Joystick Control",xp:100,u:true},{e:"🤖",n:"Bit:Bot Master",xp:200,u:true},{e:"🏎️",n:"Line Follow",xp:150,u:false},{e:"🧩",n:"BLE Playground",xp:175,u:false},{e:"🎛️",n:"Custom Remote",xp:200,u:false},{e:"🗣️",n:"Voice Control",xp:300,u:false}
+  ]},
+  {e:"💻",n:"PROGRAMMING",col:"#00ff41",nodes:[
+    {e:"📝",n:"First HTML",xp:50,u:true},{e:"🎨",n:"CSS Styling",xp:75,u:true},{e:"⚡",n:"JavaScript",xp:100,u:true},{e:"🐧",n:"Linux Terminal",xp:150,u:true},{e:"🔀",n:"Git Version Ctrl",xp:175,u:false},{e:"🐳",n:"Docker Basics",xp:200,u:false},{e:"🔴",n:"Node-RED Flows",xp:225,u:false},{e:"🧱",n:"MakeCode Pro",xp:250,u:false}
+  ]},
+  {e:"🧠",n:"ARTIFICIAL INTELLIGENCE",col:"#bf00ff",nodes:[
+    {e:"📸",n:"Face Detection",xp:100,u:true},{e:"😎",n:"Face Tracking",xp:125,u:true},{e:"🪄",n:"Hand Magic",xp:150,u:true},{e:"🧠",n:"Gesture Training",xp:200,u:false},{e:"✨",n:"Prompt Master",xp:175,u:false},{e:"🤖",n:"AI + Robot",xp:300,u:false}
+  ]},
+  {e:"🔐",n:"CYBERSECURITY",col:"#ff0033",nodes:[
+    {e:"🔑",n:"Password Basics",xp:50,u:true},{e:"💰",n:"Crypto 101",xp:75,u:true},{e:"🔐",n:"Encryption",xp:100,u:true},{e:"🛡️",n:"VPN Knowledge",xp:125,u:false},{e:"🕵️",n:"Pentest Intro",xp:200,u:false},{e:"🏴‍☠️",n:"CTF Player",xp:300,u:false}
+  ]},
+  {e:"⚡",n:"ELECTRONICS & HARDWARE",col:"#ff8800",nodes:[
+    {e:"💡",n:"First LED",xp:50,u:true},{e:"🔋",n:"Circuit Basics",xp:75,u:true},{e:"⚡",n:"ESP32 Setup",xp:100,u:false},{e:"💡",n:"WLED Neopixel",xp:125,u:false},{e:"🏡",n:"Smart Home",xp:200,u:false},{e:"🔗",n:"Network (DHCP)",xp:175,u:false},{e:"🖨️",n:"3D Print",xp:200,u:false}
+  ]}
+];
+
+const ACHIEVEMENTS=[
+  {e:"🎮",n:"FIRST BOOT",d:"Open your first Workshop-DIY app",xp:50,earned:true},
+  {e:"🤖",n:"ROBOT WHISPERER",d:"Successfully connect to a robot via Bluetooth",xp:100,earned:true},
+  {e:"🐧",n:"TERMINAL VELOCITY",d:"Execute 50 commands in linux-kids-lab",xp:150,earned:true},
+  {e:"🪄",n:"HAND WIZARD",d:"Trigger all effects in magic-hands",xp:100,earned:true},
+  {e:"🕵️",n:"FACE OFF",d:"Score 500+ points in face-quest",xp:200,earned:true},
+  {e:"💻",n:"VIEW SOURCE",d:"Inspect the source code of any app (we see you)",xp:75,earned:true},
+  {e:"☕",n:"CAFFEINATED",d:"Use Workshop-DIY for 3+ hours straight",xp:100,earned:true},
+  {e:"🐛",n:"BUG HUNTER",d:'Find a bug and say "it\'s a feature"',xp:150,earned:true},
+  {e:"⚡",n:"HARDWARE HERO",d:"Make an LED blink with ESP32",xp:100,earned:false},
+  {e:"🔐",n:"ETHICAL HACKER",d:"Complete pentest-lab without looking at hints",xp:300,earned:false},
+  {e:"🎨",n:"PIXEL PERFECT",d:"Create a 32x32 sprite in pixel-gateway",xp:100,earned:false},
+  {e:"🏫",n:"TEACHER MODE",d:"Help another student debug their code",xp:200,earned:false},
+  {e:"🧠",n:"AI OVERLORD",d:"Train a model with 95%+ accuracy",xp:250,earned:false},
+  {e:"🐳",n:"CONTAINER KING",d:"Deploy your first Docker container",xp:150,earned:false},
+  {e:"🔀",n:"GIT GOOD",d:"Resolve a merge conflict without crying",xp:200,earned:false},
+  {e:"💥",n:"STACK OVERFLOW",d:"Copy code from StackOverflow (we all do it)",xp:50,earned:false},
+  {e:"🎉",n:"39 CLUB",d:"Open every single one of the 39 apps",xp:500,earned:false},
+  {e:"⬆️⬆️⬇️⬇️",n:"KONAMI",d:"You know the code. You tried the code.",xp:100,earned:false},
+  {e:"🔥",n:"ON FIRE",d:"Complete 5 workshops in one month",xp:300,earned:false},
+  {e:"🌍",n:"ECO WARRIOR",d:"Finish all save-our-planet quizzes",xp:150,earned:false},
+];
+
+const LB_DATA=[
+  {a:"🧠",n:"CyberYassine",lvl:67,xp:42000},{a:"🤖",n:"RoboLucas",lvl:58,xp:35000},{a:"💻",n:"CodeAmira",lvl:52,xp:31000},
+  {a:"⚡",n:"ElectroMax",lvl:48,xp:28000},{a:"🔐",n:"HackSofia",lvl:45,xp:26500},{a:"🎨",n:"PixelNour",lvl:42,xp:24000},
+  {a:"🐧",n:"TerminalAli",lvl:40,xp:22000},{a:"🐳",n:"DockerTom",lvl:38,xp:20000},{a:"🔴",n:"FlowZoe",lvl:35,xp:18000},
+  {a:"🧱",n:"MakeHugo",lvl:32,xp:16000},{a:"🪄",n:"MagicLina",lvl:30,xp:14500},{a:"🕵️",n:"FaceOmar",lvl:28,xp:13000},
+  {a:"💡",n:"LEDMarc",lvl:25,xp:11000},{a:"🏡",n:"IoTSara",lvl:22,xp:9500},{a:"✨",n:"PromptLeo",lvl:20,xp:8000}
+];
+
+// BUILD TREE
+const pTree=document.getElementById('pTree');
+BRANCHES.forEach(b=>{
+  const total=b.nodes.length,unlocked=b.nodes.filter(n=>n.u).length;
+  let html=`<div class="branch"><div class="branch-h"><span class="branch-emoji">${b.e}</span><span class="branch-name" style="color:${b.col}">${b.n}</span><span class="branch-prog">${unlocked}/${total}</span></div><div class="nodes">`;
+  b.nodes.forEach((n,i)=>{
+    if(i>0)html+=`<span class="connector">${n.u?'━':'┄'}</span>`;
+    html+=`<div class="node ${n.u?'unlocked':'locked'}"><span class="e">${n.e}</span><span class="n">${n.n}</span><span class="xp">+${n.xp} XP</span></div>`;
+  });
+  html+=`</div></div>`;
+  pTree.innerHTML+=html;
+});
+
+// BUILD ACHIEVEMENTS
+const pAch=document.getElementById('pAch');
+pAch.innerHTML=`<div style="font-size:8px;color:var(--c);margin-bottom:10px;letter-spacing:2px">${ACHIEVEMENTS.filter(a=>a.earned).length}/${ACHIEVEMENTS.length} EARNED</div><div class="ach-grid">${ACHIEVEMENTS.map(a=>`<div class="ach ${a.earned?'earned':'locked'}"><div class="ach-icon">${a.e}</div><div class="ach-info"><div class="ach-name">${a.n}</div><div class="ach-desc">${a.d}</div><div class="ach-xp">${a.earned?'✓ ':''} +${a.xp} XP</div></div></div>`).join('')}</div>`;
+
+// BUILD LEADERBOARD
+const pLb=document.getElementById('pLb');
+pLb.innerHTML=LB_DATA.map((p,i)=>{
+  const rankCls=i===0?'g':i===1?'s':i===2?'b':'';
+  const top3=i<3?'top3':'';
+  return `<div class="lb-row ${top3}"><div class="lb-rank ${rankCls}">#${i+1}</div><div class="lb-avatar">${p.a}</div><div class="lb-name">${p.n}</div><div class="lb-lvl">LVL ${p.lvl}</div><div class="lb-bar"><div class="lb-bar-f" style="width:${p.xp/420}%"></div></div><div class="lb-xp">${(p.xp/1000).toFixed(1)}K</div></div>`;
+}).join('');
+
+// TABS
+function showPane(id){
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('p'+id.charAt(0).toUpperCase()+id.slice(1)).classList.add('on');
+  event.target.classList.add('on');
+}
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

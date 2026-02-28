@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // TECH HOROSCOPE</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#05050a;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;overflow-x:hidden}
+.stars{position:fixed;inset:0;z-index:0}
+.star{position:absolute;width:1px;height:1px;background:#fff;border-radius:50%}
+
+.content{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:16px}
+
+.header{text-align:center;padding:20px 0 12px}
+.h-pre{font-size:7px;color:rgba(191,0,255,.3);letter-spacing:4px}
+.h-title{font-family:'Playfair Display',serif;font-size:clamp(24px,5vw,36px);font-weight:700;background:linear-gradient(135deg,#bf00ff,#ffd700,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.h-date{font-size:8px;color:rgba(255,255,255,.15);margin-top:2px;letter-spacing:2px}
+
+/* FORTUNE */
+.fortune{text-align:center;margin:12px 0;padding:12px;border:1px solid rgba(191,0,255,.06);border-radius:8px;background:rgba(191,0,255,.01);cursor:pointer;transition:all .2s}
+.fortune:hover{border-color:rgba(191,0,255,.12)}
+.fortune-emoji{font-size:28px;margin-bottom:4px}
+.fortune-text{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:rgba(255,215,0,.5);line-height:1.8}
+.fortune-tip{font-size:7px;color:rgba(255,255,255,.1);margin-top:4px}
+
+/* SIGNS GRID */
+.signs{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px;margin-top:12px}
+.sign{border:1px solid rgba(191,0,255,.04);border-radius:8px;padding:12px;background:rgba(191,0,255,.005);transition:all .2s;cursor:default}
+.sign:hover{border-color:rgba(191,0,255,.12);background:rgba(191,0,255,.01)}
+.sign-h{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.sign-emoji{font-size:28px;filter:drop-shadow(0 2px 6px rgba(191,0,255,.15))}
+.sign-name{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#ffd700}
+.sign-dates{font-size:7px;color:rgba(255,255,255,.15)}
+.sign-reading{font-size:10px;color:rgba(255,255,255,.35);line-height:2;margin-bottom:6px}
+.sign-stats{display:flex;gap:8px;flex-wrap:wrap}
+.sign-stat{font-size:7px;padding:2px 8px;border-radius:10px;border:1px solid rgba(191,0,255,.06);color:rgba(191,0,255,.3)}
+.sign-compat{font-size:7px;color:rgba(255,215,0,.2);margin-top:4px}
+
+.footer{text-align:center;padding:16px;font-size:6px;color:rgba(191,0,255,.1);letter-spacing:2px;line-height:2.5}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="stars" id="stars"></div>
+
+<div class="content">
+<div class="header">
+  <div class="h-pre">WORKSHOP-DIY PRESENTS</div>
+  <div class="h-title">Tech Horoscope</div>
+  <div class="h-date" id="dateStr"></div>
+</div>
+
+<div class="fortune" id="fortune" onclick="newFortune()">
+  <div class="fortune-emoji">🔮</div>
+  <div class="fortune-text" id="fortuneText">Click to receive your daily tech fortune...</div>
+  <div class="fortune-tip">TAP FOR NEW FORTUNE</div>
+</div>
+
+<div class="signs" id="signs"></div>
+
+<div class="footer">
+  WORKSHOP-DIY · ASSOCIATION LOI 1901 · FRANCE<br>
+  // FOR ENTERTAINMENT PURPOSES ONLY · BUGS ARE STILL FEATURES REGARDLESS OF YOUR SIGN<br>
+  // COFFEE COMPATIBILITY: UNIVERSAL
+</div>
+</div>
+
+<script>
+// Stars
+const starsEl=document.getElementById('stars');
+for(let i=0;i<150;i++){
+  const s=document.createElement('div');s.className='star';
+  s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';
+  s.style.width=s.style.height=(Math.random()*2+.5)+'px';
+  s.style.opacity=Math.random()*.5+.1;
+  s.style.animation=`twinkle ${Math.random()*3+2}s ease-in-out infinite ${Math.random()*2}s`;
+  starsEl.appendChild(s);
+}
+const style=document.createElement('style');
+style.textContent='@keyframes twinkle{0%,100%{opacity:.1}50%{opacity:.6}}';
+document.head.appendChild(style);
+
+// Date
+const d=new Date();
+document.getElementById('dateStr').textContent=d.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+// FORTUNES
+const FORTUNES=[
+  "The BLE connection you seek is closer than you think.",
+  "A bug will reveal itself today. It was a feature all along.",
+  "Mercury is in retrograde. Your Docker containers will restart unexpectedly.",
+  "Your WiFi password alignment is strong today. It remains password123.",
+  "A 10-year-old will teach you something profound about technology.",
+  "The stars indicate your robot will dance today — intentionally or otherwise.",
+  "Your coffee reserves are cosmically aligned. Drink abundantly.",
+  "Today's lucky number is 42. This is always the lucky number.",
+  "The universe whispers: 'Have you tried turning it off and on again?'",
+  "A pull request from the future awaits your review.",
+  "The ESP32 in your chart house suggests hardware experiments.",
+  "Your git commit messages will be unusually eloquent today.",
+  "Mars enters your debugging zone. Breakpoints will be powerful.",
+  "A wild Segfault appears. It is... actually a feature.",
+  "The cosmos suggest you shouldn't deploy to production today. (It's Friday.)",
+  "Your MediaPipe alignment is perfect. Wave your hands with confidence.",
+  "An old USB cable will resurface. Cherish it.",
+  "The stars foretell exactly 39 good things happening to you.",
+];
+
+function newFortune(){
+  document.getElementById('fortuneText').textContent=FORTUNES[Math.floor(Math.random()*FORTUNES.length)];
+}
+
+// SIGNS
+const SIGNS=[
+{e:"🤖",n:"The Robot",dates:"Jan 1 - Feb 14",reading:"Your servo motors are aligned for success today. BLE connections will be strong and reliable. A younger maker will ask for your help — share your knowledge generously. Avoid firmware updates during Mercury retrograde.",stats:["Lucky port: GPIO 13","Power: 87%","Mood: Autonomous"],compat:"Best match: The Wizard 🧙"},
+{e:"🧙",n:"The Wizard",dates:"Feb 15 - Mar 31",reading:"MediaPipe energies surround you. Your hand gestures will be tracked with unusual precision today. Creative projects are strongly favored — pixel art may surprise you. Trust the particles.",stats:["Lucky framework: MediaPipe","Aura: Magical","Creativity: 95%"],compat:"Best match: The Robot 🤖"},
+{e:"🔐",n:"The Hacker",dates:"Apr 1 - May 15",reading:"Your ethical hacking skills peak today. Vulnerabilities will reveal themselves effortlessly. Remember: with great power comes great responsibility (and a better WiFi password, hopefully). SQL injections are especially potent.",stats:["Lucky exploit: XSS","Stealth: Maximum","Ethics: 100%"],compat:"Best match: The Penguin 🐧"},
+{e:"🐧",n:"The Penguin",dates:"May 16 - Jun 30",reading:"Terminal commands flow through you like water today. Your bash scripts will execute flawlessly on the first try (a rare cosmic event). Avoid `rm -rf` during this vulnerable alignment.",stats:["Lucky command: sudo","Shell: Blessed","Uptime: ∞"],compat:"Best match: The Hacker 🔐"},
+{e:"⚡",n:"The Circuit",dates:"Jul 1 - Aug 15",reading:"Electronic energies pulse strongly. Soldering will be precise, and your ESP32 projects will compile without errors. The stars warn against touching hot components without thermal protection.",stats:["Lucky voltage: 3.3V","Resistance: Low","Current: Flowing"],compat:"Best match: The Maker 🔧"},
+{e:"🧠",n:"The Neural Net",dates:"Aug 16 - Sep 30",reading:"Your AI training accuracy reaches cosmic highs today. Gesture recognition models will converge faster than usual. The universe suggests expanding your training dataset for even better results.",stats:["Lucky accuracy: 98%","Epochs: Aligned","Loss: Minimal"],compat:"Best match: The Wizard 🧙"},
+{e:"🐳",n:"The Container",dates:"Oct 1 - Nov 15",reading:"Docker energies are strong. Your containers will orchestrate harmoniously. Today is favorable for explaining containerization to family members — they might actually understand. Volumes are well-mounted in your chart.",stats:["Lucky image: alpine","Layers: Clean","Network: Bridge"],compat:"Best match: The Penguin 🐧"},
+{e:"☕",n:"The Caffeinator",dates:"Nov 16 - Dec 31",reading:"Coffee reserves are cosmically abundant today — a rare alignment. Your productivity will be superhuman between the hours of 9am and 11am. After that, seek a refill immediately. The stars are powered by caffeine.",stats:["Lucky brew: Espresso","Energy: Maximum","Cups today: ∞"],compat:"Best match: Everyone ❤️"},
+];
+
+document.getElementById('signs').innerHTML=SIGNS.map(s=>`<div class="sign">
+  <div class="sign-h"><span class="sign-emoji">${s.e}</span><div><div class="sign-name">${s.n}</div><div class="sign-dates">${s.dates}</div></div></div>
+  <div class="sign-reading">${s.reading}</div>
+  <div class="sign-stats">${s.stats.map(st=>`<span class="sign-stat">${st}</span>`).join('')}</div>
+  <div class="sign-compat">${s.compat}</div>
+</div>`).join('');
+
+newFortune();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

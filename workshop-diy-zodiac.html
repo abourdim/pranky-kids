@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // TECH ZODIAC</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050510;color:#c0b8ff;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;padding:16px}
+.crt{position:fixed;inset:0;z-index:99;pointer-events:none}.crt::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.02) 0,rgba(0,0,0,.02) 1px,transparent 1px,transparent 3px)}
+
+.header{text-align:center;padding:20px 0;position:relative}
+.header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(100,80,255,.04),transparent 70%)}
+.h-title{font-family:'Syne',sans-serif;font-size:clamp(22px,5vw,34px);font-weight:800;background:linear-gradient(135deg,#8b5cf6,#6366f1,#0ea5e9);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.h-sub{font-size:7px;color:rgba(139,92,246,.3);letter-spacing:3px;margin-top:2px}
+
+/* ZODIAC WHEEL */
+.wheel{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:500px;margin:14px auto}
+.sign{width:72px;text-align:center;padding:8px 4px;border-radius:8px;border:1px solid rgba(139,92,246,.06);cursor:pointer;transition:all .2s;background:rgba(139,92,246,.01)}
+.sign:hover,.sign.sel{background:rgba(139,92,246,.06);border-color:rgba(139,92,246,.2);transform:scale(1.05)}
+.sign .emoji{font-size:24px;margin-bottom:2px}.sign .name{font-size:7px;color:rgba(139,92,246,.4);letter-spacing:1px}.sign .month{font-size:6px;color:rgba(139,92,246,.2)}
+
+/* RESULT */
+.result{max-width:500px;margin:16px auto;display:none}
+.result.on{display:block;animation:fadeIn .5s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.res-card{border:1px solid rgba(139,92,246,.08);border-radius:10px;padding:16px;background:rgba(139,92,246,.01);text-align:center}
+.res-emoji{font-size:56px;margin-bottom:6px;filter:drop-shadow(0 4px 12px rgba(139,92,246,.2))}
+.res-sign{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#8b5cf6;margin-bottom:2px}
+.res-dates{font-size:8px;color:rgba(139,92,246,.3);margin-bottom:8px}
+.res-desc{font-size:10px;color:rgba(200,184,255,.6);line-height:2.2;margin-bottom:10px;text-align:left;padding:0 8px}
+
+.res-stats{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:10px 0;text-align:left}
+.rs{padding:6px 8px;border:1px solid rgba(139,92,246,.04);border-radius:4px;background:rgba(139,92,246,.01)}
+.rs .l{font-size:6px;color:rgba(139,92,246,.3);letter-spacing:1px}.rs .v{font-size:10px;color:#c0b8ff;font-weight:700;margin-top:1px}
+
+.res-compat{margin-top:10px;padding-top:8px;border-top:1px solid rgba(139,92,246,.04)}
+.res-compat h3{font-size:8px;color:rgba(139,92,246,.3);letter-spacing:2px;margin-bottom:4px}
+.compat-row{display:flex;gap:8px;justify-content:center;margin-top:4px}
+.compat-app{text-align:center;font-size:7px;color:rgba(139,92,246,.4)}
+.compat-app .ce{font-size:20px}
+
+.footer{text-align:center;margin-top:20px;font-size:6px;color:rgba(139,92,246,.1);letter-spacing:2px;line-height:2.2}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="crt"></div>
+
+<div class="header">
+  <div class="h-title">TECH ZODIAC</div>
+  <div class="h-sub">WHAT WORKSHOP-DIY APP ARE YOU?</div>
+</div>
+
+<div class="wheel" id="wheel"></div>
+<div class="result" id="result"></div>
+
+<div class="footer">
+  WORKSHOP-DIY ASTROLOGY DIVISION · NOT REAL ASTROLOGY · BUGS ARE FEATURES IN ALL SIGNS<br>
+  // Your app compatibility may vary. Consult your terminal before making life decisions.
+</div>
+
+<script>
+const SIGNS=[
+{emoji:"🤖",sign:"The Robot",month:"JAN",dates:"Jan 1 – Jan 31",app:"bit-bot",
+desc:"You are methodical, reliable, and occasionally drop off tables but always bounce back. You follow instructions precisely — unless someone tells you to dance, in which case you improvise beautifully. Your Bluetooth connection to others is strong, though sometimes Chrome disconnects you for no reason.",
+element:"HARDWARE",planet:"ESP32",lucky:"Bug #7",strength:"Resilience (47 drops)",weakness:"BLE timeouts",compat:["🪄","🧩","🎛️"]},
+
+{emoji:"🪄",sign:"The Wizard",month:"FEB",dates:"Feb 1 – Feb 28",app:"magic-hands",
+desc:"You're mesmerizing, expressive, and leave particle trails everywhere you go. People can't stop watching when you enter a room. You track 21 different aspects of every interaction and respond with visual flair. Your gestures speak louder than words.",
+element:"AI",planet:"MediaPipe",lucky:"Bug #21",strength:"Visual impact",weakness:"Needs good lighting",compat:["🕵️","🧠","✨"]},
+
+{emoji:"🕵️",sign:"The Detective",month:"MAR",dates:"Mar 1 – Mar 31",app:"face-quest",
+desc:"You notice everything. 468 data points per face, and you never share what you find. Privacy is sacred to you. You turn every encounter into a scoring opportunity, and you're surprisingly competitive beneath that cool exterior.",
+element:"CAMERA",planet:"TensorFlow",lucky:"Bug #468",strength:"Observation",weakness:"Scores everything",compat:["🪄","😎","💬"]},
+
+{emoji:"🧠",sign:"The Brain",month:"APR",dates:"Apr 1 – Apr 30",app:"teachable-machine",
+desc:"You learn from every experience and get better every time. Show you something three times and you'll recognize it forever. You bridge the gap between abstract thought and physical action. 98% of the time, you're right.",
+element:"AI",planet:"TensorFlow.js",lucky:"Bug #98",strength:"Adaptability",weakness:"Needs training data",compat:["🪄","✨","🔐"]},
+
+{emoji:"💬",sign:"The Communicator",month:"MAY",dates:"May 1 – May 31",app:"talking-robot",
+desc:"You're the life of every conversation. You listen actively and respond with action. When someone says 'dance,' you don't ask why — you just move. Your emotional intelligence is surprisingly high for someone who speaks in voice commands.",
+element:"VOICE",planet:"Web Speech",lucky:"Bug #11",strength:"Listening",weakness:"Misheard commands",compat:["🤖","🕵️","🚀"]},
+
+{emoji:"🔐",sign:"The Sentinel",month:"JUN",dates:"Jun 1 – Jun 30",app:"pentest-lab",
+desc:"You see vulnerabilities where others see nothing. You're ethical to the core but can't resist testing every lock you encounter. You found the school printer vulnerability and reported it responsibly. Your idea of fun is a good CTF challenge.",
+element:"CYBER",planet:"Kali Linux",lucky:"Bug #SQL",strength:"Security awareness",weakness:"Tests everything",compat:["🐧","🧠","⚡"]},
+
+{emoji:"🐧",sign:"The Penguin",month:"JUL",dates:"Jul 1 – Jul 31",app:"linux-kids-lab",
+desc:"You live in the terminal. You think in bash commands and dream in pipe operators. You believe everything should be open source, including conversations. You judge people by their .bashrc configuration.",
+element:"TERMINAL",planet:"GNU/Linux",lucky:"Bug #chmod",strength:"Command mastery",weakness:"GUIs confuse you",compat:["🔐","🐳","🔴"]},
+
+{emoji:"🚀",sign:"The Commander",month:"AUG",dates:"Aug 1 – Aug 31",app:"mission-control",
+desc:"You connect people. You're the peer-to-peer link in every group. When things need real-time coordination, you step up. You stream, you chat, you command — all simultaneously. Latency is your enemy.",
+element:"WEBRTC",planet:"Signaling Server",lucky:"Bug #P2P",strength:"Coordination",weakness:"NAT traversal",compat:["💬","🤖","🏡"]},
+
+{emoji:"💡",sign:"The Illuminator",month:"SEP",dates:"Sep 1 – Sep 30",app:"wled-kids-lab",
+desc:"You light up every room. Literally. You have 16 million ways to express yourself and you cycle through them all. Your energy is contagious, your animations are hypnotic, and you run cool on 5V.",
+element:"LED",planet:"Neopixel",lucky:"Bug #RGB",strength:"Expressiveness",weakness:"Power consumption",compat:["⚡","🏡","🎨"]},
+
+{emoji:"🐳",sign:"The Whale",month:"OCT",dates:"Oct 1 – Oct 31",app:"docker-lab",
+desc:"You contain multitudes. You're organized, isolated, and you reproduce perfectly every time. You confuse your parents at dinner. Your idea of a perfect date is building a multi-container stack with docker-compose.",
+element:"DEVOPS",planet:"Docker Hub",lucky:"Bug #ENTRYPOINT",strength:"Organization",weakness:"Image bloat",compat:["🐧","🔴","🔐"]},
+
+{emoji:"✨",sign:"The Prompter",month:"NOV",dates:"Nov 1 – Nov 30",app:"prompt-hero",
+desc:"You always know exactly what to say. You craft the perfect message every time. You're the one who gets the best results from every conversation because you understand context, tone, and specificity.",
+element:"LLM",planet:"Claude",lucky:"Bug #TOKEN",strength:"Communication",weakness:"Verbose sometimes",compat:["🧠","🪄","💬"]},
+
+{emoji:"🎨",sign:"The Artist",month:"DEC",dates:"Dec 1 – Dec 31",app:"pixel-gateway",
+desc:"You see beauty in 8×8 grids. You express yourself one pixel at a time, and somehow it's always exactly right. You export your creations to LED matrices and watch them glow. Your aesthetic is retro but timeless.",
+element:"CREATIVE",planet:"Canvas API",lucky:"Bug #PIXEL",strength:"Creativity",weakness:"Limited resolution",compat:["💡","🪄","🧩"]},
+];
+
+const wheel=document.getElementById('wheel');
+SIGNS.forEach((s,i)=>{
+  const el=document.createElement('div');el.className='sign';
+  el.innerHTML=`<div class="emoji">${s.emoji}</div><div class="name">${s.sign}</div><div class="month">${s.month}</div>`;
+  el.onclick=()=>showResult(i);
+  wheel.appendChild(el);
+});
+
+function showResult(i){
+  document.querySelectorAll('.sign').forEach((s,j)=>s.classList.toggle('sel',j===i));
+  const s=SIGNS[i];
+  const res=document.getElementById('result');
+  res.innerHTML=`<div class="res-card">
+    <div class="res-emoji">${s.emoji}</div>
+    <div class="res-sign">${s.sign.toUpperCase()}</div>
+    <div class="res-dates">${s.dates} · App: ${s.app}</div>
+    <div class="res-desc">${s.desc}</div>
+    <div class="res-stats">
+      <div class="rs"><div class="l">ELEMENT</div><div class="v">${s.element}</div></div>
+      <div class="rs"><div class="l">RULING PLANET</div><div class="v">${s.planet}</div></div>
+      <div class="rs"><div class="l">LUCKY BUG</div><div class="v">${s.lucky}</div></div>
+      <div class="rs"><div class="l">STRENGTH</div><div class="v">${s.strength}</div></div>
+      <div class="rs"><div class="l">WEAKNESS</div><div class="v">${s.weakness}</div></div>
+      <div class="rs"><div class="l">APP MATCH</div><div class="v">${s.app}</div></div>
+    </div>
+    <div class="res-compat"><h3>COMPATIBLE APPS</h3><div class="compat-row">${s.compat.map(c=>`<div class="compat-app"><div class="ce">${c}</div></div>`).join('')}</div></div>
+  </div>`;
+  res.classList.add('on');
+  res.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

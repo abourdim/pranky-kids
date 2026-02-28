@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MUSÉE WKSHP-DIY</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f3ef;color:#222;font-family:'Playfair Display',serif;font-size:13px;min-height:100vh}
+
+.museum-top{text-align:center;padding:24px 16px 16px;border-bottom:1px solid #ddd}
+.m-name{font-size:clamp(22px,5vw,34px);font-weight:700;letter-spacing:2px;color:#111}
+.m-sub{font-size:10px;color:#999;font-family:'JetBrains Mono',monospace;letter-spacing:3px;margin-top:2px}
+
+/* GALLERY TABS */
+.wings{display:flex;justify-content:center;gap:0;border-bottom:1px solid #ddd;font-family:'JetBrains Mono',monospace;font-size:9px}
+.wing{padding:8px 16px;cursor:pointer;color:#999;border-bottom:2px solid transparent;transition:all .2s;letter-spacing:1px}
+.wing:hover{color:#555}.wing.active{color:#111;border-bottom-color:#111}
+
+/* GALLERY */
+.gallery{max-width:750px;margin:0 auto;padding:20px 16px}
+
+.exhibit{display:flex;gap:20px;margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid #eee;align-items:flex-start}
+@media(max-width:500px){.exhibit{flex-direction:column;align-items:center;text-align:center}}
+
+.artwork{width:120px;height:120px;background:#fff;border:1px solid #e0e0e0;display:flex;align-items:center;justify-content:center;font-size:56px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.05);position:relative}
+.artwork::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.03)}
+.artwork-light{position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:40px;height:4px;background:linear-gradient(90deg,transparent,rgba(255,220,150,.3),transparent);border-radius:2px}
+
+.placard{flex:1}
+.placard-title{font-size:18px;font-weight:700;color:#111;margin-bottom:2px}
+.placard-artist{font-size:11px;color:#888;font-style:italic;margin-bottom:6px;font-family:'JetBrains Mono',monospace}
+.placard-desc{font-size:12px;color:#555;line-height:2;margin-bottom:6px}
+.placard-meta{font-size:9px;color:#aaa;font-family:'JetBrains Mono',monospace;display:flex;gap:12px;flex-wrap:wrap}
+.placard-meta span{display:flex;align-items:center;gap:3px}
+
+/* AUDIO GUIDE */
+.audio-tag{display:inline-flex;align-items:center;gap:3px;font-size:8px;color:#888;border:1px solid #ddd;padding:2px 8px;border-radius:10px;font-family:'JetBrains Mono',monospace;cursor:pointer;margin-top:4px}
+.audio-tag:hover{border-color:#999;color:#555}
+
+.room-label{font-size:9px;color:#bbb;font-family:'JetBrains Mono',monospace;letter-spacing:3px;margin:16px 0 10px;text-align:center}
+
+.museum-footer{text-align:center;padding:16px;border-top:1px solid #ddd;font-size:8px;color:#bbb;font-family:'JetBrains Mono',monospace;letter-spacing:1px;line-height:2.2}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="museum-top">
+  <div class="m-name">Musée Workshop-DIY</div>
+  <div class="m-sub">PERMANENT COLLECTION · EST. 2023 · FRANCE</div>
+</div>
+
+<div class="wings">
+  <div class="wing active" onclick="showWing('all',this)">ALL</div>
+  <div class="wing" onclick="showWing('robotics',this)">ROBOTICS</div>
+  <div class="wing" onclick="showWing('ai',this)">AI</div>
+  <div class="wing" onclick="showWing('cyber',this)">CYBER</div>
+  <div class="wing" onclick="showWing('learning',this)">LEARNING</div>
+</div>
+
+<div class="gallery" id="gallery"></div>
+
+<div class="museum-footer">
+  MUSÉE WORKSHOP-DIY · PERMANENT COLLECTION<br>
+  OPEN DAILY 24/7 · ADMISSION: FREE · WIFI: password123<br>
+  NO FLASH PHOTOGRAPHY · ROBOTS MAY BE TOUCHED (CAREFULLY)
+</div>
+
+<script>
+const EXHIBITS=[
+{e:"🤖",title:"bit-bot (Study for Robot in Chrome)",artist:"Workshop-DIY, 2023",desc:"The foundational work of the collection. A browser-based robot controller utilizing Web Bluetooth — a technique considered radical at the time of its creation. The work has survived 47 physical impacts, each adding to its patina.",meta:{medium:"HTML/CSS/JS, Web Bluetooth",dims:"Infinite × Responsive",acquired:"2023, Founding Collection"},wing:"robotics",audio:"The artist began with a single question: what if a child could control a robot without installing anything?"},
+{e:"🪄",title:"magic-hands (Particles in Space)",artist:"Workshop-DIY × MediaPipe, 2024",desc:"A mesmerizing work in which the viewer becomes the art. 21 hand landmarks are tracked in real-time, conjuring particles that respond to the observer's gestures. A meditation on the boundary between physical and digital.",meta:{medium:"MediaPipe, Canvas API",dims:"21 landmarks × ∞ particles",acquired:"2024"},wing:"ai",audio:"The hand is simultaneously the brush, the canvas, and the audience."},
+{e:"🕵️",title:"face-quest (468 Points of Light)",artist:"Workshop-DIY × TensorFlow, 2024",desc:"The artist maps 468 facial landmarks into a scoring system, turning the human face into a game board. Notable for its strict privacy-first approach: no data leaves the browser. A statement on surveillance culture.",meta:{medium:"TensorFlow.js, Face Mesh",dims:"468 landmarks",acquired:"2024"},wing:"ai",audio:"In an age of facial recognition, this work turns the camera inward — a mirror that plays back."},
+{e:"🔐",title:"pentest-lab (Fortress, Deconstructed)",artist:"Workshop-DIY, 2024",desc:"A controversial work that teaches ethical hacking through interactive simulation. SQL injection, XSS, and privilege escalation are presented as puzzles rather than threats. Acquired after a student used techniques learned here to responsibly disclose a school printer vulnerability.",meta:{medium:"Sandboxed JavaScript",dims:"Variable (attack surface dependent)",acquired:"2024"},wing:"cyber",audio:"The line between hacker and defender is drawn in documentation."},
+{e:"🐧",title:"linux-kids-lab (The Terminal Garden)",artist:"Workshop-DIY, 2024",desc:"A complete Linux filesystem simulated in the browser. The viewer navigates through directories as one might walk through rooms. Commands like 'ls' and 'cd' become gestures of exploration. A love letter to the command line.",meta:{medium:"JavaScript, Virtual FS",dims:"∞ directories deep",acquired:"2024"},wing:"learning",audio:"There is poetry in 'ls -la'. There is power in 'chmod'. There is danger in 'rm -rf'."},
+{e:"🐳",title:"docker-lab (Whale, Contained)",artist:"Workshop-DIY, 2025",desc:"A pedagogical work that has become inadvertently humorous. Young visitors consistently explain containerization concepts more clearly than their professional software engineer parents. The artist did not intend this.",meta:{medium:"Docker concepts, Browser simulation",dims:"N containers × M volumes",acquired:"2025"},wing:"learning",audio:"The whale carries worlds within worlds. Each container a universe. Each 'docker-compose up' a creation myth."},
+{e:"🧠",title:"teachable-machine (The Student Becomes the Teacher)",artist:"Workshop-DIY × TensorFlow.js, 2024",desc:"In this interactive installation, the viewer trains a machine learning model by demonstrating gestures. The model achieves 98% accuracy — a figure that has become legendary in the collection's lore.",meta:{medium:"TensorFlow.js, Webcam",dims:"30 samples × 98% accuracy",acquired:"2024"},wing:"ai",audio:"Show me three times and I will know you forever."},
+{e:"☕",title:"Untitled (Coffee Machine at 8%)",artist:"Anonymous (The Coffee Machine), 2023–present",desc:"A readymade. The association's coffee machine, permanently displaying '8% remaining,' has become the de facto mascot and spiritual center of Workshop-DIY. It has brewed approximately 1,337 cups. Its supply level has never exceeded critical.",meta:{medium:"Espresso, electricity, desperation",dims:"Standard commercial unit",acquired:"2023, found object"},wing:"all",audio:"I was not made to be art. I was made to pour espresso. And yet here I stand, in a museum."},
+];
+
+function render(wing){
+  const g=document.getElementById('gallery');
+  const items=wing==='all'?EXHIBITS:EXHIBITS.filter(e=>e.wing===wing||wing==='all');
+  g.innerHTML=items.map(ex=>`
+    <div class="exhibit">
+      <div style="position:relative">
+        <div class="artwork-light"></div>
+        <div class="artwork">${ex.e}</div>
+      </div>
+      <div class="placard">
+        <div class="placard-title">${ex.title}</div>
+        <div class="placard-artist">${ex.artist}</div>
+        <div class="placard-desc">${ex.desc}</div>
+        <div class="placard-meta">
+          <span>Medium: ${ex.meta.medium}</span>
+          <span>Dimensions: ${ex.meta.dims}</span>
+          <span>Acquired: ${ex.meta.acquired}</span>
+        </div>
+        <div class="audio-tag" onclick="this.textContent=this.textContent.includes('🔊')?'🎧 Audio Guide':'🔊 ${ex.audio}'">🎧 Audio Guide</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function showWing(w,el){
+  document.querySelectorAll('.wing').forEach(w=>w.classList.remove('active'));
+  el.classList.add('active');
+  render(w);
+}
+
+render('all');
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

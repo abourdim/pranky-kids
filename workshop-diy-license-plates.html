@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // LICENSE PLATES</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px}
+.header{text-align:center;margin-bottom:14px}
+.h-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#0af}
+.h-sub{font-size:7px;color:rgba(0,170,255,.2);letter-spacing:3px;margin-top:2px}
+
+.plates{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:600px;margin-bottom:12px}
+
+/* PLATE */
+.plate{width:260px;height:70px;background:#fff;border-radius:6px;border:2px solid #222;display:flex;align-items:center;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.2);cursor:pointer;transition:transform .2s}
+.plate:hover{transform:scale(1.03)}
+.plate .eu-strip{width:24px;height:100%;background:#003399;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;flex-shrink:0}
+.plate .eu-strip .stars{font-size:5px;color:#ffd700;line-height:1}
+.plate .eu-strip .country{font-size:6px;color:#fff;font-weight:700}
+.plate .text-area{flex:1;text-align:center;padding:0 8px}
+.plate .plate-text{font-family:'JetBrains Mono',monospace;font-size:clamp(18px,5vw,24px);font-weight:800;color:#222;letter-spacing:3px}
+.plate .plate-sub{font-size:6px;color:#999;letter-spacing:1px;margin-top:1px}
+.plate .emoji-r{width:24px;height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;background:rgba(0,0,0,.02);flex-shrink:0}
+
+.custom{max-width:300px;width:100%;text-align:center;margin-top:8px}
+.custom h3{font-family:'Syne',sans-serif;font-size:12px;color:#0af;margin-bottom:6px}
+.custom input{width:100%;background:rgba(0,170,255,.03);border:1px solid rgba(0,170,255,.1);border-radius:4px;padding:8px;color:#0af;font-family:inherit;font-size:14px;font-weight:700;text-align:center;letter-spacing:4px;outline:none;text-transform:uppercase}
+.custom input::placeholder{color:rgba(0,170,255,.15);letter-spacing:2px;font-weight:400}
+
+.preview{margin-top:10px}
+.footer{font-size:6px;color:#111;margin-top:auto;letter-spacing:1px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="header">
+  <div class="h-title">🚗 WKSHP PLATES</div>
+  <div class="h-sub">WORKSHOP-DIY VANITY LICENSE PLATES</div>
+</div>
+
+<div class="plates" id="plates"></div>
+
+<div class="custom">
+  <h3>CREATE YOUR OWN</h3>
+  <input id="customText" placeholder="YOUR TEXT" maxlength="10" oninput="updatePreview()">
+  <div class="preview" id="preview"></div>
+</div>
+
+<div class="footer">WKSHP MOTOR VEHICLE DEPT · NOT ROAD LEGAL · BUGS ARE FEATURES ON ALL HIGHWAYS</div>
+
+<script>
+const PLATES=[
+  {text:"BIT-BOT",sub:"ROBOTICS DIVISION",e:"🤖"},
+  {text:"B42-FTR",sub:"BUG #42 · FEATURE",e:"🐛"},
+  {text:"PSW-123",sub:"UNCHANGED SINCE 2023",e:"🔑"},
+  {text:"DKR-LAB",sub:"CONTAINERS ONLY",e:"🐳"},
+  {text:"ESP-32C",sub:"240 MHZ TURBO",e:"⚡"},
+  {text:"LNX-SUD",sub:"ROOT ACCESS",e:"🐧"},
+  {text:"AI-98PC",sub:"ACCURACY GUARANTEED",e:"🧠"},
+  {text:"COF-FEE",sub:"8% FUEL REMAINING",e:"☕"},
+  {text:"WLD-LED",sub:"16M COLORS",e:"💡"},
+  {text:"PEN-TST",sub:"ETHICAL ONLY",e:"🔐"},
+  {text:"HAK-42M",sub:"THE 40TH APP",e:"⬛"},
+  {text:"WKS-039",sub:"39 APPS · 0 INSTALL",e:"🚀"},
+];
+
+const el=document.getElementById('plates');
+PLATES.forEach(p=>{
+  el.innerHTML+=`<div class="plate">
+    <div class="eu-strip"><div class="stars">★★★<br>★★★<br>★★★★</div><div class="country">F</div></div>
+    <div class="text-area"><div class="plate-text">${p.text}</div><div class="plate-sub">${p.sub}</div></div>
+    <div class="emoji-r">${p.e}</div>
+  </div>`;
+});
+
+function updatePreview(){
+  const t=document.getElementById('customText').value.toUpperCase()||'WKSHP';
+  document.getElementById('preview').innerHTML=`<div class="plate" style="margin:8px auto">
+    <div class="eu-strip"><div class="stars">★★★<br>★★★<br>★★★★</div><div class="country">F</div></div>
+    <div class="text-area"><div class="plate-text">${t}</div><div class="plate-sub">CUSTOM · WORKSHOP-DIY</div></div>
+    <div class="emoji-r">🏁</div>
+  </div>`;
+}
+updatePreview();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

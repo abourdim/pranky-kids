@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // GACHA</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#0a0a12;font-family:'JetBrains Mono',monospace;color:#fff;display:flex;align-items:center;justify-content:center}
+
+.machine{width:min(420px,95vw);background:linear-gradient(180deg,#1a1a2e,#0f0f1a);border:2px solid #2a2a4a;border-radius:16px;padding:20px;box-shadow:0 8px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.03);position:relative;overflow:hidden}
+.machine::before{content:'';position:absolute;top:0;left:0;right:0;height:100px;background:radial-gradient(ellipse at top,rgba(255,215,0,.04),transparent);pointer-events:none}
+
+.m-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;text-align:center;color:#ffd700;text-shadow:0 0 12px rgba(255,215,0,.2);margin-bottom:4px}
+.m-sub{text-align:center;font-size:8px;color:rgba(255,215,0,.25);letter-spacing:3px;margin-bottom:14px}
+
+/* REELS */
+.reels{display:flex;gap:6px;justify-content:center;margin-bottom:14px;perspective:600px}
+.reel{width:80px;height:90px;background:#0a0a14;border:2px solid #2a2a4a;border-radius:8px;overflow:hidden;position:relative}
+.reel::before,.reel::after{content:'';position:absolute;left:0;right:0;height:20px;z-index:2;pointer-events:none}
+.reel::before{top:0;background:linear-gradient(180deg,#0a0a14,transparent)}.reel::after{bottom:0;background:linear-gradient(0deg,#0a0a14,transparent)}
+.reel-strip{display:flex;flex-direction:column;align-items:center;transition:transform .1s;position:absolute;width:100%}
+.reel-item{width:100%;height:90px;display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0}
+
+/* RESULT */
+.result{text-align:center;min-height:70px;margin-bottom:10px}
+.result-name{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#00ff41;text-shadow:0 0 10px rgba(0,255,65,.15);opacity:0;transform:scale(.8);transition:all .3s}
+.result-name.show{opacity:1;transform:scale(1)}
+.result-desc{font-size:9px;color:rgba(255,255,255,.3);margin-top:2px;opacity:0;transition:opacity .3s .1s}
+.result-desc.show{opacity:1}
+.result-rarity{display:inline-block;font-size:7px;padding:2px 8px;border-radius:2px;margin-top:4px;letter-spacing:1px;opacity:0;transition:opacity .3s .2s}
+.result-rarity.show{opacity:1}
+.rar-legendary{background:rgba(255,215,0,.1);color:#ffd700;border:1px solid rgba(255,215,0,.2)}
+.rar-epic{background:rgba(0,212,255,.1);color:#00d4ff;border:1px solid rgba(0,212,255,.2)}
+.rar-rare{background:rgba(191,0,255,.1);color:#bf00ff;border:1px solid rgba(191,0,255,.2)}
+.rar-common{background:rgba(0,255,65,.05);color:#00ff41;border:1px solid rgba(0,255,65,.1)}
+
+/* LEVER */
+.lever-area{text-align:center;margin-bottom:12px}
+.lever-btn{background:linear-gradient(180deg,#ffd700,#cc8800);border:2px solid #ffd700;border-radius:10px;padding:10px 32px;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#000;cursor:pointer;letter-spacing:2px;transition:all .15s;box-shadow:0 4px 12px rgba(255,215,0,.2)}
+.lever-btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(255,215,0,.3)}
+.lever-btn:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(255,215,0,.15)}
+.lever-btn:disabled{opacity:.3;cursor:not-allowed;transform:none}
+.spins-left{font-size:8px;color:rgba(255,215,0,.3);margin-top:4px}
+
+/* STATS */
+.stats{display:flex;gap:0;border-top:1px solid rgba(255,255,255,.04);padding-top:10px}
+.stat{flex:1;text-align:center;border-right:1px solid rgba(255,255,255,.03);padding:0 6px}
+.stat:last-child{border:none}
+.stat .v{font-size:16px;font-weight:800;color:#ffd700}.stat .l{font-size:6px;color:rgba(255,255,255,.15);letter-spacing:1px}
+
+/* COLLECTION POPUP */
+.collection{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:100;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.collection.open{display:flex}
+.coll-box{background:#0f0f1a;border:1px solid #2a2a4a;border-radius:12px;padding:16px;max-width:380px;width:90%;max-height:70vh;overflow-y:auto}
+.coll-box::-webkit-scrollbar{width:3px}.coll-box::-webkit-scrollbar-thumb{background:#333}
+.coll-h{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#ffd700;text-align:center;margin-bottom:8px}
+.coll-close{text-align:center;margin-bottom:8px}
+.coll-close button{background:none;border:1px solid #333;border-radius:4px;color:#888;font-family:inherit;font-size:9px;padding:3px 10px;cursor:pointer}
+.coll-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(50px,1fr));gap:4px}
+.coll-item{text-align:center;padding:6px 2px;border:1px solid rgba(255,255,255,.03);border-radius:4px;opacity:.15;transition:all .2s}
+.coll-item.owned{opacity:1;background:rgba(255,255,255,.02)}
+.coll-item .e{font-size:20px}.coll-item .n{font-size:5px;color:rgba(255,255,255,.3);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* WIN FX */
+.win-fx{position:fixed;inset:0;pointer-events:none;z-index:50}
+.confetti{position:absolute;width:6px;height:6px;border-radius:1px;animation:confettiFall 2s ease-in forwards}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="machine">
+  <div class="m-title">APP GACHA</div>
+  <div class="m-sub">SPIN TO DISCOVER WORKSHOP-DIY APPS</div>
+
+  <div class="reels">
+    <div class="reel"><div class="reel-strip" id="r0"></div></div>
+    <div class="reel"><div class="reel-strip" id="r1"></div></div>
+    <div class="reel"><div class="reel-strip" id="r2"></div></div>
+  </div>
+
+  <div class="result">
+    <div class="result-name" id="resName"></div>
+    <div class="result-desc" id="resDesc"></div>
+    <div class="result-rarity" id="resRar"></div>
+  </div>
+
+  <div class="lever-area">
+    <button class="lever-btn" id="spinBtn" onclick="spin()">🎰 SPIN</button>
+    <div class="spins-left">∞ spins remaining // it's free</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="v" id="sTotal">0</div><div class="l">SPINS</div></div>
+    <div class="stat"><div class="v" id="sCollected">0</div><div class="l">COLLECTED</div></div>
+    <div class="stat"><div class="v" id="sLegendary">0</div><div class="l">LEGENDARY</div></div>
+    <div class="stat"><div class="v" id="sStreak">0</div><div class="l">NEW STREAK</div></div>
+  </div>
+
+  <div style="text-align:center;margin-top:8px">
+    <button onclick="document.querySelector('.collection').classList.add('open')" style="background:none;border:1px solid rgba(255,255,255,.05);border-radius:4px;color:rgba(255,255,255,.2);font-family:inherit;font-size:8px;padding:3px 10px;cursor:pointer">📦 VIEW COLLECTION</button>
+  </div>
+</div>
+
+<div class="collection">
+  <div class="coll-box">
+    <div class="coll-h">📦 COLLECTION</div>
+    <div class="coll-close"><button onclick="this.closest('.collection').classList.remove('open')">✕ CLOSE</button></div>
+    <div class="coll-grid" id="collGrid"></div>
+  </div>
+</div>
+<div class="win-fx" id="winFx"></div>
+
+<script>
+const APPS=[
+{e:"🤖",n:"bit-bot",d:"Robot BLE control",r:"legendary"},
+{e:"🪄",n:"magic-hands",d:"Hand tracking magic",r:"legendary"},
+{e:"🕵️",n:"face-quest",d:"Face detection game",r:"legendary"},
+{e:"🧠",n:"teachable-machine",d:"Train AI gestures",r:"legendary"},
+{e:"💬",n:"talking-robot",d:"Voice robot",r:"epic"},
+{e:"😎",n:"face-tracking",d:"Face position",r:"epic"},
+{e:"🚀",n:"mission-control",d:"WebRTC dashboard",r:"epic"},
+{e:"🔐",n:"pentest-lab",d:"Ethical hacking",r:"epic"},
+{e:"🐧",n:"linux-kids-lab",d:"Browser Linux",r:"epic"},
+{e:"🧰",n:"claude-toolkit",d:"AI dev tools",r:"epic"},
+{e:"😄",n:"bitmoji-lab",d:"Emoji to LED",r:"rare"},
+{e:"🧩",n:"bit-playground",d:"micro:bit play",r:"rare"},
+{e:"🎛️",n:"rxy",d:"BLE remote builder",r:"rare"},
+{e:"🎨",n:"pixel-gateway",d:"Pixel art editor",r:"rare"},
+{e:"💡",n:"wled-kids-lab",d:"LED control",r:"rare"},
+{e:"⚡",n:"esp32-c3",d:"IoT lab",r:"rare"},
+{e:"🪙",n:"crypto-academy",d:"Blockchain 101",r:"rare"},
+{e:"🏭",n:"production-chain",d:"Factory sim",r:"rare"},
+{e:"🏫",n:"classroom",d:"Cloud classroom",r:"rare"},
+{e:"🎭",n:"puppeteer",d:"Browser automation",r:"rare"},
+{e:"✨",n:"prompt-hero",d:"AI prompting",r:"rare"},
+{e:"🏡",n:"smart-home",d:"IoT dashboard",r:"rare"},
+{e:"🔌",n:"usb-logger",d:"USB serial",r:"common"},
+{e:"📡",n:"ble-logger",d:"BLE debugger",r:"common"},
+{e:"🔋",n:"circuit-lab",d:"Circuit sim",r:"common"},
+{e:"🛡️",n:"vpn-guide",d:"Network security",r:"common"},
+{e:"🧊",n:"3d-lab",d:"3D design",r:"common"},
+{e:"🔀",n:"git-lab",d:"Learn Git",r:"common"},
+{e:"🌍",n:"save-planet",d:"Eco lessons",r:"common"},
+{e:"📋",n:"ops-catalog",d:"DevOps tools",r:"common"},
+{e:"💻",n:"code-kids",d:"HTML/CSS/JS",r:"common"},
+{e:"🧱",n:"makecode",d:"Block coding",r:"common"},
+{e:"🤖",n:"54-activities",d:"54 projects",r:"common"},
+{e:"💰",n:"crypto-vault",d:"Cryptography",r:"common"},
+{e:"🔗",n:"dhcp-lab",d:"DHCP server",r:"common"},
+{e:"🐳",n:"docker-lab",d:"Docker basics",r:"common"},
+{e:"🔴",n:"nodered-lab",d:"Node-RED flows",r:"common"},
+{e:"⛽",n:"ocpp",d:"EV charging",r:"common"},
+{e:"🖥️",n:"tty",d:"Serial terminal",r:"common"},
+];
+
+let spinning=false,totalSpins=0,collected=new Set(),legendary=0,streak=0;
+const emojis=APPS.map(a=>a.e);
+
+// BUILD REELS
+for(let r=0;r<3;r++){
+  const strip=document.getElementById('r'+r);
+  for(let i=0;i<60;i++){
+    const d=document.createElement('div');d.className='reel-item';
+    d.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    strip.appendChild(d);
+  }
+}
+
+function spin(){
+  if(spinning)return;spinning=true;
+  document.getElementById('spinBtn').disabled=true;
+  document.querySelectorAll('.result-name,.result-desc,.result-rarity').forEach(e=>e.classList.remove('show'));
+
+  // Pick result (weighted by rarity)
+  const weights={legendary:5,epic:12,rare:25,common:58};
+  const roll=Math.random()*100;
+  let rarity;
+  if(roll<weights.legendary)rarity='legendary';
+  else if(roll<weights.legendary+weights.epic)rarity='epic';
+  else if(roll<weights.legendary+weights.epic+weights.rare)rarity='rare';
+  else rarity='common';
+  const pool=APPS.filter(a=>a.r===rarity);
+  const app=pool[Math.floor(Math.random()*pool.length)];
+
+  // Animate reels
+  const durations=[1200,1500,1800];
+  for(let r=0;r<3;r++){
+    const strip=document.getElementById('r'+r);
+    let pos=0;const speed=15;const dur=durations[r];
+    const startTime=performance.now();
+    const finalEmoji=r===1?app.e:emojis[Math.floor(Math.random()*emojis.length)];
+
+    function animate(t){
+      const elapsed=t-startTime;const progress=Math.min(elapsed/dur,1);
+      const ease=1-Math.pow(1-progress,3);
+      pos=(1-ease)*speed+ease*0.5;
+      const items=strip.children;
+      let y=parseFloat(strip.style.transform?.match(/-?\d+\.?\d*/)?.[0]||0);
+      y-=pos;
+      if(y<-90*(items.length-2))y=0;
+      strip.style.transform=`translateY(${y}px)`;
+      if(progress<1)requestAnimationFrame(animate);
+      else{
+        // Snap to final
+        const idx=Math.round(-y/90);
+        if(items[idx])items[idx].textContent=finalEmoji;
+        strip.style.transform=`translateY(${-idx*90}px)`;
+        strip.style.transition='transform .3s cubic-bezier(.2,.9,.3,1)';
+        setTimeout(()=>strip.style.transition='transform .1s',400);
+        if(r===2)showResult(app);
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+}
+
+function showResult(app){
+  setTimeout(()=>{
+    totalSpins++;
+    const isNew=!collected.has(app.n);
+    collected.add(app.n);
+    if(isNew){streak++;if(app.r==='legendary')legendary++}else streak=0;
+
+    document.getElementById('resName').textContent=(isNew?'✨ NEW! ':'')+ app.e+' '+app.n;
+    document.getElementById('resDesc').textContent=app.d;
+    const rarEl=document.getElementById('resRar');
+    rarEl.textContent=app.r.toUpperCase();
+    rarEl.className='result-rarity rar-'+app.r;
+
+    document.querySelectorAll('.result-name,.result-desc,.result-rarity').forEach(e=>e.classList.add('show'));
+
+    if(app.r==='legendary'||app.r==='epic')spawnConfetti();
+
+    document.getElementById('sTotal').textContent=totalSpins;
+    document.getElementById('sCollected').textContent=collected.size+'/39';
+    document.getElementById('sLegendary').textContent=legendary;
+    document.getElementById('sStreak').textContent=streak;
+
+    updateCollection();
+    spinning=false;
+    document.getElementById('spinBtn').disabled=false;
+  },200);
+}
+
+function spawnConfetti(){
+  const fx=document.getElementById('winFx');
+  const colors=['#ffd700','#00ff41','#00d4ff','#ff0033','#bf00ff','#ff8800'];
+  for(let i=0;i<30;i++){
+    const c=document.createElement('div');c.className='confetti';
+    c.style.left=Math.random()*100+'%';c.style.top='-10px';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.animationDelay=Math.random()*.5+'s';
+    c.style.animationDuration=(1.5+Math.random())+'s';
+    fx.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+}
+
+function updateCollection(){
+  const grid=document.getElementById('collGrid');grid.innerHTML='';
+  APPS.forEach(a=>{
+    const d=document.createElement('div');
+    d.className='coll-item'+(collected.has(a.n)?' owned':'');
+    d.innerHTML=`<div class="e">${a.e}</div><div class="n">${a.n}</div>`;
+    grid.appendChild(d);
+  });
+}
+updateCollection();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

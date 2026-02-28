@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP_DIY.exe // v4.2.0</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Syne:wght@700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--g:#00ff41;--c:#00d4ff;--r:#ff0033;--o:#ff8800;--y:#ffd700;--p:#bf00ff;--b:#0066ff}
+html,body{height:100%;overflow:hidden}
+body{background:#000;color:var(--g);font-family:'JetBrains Mono',monospace;font-size:13px}
+.crt{position:fixed;inset:0;z-index:9999;pointer-events:none}
+.crt::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.04) 0px,rgba(0,0,0,.04) 1px,transparent 1px,transparent 3px)}
+.crt::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse,transparent 55%,rgba(0,0,0,.5))}
+.scanln{position:fixed;left:0;right:0;height:3px;background:rgba(0,255,65,.035);z-index:9998;pointer-events:none;animation:scanY 4s linear infinite}
+@keyframes scanY{0%{top:-3px}100%{top:100vh}}
+#mx{position:fixed;inset:0;z-index:0;opacity:.07}
+.glitch{position:relative;display:inline-block}.glitch::before,.glitch::after{content:attr(data-t);position:absolute;left:0;top:0;width:100%;overflow:hidden}.glitch::before{color:var(--c);clip-path:polygon(0 0,100% 0,100% 35%,0 35%);transform:translate(2px,-1px);animation:gC1 3s infinite linear alternate-reverse}.glitch::after{color:var(--r);clip-path:polygon(0 65%,100% 65%,100% 100%,0 100%);transform:translate(-2px,1px);animation:gC2 2.5s infinite linear alternate}
+@keyframes gC1{0%{clip-path:polygon(0 0,100% 0,100% 35%,0 35%)}25%{clip-path:polygon(0 15%,100% 15%,100% 50%,0 50%)}50%{clip-path:polygon(0 40%,100% 40%,100% 75%,0 75%)}75%{clip-path:polygon(0 60%,100% 60%,100% 90%,0 90%)}100%{clip-path:polygon(0 0,100% 0,100% 35%,0 35%)}}
+@keyframes gC2{0%{clip-path:polygon(0 65%,100% 65%,100% 100%,0 100%)}33%{clip-path:polygon(0 20%,100% 20%,100% 55%,0 55%)}66%{clip-path:polygon(0 45%,100% 45%,100% 80%,0 80%)}100%{clip-path:polygon(0 65%,100% 65%,100% 100%,0 100%)}}
+@keyframes flk{0%,97%,100%{opacity:1}97.5%{opacity:.6}98%{opacity:1}98.5%{opacity:.7}}
+.player{position:fixed;inset:0;z-index:1}
+.sc{position:absolute;inset:0;opacity:0;pointer-events:none;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .5s;padding:20px}
+.sc.on{opacity:1;pointer-events:auto}
+.hud-t{position:fixed;top:0;left:0;right:0;padding:5px 10px;display:flex;justify-content:space-between;font-size:7.5px;color:rgba(0,255,65,.2);z-index:100;border-bottom:1px solid rgba(0,255,65,.04)}
+.hud-b{position:fixed;bottom:0;left:0;right:0;padding:4px 10px;display:flex;justify-content:space-between;align-items:center;font-size:7.5px;color:rgba(0,255,65,.2);z-index:100;border-top:1px solid rgba(0,255,65,.04)}
+.tbar-w{flex:1;margin:0 8px;height:2px;background:rgba(0,255,65,.06);border-radius:1px;overflow:hidden}
+.tbar{height:100%;background:var(--g);box-shadow:0 0 5px var(--g);transition:width .1s linear}
+.ctrl{display:flex;gap:3px;align-items:center}
+.ctrl button{background:none;border:1px solid rgba(0,255,65,.1);color:var(--g);cursor:pointer;font-family:inherit;font-size:8px;padding:2px 6px;border-radius:2px;transition:all .12s}
+.ctrl button:hover{background:rgba(0,255,65,.08);border-color:var(--g);box-shadow:0 0 4px rgba(0,255,65,.25)}
+.dt{width:5px;height:5px;border:1px solid rgba(0,255,65,.12);cursor:pointer;transition:all .15s;background:none;padding:0;border-radius:1px}
+.dt.on{background:var(--g);box-shadow:0 0 3px var(--g)}
+@keyframes popIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+@keyframes pulse{0%,100%{opacity:.2}50%{opacity:.8}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.an{opacity:0}.sc.on .an{animation:popIn .5s ease both}
+.cursor{display:inline-block;width:8px;height:14px;background:var(--g);animation:blink .55s step-end infinite;vertical-align:middle;margin-left:2px}
+.dim{color:rgba(0,255,65,.18)}.cyan{color:var(--c)}.red{color:var(--r)}.orange{color:var(--o)}.yellow{color:var(--y)}.purple{color:var(--p)}
+.s1{align-items:flex-start;justify-content:flex-start;padding:24px 24px 24px 32px;overflow-y:auto}
+#bootTerminal{max-width:700px;width:100%}
+.bl{opacity:0;font-size:11px;line-height:2;white-space:nowrap;overflow:hidden}.sc.on .bl{animation:fadeIn .01s ease both}
+.bok{color:var(--g)}.bwn{color:var(--o)}.bfl{color:var(--r)}.bcm{color:rgba(0,255,65,.15);font-style:italic}
+.bbar{display:inline-block;width:110px;height:7px;background:rgba(0,255,65,.06);border-radius:1px;vertical-align:middle;margin-left:6px;overflow:hidden}.bbar-f{height:100%;background:var(--g);box-shadow:0 0 5px var(--g);width:0}.sc.on .bbar-f{animation:barGrow 1.2s ease both}
+@keyframes barGrow{to{width:100%}}
+.access{font-size:clamp(18px,3.5vw,32px);font-weight:800;color:var(--g);text-shadow:0 0 16px rgba(0,255,65,.4),0 0 32px rgba(0,255,65,.15);letter-spacing:5px;margin-top:12px;opacity:0}
+.sc.on .access{animation:accFlash .7s 6.8s ease both}
+@keyframes accFlash{0%{opacity:0;letter-spacing:18px;filter:blur(6px)}40%{opacity:1}60%{opacity:.2}100%{opacity:1;letter-spacing:5px;filter:blur(0)}}
+.skull-warn{opacity:0;margin-top:8px;font-size:9px;color:var(--r)}.sc.on .skull-warn{animation:fadeIn .3s 7.2s ease both}
+.s2{text-align:center}
+.s2-pre{font-size:clamp(6px,1vw,9px);color:var(--g);opacity:.5;white-space:pre;line-height:1.25;margin-bottom:16px;animation:flk 4s infinite}
+.s2-name{font-family:'Syne',sans-serif;font-size:clamp(26px,5.5vw,52px);font-weight:800;color:var(--g);text-shadow:0 0 24px rgba(0,255,65,.25);letter-spacing:-2px}
+.s2-tag{font-size:12px;color:var(--c);margin-top:6px;letter-spacing:2px}
+.s2-desc{font-size:11px;color:rgba(0,255,65,.35);margin-top:14px;max-width:480px;line-height:2}
+.s2-row{display:flex;gap:18px;margin-top:20px;justify-content:center;flex-wrap:wrap}
+.s2-box{text-align:center;padding:8px 14px;border:1px solid rgba(0,255,65,.06);border-radius:3px;background:rgba(0,255,65,.015);min-width:70px}
+.s2-box .v{font-size:20px;font-weight:800;color:var(--g);text-shadow:0 0 8px rgba(0,255,65,.2)}.s2-box .l{font-size:7px;color:rgba(0,255,65,.25);letter-spacing:1.5px;text-transform:uppercase;margin-top:1px}
+.s3{text-align:left;padding:24px 32px}
+.s3-h{font-size:13px;color:var(--c);margin-bottom:12px;text-shadow:0 0 6px rgba(0,212,255,.15)}
+.sk-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;max-width:660px}
+.sk{padding:9px 12px;border:1px solid rgba(0,255,65,.05);border-radius:3px;background:rgba(0,255,65,.01);transition:all .2s;cursor:default;position:relative;overflow:hidden}
+.sk:hover{border-color:var(--g);background:rgba(0,255,65,.03);box-shadow:inset 0 0 20px rgba(0,255,65,.02),0 0 8px rgba(0,255,65,.06)}
+.sk:hover::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(0,255,65,.04),transparent);animation:sheen .6s ease forwards}
+@keyframes sheen{to{left:150%}}
+.sk .i{font-size:16px;margin-right:5px}.sk .n{font-size:11px;font-weight:700;color:var(--g)}.sk .d{font-size:8px;color:rgba(0,255,65,.25);margin-top:2px}
+.s4{text-align:center}
+.rb-box{border:1px solid rgba(0,255,65,.08);border-radius:4px;padding:24px 28px;max-width:480px;background:rgba(0,255,65,.008);position:relative}
+.rb-box::before{content:'[ PRODUCT.SPEC // CLASSIFIED ]';position:absolute;top:-8px;left:10px;font-size:7px;color:rgba(0,255,65,.15);background:#000;padding:0 5px;letter-spacing:2px}
+.rb-ascii{font-size:clamp(7px,1.3vw,11px);line-height:1.2;color:var(--c);white-space:pre;margin-bottom:10px;text-shadow:0 0 6px rgba(0,212,255,.15)}
+.sp-g{display:grid;grid-template-columns:1fr 1fr;gap:5px;text-align:left;margin-top:10px}
+.sp{padding:5px 8px;border:1px solid rgba(0,255,65,.04);border-radius:2px;font-size:9px}
+.sp .k{color:rgba(0,255,65,.25)}.sp .v2{color:var(--g);font-weight:700}
+.rb-price{margin-top:14px;font-size:14px;font-weight:800;color:var(--y);text-shadow:0 0 8px rgba(255,221,0,.15)}
+.rb-sub{font-size:8px;color:rgba(0,255,65,.2);margin-top:3px}
+.s5{text-align:left;padding:24px 32px;font-size:11px}
+.hack-line{opacity:0;line-height:2.1;white-space:nowrap;overflow:hidden}.sc.on .hack-line{animation:fadeIn .01s ease both}
+.hack-bar{display:inline-block;width:140px;height:6px;background:rgba(0,255,65,.06);border-radius:1px;vertical-align:middle;margin-left:6px;overflow:hidden}
+.hack-bar-f{height:100%;background:var(--c);box-shadow:0 0 4px var(--c);width:0}.sc.on .hack-bar-f{animation:barGrow 2s ease both}
+.breach{font-size:clamp(16px,3vw,28px);font-weight:800;color:var(--c);text-shadow:0 0 16px rgba(0,212,255,.4);letter-spacing:4px;margin-top:14px;opacity:0}.sc.on .breach{animation:accFlash .6s 6s ease both}
+.breach-sub{font-size:8px;color:rgba(0,255,65,.2);margin-top:4px;opacity:0}.sc.on .breach-sub{animation:fadeIn .3s 6.5s ease both}
+.s6{overflow:hidden}
+.rain-col{position:absolute;display:flex;flex-direction:column;gap:6px;animation:rainF var(--sp) linear infinite;animation-delay:var(--dl)}
+@keyframes rainF{0%{transform:translateY(-115%)}100%{transform:translateY(108vh)}}
+.rain-p{padding:4px 8px;border:1px solid rgba(0,255,65,.05);border-radius:2px;background:rgba(0,6,2,.85);display:flex;align-items:center;gap:5px;white-space:nowrap}.rain-p .e{font-size:13px}.rain-p .n{font-size:8px;color:rgba(0,255,65,.4)}
+.s6-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:5;pointer-events:none;background:radial-gradient(ellipse,rgba(0,0,0,.72),transparent 68%)}
+.s6-ov h2{font-family:'Syne',sans-serif;font-size:clamp(20px,4.5vw,40px);font-weight:800;color:var(--g);text-shadow:0 0 24px rgba(0,255,65,.35)}
+.s6-ov .sub{font-size:10px;color:rgba(0,255,65,.25);margin-top:5px;letter-spacing:2px}
+.s7-fr{position:absolute;inset:18px;border:1px solid rgba(0,255,65,.05);border-radius:3px}
+.h-rec{position:absolute;top:7px;right:9px;font-size:8px;color:var(--r);animation:blink 1s step-end infinite}
+.h-sys{position:absolute;top:7px;left:9px;font-size:6.5px;color:rgba(0,255,65,.25);line-height:1.8}
+.h-aim{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px}
+.h-aim::before,.h-aim::after{content:'';position:absolute;background:rgba(0,255,65,.1)}.h-aim::before{width:1px;height:74px;left:50%;top:-9px}.h-aim::after{height:1px;width:74px;top:50%;left:-9px}
+.h-ring{position:absolute;inset:-6px;border:1px solid rgba(0,255,65,.07);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+.h-scan{position:absolute;left:18px;right:18px;height:1px;background:rgba(0,255,65,.04);animation:scanY 3.5s linear infinite}
+.obs{position:absolute;border:1px solid rgba(255,136,0,.12);border-radius:2px;animation:obsF 2.5s ease-in-out infinite}
+@keyframes obsF{0%,100%{opacity:.08}50%{opacity:.45}}
+.obs::after{content:attr(data-id);position:absolute;top:-9px;left:0;font-size:5.5px;color:var(--o);white-space:nowrap}
+.h-d{position:absolute;bottom:9px;font-size:6.5px;color:rgba(0,255,65,.2);line-height:1.8}.h-d.l{left:9px}.h-d.r{right:9px;text-align:right}
+.h-lbl{position:absolute;bottom:4%;left:50%;transform:translateX(-50%);text-align:center;z-index:5;font-size:10px;color:var(--c);letter-spacing:2px}
+.s8-ed{width:min(94%,540px);border:1px solid rgba(0,255,65,.06);border-radius:4px;overflow:hidden;background:rgba(0,2,0,.9);box-shadow:0 0 24px rgba(0,255,65,.03)}
+.ed-bar{display:flex;align-items:center;gap:5px;padding:7px 10px;background:rgba(0,255,65,.015);border-bottom:1px solid rgba(0,255,65,.04)}
+.ed-d{width:7px;height:7px;border-radius:50%;border:1px solid}.ed-r{border-color:rgba(255,0,51,.3)}.ed-y{border-color:rgba(255,170,0,.3)}.ed-g2{border-color:rgba(0,255,65,.3)}
+.ed-t{margin-left:auto;font-size:7px;color:rgba(0,255,65,.15);letter-spacing:1px}
+.ed-body{padding:12px 14px;font-size:clamp(8.5px,1.2vw,11.5px);line-height:2.2}
+.cl{opacity:0;white-space:nowrap}.sc.on .cl{animation:fadeIn .01s ease both}
+.kw{color:var(--o)}.fn{color:var(--c)}.st{color:var(--y)}.cm{color:rgba(0,255,65,.13);font-style:italic}.nm{color:var(--p)}.op{color:var(--r)}
+.fcm{color:rgba(255,136,0,.2);font-style:italic}
+.code-bot{position:absolute;right:5%;bottom:16%;text-align:center}
+.pxbot{display:grid;grid-template-columns:repeat(9,5px);gap:1px}
+.px{width:5px;height:5px;border-radius:1px}.px-g{background:var(--g);box-shadow:0 0 2px var(--g)}.px-c{background:var(--c);box-shadow:0 0 2px var(--c)}.px-r{background:var(--r);box-shadow:0 0 2px var(--r)}.px-n{background:transparent}
+.bot-say{font-size:7px;color:var(--g);margin-top:5px;opacity:0}.sc.on .bot-say{animation:popIn .4s 5.8s ease both}
+@media(max-width:650px){.code-bot{display:none}}
+.s9{text-align:center}
+.ws-title{font-size:12px;color:var(--c);margin-bottom:10px;letter-spacing:2px;text-shadow:0 0 6px rgba(0,212,255,.15)}
+.ws-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:6px;max-width:580px}
+.ws{border:1px solid rgba(0,255,65,.04);border-radius:3px;padding:12px;text-align:left;background:rgba(0,255,65,.008);transition:all .2s;cursor:default}
+.ws:hover{border-color:var(--g);box-shadow:0 0 10px rgba(0,255,65,.05),inset 0 0 16px rgba(0,255,65,.01)}
+.ws .emoji{font-size:20px;margin-bottom:3px;display:block}.ws .title{font-size:10px;font-weight:700;color:var(--g)}.ws .desc{font-size:8px;color:rgba(0,255,65,.25);margin-top:2px;line-height:1.6}
+.ws .ages{display:inline-block;margin-top:4px;font-size:7px;color:var(--c);letter-spacing:1px;padding:1px 6px;border:1px solid rgba(0,212,255,.1);border-radius:2px}
+.s10{overflow:hidden}
+.th-g{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,1fr);position:absolute;inset:0;gap:2px;padding:2px}
+.th-c{display:flex;align-items:center;justify-content:center;flex-direction:column;font-size:clamp(16px,3vw,26px);border-radius:2px;opacity:0;transform:scale(.5);border:1px solid rgba(0,255,65,.03)}
+.sc.on .th-c{animation:thPop .25s ease both}
+@keyframes thPop{to{opacity:1;transform:scale(1)}}
+.th-c .tn{font-size:clamp(5px,.9vw,7.5px);margin-top:1px;letter-spacing:1px;opacity:.35;color:var(--g)}
+.s10-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:10;background:radial-gradient(ellipse,rgba(0,0,0,.6),transparent 68%);pointer-events:none}
+.s10-ov h2{font-size:clamp(12px,3vw,24px);font-weight:800;color:var(--g);text-shadow:0 0 16px rgba(0,255,65,.3);opacity:0;letter-spacing:3px}.sc.on .s10-ov h2{animation:popIn .5s 1.1s ease both}
+.s11{text-align:center}
+.q-title{font-size:11px;color:var(--c);margin-bottom:14px;letter-spacing:2px}
+.q-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;max-width:560px}
+.q-card{border:1px solid rgba(0,255,65,.04);border-radius:3px;padding:14px;text-align:left;background:rgba(0,255,65,.008)}.q-card:hover{border-color:rgba(0,255,65,.12)}
+.q-text{font-size:10px;color:rgba(0,255,65,.4);line-height:1.8;font-style:italic}.q-text::before{content:'"';color:var(--g);font-size:16px;font-weight:800;margin-right:2px}
+.q-who{font-size:8px;color:var(--c);margin-top:6px;letter-spacing:1px}.q-sub{font-size:7px;color:rgba(0,255,65,.15);margin-top:1px}
+.s12{text-align:center}
+.s12-logo{font-family:'Syne',sans-serif;font-size:clamp(28px,6.5vw,58px);font-weight:800;color:var(--g);text-shadow:0 0 32px rgba(0,255,65,.25),0 0 64px rgba(0,255,65,.08);letter-spacing:-2px;opacity:0}
+.sc.on .s12-logo{animation:logoRev .9s .3s ease both}
+@keyframes logoRev{from{opacity:0;letter-spacing:14px;filter:blur(6px)}to{opacity:1;letter-spacing:-2px;filter:blur(0)}}
+.s12-cmd{font-size:11px;color:var(--c);margin-top:10px;opacity:0}.sc.on .s12-cmd{animation:popIn .5s .9s ease both}
+.s12-join{display:inline-block;margin-top:16px;padding:9px 24px;border:1px solid var(--g);border-radius:2px;color:var(--g);text-decoration:none;font-weight:700;font-size:12px;letter-spacing:2px;transition:all .2s;opacity:0;position:relative;overflow:hidden}
+.sc.on .s12-join{animation:popIn .5s 1.3s ease both}
+.s12-join:hover{background:var(--g);color:#000;box-shadow:0 0 16px rgba(0,255,65,.35)}
+.s12-join::after{content:'';position:absolute;top:0;left:-100%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);transition:left .3s}.s12-join:hover::after{left:120%}
+.s12-urls{margin-top:12px;font-size:8px;color:rgba(0,255,65,.15);letter-spacing:2px;opacity:0}.sc.on .s12-urls{animation:popIn .5s 1.7s ease both}
+.s12-stats{display:flex;gap:16px;justify-content:center;margin-top:16px;opacity:0}.sc.on .s12-stats{animation:popIn .5s 2s ease both}
+.s12-s{text-align:center}.s12-s .v{font-size:18px;font-weight:800;color:var(--g);text-shadow:0 0 6px rgba(0,255,65,.2)}.s12-s .l{font-size:6px;color:rgba(0,255,65,.2);letter-spacing:1.5px;text-transform:uppercase}
+.s12-rip{font-size:7.5px;color:rgba(0,255,65,.08);margin-top:20px;line-height:1.8;opacity:0}.sc.on .s12-rip{animation:popIn .5s 2.8s ease both}
+#konami{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.95);display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:var(--g);font-size:14px;cursor:pointer}
+#konami .big{font-size:60px;margin-bottom:12px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="crt"></div>
+<div class="scanln"></div>
+<canvas id="mx"></canvas>
+<div id="konami" onclick="this.style.display='none'"><div class="big">🏆</div><div style="font-size:18px;font-weight:800;margin-bottom:8px;text-shadow:0 0 16px rgba(0,255,65,.4)">KONAMI CODE DETECTED</div><div style="color:rgba(0,255,65,.4);font-size:10px">You found the secret. You're one of us now.</div><div style="color:rgba(0,255,65,.15);font-size:8px;margin-top:12px">[ click to dismiss ]</div></div>
+<div class="hud-t"><span>WKSHP_DIY.sys v4.2.0 // PID:1337</span><span id="clock">00:00:00</span><span>MEM:64M // UP:<span id="uptime">0s</span></span></div>
+<div class="hud-b"><span id="slbl">[01/12]</span><div class="tbar-w"><div class="tbar" id="tbar"></div></div><div class="ctrl"><button id="pB">◄</button><div id="dots" style="display:flex;gap:2px"></div><button id="plB">▮▮</button><button id="nB">►</button></div></div>
+<div class="player">
+<div class="sc s1 on" id="s1"><div id="bootTerminal"><div class="bl" style="animation-delay:.05s">BIOS v4.2.0 — Workshop-DIY Systems Corp.</div><div class="bl" style="animation-delay:.3s">──────────────────────────────────────────</div><div class="bl" style="animation-delay:.5s">Checking hardware............. <span class="bok">[OK]</span></div><div class="bl" style="animation-delay:.8s">Soldering iron calibration.... <span class="bok">[OK]</span> <span class="bcm">// don't touch. seriously.</span></div><div class="bl" style="animation-delay:1.1s">Loading ESP32 firmware........ <span class="bok">[OK]</span></div><div class="bl" style="animation-delay:1.4s">Servo motor self-test......... <span class="bok">[OK]</span> <span class="bcm">// it wiggled. we're good.</span></div><div class="bl" style="animation-delay:1.7s">micro:bit BLE scan............ <span class="bok">[3 FOUND]</span></div><div class="bl" style="animation-delay:2s">3D printer nozzle temp........ <span class="bwn">[COLD]</span> <span class="bcm">// heating...</span></div><div class="bl" style="animation-delay:2.3s">Loading 39 workshop apps...... <div class="bbar"><div class="bbar-f" style="animation-delay:2.5s"></div></div></div><div class="bl" style="animation-delay:3.2s">Deploying AI modules.......... <span class="bok">[OK]</span> <span class="bcm">// no skynet. just face-quest.</span></div><div class="bl" style="animation-delay:3.5s">Linux terminal ready.......... <span class="bok">[BASH 5.1]</span></div><div class="bl" style="animation-delay:3.8s">Compiling student excitement.. <span class="bok">[████████████] 100%</span></div><div class="bl" style="animation-delay:4.1s">Caffeine level scan........... <span class="bwn">[LOW]</span> <span class="bcm">// instructor needs coffee</span></div><div class="bl" style="animation-delay:4.4s">Bug counter................... <span class="bfl">[42]</span> <span class="bcm">// it's a feature.</span></div><div class="bl" style="animation-delay:4.7s">WiFi password check........... <span class="bfl">[STILL "password123"]</span></div><div class="bl" style="animation-delay:5s">Student attention span........ <span class="bwn">[~12 min]</span> <span class="bcm">// optimistic</span></div><div class="bl" style="animation-delay:5.3s">Robot emotional state......... <span class="bok">[HAPPY]</span></div><div class="bl" style="animation-delay:5.6s">──────────────────────────────────────────</div><div class="bl" style="animation-delay:5.9s">ALL SYSTEMS NOMINAL. READY FOR MAKERS.</div><div class="bl" style="animation-delay:6.2s"><span class="bcm">// try the Konami code. you know the one.</span></div><div class="access">▸ ACCESS GRANTED ◂</div><div class="skull-warn">⚠ UNAUTHORIZED LEARNING MAY OCCUR ⚠</div></div></div>
+<div class="sc s2" id="s2"><pre class="s2-pre an" style="animation-delay:.1s"> █   █ █ █ █████ █   █ █████
+ █   █ █▐▌ █     █   █ █   █
+ █ █ █ ██  █████ █████ █████
+ █▐▌█ █▐▌     █ █   █ █
+ ██ █▌█  █████ █   █ █    DIY</pre><div class="s2-name an glitch" data-t="WORKSHOP-DIY" style="animation-delay:.4s">WORKSHOP-DIY</div><div class="s2-tag an" style="animation-delay:.7s">// ASSOCIATION LOI 1901 — FRANCE</div><div class="s2-desc an" style="animation-delay:1s">We teach robotics, programming, electronics,<br>3D design & digital fabrication to young makers.<br><span class="dim">// yes, we let them solder. supervised, obviously.</span></div><div class="s2-row"><div class="s2-box an" style="animation-delay:1.3s"><div class="v">39</div><div class="l">Apps</div></div><div class="s2-box an" style="animation-delay:1.5s"><div class="v">7</div><div class="l">Domains</div></div><div class="s2-box an" style="animation-delay:1.7s"><div class="v">12</div><div class="l">Themes</div></div><div class="s2-box an" style="animation-delay:1.9s"><div class="v">∞</div><div class="l">Bugs</div></div></div></div>
+<div class="sc s3" id="s3"><div class="s3-h an" style="animation-delay:.1s">$ cat /workshop/skills.json <span class="dim">// what we actually teach</span></div><div class="sk-g" id="skG"></div></div>
+<div class="sc s4" id="s4"><div class="rb-box"><pre class="rb-ascii an" style="animation-delay:.2s">
+    ┌──────────┐
+    │  ◉    ◉  │  ← LED eyes (they judge you)
+    │    ──    │
+    │  ┌────┐  │  ← ESP32 brain (smarter than it looks)
+    └──┤    ├──┘
+       │    │     ← chassis (survived 47 drops)
+    ◯──┘    └──◯  ← wheels (they go brrr)</pre><div class="an" style="animation-delay:.7s;font-size:14px;font-weight:800;color:var(--c);text-shadow:0 0 10px rgba(0,212,255,.2)">ESP32 ROBOT KIT LITE</div><div class="an dim" style="animation-delay:.9s;font-size:8px">// the robot your parents wished they had as kids</div><div class="sp-g"><div class="sp an" style="animation-delay:1.1s"><span class="k">CPU:</span> <span class="v2">ESP32 240MHz</span></div><div class="sp an" style="animation-delay:1.2s"><span class="k">RAM:</span> <span class="v2">520KB SRAM</span></div><div class="sp an" style="animation-delay:1.3s"><span class="k">WiFi:</span> <span class="v2">802.11 b/g/n</span></div><div class="sp an" style="animation-delay:1.4s"><span class="k">BLE:</span> <span class="v2">Bluetooth 4.2</span></div><div class="sp an" style="animation-delay:1.5s"><span class="k">MOTORS:</span> <span class="v2">2× DC + Servo</span></div><div class="sp an" style="animation-delay:1.6s"><span class="k">SENSOR:</span> <span class="v2">IR + Ultrasonic</span></div><div class="sp an" style="animation-delay:1.7s"><span class="k">DROPS:</span> <span class="v2">47 survived</span></div><div class="sp an" style="animation-delay:1.8s"><span class="k">BUGS:</span> <span class="v2">∞ (features)</span></div></div><div class="rb-price an" style="animation-delay:2.1s">Available on HelloAsso</div><div class="rb-sub an" style="animation-delay:2.3s">// assembled by you. explosions not included.</div></div></div>
+<div class="sc s5" id="s5"><div style="max-width:600px;width:100%"><div class="hack-line" style="animation-delay:.1s"><span class="cyan">workshop@diy</span>:<span class="yellow">~</span>$ nmap --scan-workshops 0.0.0.0/24</div><div class="hack-line" style="animation-delay:.5s">Scanning education network... <span class="bok">[████░░░░░░]</span></div><div class="hack-line" style="animation-delay:1s">Found: 39 open-source apps <span class="bok">[CONFIRMED]</span></div><div class="hack-line" style="animation-delay:1.5s">Found: 7 skill domains <span class="bok">[MAPPED]</span></div><div class="hack-line" style="animation-delay:2s">Found: 12 UI themes <span class="bok">[AESTHETIC]</span></div><div class="hack-line" style="animation-delay:2.5s">Found: 1 ESP32 robot kit <span class="bok">[AWESOME]</span></div><div class="hack-line" style="animation-delay:3s"><span class="bcm">// attempting to breach student boredom...</span></div><div class="hack-line" style="animation-delay:3.5s">Deploying engagement payload: <div class="hack-bar"><div class="hack-bar-f" style="animation-delay:3.7s"></div></div></div><div class="hack-line" style="animation-delay:4.5s">Boredom firewall... <span class="bfl">[BYPASSED]</span></div><div class="hack-line" style="animation-delay:5s">Homework resistance... <span class="bfl">[NEUTRALIZED]</span></div><div class="hack-line" style="animation-delay:5.5s">Learning injection... <span class="bok">[SUCCESS]</span> <span class="bcm">// they didn't even notice</span></div><div class="breach">▸ BOREDOM BREACHED ◂</div><div class="breach-sub">// education payload delivered successfully</div></div></div>
+<div class="sc s6" id="s6"><div id="rainBox"></div><div class="s6-ov"><h2 class="an">39 APPS LOADED</h2><div class="sub an" style="animation-delay:.3s">[ FREE // BROWSER-BASED // OPEN SOURCE ]</div><div class="an dim" style="animation-delay:.6s;font-size:8px">// made with love, caffeine, and stackoverflow</div></div></div>
+<div class="sc s7" id="s7"><div class="s7-fr"></div><div class="h-rec">● REC</div><div class="h-sys">SYS: NOMINAL<br>BLE: PAIRED<br>ESP32: ONLINE<br>MOOD: 🤖💚</div><div class="h-aim"><div class="h-ring"></div></div><div class="h-scan"></div><div class="obs" data-id="CHAIR" style="width:42px;height:32px;top:26%;left:15%"></div><div class="obs" data-id="BACKPACK" style="width:34px;height:40px;top:48%;right:13%;animation-delay:.7s"></div><div class="obs" data-id="SHOE" style="width:46px;height:26px;top:65%;left:33%;animation-delay:1.3s"></div><div class="obs" data-id="INSTRUCTOR" style="width:38px;height:54px;top:32%;right:30%;animation-delay:2s"></div><div class="h-d l">DIST: 23cm<br>SPEED: 0.4m/s<br>AVOID: 4 OBJ<br>APP: bit-bot v3.2<br><span class="bcm">// faster than homework</span></div><div class="h-d r">MOTOR_L: 81%<br>MOTOR_R: 78%<br>BAT: 87%<br>CAM: face-quest<br>AI: teachable-machine</div><div class="h-lbl an">[ ROBOT.EYE — AUTONOMOUS MODE ]</div></div>
+<div class="sc s8" id="s8"><div class="s8-ed"><div class="ed-bar"><div class="ed-d ed-r"></div><div class="ed-d ed-y"></div><div class="ed-d ed-g2"></div><div class="ed-t">workshop.js — vim <span class="dim">// :wq to exit... maybe</span></div></div><div class="ed-body"><div class="cl" style="animation-delay:.2s"><span class="cm">// Workshop-DIY — where bugs become features</span></div><div class="cl" style="animation-delay:.6s"><span class="kw">import</span> { <span class="fn">Robot</span> } <span class="kw">from</span> <span class="st">'bit-bot'</span>;</div><div class="cl" style="animation-delay:1s"><span class="kw">import</span> { <span class="fn">AI</span> } <span class="kw">from</span> <span class="st">'teachable-machine'</span>;</div><div class="cl" style="animation-delay:1.4s"><span class="kw">import</span> { <span class="fn">Face</span> } <span class="kw">from</span> <span class="st">'face-quest'</span>;</div><div class="cl" style="animation-delay:1.8s"><span class="fcm">// TODO: fix bug #42 (been here since 2024)</span></div><div class="cl" style="animation-delay:2.2s"><span class="kw">const</span> bot = <span class="kw">await</span> Robot.<span class="fn">connect</span>();</div><div class="cl" style="animation-delay:2.6s"><span class="kw">const</span> cam = <span class="kw">new</span> <span class="fn">Face</span>({ <span class="st">privacy</span>: <span class="nm">true</span> });</div><div class="cl" style="animation-delay:3s"><span class="fcm">// this next line took 3 hours to debug</span></div><div class="cl" style="animation-delay:3.4s">cam.<span class="fn">onSmile</span>(<span class="kw">async</span> () <span class="op">=></span> {</div><div class="cl" style="animation-delay:3.8s">  bot.<span class="fn">setEyes</span>(<span class="st">'💙'</span>);</div><div class="cl" style="animation-delay:4.2s">  <span class="kw">await</span> bot.<span class="fn">dance</span>(); <span class="fcm">// best line of code ever</span></div><div class="cl" style="animation-delay:4.6s">  console.<span class="fn">log</span>(<span class="st">'robot.exe has feelings now'</span>);</div><div class="cl" style="animation-delay:5s">});<span class="cursor"></span></div></div></div><div class="code-bot"><div class="pxbot" id="pxBot"></div><div class="bot-say">> bot.dance() 🎉</div></div></div>
+<div class="sc s9" id="s9"><div class="ws-title an" style="animation-delay:.1s">$ ls /workshops/ <span class="dim">// things we do IRL. with real humans.</span></div><div class="ws-g" id="wsG"></div></div>
+<div class="sc s10" id="s10"><div class="th-g" id="thG"></div><div class="s10-ov"><h2>// 12 THEMES. YOUR VIBE. YOUR RULES.</h2></div></div>
+<div class="sc s11" id="s11"><div class="q-title an" style="animation-delay:.1s">$ tail -f /var/log/humans.log <span class="dim">// real feedback</span></div><div class="q-grid" id="qG"></div></div>
+<div class="sc s12" id="s12"><div class="s12-logo glitch" data-t="WORKSHOP-DIY">WORKSHOP-DIY</div><div class="s12-cmd">$ sudo join --force workshop-diy.org</div><a class="s12-join" href="https://workshop-diy.org" target="_blank">[ CONNECT ] →</a><div class="s12-urls">workshop-diy.org // abourdim.github.io/apps</div><div class="s12-stats"><div class="s12-s"><div class="v">39</div><div class="l">Apps</div></div><div class="s12-s"><div class="v">7</div><div class="l">Domains</div></div><div class="s12-s"><div class="v">12</div><div class="l">Themes</div></div><div class="s12-s"><div class="v">1</div><div class="l">Robot Kit</div></div><div class="s12-s"><div class="v">∞</div><div class="l">Potential</div></div></div><div class="s12-rip">// no robots were harmed in the making of this video.<br>// 3 USB cables were sacrificed. RIP.<br>// the instructor still hasn't found the WiFi password.<br>// bug #42 remains unfixed. it's a feature now.<br>// made with 💚, ☕, and stackoverflow</div></div>
+</div>
+<script>
+const APPS=[{e:"🤖",n:"bit-bot"},{e:"🪄",n:"magic-hands"},{e:"🕵️",n:"face-quest"},{e:"💬",n:"talking-robot"},{e:"🧠",n:"teachable-machine"},{e:"😎",n:"face-tracking"},{e:"😄",n:"bitmoji-lab"},{e:"🚀",n:"mission-control"},{e:"🧩",n:"bit-playground"},{e:"🎛️",n:"rxy"},{e:"🎨",n:"pixel-gateway"},{e:"💡",n:"wled-kids-lab"},{e:"⚡",n:"esp32-c3-kids-lab"},{e:"🪙",n:"crypto-academy"},{e:"🔐",n:"pentest-lab"},{e:"🐧",n:"linux-kids-lab"},{e:"🏭",n:"production-chain"},{e:"🏫",n:"classroom"},{e:"🔌",n:"usb-logger"},{e:"📡",n:"ble-logger"},{e:"🧰",n:"claude-toolkit"},{e:"🎭",n:"puppeteer"},{e:"🔋",n:"circuit-lab"},{e:"🛡️",n:"vpn-guide"},{e:"🧊",n:"3d-lab"},{e:"🔀",n:"git-lab"},{e:"✨",n:"prompt-hero"},{e:"🌍",n:"save-planet"},{e:"📋",n:"ops-catalog"},{e:"💻",n:"code-kids"},{e:"🏡",n:"smart-home"},{e:"🧱",n:"makecode"},{e:"🤖",n:"54-activities"},{e:"💰",n:"crypto-vault"},{e:"🔗",n:"dhcp-lab"},{e:"🐳",n:"docker-lab"},{e:"🔴",n:"nodered-lab"},{e:"⛽",n:"ocpp"},{e:"🖥️",n:"tty"}];
+const SKILLS=[{e:"🤖",n:"Robotics",d:"ESP32 · micro:bit · servos · sensors",dl:.3},{e:"💻",n:"Programming",d:"Python · JavaScript · C++ · Arduino",dl:.45},{e:"🧠",n:"Artificial Intelligence",d:"MediaPipe · Teachable Machine · LLMs",dl:.6},{e:"🖨️",n:"3D Printing & Design",d:"CAD · slicing · PLA/PETG · prototyping",dl:.75},{e:"⚡",n:"Electronics & Soldering",d:"Circuits · PCB · components · multimeter",dl:.9},{e:"🐧",n:"Linux & Sysadmin",d:"Terminal · bash · networking · servers",dl:1.05},{e:"🔐",n:"Cybersecurity",d:"Pentest · encryption · CTF · ethical hacking",dl:1.2},{e:"🌐",n:"Web Development",d:"HTML · CSS · JS · APIs · deployment",dl:1.35},{e:"📡",n:"IoT & Connected Objects",d:"MQTT · WLED · ESP32 · sensors · dashboards",dl:1.5},{e:"🐳",n:"DevOps & Infrastructure",d:"Docker · Git · CI/CD · Node-RED",dl:1.65}];
+const WORKSHOPS=[{e:"🤖",t:"Robot Building",d:"Build & program your own ESP32 robot from parts",a:"8-16 yrs"},{e:"💻",t:"Code Camp",d:"Learn Python & JavaScript through games",a:"10-16 yrs"},{e:"🖨️",t:"3D Design Lab",d:"Model in CAD, print real objects, iterate",a:"10-16 yrs"},{e:"⚡",t:"Solder School",d:"Learn to solder — build a real circuit board",a:"12-16 yrs"},{e:"🐧",t:"Terminal Academy",d:"Master the command line like a sysadmin",a:"12-16 yrs"},{e:"🧠",t:"AI Experiments",d:"Train models, track faces, control robots",a:"10-16 yrs"},{e:"🔐",t:"Cyber Defense",d:"Ethical hacking & digital self-defense",a:"13-16 yrs"},{e:"🌐",t:"Web Builder",d:"Build & deploy your own website from scratch",a:"10-16 yrs"}];
+const THEMES=[{e:"🌙",n:"Dark",bg:"#080e18"},{e:"🌞",n:"Light",bg:"#ccc4a8"},{e:"🌊",n:"Ocean",bg:"#041624"},{e:"🚀",n:"Space",bg:"#04021a"},{e:"⚡",n:"Electric",bg:"#10102a"},{e:"🌲",n:"Forest",bg:"#041806"},{e:"🔥",n:"Lava",bg:"#1c0404"},{e:"🕌",n:"Medina",bg:"#061010"},{e:"🏰",n:"Alhambra",bg:"#100a0c"},{e:"🔷",n:"Iznik",bg:"#04101c"},{e:"🧩",n:"Zellige",bg:"#10041c"},{e:"🌿",n:"Arabesque",bg:"#041006"}];
+const QUOTES=[{t:"I built my first robot at 10. Now I debug my teacher's laptop.",w:"Yassine, 14",s:"Workshop member since 2023"},{t:"The pentest workshop made me realize I want to do cybersecurity.",w:"Lucas, 15",s:"Hacked the school printer (ethically)"},{t:"My son now explains Docker to me. I'm a software engineer.",w:"Parent",s:"Slightly concerned, mostly proud"},{t:"They learn without realizing they're learning. That's the trick.",w:"Workshop Instructor",s:"Coffee consumption: critical"},{t:"I thought coding was boring. Then my robot started dancing.",w:"Amira, 12",s:"Now teaches other kids"},{t:"WiFi password is still password123 btw.",w:"Anonymous",s:"// we know. we don't care."}];
+const T=12,DUR=7500;let cur=1,elap=0,play=true,last=Date.now(),startTime=Date.now();
+const mc=document.getElementById('mx'),mx=mc.getContext('2d');let mW,mH,mCols,mDrops;const mChars='ワークショップDIY01アイロボットSTEMコード電子';
+function mR(){mW=mc.width=innerWidth;mH=mc.height=innerHeight;mCols=Math.floor(mW/15);mDrops=Array(mCols).fill(1)}mR();addEventListener('resize',mR);
+(function drawMx(){mx.fillStyle='rgba(0,0,0,.05)';mx.fillRect(0,0,mW,mH);mx.fillStyle='#0f0';mx.font='13px monospace';for(let i=0;i<mCols;i++){mx.fillText(mChars[Math.floor(Math.random()*mChars.length)],i*15,mDrops[i]*15);if(mDrops[i]*15>mH&&Math.random()>.975)mDrops[i]=0;mDrops[i]++}requestAnimationFrame(drawMx)})();
+setInterval(()=>{document.getElementById('clock').textContent=new Date().toTimeString().slice(0,8);document.getElementById('uptime').textContent=Math.floor((Date.now()-startTime)/1000)+'s'},1000);
+const skG=document.getElementById('skG');SKILLS.forEach(s=>{const d=document.createElement('div');d.className='sk an';d.style.animationDelay=s.dl+'s';d.innerHTML=`<span class="i">${s.e}</span><span class="n">${s.n}</span><div class="d">${s.d}</div>`;skG.appendChild(d)});
+const rb=document.getElementById('rainBox');const nC=Math.min(7,Math.floor(innerWidth/110));
+for(let c=0;c<nC;c++){const col=document.createElement('div');col.className='rain-col';col.style.cssText=`left:${(c/(nC-1))*86+5}%;--sp:${15+Math.random()*10}s;--dl:${-Math.random()*15}s`;const per=Math.ceil(APPS.length/nC);for(let j=0;j<per;j++){const a=APPS[(c*per+j)%APPS.length];const p=document.createElement('div');p.className='rain-p';p.innerHTML=`<span class="e">${a.e}</span><span class="n">${a.n}</span>`;col.appendChild(p)}rb.appendChild(col)}
+const botPx=[0,0,0,1,1,1,0,0,0, 0,0,1,2,1,2,1,0,0, 0,0,1,1,1,1,1,0,0, 0,1,1,1,1,1,1,1,0, 0,0,1,3,1,3,1,0,0, 0,0,0,1,0,1,0,0,0, 0,0,1,0,0,0,1,0,0, 0,0,2,0,0,0,2,0,0];
+const pxB=document.getElementById('pxBot');botPx.forEach(v=>{const p=document.createElement('div');p.className='px '+(v===1?'px-g':v===2?'px-c':v===3?'px-r':'px-n');pxB.appendChild(p)});
+const wsG=document.getElementById('wsG');WORKSHOPS.forEach((w,i)=>{const d=document.createElement('div');d.className='ws an';d.style.animationDelay=(i*.12+.3)+'s';d.innerHTML=`<span class="emoji">${w.e}</span><div class="title">${w.t}</div><div class="desc">${w.d}</div><div class="ages">${w.a}</div>`;wsG.appendChild(d)});
+const thG=document.getElementById('thG');THEMES.forEach((t,i)=>{const d=document.createElement('div');d.className='th-c';d.style.cssText=`background:${t.bg};animation-delay:${i*.07}s`;d.innerHTML=`${t.e}<span class="tn">${t.n}</span>`;thG.appendChild(d)});
+const qG=document.getElementById('qG');QUOTES.forEach((q,i)=>{const d=document.createElement('div');d.className='q-card an';d.style.animationDelay=(i*.15+.3)+'s';d.innerHTML=`<div class="q-text">${q.t}</div><div class="q-who">— ${q.w}</div><div class="q-sub">${q.s}</div>`;qG.appendChild(d)});
+const dotsEl=document.getElementById('dots');for(let i=1;i<=T;i++){const d=document.createElement('button');d.className='dt'+(i===1?' on':'');d.dataset.s=i;d.onclick=()=>goTo(i);dotsEl.appendChild(d)}
+const tbar=document.getElementById('tbar'),slbl=document.getElementById('slbl');
+function goTo(n){if(n<1)n=T;if(n>T)n=1;document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));document.getElementById('s'+n).classList.add('on');document.querySelectorAll('.dt').forEach(d=>d.classList.toggle('on',+d.dataset.s===n));slbl.textContent=`[${String(n).padStart(2,'0')}/${String(T).padStart(2,'0')}]`;cur=n;elap=0;last=Date.now()}
+document.getElementById('pB').onclick=()=>goTo(cur-1);document.getElementById('nB').onclick=()=>goTo(cur+1);
+document.getElementById('plB').onclick=function(){play=!play;this.textContent=play?'▮▮':'►';last=Date.now()};
+(function tick(){if(play){const n=Date.now();elap+=n-last;last=n;tbar.style.width=(Math.min(elap/DUR,1)*100)+'%';if(elap>=DUR)goTo(cur+1)}else last=Date.now();requestAnimationFrame(tick)})();
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')goTo(cur+1);if(e.key==='ArrowLeft')goTo(cur-1);if(e.key===' '){e.preventDefault();document.getElementById('plB').click()}});
+let kSeq=[],kCode=[38,38,40,40,37,39,37,39,66,65];
+document.addEventListener('keydown',e=>{kSeq.push(e.keyCode);if(kSeq.length>10)kSeq.shift();if(kSeq.join(',')==kCode.join(','))document.getElementById('konami').style.display='flex'});
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

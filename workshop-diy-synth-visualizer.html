@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // SYNTH</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050508;overflow:hidden;font-family:'JetBrains Mono',monospace}
+canvas{position:fixed;inset:0;z-index:0}
+.ui{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column;pointer-events:none}
+.ui>*{pointer-events:auto}
+
+.top{padding:8px 14px;display:flex;justify-content:space-between;align-items:center;font-size:7px;color:rgba(0,255,65,.2)}
+.logo{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:rgba(0,255,65,.3)}
+
+.center{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;pointer-events:none}
+.center-text{font-family:'Syne',sans-serif;font-size:clamp(24px,6vw,48px);font-weight:800;color:rgba(0,255,65,.06);letter-spacing:-2px;text-shadow:0 0 40px rgba(0,255,65,.04)}
+
+/* CONTROLS */
+.controls{padding:8px 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center}
+.ctrl-btn{padding:5px 14px;border-radius:4px;border:1px solid rgba(0,255,65,.1);background:rgba(0,255,65,.02);color:rgba(0,255,65,.4);font-family:inherit;font-size:9px;cursor:pointer;transition:all .15s}
+.ctrl-btn:hover{background:rgba(0,255,65,.06);color:#00ff41;border-color:rgba(0,255,65,.2)}
+.ctrl-btn.on{background:rgba(0,255,65,.08);color:#00ff41;border-color:#00ff41;box-shadow:0 0 8px rgba(0,255,65,.1)}
+.ctrl-label{font-size:6px;color:rgba(0,255,65,.15);letter-spacing:1px}
+.ctrl-slider{-webkit-appearance:none;width:80px;height:3px;background:rgba(0,255,65,.06);border-radius:2px;outline:none}
+.ctrl-slider::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;background:#00ff41;border-radius:50%;cursor:pointer}
+
+/* KEYBOARD */
+.keyboard{padding:4px 14px 12px;display:flex;justify-content:center;gap:2px;flex-wrap:wrap}
+.key{width:36px;height:80px;border-radius:0 0 4px 4px;cursor:pointer;transition:all .1s;display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;font-size:7px;font-weight:700;user-select:none}
+.key.white{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.15)}
+.key.white:hover,.key.white.pressed{background:rgba(0,255,65,.08);border-color:rgba(0,255,65,.2);color:#00ff41;box-shadow:0 0 8px rgba(0,255,65,.1)}
+.key.black{width:24px;height:50px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.03);margin:0 -12px;z-index:2;color:rgba(255,255,255,.08)}
+.key.black:hover,.key.black.pressed{background:rgba(0,255,65,.12);border-color:rgba(0,255,65,.2);color:#00ff41}
+
+.vis-mode{font-size:7px;color:rgba(0,255,65,.15);text-align:center;padding:4px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<div class="ui">
+  <div class="top">
+    <div class="logo">WKSHP-SYNTH</div>
+    <span id="fps">0 FPS</span>
+    <span>PRESS KEYS A-L TO PLAY</span>
+  </div>
+  <div class="center"><div class="center-text">WORKSHOP-DIY</div></div>
+  <div class="controls">
+    <span class="ctrl-label">WAVE</span>
+    <button class="ctrl-btn on" onclick="setWave('sine',this)">SINE</button>
+    <button class="ctrl-btn" onclick="setWave('square',this)">SQUARE</button>
+    <button class="ctrl-btn" onclick="setWave('sawtooth',this)">SAW</button>
+    <button class="ctrl-btn" onclick="setWave('triangle',this)">TRI</button>
+    <span class="ctrl-label" style="margin-left:8px">VIS</span>
+    <button class="ctrl-btn on" onclick="setVis('bars',this)">BARS</button>
+    <button class="ctrl-btn" onclick="setVis('wave',this)">WAVE</button>
+    <button class="ctrl-btn" onclick="setVis('circle',this)">CIRCLE</button>
+    <button class="ctrl-btn" onclick="setVis('matrix',this)">MATRIX</button>
+    <span class="ctrl-label" style="margin-left:8px">VOL</span>
+    <input type="range" class="ctrl-slider" min="0" max="100" value="30" oninput="setVol(this.value)">
+  </div>
+  <div class="keyboard" id="keyboard"></div>
+</div>
+
+<script>
+const canvas=document.getElementById('canvas');
+const ctx=canvas.getContext('2d');
+let W,H;
+function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight}
+resize();addEventListener('resize',resize);
+
+// AUDIO
+const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+const analyser=audioCtx.createAnalyser();
+analyser.fftSize=256;
+const gainNode=audioCtx.createGain();
+gainNode.gain.value=0.3;
+gainNode.connect(analyser);
+analyser.connect(audioCtx.destination);
+const bufLen=analyser.frequencyBinCount;
+const dataArray=new Uint8Array(bufLen);
+const waveArray=new Uint8Array(bufLen);
+
+let waveType='sine';
+let visMode='bars';
+let activeOscs={};
+
+// NOTES
+const NOTES=[
+  {note:'C4',freq:261.63,key:'a',label:'A',type:'white'},
+  {note:'C#4',freq:277.18,key:'w',label:'W',type:'black'},
+  {note:'D4',freq:293.66,key:'s',label:'S',type:'white'},
+  {note:'D#4',freq:311.13,key:'e',label:'E',type:'black'},
+  {note:'E4',freq:329.63,key:'d',label:'D',type:'white'},
+  {note:'F4',freq:349.23,key:'f',label:'F',type:'white'},
+  {note:'F#4',freq:369.99,key:'t',label:'T',type:'black'},
+  {note:'G4',freq:392.00,key:'g',label:'G',type:'white'},
+  {note:'G#4',freq:415.30,key:'y',label:'Y',type:'black'},
+  {note:'A4',freq:440.00,key:'h',label:'H',type:'white'},
+  {note:'A#4',freq:466.16,key:'u',label:'U',type:'black'},
+  {note:'B4',freq:493.88,key:'j',label:'J',type:'white'},
+  {note:'C5',freq:523.25,key:'k',label:'K',type:'white'},
+  {note:'C#5',freq:554.37,key:'o',label:'O',type:'black'},
+  {note:'D5',freq:587.33,key:'l',label:'L',type:'white'},
+];
+
+// BUILD KEYBOARD
+const kb=document.getElementById('keyboard');
+NOTES.forEach(n=>{
+  const k=document.createElement('div');
+  k.className=`key ${n.type}`;k.id=`key-${n.key}`;
+  k.textContent=n.label;
+  k.onmousedown=()=>playNote(n);
+  k.onmouseup=()=>stopNote(n);
+  k.onmouseleave=()=>stopNote(n);
+  kb.appendChild(k);
+});
+
+function playNote(n){
+  if(activeOscs[n.key])return;
+  audioCtx.resume();
+  const osc=audioCtx.createOscillator();
+  osc.type=waveType;osc.frequency.value=n.freq;
+  const env=audioCtx.createGain();
+  env.gain.setValueAtTime(0,audioCtx.currentTime);
+  env.gain.linearRampToValueAtTime(1,audioCtx.currentTime+.02);
+  osc.connect(env);env.connect(gainNode);osc.start();
+  activeOscs[n.key]={osc,env};
+  document.getElementById('key-'+n.key)?.classList.add('pressed');
+}
+function stopNote(n){
+  const a=activeOscs[n.key];if(!a)return;
+  a.env.gain.linearRampToValueAtTime(0,audioCtx.currentTime+.1);
+  setTimeout(()=>{a.osc.stop();delete activeOscs[n.key]},120);
+  document.getElementById('key-'+n.key)?.classList.remove('pressed');
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.repeat)return;
+  const n=NOTES.find(n=>n.key===e.key.toLowerCase());
+  if(n)playNote(n);
+});
+document.addEventListener('keyup',e=>{
+  const n=NOTES.find(n=>n.key===e.key.toLowerCase());
+  if(n)stopNote(n);
+});
+
+function setWave(type,btn){
+  waveType=type;
+  btn.parentElement.querySelectorAll('.ctrl-btn').forEach(b=>{if(['SINE','SQUARE','SAW','TRI'].includes(b.textContent))b.classList.remove('on')});
+  btn.classList.add('on');
+}
+function setVis(mode,btn){
+  visMode=mode;
+  btn.parentElement.querySelectorAll('.ctrl-btn').forEach(b=>{if(['BARS','WAVE','CIRCLE','MATRIX'].includes(b.textContent))b.classList.remove('on')});
+  btn.classList.add('on');
+}
+function setVol(v){gainNode.gain.value=v/100}
+
+// MATRIX CHARACTERS
+const matrixChars='ワークショップDIY01アイロボット'.split('');
+const matrixDrops=[];
+for(let i=0;i<60;i++)matrixDrops.push({x:Math.random()*2000,y:Math.random()*2000,speed:Math.random()*3+1,char:matrixChars[Math.floor(Math.random()*matrixChars.length)]});
+
+// RENDER
+let frames=0,lastFps=0,lastFpsTime=Date.now();
+function draw(){
+  requestAnimationFrame(draw);
+  frames++;
+  if(Date.now()-lastFpsTime>1000){lastFps=frames;frames=0;lastFpsTime=Date.now();document.getElementById('fps').textContent=lastFps+' FPS'}
+
+  analyser.getByteFrequencyData(dataArray);
+  analyser.getByteTimeDomainData(waveArray);
+
+  ctx.fillStyle='rgba(5,5,8,.15)';
+  ctx.fillRect(0,0,W,H);
+
+  const avg=dataArray.reduce((s,v)=>s+v,0)/bufLen;
+
+  if(visMode==='bars'){
+    const barW=W/bufLen*1.5;
+    for(let i=0;i<bufLen;i++){
+      const v=dataArray[i]/255;
+      const h=v*H*.6;
+      const hue=120+i*1.5;
+      ctx.fillStyle=`hsla(${hue},100%,50%,${.3+v*.4})`;
+      ctx.fillRect(i*barW,H-h,barW-1,h);
+      ctx.fillStyle=`hsla(${hue},100%,50%,.05)`;
+      ctx.fillRect(i*barW,H-h-4,barW-1,2);
+    }
+  }else if(visMode==='wave'){
+    ctx.beginPath();
+    ctx.strokeStyle=`rgba(0,255,65,${.3+avg/255*.5})`;
+    ctx.lineWidth=2;
+    const sliceW=W/bufLen;
+    for(let i=0;i<bufLen;i++){
+      const v=waveArray[i]/128;
+      const y=v*H/2;
+      i===0?ctx.moveTo(0,y):ctx.lineTo(i*sliceW,y);
+    }
+    ctx.stroke();
+    ctx.strokeStyle=`rgba(0,212,255,${.1+avg/255*.2})`;
+    ctx.lineWidth=1;
+    ctx.beginPath();
+    for(let i=0;i<bufLen;i++){
+      const v=waveArray[i]/128;
+      const y=v*H/2+10;
+      i===0?ctx.moveTo(0,y):ctx.lineTo(i*sliceW,y);
+    }
+    ctx.stroke();
+  }else if(visMode==='circle'){
+    const cx=W/2,cy=H/2;
+    const baseR=Math.min(W,H)*.15;
+    for(let i=0;i<bufLen;i++){
+      const v=dataArray[i]/255;
+      const angle=(i/bufLen)*Math.PI*2;
+      const r=baseR+v*baseR*1.5;
+      const x=cx+Math.cos(angle)*r;
+      const y=cy+Math.sin(angle)*r;
+      const hue=120+i*2;
+      ctx.beginPath();
+      ctx.arc(x,y,1+v*3,0,Math.PI*2);
+      ctx.fillStyle=`hsla(${hue},100%,50%,${.3+v*.5})`;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(cx+Math.cos(angle)*baseR,cy+Math.sin(angle)*baseR);
+      ctx.lineTo(x,y);
+      ctx.strokeStyle=`hsla(${hue},100%,50%,${.05+v*.1})`;
+      ctx.stroke();
+    }
+  }else if(visMode==='matrix'){
+    ctx.font='12px "JetBrains Mono"';
+    const intensity=avg/255;
+    matrixDrops.forEach(d=>{
+      d.y+=d.speed*(1+intensity*2);
+      if(d.y>H){d.y=-20;d.x=Math.random()*W;d.char=matrixChars[Math.floor(Math.random()*matrixChars.length)]}
+      const alpha=.1+intensity*.4;
+      ctx.fillStyle=`rgba(0,255,65,${alpha})`;
+      ctx.fillText(d.char,d.x,d.y);
+    });
+  }
+}
+draw();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

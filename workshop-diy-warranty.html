@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // WARRANTY</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#e8e0d0;font-family:'Noto Sans',sans-serif;font-size:10px;min-height:100vh;padding:16px}
+
+.card{max-width:520px;margin:0 auto;background:#fff;border:1px solid #ccc;padding:20px;box-shadow:1px 1px 4px rgba(0,0,0,.04)}
+
+.header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #003366;padding-bottom:8px;margin-bottom:8px}
+.header .logo{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:#003366;letter-spacing:2px}
+.header .logo-sub{font-size:7px;color:#888;letter-spacing:1px}
+.header .doc-type{text-align:right;font-size:8px;color:#888;letter-spacing:1px}
+.header .doc-type strong{display:block;font-size:12px;color:#003366}
+
+h2{font-size:10px;color:#003366;letter-spacing:2px;margin:10px 0 4px;padding-bottom:2px;border-bottom:1px solid #eee}
+p{margin:3px 0;font-size:9px;color:#555;line-height:1.9;text-align:justify}
+
+/* PRODUCT INFO */
+.product-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;border:1px solid #ddd;margin:6px 0}
+.pg-cell{padding:3px 6px;background:#fafaf5}
+.pg-cell .lbl{font-size:7px;color:#999;letter-spacing:1px}
+.pg-cell .val{font-size:9px;font-weight:600;color:#333}
+
+/* COVERAGE TABLES */
+.covered,.not-covered{margin:4px 0}
+.cov-row{display:flex;align-items:flex-start;gap:4px;padding:2px 0;border-bottom:1px solid #f5f5f0;font-size:9px}
+.cov-icon{flex-shrink:0;font-size:10px;width:16px;text-align:center}
+.cov-text{color:#555}
+
+.highlight-box{background:#fff8e0;border:1px solid #f0e0a0;padding:6px;margin:6px 0;border-radius:2px;font-size:8px;color:#886600;line-height:2}
+
+.fine-print{font-size:6px;color:#bbb;line-height:2;margin-top:8px;border-top:1px solid #eee;padding-top:6px}
+
+.reg-form{border:1px solid #ddd;padding:8px;margin:6px 0;background:#fafaf5}
+.reg-form h3{font-size:8px;color:#003366;letter-spacing:1px;margin-bottom:4px}
+.reg-row{display:flex;gap:6px;margin:3px 0}
+.reg-field{flex:1}
+.reg-field .lbl{font-size:6px;color:#999;letter-spacing:1px}
+.reg-field .line{border-bottom:1px solid #ccc;height:16px;margin-top:1px}
+
+.footer{text-align:center;margin-top:10px;font-size:6px;color:#bbb;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="card">
+
+<div class="header">
+  <div><div class="logo">🤖 WORKSHOP-DIY</div><div class="logo-sub">HARDWARE DIVISION</div></div>
+  <div class="doc-type"><strong>LIMITED WARRANTY</strong>FORM WR-042-R3</div>
+</div>
+
+<h2>PRODUCT INFORMATION</h2>
+<div class="product-grid">
+  <div class="pg-cell"><div class="lbl">PRODUCT</div><div class="val">bit-bot Educational Robot Kit</div></div>
+  <div class="pg-cell"><div class="lbl">MODEL</div><div class="val">WKSHP-BB-ESP32</div></div>
+  <div class="pg-cell"><div class="lbl">SERIAL</div><div class="val">BB-2023-0042</div></div>
+  <div class="pg-cell"><div class="lbl">WARRANTY PERIOD</div><div class="val">47 desk drops or 12 months*</div></div>
+</div>
+<p style="font-size:7px;color:#aaa">* Whichever comes first. Based on historical data, the 47-drop limit will be reached first.</p>
+
+<h2>WHAT IS COVERED ✅</h2>
+<div class="covered">
+  <div class="cov-row"><div class="cov-icon">✅</div><div class="cov-text">Manufacturing defects in ESP32 module, motors, and driver board</div></div>
+  <div class="cov-row"><div class="cov-icon">✅</div><div class="cov-text">BLE firmware issues preventing browser connection</div></div>
+  <div class="cov-row"><div class="cov-icon">✅</div><div class="cov-text">Servo motor failure under normal operating conditions</div></div>
+  <div class="cov-row"><div class="cov-icon">✅</div><div class="cov-text">IR sensor calibration drift (within ±10%)</div></div>
+  <div class="cov-row"><div class="cov-icon">✅</div><div class="cov-text">Ultrasonic sensor measurement errors exceeding ±5cm</div></div>
+  <div class="cov-row"><div class="cov-icon">✅</div><div class="cov-text">Hot glue structural failure (first 30 days only)</div></div>
+</div>
+
+<h2>WHAT IS NOT COVERED ❌</h2>
+<div class="not-covered">
+  <div class="cov-row"><div class="cov-icon">❌</div><div class="cov-text">Damage resulting from desk drops (drops 1 through 47)</div></div>
+  <div class="cov-row"><div class="cov-icon">❌</div><div class="cov-text">Damage resulting from desk drops (drops 48 and beyond)</div></div>
+  <div class="cov-row"><div class="cov-icon">❌</div><div class="cov-text">Damage caused by "enthusiastic student handling"</div></div>
+  <div class="cov-row"><div class="cov-icon">❌</div><div class="cov-text">Reversed battery polarity ("the magic smoke")</div></div>
+  <div class="cov-row"><div class="cov-icon">❌</div><div class="cov-text">Damage from being used as a projectile</div></div>
+  <div class="cov-row"><div class="cov-icon">❌</div><div class="cov-text">Water damage, coffee damage, or Debug Juice spillage</div></div>
+  <div class="cov-row"><div class="cov-icon">❌</div><div class="cov-text">Firmware corruption caused by Bug #42 (classified as feature)</div></div>
+  <div class="cov-row"><div class="cov-icon">❌</div><div class="cov-text">WiFi connectivity issues related to password123</div></div>
+  <div class="cov-row"><div class="cov-icon">❌</div><div class="cov-text">Emotional damage caused by BLE disconnection during demos</div></div>
+  <div class="cov-row"><div class="cov-icon">❌</div><div class="cov-text">Existential crisis (robot or student)</div></div>
+</div>
+
+<div class="highlight-box">
+  ⚠ <strong>IMPORTANT:</strong> This warranty is VOID if: (a) you attempt to delete Bug #42 from the firmware; (b) you change the WiFi password from password123; (c) you run ESLint on the control code; (d) you use the robot as a doorstop; or (e) the coffee machine supply falls below 8%. (It's already at 8%. We're all at risk.)
+</div>
+
+<h2>WARRANTY REGISTRATION</h2>
+<div class="reg-form">
+  <h3>PLEASE COMPLETE AND RETURN</h3>
+  <div class="reg-row">
+    <div class="reg-field"><div class="lbl">OWNER NAME</div><div class="line"></div></div>
+    <div class="reg-field"><div class="lbl">DATE OF PURCHASE</div><div class="line"></div></div>
+  </div>
+  <div class="reg-row">
+    <div class="reg-field"><div class="lbl">INSTITUTION</div><div class="line"></div></div>
+    <div class="reg-field"><div class="lbl">NUMBER OF DESK DROPS SO FAR</div><div class="line"></div></div>
+  </div>
+  <div class="reg-row">
+    <div class="reg-field"><div class="lbl">PREFERRED COFFEE STRENGTH</div><div class="line"></div></div>
+    <div class="reg-field"><div class="lbl">BUG #42 OPINION (bug/feature)</div><div class="line"></div></div>
+  </div>
+</div>
+
+<div class="fine-print">
+  This warranty is provided by Workshop-DIY (Association Loi 1901, France) and covers the original purchaser only. Workshop-DIY makes no guarantee that the robot will not be dropped, will not develop a personality, or will not become sentient. The term "hot glue structural engineering" is used loosely. Any resemblance to actual engineering is coincidental. Bug #42 is not covered because Bug #42 cannot be covered. Bug #42 covers itself. All claims must be submitted via git issue. Response time: 42 business days. For urgent matters, contact the coffee machine. It has always been more responsive than our ticketing system. Workshop-DIY reserves the right to reclassify any warranty claim as a feature. This warranty is printed on recycled electrons.
+</div>
+
+</div>
+
+<div class="footer">WORKSHOP-DIY · WARRANTY DEPT · FORM WR-042-R3 · THIS IS PARODY · BUGS ARE COVERED UNDER FEATURE PROTECTION ACT</div>
+  <script src="nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // FORENSIC REPORT</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f0ede4;color:#222;font-family:'Courier Prime','Courier New',monospace;font-size:12px;line-height:1.8;min-height:100vh;padding:16px}
+
+.report{max-width:620px;margin:0 auto;background:#fff;padding:30px;border:1px solid #ccc;box-shadow:2px 2px 8px rgba(0,0,0,.06);position:relative}
+.report::before{content:'CLASSIFIED';position:absolute;top:40%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:60px;color:rgba(255,0,0,.04);font-weight:700;pointer-events:none;letter-spacing:10px}
+
+.stamp{position:absolute;top:16px;right:16px;border:3px solid #cc0000;color:#cc0000;padding:3px 10px;font-weight:700;font-size:10px;transform:rotate(12deg);letter-spacing:2px}
+
+h1{font-size:16px;text-align:center;border-bottom:2px solid #222;padding-bottom:6px;margin-bottom:10px;letter-spacing:2px}
+.dept{text-align:center;font-size:9px;color:#888;letter-spacing:3px;margin-bottom:14px}
+
+/* FIELDS */
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin:10px 0;border:1px solid #ddd}
+.field{padding:4px 8px;border-bottom:1px solid #eee}
+.field .label{font-size:8px;color:#999;letter-spacing:1px}
+.field .value{font-size:11px;font-weight:700;color:#222}
+
+h2{font-size:12px;margin:14px 0 4px;letter-spacing:2px;border-bottom:1px solid #ddd;padding-bottom:2px;color:#444}
+
+p{margin:6px 0;text-indent:2em;text-align:justify}
+p.noindent{text-indent:0}
+
+/* EVIDENCE */
+.evidence{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
+.evi{border:1px solid #ddd;padding:6px;text-align:center;background:#f9f9f6}
+.evi .emoji{font-size:32px;margin-bottom:2px}
+.evi .label{font-size:7px;color:#999;letter-spacing:1px}
+.evi .desc{font-size:8px;color:#555;margin-top:2px}
+
+/* WITNESS */
+.witness{border-left:3px solid #ccc;padding:4px 10px;margin:6px 0;font-size:10px;color:#555;font-style:italic}
+.witness .w-name{font-style:normal;font-weight:700;color:#333;font-size:9px;display:block;margin-bottom:1px}
+
+.conclusion{background:#f5f0e0;border:1px solid #e0d8c0;padding:10px;margin:10px 0;font-weight:700;text-align:center}
+
+.signature{margin-top:16px;text-align:right;font-style:italic;color:#888}
+.sig-line{border-top:1px solid #888;width:200px;margin-left:auto;margin-top:20px;padding-top:2px;font-size:9px;text-align:center}
+
+.footer{text-align:center;font-size:7px;color:#bbb;margin-top:14px;letter-spacing:1px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="report">
+
+<div class="stamp">CASE CLOSED</div>
+
+<h1>🔬 FORENSIC INVESTIGATION REPORT</h1>
+<div class="dept">WORKSHOP-DIY DEPARTMENT OF HARDWARE FORENSICS</div>
+
+<div class="field-grid">
+  <div class="field"><div class="label">CASE NUMBER</div><div class="value">WKSHP-2026-USB-001</div></div>
+  <div class="field"><div class="label">DATE FILED</div><div class="value">February 28, 2026</div></div>
+  <div class="field"><div class="label">SUBJECT</div><div class="value">USB-C Cable (Deceased)</div></div>
+  <div class="field"><div class="label">LAST SEEN ALIVE</div><div class="value">Workbench 7, Robotics Lab</div></div>
+  <div class="field"><div class="label">TIME OF DEATH</div><div class="value">Approx. 14:42 (during workshop)</div></div>
+  <div class="field"><div class="label">EXAMINER</div><div class="value">Dr. Multimeter, Chief Forensics</div></div>
+</div>
+
+<h2>SUMMARY OF INCIDENT</h2>
+<p>On February 28, 2026, at approximately 14:42, a USB-C cable (hereinafter "the deceased") was found non-responsive on Workbench 7 of the Workshop-DIY Robotics Lab. Despite multiple resuscitation attempts including reseating, switching orientations (which should work both ways — this is USB-C), and the application of compressed air, the cable failed to establish data or power connection.</p>
+
+<p>The deceased was a third-party USB-C to USB-C cable, approximately 1 meter in length, white in color, with no visible external damage. It had been in active service for approximately 4 months, connecting ESP32 development boards to student laptops.</p>
+
+<h2>EVIDENCE COLLECTED</h2>
+<div class="evidence">
+  <div class="evi"><div class="emoji">🔌</div><div class="label">EXHIBIT A</div><div class="desc">The deceased cable. Outer sheath intact. Internal conductors: TBD.</div></div>
+  <div class="evi"><div class="emoji">💻</div><div class="label">EXHIBIT B</div><div class="desc">Student laptop. Port functional. Tested with 3 other cables. All worked.</div></div>
+  <div class="evi"><div class="emoji">🔲</div><div class="label">EXHIBIT C</div><div class="desc">ESP32 board. Confirmed functional via alternate cable. No burn marks.</div></div>
+  <div class="evi"><div class="emoji">🔍</div><div class="label">EXHIBIT D</div><div class="desc">Microscopy of connector tip. Evidence of repeated forced insertion at incorrect angle.</div></div>
+</div>
+
+<h2>AUTOPSY FINDINGS</h2>
+<p>Upon internal examination using a continuity tester, the following was observed:</p>
+
+<p class="noindent">• VBUS line: OPEN (no continuity) — Power delivery compromised<br>
+• D+ / D- lines: INTERMITTENT — Data transmission unreliable<br>
+• CC line: SHORT TO GROUND — Configuration channel failure<br>
+• Shield: INTACT — External damage not a factor</p>
+
+<p>Cause of death is determined to be <b>internal conductor fatigue</b> resulting from repeated acute-angle stress events (bending), combined with at least three incidents of "yanking by the cable instead of the connector" (see witness statements).</p>
+
+<h2>WITNESS STATEMENTS</h2>
+
+<div class="witness"><span class="w-name">Student A (age 13):</span>"I was just trying to flash the ESP32. I pulled the cable and it came out. I didn't pull hard. Okay, maybe a little hard. But the code was compiling and I was excited."</div>
+
+<div class="witness"><span class="w-name">Student B (age 14):</span>"I saw Student A yank the cable sideways while the laptop was on the edge of the desk. The cable made a sound. Not a good sound."</div>
+
+<div class="witness"><span class="w-name">The ESP32 Board:</span>"I felt the connection drop at 14:42:03. One moment VBUS was at 5V. The next, nothing. Silence. I've lost 7 cables this year. You get used to it. You never really get used to it."</div>
+
+<div class="witness"><span class="w-name">bit-bot:</span>"I was on Workbench 3. I didn't see anything. But I heard the snap. We all heard the snap."</div>
+
+<h2>CONTRIBUTING FACTORS</h2>
+<p>Investigation revealed the following systemic issues:</p>
+<p class="noindent">1. The cable was a €2.99 third-party purchase (insufficient quality for educational environment)<br>
+2. No strain relief was present at either connector end<br>
+3. The cable was routinely coiled at a radius below manufacturer recommendations<br>
+4. At least 3 separate students used the cable as a leash to prevent the ESP32 from "escaping"<br>
+5. The cable was once used to "tie" a micro:bit to a desk (unconfirmed)</p>
+
+<h2>RECOMMENDATIONS</h2>
+<p class="noindent">1. Replace all third-party cables with certified USB-IF compliant units<br>
+2. Install "PULL THE CONNECTOR NOT THE CABLE" signage at all workbenches<br>
+3. Conduct a moment of silence for the deceased<br>
+4. Budget €50/month for cable replacement (based on historical mortality rate of 1.7 cables/week)</p>
+
+<div class="conclusion">
+  CAUSE OF DEATH: ACUTE CONDUCTOR FATIGUE<br>
+  MANNER OF DEATH: MISADVENTURE (STUDENT-INDUCED)<br>
+  CLASSIFICATION: ACCIDENTAL · CASE CLOSED
+</div>
+
+<div class="signature">
+  <div class="sig-line">Dr. Multimeter, DMM, PhD<br>Chief Hardware Forensics Examiner<br>Workshop-DIY Department of Hardware Forensics</div>
+</div>
+
+</div>
+
+<div class="footer">WORKSHOP-DIY FORENSICS · THIS IS PARODY · NO ACTUAL AUTOPSIES PERFORMED · RIP USB-C CABLE (2025–2026) · BUGS ARE FEATURES · password123</div>
+  <script src="nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-PARDY!</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#060628;font-family:'JetBrains Mono',monospace;min-height:100vh;color:#fff}
+
+.top{background:#1a1a4e;padding:8px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #ffd700}
+.logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#ffd700;letter-spacing:1px}
+.score-area{display:flex;gap:12px;align-items:center;font-size:10px}
+.score{font-size:16px;font-weight:800;color:#ffd700}
+.score-btn{padding:3px 10px;background:none;border:1px solid rgba(255,215,0,.2);border-radius:3px;color:#ffd700;font-family:inherit;font-size:8px;cursor:pointer}
+.score-btn:hover{background:rgba(255,215,0,.1)}
+
+/* BOARD */
+.board{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;padding:8px;max-width:1000px;margin:0 auto}
+.cat-header{background:#1a1a4e;padding:8px 4px;text-align:center;font-family:'Syne',sans-serif;font-size:clamp(8px,1.5vw,11px);font-weight:700;color:#fff;border:2px solid #2a2a6e;border-radius:3px;letter-spacing:.5px;text-transform:uppercase}
+.cell{background:#1a1a5e;border:2px solid #2a2a7e;border-radius:3px;padding:12px 4px;text-align:center;cursor:pointer;transition:all .15s;font-family:'Syne',sans-serif;font-size:clamp(16px,3vw,24px);font-weight:800;color:#ffd700;text-shadow:0 2px 4px rgba(0,0,0,.3);min-height:50px;display:flex;align-items:center;justify-content:center}
+.cell:hover{background:#2a2a7e;transform:scale(1.02)}
+.cell.used{background:#0a0a2e;border-color:#1a1a3e;color:#1a1a3e;cursor:default;pointer-events:none}
+
+/* QUESTION OVERLAY */
+.q-overlay{position:fixed;inset:0;z-index:100;background:rgba(6,6,40,.97);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;backdrop-filter:blur(8px)}
+.q-overlay.on{display:flex}
+.q-cat{font-size:10px;color:#ffd700;letter-spacing:3px;margin-bottom:4px}
+.q-pts{font-size:12px;color:rgba(255,215,0,.4);margin-bottom:12px}
+.q-text{font-family:'Syne',sans-serif;font-size:clamp(16px,4vw,28px);font-weight:700;color:#fff;max-width:600px;line-height:1.6;margin-bottom:16px}
+.q-answer{font-size:14px;color:#ffd700;margin-bottom:12px;display:none;padding:8px 16px;border:2px solid #ffd700;border-radius:4px}
+.q-btns{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.q-btn{padding:6px 20px;border-radius:4px;border:2px solid;font-family:inherit;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all .15s}
+.q-btn.reveal{border-color:#ffd700;background:none;color:#ffd700}.q-btn.reveal:hover{background:rgba(255,215,0,.1)}
+.q-btn.correct{border-color:#44ff88;background:none;color:#44ff88}.q-btn.correct:hover{background:rgba(68,255,136,.1)}
+.q-btn.wrong{border-color:#ff4444;background:none;color:#ff4444}.q-btn.wrong:hover{background:rgba(255,68,68,.1)}
+.q-btn.close{border-color:#666;background:none;color:#999}.q-btn.close:hover{background:rgba(255,255,255,.05)}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="top">
+  <div class="logo">🏆 WKSHP-PARDY!</div>
+  <div class="score-area">
+    <span style="font-size:8px;color:rgba(255,215,0,.4)">SCORE:</span>
+    <span class="score" id="score">$0</span>
+    <button class="score-btn" onclick="resetGame()">RESET</button>
+  </div>
+</div>
+
+<div class="board" id="board"></div>
+
+<div class="q-overlay" id="qOverlay">
+  <div class="q-cat" id="qCat"></div>
+  <div class="q-pts" id="qPts"></div>
+  <div class="q-text" id="qText"></div>
+  <div class="q-answer" id="qAnswer"></div>
+  <div class="q-btns">
+    <button class="q-btn reveal" id="revealBtn" onclick="revealAnswer()">REVEAL ANSWER</button>
+    <button class="q-btn correct" id="correctBtn" onclick="markCorrect()" style="display:none">✓ CORRECT</button>
+    <button class="q-btn wrong" id="wrongBtn" onclick="markWrong()" style="display:none">✗ WRONG</button>
+    <button class="q-btn close" onclick="closeQuestion()">CLOSE</button>
+  </div>
+</div>
+
+<script>
+const CATEGORIES=[
+  {name:"ROBOTICS 🤖",questions:[
+    {q:"This Bluetooth protocol connects browsers to micro:bit robots",a:"What is Web Bluetooth (BLE)?",pts:200},
+    {q:"The number of table drops the ESP32 robot kit has survived",a:"What is 47?",pts:400},
+    {q:"This motor driver IC powers the robot kit's DC motors",a:"What is DRV8833?",pts:600},
+    {q:"The bit-bot app uses this to steer: arrow keys or this input device",a:"What is a joystick?",pts:800},
+    {q:"When a robot spins instead of going forward, Workshop-DIY calls it this",a:"What is a feature? (not a bug)",pts:1000},
+  ]},
+  {name:"AI / ML 🧠",questions:[
+    {q:"This Google framework powers hand-tracking in magic-hands",a:"What is MediaPipe?",pts:200},
+    {q:"The number of hand landmarks tracked by magic-hands",a:"What is 21?",pts:400},
+    {q:"teachable-machine lets you train custom models for these body parts",a:"What are hand gestures?",pts:600},
+    {q:"face-quest tracks this many facial landmarks",a:"What is 468?",pts:800},
+    {q:"The maximum model accuracy achieved by a 10-year-old student",a:"What is 98%?",pts:1000},
+  ]},
+  {name:"CYBER 🔐",questions:[
+    {q:"The Workshop-DIY WiFi password since 2023",a:"What is password123?",pts:200},
+    {q:"This type of SQL attack is pentest-lab's most popular challenge",a:"What is SQL injection?",pts:400},
+    {q:"The real-world device a student ethically hacked after using pentest-lab",a:"What is a school printer?",pts:600},
+    {q:"The number of times cybersecurity students petitioned to change the WiFi password",a:"What is 3?",pts:800},
+    {q:"CTF stands for this",a:"What is Capture The Flag?",pts:1000},
+  ]},
+  {name:"LINUX 🐧",questions:[
+    {q:"The shell version used in linux-kids-lab",a:"What is Bash 5.2?",pts:200},
+    {q:"This command lists files in a directory",a:"What is ls?",pts:400},
+    {q:"The dangerous command that should NEVER be run as root",a:"What is rm -rf /?",pts:600},
+    {q:"This command changes your current directory",a:"What is cd?",pts:800},
+    {q:"linux-kids-lab runs entirely in this — no server needed",a:"What is the browser?",pts:1000},
+  ]},
+  {name:"HARDWARE ⚡",questions:[
+    {q:"The main microcontroller in the Workshop-DIY robot kit",a:"What is ESP32-WROOM-32?",pts:200},
+    {q:"The ESP32's clock speed in MHz (dual-core)",a:"What is 240 MHz?",pts:400},
+    {q:"This infrared sensor is used for line-following",a:"What is TCRT5000?",pts:600},
+    {q:"The ultrasonic sensor model used for distance measurement",a:"What is HC-SR04?",pts:800},
+    {q:"The battery type used in the robot kit (voltage and form factor)",a:"What is 3.7V 18650 LiPo?",pts:1000},
+  ]},
+  {name:"WKSHP LORE ☕",questions:[
+    {q:"The total number of apps in the Workshop-DIY ecosystem",a:"What is 39?",pts:200},
+    {q:"The exact number of bugs reclassified as features",a:"What is 42?",pts:400},
+    {q:"The Workshop-DIY legal structure under French law",a:"What is Association Loi 1901?",pts:600},
+    {q:"The resource described as perpetually at 'CRITICAL' levels",a:"What is coffee?",pts:800},
+    {q:"The year Workshop-DIY was founded",a:"What is 2023?",pts:1000},
+  ]},
+];
+
+let totalScore=0;
+let currentQ=null;
+
+function renderBoard(){
+  const board=document.getElementById('board');
+  board.innerHTML='';
+  CATEGORIES.forEach(cat=>{
+    const h=document.createElement('div');h.className='cat-header';h.textContent=cat.name;
+    board.appendChild(h);
+  });
+  for(let row=0;row<5;row++){
+    CATEGORIES.forEach((cat,ci)=>{
+      const cell=document.createElement('div');
+      cell.className='cell';
+      cell.id=`cell-${ci}-${row}`;
+      cell.textContent='$'+cat.questions[row].pts;
+      cell.onclick=()=>openQuestion(ci,row);
+      board.appendChild(cell);
+    });
+  }
+}
+
+function openQuestion(ci,qi){
+  const cat=CATEGORIES[ci];
+  const q=cat.questions[qi];
+  currentQ={ci,qi,pts:q.pts};
+  document.getElementById('qCat').textContent=cat.name;
+  document.getElementById('qPts').textContent='$'+q.pts;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qAnswer').textContent=q.a;
+  document.getElementById('qAnswer').style.display='none';
+  document.getElementById('revealBtn').style.display='';
+  document.getElementById('correctBtn').style.display='none';
+  document.getElementById('wrongBtn').style.display='none';
+  document.getElementById('qOverlay').classList.add('on');
+}
+
+function revealAnswer(){
+  document.getElementById('qAnswer').style.display='block';
+  document.getElementById('revealBtn').style.display='none';
+  document.getElementById('correctBtn').style.display='';
+  document.getElementById('wrongBtn').style.display='';
+}
+
+function markCorrect(){
+  totalScore+=currentQ.pts;
+  document.getElementById('score').textContent='$'+totalScore;
+  document.getElementById(`cell-${currentQ.ci}-${currentQ.qi}`).classList.add('used');
+  closeQuestion();
+}
+
+function markWrong(){
+  totalScore-=currentQ.pts;
+  document.getElementById('score').textContent='$'+totalScore;
+  document.getElementById(`cell-${currentQ.ci}-${currentQ.qi}`).classList.add('used');
+  closeQuestion();
+}
+
+function closeQuestion(){
+  document.getElementById('qOverlay').classList.remove('on');
+  currentQ=null;
+}
+
+function resetGame(){
+  totalScore=0;
+  document.getElementById('score').textContent='$0';
+  renderBoard();
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeQuestion()});
+renderBoard();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-MATCH 🔥</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0e;color:#fff;font-family:'JetBrains Mono',monospace;font-size:12px;display:flex;flex-direction:column;align-items:center;min-height:100vh;overflow:hidden}
+
+.header{padding:12px;text-align:center;width:100%}
+.h-logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;background:linear-gradient(135deg,#ff0066,#ff8800);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.h-sub{font-size:7px;color:rgba(255,255,255,.15);letter-spacing:3px;margin-top:2px}
+
+.stack{position:relative;width:300px;height:420px;margin:8px auto;flex-shrink:0}
+
+.swipe-card{position:absolute;inset:0;border-radius:14px;overflow:hidden;cursor:grab;transition:transform .4s ease,opacity .4s ease;will-change:transform;touch-action:none}
+.swipe-card.gone-left{transform:translateX(-150%) rotate(-20deg)!important;opacity:0!important;pointer-events:none}
+.swipe-card.gone-right{transform:translateX(150%) rotate(20deg)!important;opacity:0!important;pointer-events:none}
+.swipe-card:active{cursor:grabbing}
+
+.card-bg{position:absolute;inset:0}
+.card-bg.robo{background:linear-gradient(160deg,#0a2a0a,#001a00,#0a1a0a)}.card-bg.ai{background:linear-gradient(160deg,#1a0033,#0a001a,#1a002e)}.card-bg.cyber{background:linear-gradient(160deg,#1a0000,#330011,#1a0a00)}.card-bg.learn{background:linear-gradient(160deg,#001a1a,#002233,#0a1a2e)}.card-bg.hw{background:linear-gradient(160deg,#1a1a00,#332200,#1a0a00)}.card-bg.cam{background:linear-gradient(160deg,#0a0a2e,#001a33,#0a1a2e)}.card-bg.tool{background:linear-gradient(160deg,#111,#0a0a14,#111)}
+
+.card-content{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;padding:16px}
+.card-top{display:flex;justify-content:space-between;font-size:8px;color:rgba(255,255,255,.2)}
+.card-emoji{text-align:center;font-size:72px;margin:20px 0;filter:drop-shadow(0 8px 20px rgba(0,0,0,.5));flex-shrink:0}
+.card-name{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;text-align:center;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+.card-types{display:flex;gap:4px;justify-content:center;margin:6px 0}
+.type-pill{padding:2px 10px;border-radius:10px;font-size:8px;font-weight:700;letter-spacing:1px}
+.tp-robo{background:rgba(0,255,65,.08);color:#00ff41}.tp-ai{background:rgba(191,0,255,.08);color:#bf00ff}.tp-cyber{background:rgba(255,0,51,.08);color:#ff0033}.tp-learn{background:rgba(0,212,255,.08);color:#00d4ff}.tp-hw{background:rgba(255,136,0,.08);color:#ff8800}.tp-cam{background:rgba(255,215,0,.08);color:#ffd700}.tp-tool{background:rgba(255,255,255,.05);color:#888}
+.card-desc{font-size:10px;color:rgba(255,255,255,.4);text-align:center;line-height:2;margin:8px 0;flex:1}
+.card-stats{display:flex;justify-content:center;gap:12px;font-size:9px;color:rgba(255,255,255,.2)}
+.card-stats b{color:rgba(255,255,255,.5)}
+
+/* SWIPE OVERLAYS */
+.overlay{position:absolute;top:20px;padding:6px 16px;border-radius:6px;font-size:16px;font-weight:800;letter-spacing:3px;z-index:5;opacity:0;transition:opacity .15s;transform:rotate(-15deg)}
+.overlay.like{right:16px;border:3px solid #00ff41;color:#00ff41}
+.overlay.nope{left:16px;border:3px solid #ff0033;color:#ff0033;transform:rotate(15deg)}
+
+/* BUTTONS */
+.btns{display:flex;gap:12px;margin-top:12px;justify-content:center}
+.btn-circle{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;transition:all .15s;border:2px solid}
+.btn-nope{border-color:rgba(255,0,51,.2);background:rgba(255,0,51,.03);color:#ff0033}
+.btn-nope:hover{background:rgba(255,0,51,.08);box-shadow:0 0 12px rgba(255,0,51,.15);transform:scale(1.1)}
+.btn-like{border-color:rgba(0,255,65,.2);background:rgba(0,255,65,.03);color:#00ff41}
+.btn-like:hover{background:rgba(0,255,65,.08);box-shadow:0 0 12px rgba(0,255,65,.15);transform:scale(1.1)}
+.btn-super{border-color:rgba(0,212,255,.2);background:rgba(0,212,255,.03);color:#00d4ff}
+.btn-super:hover{background:rgba(0,212,255,.08);box-shadow:0 0 12px rgba(0,212,255,.15);transform:scale(1.1)}
+
+/* MATCH SCREEN */
+.match-screen{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.9);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.match-screen.on{display:flex;animation:matchIn .5s ease}
+@keyframes matchIn{from{opacity:0}to{opacity:1}}
+.match-title{font-family:'Syne',sans-serif;font-size:clamp(28px,6vw,42px);font-weight:800;background:linear-gradient(135deg,#ff0066,#ff8800,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.match-emoji{font-size:56px;margin:8px 0}
+.match-name{font-size:18px;font-weight:700;color:#fff;margin-bottom:4px}
+.match-desc{font-size:10px;color:rgba(255,255,255,.3);max-width:280px;line-height:2}
+.match-btn{margin-top:14px;padding:8px 24px;border-radius:20px;background:linear-gradient(135deg,#ff0066,#ff8800);border:none;color:#fff;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:1px}
+
+/* COUNTER */
+.counter{font-size:8px;color:rgba(255,255,255,.1);margin-top:8px;letter-spacing:2px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="h-logo">WKSHP-MATCH 🔥</div>
+  <div class="h-sub">SWIPE RIGHT ON YOUR NEXT FAVORITE APP</div>
+</div>
+
+<div class="stack" id="stack"></div>
+
+<div class="btns">
+  <div class="btn-circle btn-nope" onclick="swipe('left')">✕</div>
+  <div class="btn-circle btn-super" onclick="swipe('super')">⭐</div>
+  <div class="btn-circle btn-like" onclick="swipe('right')">♥</div>
+</div>
+
+<div class="counter" id="counter">0 / 0 APPS MATCHED</div>
+
+<div class="match-screen" id="matchScreen">
+  <div class="match-title">IT'S A MATCH!</div>
+  <div class="match-emoji" id="matchEmoji">🤖</div>
+  <div class="match-name" id="matchName">bit-bot</div>
+  <div class="match-desc" id="matchDesc">You and this app have a connection.</div>
+  <button class="match-btn" onclick="closeMatch()">KEEP SWIPING</button>
+</div>
+
+<script>
+const APPS=[
+{e:"🤖",n:"bit-bot",d:"Drive robots via Bluetooth. Joystick control, line-follow, dance mode. The OG.",t:["robo"],bg:"robo",pwr:95,fun:90},
+{e:"🪄",n:"magic-hands",d:"Hand tracking magic effects. 21 landmarks. You WILL wave at your screen.",t:["ai","cam"],bg:"ai",pwr:88,fun:99},
+{e:"🕵️",n:"face-quest",d:"Face detection turned into a game. Score 847 or you're a rookie.",t:["ai","cam"],bg:"cam",pwr:82,fun:95},
+{e:"🧠",n:"teachable-machine",d:"Train AI in browser. Send results to robot. Feel like a genius.",t:["ai","robo"],bg:"ai",pwr:92,fun:85},
+{e:"💬",n:"talking-robot",d:"Talk to your robot. It listens. It moves. It judges silently.",t:["robo","ai"],bg:"robo",pwr:78,fun:88},
+{e:"🚀",n:"mission-control",d:"WebRTC dashboard. Video, chat, robot control. NASA vibes on a budget.",t:["tool","robo"],bg:"tool",pwr:90,fun:75},
+{e:"🔐",n:"pentest-lab",d:"Ethical hacking sandbox. SQL injection, XSS. Break things responsibly.",t:["cyber"],bg:"cyber",pwr:92,fun:90},
+{e:"🐧",n:"linux-kids-lab",d:"Linux terminal in a browser. ls, cd, grep. No rm -rf allowed.",t:["learn"],bg:"learn",pwr:85,fun:78},
+{e:"💡",n:"wled-kids-lab",d:"Control LED strips from your phone. Rainbow everything.",t:["hw"],bg:"hw",pwr:65,fun:88},
+{e:"⚡",n:"esp32-c3-lab",d:"ESP32-C3 IoT lab. The hardware gateway drug. You'll want more.",t:["hw"],bg:"hw",pwr:75,fun:70},
+{e:"🎨",n:"pixel-gateway",d:"Retro pixel art editor. Therapeutic. Creative. Secretly educational.",t:["learn"],bg:"learn",pwr:60,fun:92},
+{e:"🐳",n:"docker-lab",d:"Containers for kids. Will cause generational knowledge inversion.",t:["learn"],bg:"learn",pwr:75,fun:68},
+{e:"🧩",n:"bit-playground",d:"The ultimate micro:bit sandbox. Every sensor. Every output. All BLE.",t:["robo"],bg:"robo",pwr:80,fun:90},
+{e:"✨",n:"prompt-hero",d:"Learn to talk to AI. The art of the question. Surprisingly deep.",t:["ai","learn"],bg:"ai",pwr:70,fun:80},
+{e:"🏡",n:"smart-home",d:"IoT dashboard sim. Build your dream smart home. Thermostat wars training.",t:["hw","learn"],bg:"hw",pwr:65,fun:75},
+{e:"🎛️",n:"rxy",d:"Drag-and-drop BLE remote builder. Your robot, your rules.",t:["robo","tool"],bg:"robo",pwr:70,fun:82},
+{e:"😎",n:"face-tracking",d:"Your face controls the robot. XY position tracking. Mind → machine.",t:["cam","robo"],bg:"cam",pwr:72,fun:80},
+{e:"😄",n:"bitmoji-lab",d:"Emojis become LED art. Digital creativity meets physical pixels.",t:["robo","learn"],bg:"robo",pwr:55,fun:85},
+{e:"🔴",n:"nodered-lab",d:"Visual programming flows. Drag, connect, deploy. Code without typing.",t:["learn","tool"],bg:"tool",pwr:70,fun:72},
+{e:"⛽",n:"ocpp",d:"EV charging simulator. Niche? Yes. Cool? Also yes.",t:["learn","hw"],bg:"hw",pwr:60,fun:55},
+];
+
+let deck=[...APPS].sort(()=>Math.random()-.5);
+let idx=0,matches=0,total=deck.length;
+let dragging=false,startX=0,currentX=0,currentCard=null;
+
+function renderStack(){
+  const stack=document.getElementById('stack');stack.innerHTML='';
+  const remaining=deck.slice(idx,idx+3).reverse();
+  remaining.forEach((app,i)=>{
+    const pos=remaining.length-1-i;
+    const card=document.createElement('div');
+    card.className='swipe-card';
+    card.style.zIndex=10-pos;
+    card.style.transform=`scale(${1-pos*.03}) translateY(${pos*6}px)`;
+    card.style.opacity=pos===0?1:.7-pos*.2;
+    card.innerHTML=`
+      <div class="card-bg ${app.bg}"></div>
+      <div class="overlay like">LIKE</div>
+      <div class="overlay nope">NOPE</div>
+      <div class="card-content">
+        <div class="card-top"><span>#${APPS.indexOf(app)+1}</span><span>${matches}/${total}</span></div>
+        <div class="card-emoji">${app.e}</div>
+        <div class="card-name">${app.n}</div>
+        <div class="card-types">${app.t.map(t=>`<span class="type-pill tp-${t}">${t}</span>`).join('')}</div>
+        <div class="card-desc">${app.d}</div>
+        <div class="card-stats"><span>⚡ PWR <b>${app.pwr}</b></span><span>🎮 FUN <b>${app.fun}</b></span></div>
+      </div>`;
+    if(pos===0){
+      card.onmousedown=e=>startDrag(e.clientX,card);
+      card.ontouchstart=e=>startDrag(e.touches[0].clientX,card);
+    }
+    stack.appendChild(card);
+  });
+  document.getElementById('counter').textContent=`${matches} / ${Math.min(idx,total)} APPS REVIEWED · ${matches} MATCHED`;
+  if(idx>=deck.length){stack.innerHTML='<div style="text-align:center;padding:40px;color:rgba(0,255,65,.2)"><div style="font-size:40px;margin-bottom:8px">🎉</div><div style="font-size:12px">No more apps!</div><div style="font-size:8px;margin-top:4px">You matched with '+matches+'/'+total+' apps</div></div>'}
+}
+
+function startDrag(x,card){
+  dragging=true;startX=x;currentCard=card;
+  const move=e=>{
+    const cx=e.clientX||e.touches?.[0]?.clientX||startX;
+    currentX=cx-startX;
+    card.style.transform=`translateX(${currentX}px) rotate(${currentX*.05}deg)`;
+    const likeOv=card.querySelector('.overlay.like');
+    const nopeOv=card.querySelector('.overlay.nope');
+    likeOv.style.opacity=Math.max(0,currentX/100);
+    nopeOv.style.opacity=Math.max(0,-currentX/100);
+  };
+  const end=()=>{
+    dragging=false;
+    document.removeEventListener('mousemove',move);document.removeEventListener('mouseup',end);
+    document.removeEventListener('touchmove',move);document.removeEventListener('touchend',end);
+    if(Math.abs(currentX)>80)swipe(currentX>0?'right':'left');
+    else{card.style.transform='';card.querySelector('.overlay.like').style.opacity=0;card.querySelector('.overlay.nope').style.opacity=0}
+    currentX=0;
+  };
+  document.addEventListener('mousemove',move);document.addEventListener('mouseup',end);
+  document.addEventListener('touchmove',move);document.addEventListener('touchend',end);
+}
+
+function swipe(dir){
+  const stack=document.getElementById('stack');
+  const card=stack.querySelector('.swipe-card:last-child');
+  if(!card||idx>=deck.length)return;
+  if(dir==='right'||dir==='super'){
+    card.classList.add('gone-right');
+    matches++;
+    if(Math.random()>.3){
+      const app=deck[idx];
+      setTimeout(()=>showMatch(app),400);
+    }
+  }else{
+    card.classList.add('gone-left');
+  }
+  idx++;
+  setTimeout(renderStack,400);
+}
+
+function showMatch(app){
+  document.getElementById('matchEmoji').textContent=app.e;
+  document.getElementById('matchName').textContent=app.n;
+  document.getElementById('matchDesc').textContent=app.d;
+  document.getElementById('matchScreen').classList.add('on');
+}
+function closeMatch(){document.getElementById('matchScreen').classList.remove('on')}
+
+renderStack();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // METRO MAP</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;min-height:100vh;overflow:auto}
+
+.header{text-align:center;padding:14px;background:#0d0d18;border-bottom:1px solid #1a1a2e}
+.h-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff}
+.h-sub{font-size:7px;color:#444;letter-spacing:3px;margin-top:2px}
+
+.map-area{position:relative;width:900px;height:650px;margin:10px auto;overflow:visible}
+svg{width:100%;height:100%}
+
+/* LEGEND */
+.legend{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:10px;background:#0d0d18;border-top:1px solid #1a1a2e}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:8px;color:#888;padding:3px 8px;border:1px solid #1a1a2e;border-radius:3px}
+.leg-dot{width:10px;height:4px;border-radius:2px}
+
+/* TOOLTIP */
+.tooltip{position:fixed;background:#1a1a2e;border:1px solid #2a2a3e;border-radius:6px;padding:8px 10px;pointer-events:none;z-index:100;display:none;max-width:220px;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+.tooltip .name{font-size:11px;font-weight:700;margin-bottom:2px}
+.tooltip .desc{font-size:8px;color:#888;line-height:1.8}
+.tooltip .line-tag{font-size:7px;padding:1px 6px;border-radius:3px;display:inline-block;margin-top:3px}
+
+.footer{text-align:center;padding:8px;font-size:6px;color:#222;letter-spacing:2px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="h-title">🚇 WKSHP TRANSIT MAP</div>
+  <div class="h-sub">WORKSHOP-DIY LEARNING NETWORK · 6 LINES · 19 STATIONS</div>
+</div>
+
+<div class="map-area">
+<svg viewBox="0 0 900 650" xmlns="http://www.w3.org/2000/svg">
+  <!-- GRID (subtle) -->
+  <defs>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(255,255,255,.01)" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="900" height="650" fill="url(#grid)"/>
+
+  <!-- LINE 1: ROBOTICS (Green) -->
+  <polyline points="80,120 200,120 320,120 440,200 560,200" stroke="#00cc66" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
+  <!-- LINE 2: AI (Purple) -->
+  <polyline points="200,120 320,120 440,200 440,320 440,440" stroke="#9966ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
+  <!-- LINE 3: CYBER (Red) -->
+  <polyline points="560,80 560,200 560,320 680,320" stroke="#ff3344" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
+  <!-- LINE 4: HARDWARE (Orange) -->
+  <polyline points="80,320 200,320 320,320 440,320 560,320" stroke="#ff8800" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
+  <!-- LINE 5: LEARNING (Blue) -->
+  <polyline points="200,440 320,440 440,440 560,440 680,440" stroke="#0088ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
+  <!-- LINE 6: TOOLS (Cyan) -->
+  <polyline points="680,120 680,200 680,320 680,440 800,440" stroke="#00cccc" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
+
+  <!-- TRANSFER CONNECTIONS (dashed) -->
+  <line x1="440" y1="200" x2="560" y2="200" stroke="#fff" stroke-width="1" stroke-dasharray="4,3" opacity=".15"/>
+  <line x1="560" y1="200" x2="680" y2="200" stroke="#fff" stroke-width="1" stroke-dasharray="4,3" opacity=".15"/>
+  <line x1="560" y1="320" x2="560" y2="440" stroke="#fff" stroke-width="1" stroke-dasharray="4,3" opacity=".15"/>
+
+  <!-- STATIONS -->
+  <!-- Robotics Line -->
+  <circle cx="80" cy="120" r="8" fill="#0a0a14" stroke="#00cc66" stroke-width="3" class="station" data-name="bit-bot" data-desc="The OG robot controller. BLE, line-following, obstacle avoidance." data-line="ROBOTICS" data-color="#00cc66"/>
+  <circle cx="200" cy="120" r="10" fill="#0a0a14" stroke="#fff" stroke-width="3" class="station transfer" data-name="bit-playground" data-desc="Transfer station: Full micro:bit sensor access. LEDs, accelerometer, compass." data-line="ROBOTICS · AI" data-color="#00cc66"/>
+  <circle cx="320" cy="120" r="10" fill="#0a0a14" stroke="#fff" stroke-width="3" class="station transfer" data-name="rxy" data-desc="Transfer station: Custom Bluetooth remote builder." data-line="ROBOTICS · AI" data-color="#00cc66"/>
+  <circle cx="560" cy="200" r="10" fill="#0a0a14" stroke="#fff" stroke-width="3" class="station transfer" data-name="mission-control" data-desc="Major hub: WebRTC command center. Video, chat, robot control." data-line="ROBOTICS · CYBER · TOOLS" data-color="#00cc66"/>
+
+  <!-- AI Line -->
+  <circle cx="440" cy="200" r="10" fill="#0a0a14" stroke="#fff" stroke-width="3" class="station transfer" data-name="teachable-machine" data-desc="Transfer station: Train custom ML gestures. 98% accuracy." data-line="ROBOTICS · AI" data-color="#9966ff"/>
+  <circle cx="440" cy="320" r="10" fill="#0a0a14" stroke="#fff" stroke-width="3" class="station transfer" data-name="face-quest" data-desc="Major hub: Face detection with 468 landmarks. Scoring game." data-line="AI · HARDWARE" data-color="#9966ff"/>
+  <circle cx="440" cy="440" r="10" fill="#0a0a14" stroke="#fff" stroke-width="3" class="station transfer" data-name="magic-hands" data-desc="Transfer station: 21 hand landmarks, particle effects." data-line="AI · LEARNING" data-color="#9966ff"/>
+
+  <!-- Cyber Line -->
+  <circle cx="560" cy="80" r="8" fill="#0a0a14" stroke="#ff3344" stroke-width="3" class="station" data-name="pentest-lab" data-desc="Ethical hacking sandbox. SQL injection, XSS, CTF." data-line="CYBER" data-color="#ff3344"/>
+  <circle cx="560" cy="320" r="10" fill="#0a0a14" stroke="#fff" stroke-width="3" class="station transfer" data-name="dhcp-lab" data-desc="Transfer station: Network protocol simulator." data-line="CYBER · HARDWARE" data-color="#ff3344"/>
+  <circle cx="680" cy="320" r="10" fill="#0a0a14" stroke="#fff" stroke-width="3" class="station transfer" data-name="smart-home" data-desc="Transfer station: IoT dashboard simulator." data-line="CYBER · TOOLS" data-color="#ff3344"/>
+
+  <!-- Hardware Line -->
+  <circle cx="80" cy="320" r="8" fill="#0a0a14" stroke="#ff8800" stroke-width="3" class="station" data-name="esp32-c3-lab" data-desc="ESP32-C3 IoT lab. 240MHz, WiFi, BLE." data-line="HARDWARE" data-color="#ff8800"/>
+  <circle cx="200" cy="320" r="8" fill="#0a0a14" stroke="#ff8800" stroke-width="3" class="station" data-name="wled-kids-lab" data-desc="Neopixel LED control. 16M colors over HTTP." data-line="HARDWARE" data-color="#ff8800"/>
+  <circle cx="320" cy="320" r="8" fill="#0a0a14" stroke="#ff8800" stroke-width="3" class="station" data-name="talking-robot" data-desc="Voice-controlled robot. Speech recognition + BLE." data-line="HARDWARE" data-color="#ff8800"/>
+
+  <!-- Learning Line -->
+  <circle cx="200" cy="440" r="8" fill="#0a0a14" stroke="#0088ff" stroke-width="3" class="station" data-name="linux-kids-lab" data-desc="Linux terminal in the browser. Bash commands." data-line="LEARNING" data-color="#0088ff"/>
+  <circle cx="320" cy="440" r="8" fill="#0a0a14" stroke="#0088ff" stroke-width="3" class="station" data-name="docker-lab" data-desc="Docker experiments. Containers for young makers." data-line="LEARNING" data-color="#0088ff"/>
+  <circle cx="560" cy="440" r="8" fill="#0a0a14" stroke="#0088ff" stroke-width="3" class="station" data-name="prompt-hero" data-desc="AI prompting playground. Craft perfect conversations." data-line="LEARNING" data-color="#0088ff"/>
+  <circle cx="680" cy="440" r="10" fill="#0a0a14" stroke="#fff" stroke-width="3" class="station transfer" data-name="pixel-gateway" data-desc="Transfer station: Retro pixel art editor." data-line="LEARNING · TOOLS" data-color="#0088ff"/>
+
+  <!-- Tools Line -->
+  <circle cx="680" cy="120" r="8" fill="#0a0a14" stroke="#00cccc" stroke-width="3" class="station" data-name="nodered-lab" data-desc="Node-RED visual flow programming." data-line="TOOLS" data-color="#00cccc"/>
+  <circle cx="680" cy="200" r="8" fill="#0a0a14" stroke="#00cccc" stroke-width="3" class="station" data-name="face-tracking" data-desc="Face position to digital events mapper." data-line="TOOLS" data-color="#00cccc"/>
+  <circle cx="800" cy="440" r="8" fill="#0a0a14" stroke="#00cccc" stroke-width="3" class="station" data-name="tty" data-desc="Serial terminal for hardware debugging." data-line="TOOLS" data-color="#00cccc"/>
+
+  <!-- STATION LABELS -->
+  <text x="80" y="105" text-anchor="middle" fill="#00cc66" font-size="8" font-family="JetBrains Mono">bit-bot</text>
+  <text x="200" y="105" text-anchor="middle" fill="#fff" font-size="7" font-family="JetBrains Mono">bit-playground</text>
+  <text x="320" y="105" text-anchor="middle" fill="#fff" font-size="8" font-family="JetBrains Mono">rxy</text>
+  <text x="440" y="185" text-anchor="middle" fill="#fff" font-size="7" font-family="JetBrains Mono">teachable-m</text>
+  <text x="560" y="215" text-anchor="middle" fill="#fff" font-size="7" font-family="JetBrains Mono">mission-ctrl</text>
+  <text x="440" y="335" text-anchor="middle" fill="#fff" font-size="7" font-family="JetBrains Mono">face-quest</text>
+  <text x="440" y="455" text-anchor="middle" fill="#fff" font-size="7" font-family="JetBrains Mono">magic-hands</text>
+  <text x="560" y="68" text-anchor="middle" fill="#ff3344" font-size="8" font-family="JetBrains Mono">pentest-lab</text>
+  <text x="560" y="335" text-anchor="middle" fill="#fff" font-size="7" font-family="JetBrains Mono">dhcp-lab</text>
+  <text x="680" y="335" text-anchor="middle" fill="#fff" font-size="7" font-family="JetBrains Mono">smart-home</text>
+  <text x="80" y="340" text-anchor="middle" fill="#ff8800" font-size="7" font-family="JetBrains Mono">esp32-c3</text>
+  <text x="200" y="340" text-anchor="middle" fill="#ff8800" font-size="7" font-family="JetBrains Mono">wled-lab</text>
+  <text x="320" y="340" text-anchor="middle" fill="#ff8800" font-size="7" font-family="JetBrains Mono">talking-bot</text>
+  <text x="200" y="460" text-anchor="middle" fill="#0088ff" font-size="7" font-family="JetBrains Mono">linux-lab</text>
+  <text x="320" y="460" text-anchor="middle" fill="#0088ff" font-size="7" font-family="JetBrains Mono">docker-lab</text>
+  <text x="560" y="460" text-anchor="middle" fill="#0088ff" font-size="7" font-family="JetBrains Mono">prompt-hero</text>
+  <text x="680" y="460" text-anchor="middle" fill="#fff" font-size="7" font-family="JetBrains Mono">pixel-gw</text>
+  <text x="680" y="105" text-anchor="middle" fill="#00cccc" font-size="7" font-family="JetBrains Mono">nodered</text>
+  <text x="680" y="215" text-anchor="middle" fill="#00cccc" font-size="7" font-family="JetBrains Mono">face-track</text>
+  <text x="800" y="460" text-anchor="middle" fill="#00cccc" font-size="8" font-family="JetBrains Mono">tty</text>
+
+  <!-- DECORATIVE -->
+  <text x="450" y="560" text-anchor="middle" fill="rgba(255,255,255,.03)" font-size="60" font-family="Syne" font-weight="800">WKSHP TRANSIT</text>
+  <text x="450" y="600" text-anchor="middle" fill="rgba(255,255,255,.03)" font-size="10" font-family="JetBrains Mono">⚪ = Transfer Station · WiFi: password123 on all platforms</text>
+</svg>
+</div>
+
+<div class="legend">
+  <div class="leg-item"><div class="leg-dot" style="background:#00cc66"></div>Robotics Line</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#9966ff"></div>AI Line</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#ff3344"></div>Cyber Line</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#ff8800"></div>Hardware Line</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#0088ff"></div>Learning Line</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#00cccc"></div>Tools Line</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#fff;border-radius:50%;width:8px;height:8px"></div>Transfer</div>
+</div>
+
+<div class="tooltip" id="tip">
+  <div class="name" id="tipName"></div>
+  <div class="desc" id="tipDesc"></div>
+  <div class="line-tag" id="tipLine"></div>
+</div>
+
+<div class="footer">WKSHP TRANSIT AUTHORITY · 6 LINES · 19 STATIONS · SERVICE: 24/7 · WIFI: password123 ON ALL PLATFORMS</div>
+
+<script>
+const tip=document.getElementById('tip');
+document.querySelectorAll('.station').forEach(s=>{
+  s.style.cursor='pointer';
+  s.addEventListener('mouseenter',e=>{
+    tip.style.display='block';
+    document.getElementById('tipName').textContent=s.dataset.name;
+    document.getElementById('tipDesc').textContent=s.dataset.desc;
+    const tag=document.getElementById('tipLine');
+    tag.textContent=s.dataset.line;
+    tag.style.background=s.dataset.color+'22';
+    tag.style.color=s.dataset.color;
+    tag.style.border='1px solid '+s.dataset.color+'44';
+  });
+  s.addEventListener('mousemove',e=>{
+    tip.style.left=(e.clientX+12)+'px';
+    tip.style.top=(e.clientY-40)+'px';
+  });
+  s.addEventListener('mouseleave',()=>tip.style.display='none');
+  s.addEventListener('click',()=>{
+    s.setAttribute('r','12');
+    setTimeout(()=>s.setAttribute('r',s.classList.contains('transfer')?'10':'8'),300);
+  });
+});
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

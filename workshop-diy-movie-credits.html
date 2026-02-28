@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // THE MOVIE</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#fff;font-family:'JetBrains Mono',monospace;overflow:hidden;height:100vh}
+
+/* CRAWL */
+.crawl-container{position:fixed;inset:0;perspective:300px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.crawl{position:absolute;bottom:-100%;width:500px;text-align:center;transform-origin:50% 100%;transform:rotateX(20deg);animation:crawlUp 90s linear forwards}
+@keyframes crawlUp{from{bottom:-120%}to{bottom:300%}}
+
+.crawl .intro{font-size:12px;color:#0af;letter-spacing:4px;margin-bottom:30px}
+.crawl .title{font-family:'Syne',sans-serif;font-size:clamp(28px,6vw,42px);font-weight:800;color:#ffd700;margin-bottom:10px;letter-spacing:2px;text-shadow:0 0 20px rgba(255,215,0,.2)}
+.crawl .subtitle{font-size:11px;color:#888;margin-bottom:40px;line-height:2}
+
+.credit-section{margin-bottom:30px}
+.credit-section h2{font-size:10px;color:#ffd700;letter-spacing:4px;margin-bottom:10px;border-bottom:1px solid rgba(255,215,0,.1);padding-bottom:4px}
+.credit-row{display:flex;justify-content:space-between;padding:3px 0;font-size:11px}
+.credit-row .role{color:#666;text-align:right;flex:1;padding-right:12px}
+.credit-row .name{color:#ccc;text-align:left;flex:1;padding-left:12px}
+
+.credit-cast{margin-bottom:30px}
+.cast-row{display:flex;justify-content:center;gap:6px;padding:3px 0;font-size:10px}
+.cast-row .actor{color:#888}.cast-row .as{color:#444;font-size:8px}.cast-row .char{color:#ffd700}
+
+.special-thanks{margin:30px 0}
+.special-thanks h2{font-size:10px;color:#ffd700;letter-spacing:4px;margin-bottom:10px}
+.thanks-list{font-size:10px;color:#666;line-height:2.5;text-align:center}
+
+.easter{margin:40px 0;padding:14px;border:1px solid rgba(255,215,0,.05);border-radius:4px}
+.easter p{font-size:8px;color:#333;line-height:2.2;text-align:center}
+
+.final{margin:60px 0;text-align:center}
+.final .logo{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#ffd700;margin-bottom:6px}
+.final .tagline{font-size:9px;color:#444;letter-spacing:2px}
+.final .year{font-size:12px;color:#222;margin-top:16px}
+
+.post-credit{margin:100px 0 200px;text-align:center;padding:20px;border:1px solid rgba(255,0,0,.1);border-radius:4px;background:rgba(255,0,0,.01)}
+.post-credit .label{font-size:7px;color:#444;letter-spacing:3px;margin-bottom:6px}
+.post-credit .text{font-size:11px;color:#888;line-height:2.2}
+.post-credit .reveal{font-size:13px;color:#ff0066;font-weight:700;margin-top:8px}
+
+/* CONTROLS */
+.controls{position:fixed;bottom:10px;right:10px;z-index:10;display:flex;gap:4px}
+.ctrl{padding:4px 10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:3px;color:#444;font-size:8px;cursor:pointer;font-family:inherit}
+.ctrl:hover{background:rgba(255,255,255,.06);color:#888}
+
+/* STARS */
+.stars{position:fixed;inset:0;z-index:-1}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<canvas class="stars" id="stars"></canvas>
+
+<div class="crawl-container">
+<div class="crawl" id="crawl">
+
+<div class="intro">WORKSHOP-DIY PRODUCTIONS PRESENTS</div>
+<div class="title">WORKSHOP-DIY:<br>THE MOVIE</div>
+<div class="subtitle">In a world where installations take forever,<br>where Bluetooth disconnects without warning,<br>and where the WiFi password is password123...<br><br>One association dared to build 39 apps<br>that run entirely in a browser.</div>
+
+<div class="credit-section">
+<h2>DIRECTED BY</h2>
+<div class="credit-row"><span class="role">Director</span><span class="name">The Founder</span></div>
+<div class="credit-row"><span class="role">Assistant Director</span><span class="name">Claude AI</span></div>
+<div class="credit-row"><span class="role">Coffee Director</span><span class="name">The Espresso Machine</span></div>
+</div>
+
+<div class="credit-section">
+<h2>STARRING</h2>
+<div class="cast-row"><span class="char">🤖 bit-bot</span><span class="as">as</span><span class="actor">The Hero</span></div>
+<div class="cast-row"><span class="char">🪄 magic-hands</span><span class="as">as</span><span class="actor">The Wizard</span></div>
+<div class="cast-row"><span class="char">🔐 pentest-lab</span><span class="as">as</span><span class="actor">The Rogue</span></div>
+<div class="cast-row"><span class="char">🧠 teachable-machine</span><span class="as">as</span><span class="actor">The Brain</span></div>
+<div class="cast-row"><span class="char">🐧 linux-kids-lab</span><span class="as">as</span><span class="actor">The Sage</span></div>
+<div class="cast-row"><span class="char">🐳 docker-lab</span><span class="as">as</span><span class="actor">The Whale</span></div>
+<div class="cast-row"><span class="char">🐛 Bug #42</span><span class="as">as</span><span class="actor">Itself (a Feature)</span></div>
+<div class="cast-row"><span class="char">☕ Coffee</span><span class="as">as</span><span class="actor">The Real MVP</span></div>
+<div class="cast-row"><span class="char">🔑 password123</span><span class="as">as</span><span class="actor">The Unchanged</span></div>
+</div>
+
+<div class="credit-section">
+<h2>PRODUCED BY</h2>
+<div class="credit-row"><span class="role">Producer</span><span class="name">Workshop-DIY Association</span></div>
+<div class="credit-row"><span class="role">Executive Producer</span><span class="name">Loi 1901 (France)</span></div>
+<div class="credit-row"><span class="role">Line Producer</span><span class="name">npm install</span></div>
+</div>
+
+<div class="credit-section">
+<h2>TECHNICAL CREW</h2>
+<div class="credit-row"><span class="role">Cinematography</span><span class="name">navigator.mediaDevices.getUserMedia()</span></div>
+<div class="credit-row"><span class="role">Visual Effects</span><span class="name">MediaPipe & Canvas API</span></div>
+<div class="credit-row"><span class="role">Sound Design</span><span class="name">Web Audio API</span></div>
+<div class="credit-row"><span class="role">Networking</span><span class="name">WebRTC & Web Bluetooth</span></div>
+<div class="credit-row"><span class="role">Set Construction</span><span class="name">HTML, CSS, JavaScript</span></div>
+<div class="credit-row"><span class="role">Props</span><span class="name">ESP32, micro:bit, Neopixels</span></div>
+<div class="credit-row"><span class="role">Stunt Coordinator</span><span class="name">The Robot (47 drops)</span></div>
+<div class="credit-row"><span class="role">Catering</span><span class="name">The Coffee Machine (1,337 cups)</span></div>
+<div class="credit-row"><span class="role">Security</span><span class="name">password123 (unchanged since 2023)</span></div>
+</div>
+
+<div class="credit-section">
+<h2>MUSIC</h2>
+<div class="credit-row"><span class="role">Score</span><span class="name">Keyboard Clacking in A Minor</span></div>
+<div class="credit-row"><span class="role">Theme Song</span><span class="name">"Bugs Are Features" by The Compilers</span></div>
+<div class="credit-row"><span class="role">End Credits</span><span class="name">"console.log('goodbye')" by Stack Overflow</span></div>
+</div>
+
+<div class="credit-section">
+<h2>39 APPS · 7 DOMAINS · 12 THEMES</h2>
+<div style="font-size:9px;color:#555;line-height:2.5;text-align:center">
+bit-bot · magic-hands · face-quest · teachable-machine · talking-robot · face-tracking · mission-control · pentest-lab · linux-kids-lab · wled-kids-lab · esp32-c3-lab · bit-playground · pixel-gateway · docker-lab · rxy · prompt-hero · smart-home · dhcp-lab · nodered-lab · git-lab · ocpp · classroom · tty · qr-gen · data-viz · ble-scanner · servo-lab · sensor-dash · code-editor · api-tester · md-preview · css-playground · regex-lab · json-formatter · timer-app · color-picker · calculator · unit-converter · claude-toolkit
+</div>
+</div>
+
+<div class="special-thanks">
+<h2>SPECIAL THANKS</h2>
+<div class="thanks-list">
+Every student who said "it's not working" (it was the WiFi)<br>
+Every parent who pretended to understand Docker<br>
+Every robot that survived being dropped<br>
+Every USB cable that was lost and never found<br>
+The school printer (for its sacrifice)<br>
+Stack Overflow (for everything)<br>
+The 3 cybersecurity students who petitioned to change the WiFi password (denied)<br>
+MDN Web Docs (the real hero)<br>
+Chrome DevTools (the co-pilot)<br>
+Whoever invented hot glue (bless you)<br>
+Bug #42 (for being a feature all along)
+</div>
+</div>
+
+<div class="easter">
+<p>No robots were harmed in the making of this film.<br>
+47 robots were dropped, but all survived.<br>
+42 bugs were found. All were reclassified as features.<br>
+1,337 cups of coffee were consumed.<br>
+The WiFi password was not changed during production.<br>
+This film has not been rated because rating systems are a social construct.</p>
+</div>
+
+<div class="final">
+<div class="logo">WORKSHOP-DIY</div>
+<div class="tagline">ASSOCIATION LOI 1901 · FRANCE</div>
+<div class="tagline">workshop-diy.org · abourdim.github.io/apps</div>
+<div class="year">© 2026</div>
+</div>
+
+<div class="post-credit">
+<div class="label">POST-CREDITS SCENE</div>
+<div class="text">
+<i>[Interior: Dark server room. A single monitor flickers on.]</i><br><br>
+The screen shows the app index. 39 apps listed.<br><br>
+The counter changes. Just for a moment.<br><br>
+<span class="reveal">40.</span><br><br>
+<i>[Screen goes black. A cursor blinks.]</i><br><br>
+<span style="color:#00ff41">$ There have always been 39 apps._</span>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="controls">
+  <div class="ctrl" onclick="setSpeed(0.5)">0.5×</div>
+  <div class="ctrl" onclick="setSpeed(1)">1×</div>
+  <div class="ctrl" onclick="setSpeed(2)">2×</div>
+  <div class="ctrl" onclick="setSpeed(4)">4×</div>
+  <div class="ctrl" onclick="togglePause()">⏯</div>
+</div>
+
+<script>
+// STARS
+const c=document.getElementById('stars');const ctx=c.getContext('2d');
+let W,H;function resize(){W=c.width=innerWidth;H=c.height=innerHeight}resize();addEventListener('resize',resize);
+const stars=[];for(let i=0;i<200;i++)stars.push({x:Math.random()*2000,y:Math.random()*2000,s:Math.random()*1.5+.5,b:Math.random()*Math.PI*2});
+function drawStars(){
+  requestAnimationFrame(drawStars);
+  ctx.fillStyle='rgba(0,0,0,.1)';ctx.fillRect(0,0,W,H);
+  stars.forEach(s=>{
+    s.b+=.01;
+    ctx.fillStyle=`rgba(200,200,255,${.2+Math.sin(s.b)*.15})`;
+    ctx.fillRect(s.x%W,s.y%H,s.s,s.s);
+  });
+}
+drawStars();
+
+// SPEED CONTROL
+const crawl=document.getElementById('crawl');
+let paused=false;
+function setSpeed(s){crawl.style.animationDuration=(90/s)+'s'}
+function togglePause(){
+  paused=!paused;
+  crawl.style.animationPlayState=paused?'paused':'running';
+}
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

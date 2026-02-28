@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY — VS Code</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#1e1e1e;font-family:'JetBrains Mono',monospace;font-size:13px;color:#d4d4d4}
+
+.ide{position:fixed;inset:0;display:flex;flex-direction:column}
+
+/* TITLE BAR */
+.titlebar{height:28px;background:#323233;display:flex;align-items:center;padding:0 8px;font-size:11px;color:#999;gap:8px;flex-shrink:0}
+.titlebar .dots{display:flex;gap:6px}.dot{width:10px;height:10px;border-radius:50%}.dot-r{background:#ff5f57}.dot-y{background:#ffbd2e}.dot-g{background:#28c840}
+.titlebar .t{flex:1;text-align:center;font-size:11px}
+
+/* MENU BAR */
+.menubar{height:24px;background:#333;display:flex;align-items:center;padding:0 8px;gap:0;font-size:11px;color:#ccc;flex-shrink:0;border-bottom:1px solid #252526}
+.menu-item{padding:2px 8px;cursor:pointer;border-radius:3px}.menu-item:hover{background:#505050}
+
+/* MAIN BODY */
+.body{flex:1;display:flex;overflow:hidden}
+
+/* ACTIVITY BAR */
+.actbar{width:40px;background:#333;display:flex;flex-direction:column;align-items:center;padding:4px 0;gap:2px;flex-shrink:0;border-right:1px solid #252526}
+.act-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;border-radius:4px;border-left:2px solid transparent;color:#888;transition:all .1s}
+.act-icon:hover{color:#fff}.act-icon.on{color:#fff;border-left-color:#fff}
+
+/* SIDEBAR */
+.sidebar{width:220px;background:#252526;display:flex;flex-direction:column;flex-shrink:0;border-right:1px solid #1e1e1e;overflow:hidden}
+.sb-h{padding:8px 12px;font-size:10px;color:#bbb;letter-spacing:1px;text-transform:uppercase;display:flex;justify-content:space-between}
+.sb-tree{flex:1;overflow-y:auto;padding:0 4px;font-size:11px}
+.sb-tree::-webkit-scrollbar{width:4px}.sb-tree::-webkit-scrollbar-thumb{background:#3e3e3e}
+.tree-folder{cursor:pointer;user-select:none}
+.tree-label{display:flex;align-items:center;gap:4px;padding:2px 4px;border-radius:3px;color:#ccc;transition:all .08s}
+.tree-label:hover{background:#2a2d2e}
+.tree-label.on{background:#37373d}
+.tree-label .arrow{font-size:8px;width:12px;text-align:center;color:#888;transition:transform .15s}
+.tree-label .arrow.open{transform:rotate(90deg)}
+.tree-label .icon{font-size:12px}
+.tree-children{padding-left:16px;display:none}.tree-children.open{display:block}
+.tree-file{display:flex;align-items:center;gap:4px;padding:2px 4px 2px 16px;border-radius:3px;color:#ccc;cursor:pointer;font-size:11px;transition:all .08s}
+.tree-file:hover{background:#2a2d2e}.tree-file.on{background:#37373d;color:#fff}
+.tree-file .icon{font-size:11px}
+
+/* EDITOR AREA */
+.editor-area{flex:1;display:flex;flex-direction:column;min-width:0}
+
+/* TABS */
+.tab-bar{display:flex;background:#252526;border-bottom:1px solid #1e1e1e;flex-shrink:0;overflow-x:auto}
+.tab-bar::-webkit-scrollbar{height:0}
+.etab{display:flex;align-items:center;gap:5px;padding:6px 12px;font-size:11px;color:#999;cursor:pointer;border-right:1px solid #1e1e1e;white-space:nowrap;transition:all .1s;min-width:0}
+.etab:hover{background:#2d2d2d}.etab.on{background:#1e1e1e;color:#fff;border-bottom:1px solid #1e1e1e}
+.etab .close{font-size:10px;opacity:0;transition:opacity .1s;padding:0 2px;border-radius:2px}.etab:hover .close{opacity:.5}.etab .close:hover{opacity:1;background:#555}
+.etab .icon{font-size:11px}
+
+/* EDITOR */
+.editor{flex:1;display:flex;overflow:hidden;position:relative}
+.editor-content{flex:1;overflow-y:auto;padding:4px 0;counter-reset:line}
+.editor-content::-webkit-scrollbar{width:8px}.editor-content::-webkit-scrollbar-thumb{background:#424242;border-radius:4px}
+.code-line{display:flex;min-height:20px;line-height:20px;font-size:12px}
+.code-line:hover{background:#2a2d2e}
+.line-num{width:48px;text-align:right;padding-right:12px;color:#5a5a5a;user-select:none;flex-shrink:0;font-size:12px}
+.line-code{flex:1;white-space:pre;padding-right:20px;font-size:12px}
+
+/* MINIMAP */
+.minimap{width:60px;background:#1e1e1e;flex-shrink:0;position:relative;overflow:hidden;border-left:1px solid #252526}
+.minimap-content{transform:scaleX(.3) scaleY(.15);transform-origin:top left;width:200px;opacity:.4;font-size:12px;line-height:20px;color:#888;pointer-events:none}
+
+/* PANEL (TERMINAL) */
+.panel{height:180px;background:#1e1e1e;border-top:1px solid #414141;flex-shrink:0;display:flex;flex-direction:column}
+.panel-tabs{display:flex;background:#252526;border-bottom:1px solid #1e1e1e}
+.ptab{padding:4px 10px;font-size:10px;color:#999;cursor:pointer;border-bottom:1px solid transparent}.ptab.on{color:#fff;border-bottom-color:#fff}
+.panel-body{flex:1;overflow-y:auto;padding:6px 10px;font-size:11px;color:#00ff41;font-family:'JetBrains Mono',monospace;line-height:1.8}
+.panel-body::-webkit-scrollbar{width:4px}.panel-body::-webkit-scrollbar-thumb{background:#3e3e3e}
+
+/* STATUS BAR */
+.statusbar{height:22px;background:#007acc;display:flex;align-items:center;padding:0 10px;font-size:10px;color:#fff;gap:12px;flex-shrink:0}
+.statusbar .right{margin-left:auto;display:flex;gap:12px}
+
+/* SYNTAX */
+.kw{color:#569cd6}.str{color:#ce9178}.num{color:#b5cea8}.fn{color:#dcdcaa}.cm{color:#6a9955}.op{color:#d4d4d4}.ty{color:#4ec9b0}.im{color:#c586c0}.var{color:#9cdcfe}.pr{color:#d7ba7d}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="ide">
+<div class="titlebar">
+  <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+  <div class="t">workshop-diy — Visual Studio Code</div>
+</div>
+<div class="menubar">
+  <span class="menu-item">File</span><span class="menu-item">Edit</span><span class="menu-item">View</span><span class="menu-item">Go</span><span class="menu-item">Run</span><span class="menu-item">Terminal</span><span class="menu-item">Help</span>
+</div>
+<div class="body">
+<div class="actbar">
+  <div class="act-icon on" title="Explorer">📁</div>
+  <div class="act-icon" title="Search">🔍</div>
+  <div class="act-icon" title="Git">🔀</div>
+  <div class="act-icon" title="Debug">🐛</div>
+  <div class="act-icon" title="Extensions">🧩</div>
+</div>
+<div class="sidebar">
+  <div class="sb-h">EXPLORER <span style="font-size:9px;color:#666">WORKSHOP-DIY</span></div>
+  <div class="sb-tree" id="tree"></div>
+</div>
+<div class="editor-area">
+  <div class="tab-bar" id="tabBar"></div>
+  <div class="editor">
+    <div class="editor-content" id="editorContent"></div>
+    <div class="minimap"><div class="minimap-content" id="minimap"></div></div>
+  </div>
+  <div class="panel">
+    <div class="panel-tabs"><span class="ptab on">TERMINAL</span><span class="ptab">PROBLEMS</span><span class="ptab">OUTPUT</span></div>
+    <div class="panel-body" id="terminal"></div>
+  </div>
+</div>
+</div>
+<div class="statusbar">
+  <span>🔀 main</span>
+  <span>🤖 workshop-diy</span>
+  <span class="right">
+    <span>Ln 1, Col 1</span>
+    <span>UTF-8</span>
+    <span>JavaScript</span>
+    <span>Prettier</span>
+  </span>
+</div>
+</div>
+
+<script>
+const FILES={
+"app.js":{icon:"📄",lang:"JavaScript",code:`<span class="cm">// ═══════════════════════════════════════════════</span>
+<span class="cm">// Workshop-DIY — Main Application Entry Point</span>
+<span class="cm">// Association Loi 1901 — France</span>
+<span class="cm">// 39 apps · 7 domains · 12 themes · ∞ bugs</span>
+<span class="cm">// ═══════════════════════════════════════════════</span>
+
+<span class="im">import</span> { <span class="var">BitBot</span> } <span class="im">from</span> <span class="str">'./apps/bit-bot'</span>;
+<span class="im">import</span> { <span class="var">MagicHands</span> } <span class="im">from</span> <span class="str">'./apps/magic-hands'</span>;
+<span class="im">import</span> { <span class="var">FaceQuest</span> } <span class="im">from</span> <span class="str">'./apps/face-quest'</span>;
+<span class="im">import</span> { <span class="var">TeachableMachine</span> } <span class="im">from</span> <span class="str">'./apps/teachable-machine'</span>;
+<span class="im">import</span> { <span class="var">connectBLE</span> } <span class="im">from</span> <span class="str">'./lib/bluetooth'</span>;
+
+<span class="cm">// TODO: fix bug #42 (it's been here since 2024)</span>
+<span class="cm">// TODO: change WiFi password (lol never happening)</span>
+
+<span class="kw">const</span> <span class="var">WORKSHOP_CONFIG</span> <span class="op">=</span> {
+  name:     <span class="str">'Workshop-DIY'</span>,
+  type:     <span class="str">'Association Loi 1901'</span>,
+  country:  <span class="str">'France 🇫🇷'</span>,
+  apps:     <span class="num">39</span>,
+  domains:  <span class="num">7</span>,
+  themes:   <span class="num">12</span>,
+  bugs:     <span class="ty">Infinity</span>,  <span class="cm">// it's a feature</span>
+  coffee:   <span class="ty">Infinity</span>,  <span class="cm">// non-negotiable</span>
+  wifi:     <span class="str">'password123'</span>,  <span class="cm">// don't @ me</span>
+};
+
+<span class="cm">/**
+ * Initialize the Workshop-DIY platform
+ * Loads all 39 apps, connects BLE, starts learning
+ * Side effects: may cause uncontrollable curiosity
+ */</span>
+<span class="kw">async function</span> <span class="fn">init</span>() {
+  console.<span class="fn">log</span>(<span class="str">'🤖 Workshop-DIY initializing...'</span>);
+  console.<span class="fn">log</span>(<span class="str">\`📦 Loading \${<span class="var">WORKSHOP_CONFIG</span>.apps} apps...\`</span>);
+
+  <span class="cm">// Connect to robot via Web Bluetooth</span>
+  <span class="kw">const</span> <span class="var">robot</span> <span class="op">=</span> <span class="kw">await</span> <span class="fn">connectBLE</span>({
+    name: <span class="str">'bit-bot'</span>,
+    service: <span class="str">'0000ffe0-0000-1000-8000-00805f9b34fb'</span>,
+  });
+
+  <span class="cm">// Initialize AI tracking</span>
+  <span class="kw">const</span> <span class="var">hands</span> <span class="op">=</span> <span class="kw">new</span> <span class="ty">MagicHands</span>({ effects: <span class="str">'all'</span> });
+  <span class="kw">const</span> <span class="var">face</span> <span class="op">=</span> <span class="kw">new</span> <span class="ty">FaceQuest</span>({ difficulty: <span class="str">'hard'</span> });
+  <span class="kw">const</span> <span class="var">ai</span> <span class="op">=</span> <span class="kw">new</span> <span class="ty">TeachableMachine</span>({ classes: <span class="num">5</span> });
+
+  <span class="cm">// The line that took 3 hours to debug</span>
+  <span class="var">robot</span>.<span class="fn">onGesture</span>(<span class="str">'wave'</span>, () <span class="kw">=></span> {
+    <span class="var">robot</span>.<span class="fn">dance</span>();  <span class="cm">// best line of code ever</span>
+    console.<span class="fn">log</span>(<span class="str">'🎉 robot.exe has feelings now'</span>);
+  });
+
+  <span class="cm">// Start all systems</span>
+  <span class="kw">await</span> Promise.<span class="fn">all</span>([
+    <span class="var">hands</span>.<span class="fn">start</span>(),
+    <span class="var">face</span>.<span class="fn">start</span>(),
+    <span class="var">ai</span>.<span class="fn">train</span>(),
+  ]);
+
+  console.<span class="fn">log</span>(<span class="str">'✅ Workshop-DIY ready!'</span>);
+  console.<span class="fn">log</span>(<span class="str">'☕ Coffee level: CRITICAL'</span>);
+  console.<span class="fn">log</span>(<span class="str">'🐛 Bugs: 42 (all features)'</span>);
+}
+
+<span class="fn">init</span>().<span class="fn">catch</span>(<span class="var">err</span> <span class="kw">=></span> {
+  console.<span class="fn">error</span>(<span class="str">'💥 Something broke. Again.'</span>, <span class="var">err</span>);
+  console.<span class="fn">log</span>(<span class="str">'📎 Have you tried turning it off and on again?'</span>);
+});`},
+
+"robot.js":{icon:"🤖",lang:"JavaScript",code:`<span class="cm">// ═══ ROBOT CONTROLLER ═══</span>
+<span class="cm">// ESP32 Robot Kit Lite — The robot your parents wished they had</span>
+
+<span class="im">import</span> { <span class="var">BLEDevice</span> } <span class="im">from</span> <span class="str">'./lib/bluetooth'</span>;
+
+<span class="kw">export class</span> <span class="ty">Robot</span> <span class="kw">extends</span> <span class="ty">BLEDevice</span> {
+  <span class="kw">constructor</span>() {
+    <span class="kw">super</span>();
+    <span class="kw">this</span>.drops <span class="op">=</span> <span class="num">47</span>;  <span class="cm">// survived. and counting.</span>
+    <span class="kw">this</span>.mood <span class="op">=</span> <span class="str">'🤖💚'</span>;
+    <span class="kw">this</span>.speed <span class="op">=</span> <span class="num">0</span>;
+  }
+
+  <span class="kw">async</span> <span class="fn">connect</span>() {
+    <span class="kw">const</span> <span class="var">device</span> <span class="op">=</span> <span class="kw">await</span> navigator.bluetooth.<span class="fn">requestDevice</span>({
+      filters: [{ namePrefix: <span class="str">'BBC micro:bit'</span> }],
+      optionalServices: [<span class="str">'0000ffe0-0000-1000-8000-00805f9b34fb'</span>],
+    });
+    console.<span class="fn">log</span>(<span class="str">'🔗 Robot connected!'</span>, <span class="var">device</span>.name);
+    <span class="kw">return</span> <span class="var">device</span>;
+  }
+
+  <span class="fn">forward</span>(<span class="var">speed</span> <span class="op">=</span> <span class="num">100</span>) {
+    <span class="kw">this</span>.<span class="fn">send</span>(<span class="str">\`M:\${speed},\${speed}\`</span>);
+    <span class="kw">this</span>.mood <span class="op">=</span> <span class="str">'🤖🏎️'</span>;
+  }
+
+  <span class="fn">dance</span>() {
+    <span class="cm">// The function that started it all</span>
+    <span class="kw">const</span> <span class="var">moves</span> <span class="op">=</span> [<span class="str">'spin'</span>, <span class="str">'wiggle'</span>, <span class="str">'moonwalk'</span>, <span class="str">'dab'</span>];
+    <span class="var">moves</span>.<span class="fn">forEach</span>((<span class="var">m</span>, <span class="var">i</span>) <span class="kw">=></span> {
+      <span class="fn">setTimeout</span>(() <span class="kw">=></span> <span class="kw">this</span>.<span class="fn">execute</span>(<span class="var">m</span>), <span class="var">i</span> <span class="op">*</span> <span class="num">500</span>);
+    });
+    <span class="kw">this</span>.mood <span class="op">=</span> <span class="str">'🤖💃'</span>;
+    console.<span class="fn">log</span>(<span class="str">'🎉 Robot is dancing! This is fine.'</span>);
+  }
+
+  <span class="fn">survive</span>() {
+    <span class="kw">this</span>.drops<span class="op">++</span>;
+    console.<span class="fn">log</span>(<span class="str">\`💪 Drop #\${<span class="kw">this</span>.drops} survived\`</span>);
+  }
+}`},
+
+"package.json":{icon:"📦",lang:"JSON",code:`{
+  <span class="pr">"name"</span>: <span class="str">"workshop-diy"</span>,
+  <span class="pr">"version"</span>: <span class="str">"4.2.0"</span>,
+  <span class="pr">"description"</span>: <span class="str">"39 apps. 7 domains. ∞ bugs."</span>,
+  <span class="pr">"author"</span>: <span class="str">"Workshop-DIY Association"</span>,
+  <span class="pr">"license"</span>: <span class="str">"MIT"</span>,
+  <span class="pr">"scripts"</span>: {
+    <span class="pr">"start"</span>: <span class="str">"node app.js"</span>,
+    <span class="pr">"build"</span>: <span class="str">"webpack --mode production"</span>,
+    <span class="pr">"test"</span>: <span class="str">"jest --coverage"</span>,
+    <span class="pr">"lint"</span>: <span class="str">"eslint . --fix"</span>,
+    <span class="pr">"coffee"</span>: <span class="str">"echo 'brewing...☕'"</span>,
+    <span class="pr">"fix-bugs"</span>: <span class="str">"echo 'lol nice try'"</span>
+  },
+  <span class="pr">"dependencies"</span>: {
+    <span class="pr">"@mediapipe/hands"</span>: <span class="str">"^0.4.0"</span>,
+    <span class="pr">"@mediapipe/face_mesh"</span>: <span class="str">"^0.4.0"</span>,
+    <span class="pr">"@teachablemachine/image"</span>: <span class="str">"^0.8.5"</span>,
+    <span class="pr">"peerjs"</span>: <span class="str">"^1.5.0"</span>,
+    <span class="pr">"three"</span>: <span class="str">"^0.160.0"</span>,
+    <span class="pr">"xterm"</span>: <span class="str">"^5.3.0"</span>
+  },
+  <span class="pr">"bugs"</span>: <span class="num">42</span>,
+  <span class="pr">"coffee"</span>: <span class="str">"∞"</span>,
+  <span class="pr">"wifi"</span>: <span class="str">"password123"</span>
+}`},
+
+"README.md":{icon:"📖",lang:"Markdown",code:`<span class="cm"># 🤖 Workshop-DIY</span>
+
+<span class="cm">## Association Loi 1901 — France 🇫🇷</span>
+
+Teaching robotics, AI, electronics, 3D printing,
+programming, and cybersecurity to young makers.
+
+<span class="cm">### 📊 Stats</span>
+- <span class="num">39</span> browser-based apps
+- <span class="num">7</span> skill domains
+- <span class="num">12</span> UI themes
+- <span class="num">1</span> ESP32 robot kit
+- <span class="num">∞</span> bugs (all features)
+
+<span class="cm">### 🚀 Quick Start</span>
+\`\`\`bash
+git clone https://github.com/workshop-diy/apps
+cd apps
+npm install
+npm start
+npm run coffee  <span class="cm"># important step</span>
+\`\`\`
+
+<span class="cm">### 📝 Contributing</span>
+1. Fork the repo
+2. Create your feature branch
+3. Write code at 2am
+4. Commit: <span class="str">"I have no idea why this works"</span>
+5. Push and create a PR
+6. Declare all bugs as features
+
+<span class="cm">### ☕ Requirements</span>
+- Node.js 18+
+- A micro:bit or ESP32
+- Curiosity
+- Coffee (lots)
+- Tolerance for WiFi password: password123
+
+<span class="cm">### 📄 License</span>
+MIT — because sharing is caring.
+
+<span class="cm">---</span>
+<span class="kw">Made with 💚, ☕, and stackoverflow</span>`}
+};
+
+const TREE=[
+  {type:'folder',name:'workshop-diy',icon:'🤖',children:[
+    {type:'folder',name:'apps',icon:'📂',children:[
+      {type:'file',name:'bit-bot/',icon:'🤖'},{type:'file',name:'magic-hands/',icon:'🪄'},{type:'file',name:'face-quest/',icon:'🕵️'},
+      {type:'file',name:'teachable-machine/',icon:'🧠'},{type:'file',name:'pentest-lab/',icon:'🔐'},{type:'file',name:'linux-kids-lab/',icon:'🐧'},
+      {type:'file',name:'... (39 apps)',icon:'📂'}
+    ]},
+    {type:'folder',name:'lib',icon:'📂',children:[
+      {type:'file',name:'bluetooth.js',icon:'📡'},{type:'file',name:'mediapipe.js',icon:'🧠'},{type:'file',name:'utils.js',icon:'🔧'}
+    ]},
+    {type:'file',name:'app.js',icon:'📄',file:'app.js'},
+    {type:'file',name:'robot.js',icon:'🤖',file:'robot.js'},
+    {type:'file',name:'package.json',icon:'📦',file:'package.json'},
+    {type:'file',name:'README.md',icon:'📖',file:'README.md'},
+    {type:'file',name:'.gitignore',icon:'⚙️'},
+    {type:'file',name:'.env',icon:'🔒'},
+  ]}
+];
+
+let activeFile='app.js',openTabs=['app.js'];
+
+// BUILD TREE
+const treeEl=document.getElementById('tree');
+function buildTree(items,parent){
+  items.forEach(item=>{
+    if(item.type==='folder'){
+      const f=document.createElement('div');f.className='tree-folder';
+      const label=document.createElement('div');label.className='tree-label';
+      label.innerHTML=`<span class="arrow">▶</span><span class="icon">${item.icon}</span>${item.name}`;
+      const children=document.createElement('div');children.className='tree-children';
+      label.onclick=()=>{label.querySelector('.arrow').classList.toggle('open');children.classList.toggle('open')};
+      f.appendChild(label);f.appendChild(children);
+      if(item.children)buildTree(item.children,children);
+      parent.appendChild(f);
+    }else{
+      const f=document.createElement('div');f.className='tree-file';
+      f.innerHTML=`<span class="icon">${item.icon}</span>${item.name}`;
+      if(item.file)f.onclick=()=>openFile(item.file);
+      parent.appendChild(f);
+    }
+  });
+}
+buildTree(TREE,treeEl);
+// Auto-open root
+treeEl.querySelector('.arrow').classList.add('open');
+treeEl.querySelector('.tree-children').classList.add('open');
+
+function openFile(name){
+  if(!FILES[name])return;
+  activeFile=name;
+  if(!openTabs.includes(name))openTabs.push(name);
+  render();
+}
+
+function closeTab(name,e){
+  e.stopPropagation();
+  openTabs=openTabs.filter(t=>t!==name);
+  if(activeFile===name)activeFile=openTabs[openTabs.length-1]||'';
+  render();
+}
+
+function render(){
+  // Tabs
+  document.getElementById('tabBar').innerHTML=openTabs.map(t=>{
+    const f=FILES[t];
+    return`<div class="etab${t===activeFile?' on':''}" onclick="openFile('${t}')"><span class="icon">${f?.icon||'📄'}</span>${t}<span class="close" onclick="closeTab('${t}',event)">×</span></div>`;
+  }).join('');
+  // Editor
+  const f=FILES[activeFile];
+  if(f){
+    const lines=f.code.split('\n');
+    document.getElementById('editorContent').innerHTML=lines.map((l,i)=>`<div class="code-line"><span class="line-num">${i+1}</span><span class="line-code">${l}</span></div>`).join('');
+    document.getElementById('minimap').innerHTML=lines.map(l=>`<div style="white-space:pre;overflow:hidden">${l}</div>`).join('');
+  }
+  // Tree highlights
+  document.querySelectorAll('.tree-file').forEach(el=>{
+    el.classList.toggle('on',el.textContent.includes(activeFile));
+  });
+}
+
+// TERMINAL
+const termEl=document.getElementById('terminal');
+const termLines=[
+  '<span style="color:#888">workshop@diy:~/workshop-diy$</span> npm start',
+  '',
+  '> workshop-diy@4.2.0 start',
+  '> node app.js',
+  '',
+  '🤖 Workshop-DIY initializing...',
+  '📦 Loading 39 apps...',
+  '🔗 BLE scanning...',
+  '🧠 MediaPipe loading...',
+  '📸 Camera permissions granted',
+  '<span style="color:#00ff41">✅ Workshop-DIY ready!</span>',
+  '<span style="color:#ff8800">☕ Coffee level: CRITICAL</span>',
+  '<span style="color:#ff0">🐛 Bugs: 42 (all features)</span>',
+  '<span style="color:#00d4ff">🌐 Server running at http://localhost:3000</span>',
+  '',
+  '<span style="color:#888">workshop@diy:~/workshop-diy$</span> <span id="cursor" style="animation:blink 1s step-end infinite">█</span>',
+];
+termEl.innerHTML=termLines.join('<br>');
+
+render();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

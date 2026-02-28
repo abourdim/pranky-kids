@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // FOR SALE</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f5f5;font-family:'Inter',sans-serif;font-size:12px;color:#333;min-height:100vh}
+
+.listing{max-width:580px;margin:0 auto;background:#fff;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+
+/* HERO IMAGE */
+.hero{background:linear-gradient(135deg,#0a0a14 0%,#1a1a3a 100%);height:180px;display:flex;align-items:center;justify-content:center;position:relative}
+.hero .emojis{font-size:48px;letter-spacing:8px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.3))}
+.hero .badge{position:absolute;top:10px;left:10px;background:#cc0000;color:#fff;padding:3px 10px;border-radius:3px;font-size:8px;font-weight:700;letter-spacing:1px}
+.hero .save{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.1);color:#fff;padding:3px 10px;border-radius:3px;font-size:8px;cursor:pointer}
+
+/* PRICE + ADDRESS */
+.price-bar{padding:12px 16px;border-bottom:1px solid #f0f0f0}
+.price{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#333}
+.price .free{color:#00aa00;font-size:12px;vertical-align:super;margin-left:4px}
+.address{font-size:11px;color:#888;margin-top:2px}
+
+/* KEY FACTS */
+.facts{display:flex;border-bottom:1px solid #f0f0f0}
+.fact{flex:1;text-align:center;padding:10px;border-right:1px solid #f0f0f0}
+.fact:last-child{border-right:none}
+.fact .num{font-size:16px;font-weight:700;color:#333}
+.fact .label{font-size:7px;color:#999;letter-spacing:1px;margin-top:1px}
+
+/* DETAILS */
+.section{padding:12px 16px;border-bottom:1px solid #f0f0f0}
+.sec-h{font-size:12px;font-weight:700;color:#333;margin-bottom:6px}
+.desc{font-size:11px;color:#555;line-height:2}
+
+/* AMENITIES */
+.amenities{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.amenity{display:flex;align-items:center;gap:4px;font-size:10px;color:#555;padding:2px 0}
+.amenity .check{color:#00aa00;font-size:12px}
+
+/* GALLERY */
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;padding:3px}
+.gallery-item{aspect-ratio:1;background:#f8f8f5;display:flex;align-items:center;justify-content:center;font-size:28px;border-radius:4px;cursor:pointer;transition:all .2s}
+.gallery-item:hover{background:#f0f0e8;transform:scale(1.05)}
+
+/* AGENT */
+.agent{display:flex;gap:10px;align-items:center;padding:12px 16px;background:#f8f8f5}
+.agent .avatar{width:40px;height:40px;border-radius:50%;background:#0a0a14;display:flex;align-items:center;justify-content:center;font-size:20px}
+.agent .info .name{font-size:11px;font-weight:700;color:#333}
+.agent .info .title{font-size:8px;color:#888}
+.agent .contact{margin-left:auto;padding:6px 14px;background:#003366;color:#fff;border-radius:4px;font-size:9px;font-weight:700;cursor:pointer;border:none}
+
+.footer{text-align:center;padding:8px;font-size:6px;color:#ccc;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="listing">
+
+<div class="hero">
+  <div class="badge">HOT LISTING 🔥</div>
+  <div class="save">♡ Save</div>
+  <div class="emojis">🤖🧠🔐💻</div>
+</div>
+
+<div class="price-bar">
+  <div class="price">€0<span class="free">FREE</span></div>
+  <div class="address">📍 Workshop-DIY HQ · France 🇫🇷 · The Internet</div>
+</div>
+
+<div class="facts">
+  <div class="fact"><div class="num">39</div><div class="label">APPS</div></div>
+  <div class="fact"><div class="num">7</div><div class="label">DOMAINS</div></div>
+  <div class="fact"><div class="num">0</div><div class="label">INSTALLS</div></div>
+  <div class="fact"><div class="num">847</div><div class="label">USERS</div></div>
+  <div class="fact"><div class="num">2023</div><div class="label">BUILT</div></div>
+</div>
+
+<div class="section">
+  <div class="sec-h">About This Property</div>
+  <div class="desc">Stunning open-plan educational technology platform featuring 39 fully browser-based applications across 7 skill domains. Zero installation required — just open a browser and start learning. Move-in ready. The WiFi password is password123 and will not be changed under any circumstances. Property includes a coffee machine at 8% capacity (as-is) and one unresolved bug (#42) that has been reclassified as a feature and is included in the sale. Previous trial verdict: NOT GUILTY.</div>
+</div>
+
+<div class="section">
+  <div class="sec-h">Key Amenities</div>
+  <div class="amenities">
+    <div class="amenity"><span class="check">✓</span> Zero installation required</div>
+    <div class="amenity"><span class="check">✓</span> 39 browser-based apps</div>
+    <div class="amenity"><span class="check">✓</span> Web Bluetooth integration</div>
+    <div class="amenity"><span class="check">✓</span> AI/ML training studio</div>
+    <div class="amenity"><span class="check">✓</span> Ethical hacking sandbox</div>
+    <div class="amenity"><span class="check">✓</span> Docker lab (containers included)</div>
+    <div class="amenity"><span class="check">✓</span> 16M color LED control</div>
+    <div class="amenity"><span class="check">✓</span> Linux terminal emulator</div>
+    <div class="amenity"><span class="check">✓</span> WebRTC peer-to-peer</div>
+    <div class="amenity"><span class="check">✓</span> Gesture recognition</div>
+    <div class="amenity"><span class="check">✓</span> WiFi (password123)</div>
+    <div class="amenity"><span class="check">✓</span> Coffee machine (8%, as-is)</div>
+    <div class="amenity"><span class="check">✓</span> Bug #42 (feature, included)</div>
+    <div class="amenity"><span class="check">✓</span> Hot glue structural engineering</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-h">Gallery</div>
+  <div class="gallery">
+    <div class="gallery-item">🤖</div><div class="gallery-item">🧠</div>
+    <div class="gallery-item">🔐</div><div class="gallery-item">🐳</div>
+    <div class="gallery-item">🐧</div><div class="gallery-item">💡</div>
+    <div class="gallery-item">☕</div><div class="gallery-item">🐛</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-h">Property History</div>
+  <div class="desc" style="font-size:9px;color:#888">
+    <strong>2023:</strong> Original construction. First app (bit-bot) deployed.<br>
+    <strong>2024:</strong> Expansion to 20+ apps. Coffee machine installed. Bug #42 first appears.<br>
+    <strong>2025:</strong> Full 39-app ecosystem. WiFi petition #1 denied. Robot drop #47.<br>
+    <strong>2026:</strong> Trial of Bug #42 (acquitted). 100+ promotional materials created. Listed for FREE.
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-h">Neighborhood</div>
+  <div class="desc" style="font-size:9px;color:#888">
+    Walk Score: ∞ (it's online) · Transit Score: N/A · Schools Nearby: It IS the school · Crime Rate: 1 ethical hack (printer, port 9100, responsibly disclosed)
+  </div>
+</div>
+
+<div class="agent">
+  <div class="avatar">🐛</div>
+  <div class="info">
+    <div class="name">Bug #42, Listing Agent</div>
+    <div class="title">Workshop-DIY Real Estate Division · License #000042</div>
+  </div>
+  <button class="contact">Contact Agent</button>
+</div>
+
+</div>
+
+<div class="footer">WKSHP REALTY · LISTING #42 · NOT AN ACTUAL PROPERTY LISTING · BUGS ARE AMENITIES</div>
+  <script src="nav.js"></script>
+</body>
+</html>
