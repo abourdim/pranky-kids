@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // RECIPE BOOK</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0e0e14;color:#ddd;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;padding:16px}
+
+.header{text-align:center;margin-bottom:16px}
+.h-title{font-family:'Playfair Display',serif;font-size:clamp(22px,5vw,34px);font-weight:700;color:#ffd700}
+.h-sub{font-size:7px;color:#555;letter-spacing:3px;margin-top:2px}
+
+.recipes{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+
+.recipe{border:1px solid #1a1a24;border-radius:8px;overflow:hidden;background:#111118;transition:all .2s}
+.recipe:hover{border-color:#2a2a34}
+
+.rec-header{padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.rec-emoji{font-size:28px;flex-shrink:0}
+.rec-info{flex:1}
+.rec-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#ffd700}
+.rec-tagline{font-size:8px;color:#666;font-style:italic;margin-top:1px}
+.rec-meta{display:flex;gap:8px;margin-top:4px}
+.rec-meta span{font-size:7px;color:#555;display:flex;align-items:center;gap:2px}
+.rec-arrow{color:#444;font-size:14px;transition:transform .2s}
+.recipe.open .rec-arrow{transform:rotate(90deg)}
+
+.rec-body{display:none;padding:0 14px 14px;border-top:1px solid #1a1a24}
+.recipe.open .rec-body{display:block;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.rec-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+@media(max-width:500px){.rec-cols{grid-template-columns:1fr}}
+
+.rec-col h3{font-size:9px;color:#ffd700;letter-spacing:2px;margin-bottom:6px;padding-bottom:3px;border-bottom:1px solid #1a1a24}
+.ingredient{display:flex;gap:4px;padding:2px 0;font-size:9px;color:#888}
+.ingredient .qty{color:#ffd700;font-weight:700;width:50px;flex-shrink:0}
+.step{display:flex;gap:6px;padding:4px 0;font-size:9px;color:#888;line-height:1.9}
+.step-num{color:#ffd700;font-weight:700;flex-shrink:0;width:16px}
+
+.rec-tip{margin-top:8px;padding:6px 8px;background:rgba(255,215,0,.02);border:1px solid rgba(255,215,0,.06);border-radius:4px;font-size:8px;color:#776633;line-height:1.8}
+.rec-tip b{color:#ffd700}
+
+.difficulty{display:flex;gap:1px}
+.diff-dot{width:8px;height:8px;border-radius:50%;border:1px solid #333}
+.diff-dot.on{background:#ffd700;border-color:#ffd700}
+
+.footer{text-align:center;margin-top:20px;font-size:6px;color:#222;letter-spacing:2px;line-height:2.2}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="h-title">The WKSHP Cookbook</div>
+  <div class="h-sub">TECH RECIPES FOR HUNGRY MAKERS</div>
+</div>
+
+<div class="recipes" id="recipes"></div>
+
+<div class="footer">
+  WORKSHOP-DIY CULINARY DIVISION · NO ACTUAL FOOD INVOLVED<br>
+  SIDE EFFECTS MAY INCLUDE: LEARNING, EXCITEMENT, AND EXPLAINING DOCKER TO YOUR PARENTS
+</div>
+
+<script>
+const RECIPES=[
+{emoji:"🤖",name:"Classic Robot Controller",tagline:"A Bluetooth-connected robot in under 30 minutes",time:"30 min",serves:"1 robot",diff:2,
+ingredients:[
+  {q:"1",i:"ESP32-WROOM-32 microcontroller"},
+  {q:"2",i:"N20 DC motors with wheels"},
+  {q:"1",i:"DRV8833 H-bridge motor driver"},
+  {q:"1",i:"SG90 micro servo"},
+  {q:"2",i:"TCRT5000 IR line sensors"},
+  {q:"1",i:"HC-SR04 ultrasonic sensor"},
+  {q:"1",i:"3.7V 18650 LiPo battery"},
+  {q:"1 dash",i:"hot glue (generous amount)"},
+  {q:"∞",i:"patience"},
+],steps:[
+  "Preheat your soldering iron to 350°C. Let it reach temperature while you lay out components.",
+  "Connect the ESP32 to the DRV8833 motor driver. Pin GPIO12 → AIN1, GPIO13 → AIN2, GPIO14 → BIN1, GPIO15 → BIN2.",
+  "Attach motors to the chassis. Apply hot glue liberally. This is engineering, not art.",
+  "Wire the IR sensors to GPIO32 and GPIO33. These are your robot's eyes for line-following.",
+  "Mount the ultrasonic sensor on the servo. Connect Trig → GPIO26, Echo → GPIO27, Servo → GPIO25.",
+  "Connect battery through the power switch. Double-check polarity. Triple-check.",
+  "Flash the bit-bot firmware via USB. Open Chrome. Navigate to bit-bot app. Pair via BLE.",
+  "Drop from table to test durability. Repeat 46 more times. (Just kidding. Mostly.)",
+],tip:"Chef's tip: If the robot starts driving in circles, that's not a bug — it's a feature. Also check your motor wiring."},
+
+{emoji:"🧠",name:"Fresh AI Gesture Model",tagline:"Train a custom ML model — zero installations needed",time:"15 min",serves:"1 model",diff:1,
+ingredients:[
+  {q:"1",i:"browser (Chrome recommended)"},
+  {q:"1",i:"webcam (720p minimum)"},
+  {q:"3+",i:"gesture classes to train"},
+  {q:"30+",i:"sample images per class"},
+  {q:"1",i:"teachable-machine app"},
+  {q:"1",i:"micro:bit (optional, for output)"},
+],steps:[
+  "Open teachable-machine in Chrome. Allow camera access when prompted.",
+  "Define your gesture classes: e.g., 'Thumbs Up', 'Open Hand', 'Fist'. Name them clearly.",
+  "For each class, hold the pose and capture 30+ training images. Vary the angle slightly.",
+  "Click 'Train Model'. Wait approximately 15 seconds while TensorFlow.js does its magic.",
+  "Test the model live. Show each gesture and verify the confidence scores exceed 90%.",
+  "Export to micro:bit via BLE: Map each gesture to a robot action (forward, stop, dance).",
+],tip:"Chef's tip: Good lighting is the secret ingredient. A dark room will give you a half-baked model. Also, 98% accuracy means it's done — don't overcook it."},
+
+{emoji:"🔐",name:"Spicy Penetration Test",tagline:"Ethical hacking — served in a sandbox",time:"45 min",serves:"1 ethical hacker",diff:3,
+ingredients:[
+  {q:"1",i:"pentest-lab app (sandboxed)"},
+  {q:"1",i:"curious mind"},
+  {q:"1 cup",i:"basic SQL knowledge"},
+  {q:"2 tbsp",i:"XSS understanding"},
+  {q:"1 pinch",i:"social engineering theory"},
+  {q:"0",i:"malicious intent (important: ZERO)"},
+],steps:[
+  "Open pentest-lab in browser. Read the rules. Understand: this is ethical only.",
+  "Start with the SQL injection challenge. Try classic payloads: ' OR 1=1 --",
+  "Move to XSS. Attempt to inject a script tag into the vulnerable input field.",
+  "Tackle the CSRF challenge. Understand how tokens prevent cross-site forgery.",
+  "Try the privilege escalation lab. Can you access admin functions?",
+  "Document your findings. A responsible hacker always writes a report.",
+  "Do NOT try any of this on real systems. The school printer incident was enough.",
+],tip:"Chef's tip: If you find a real vulnerability, report it responsibly. Remember: the difference between a hacker and a criminal is consent and documentation."},
+
+{emoji:"🐧",name:"Homestyle Linux Terminal",tagline:"Fresh bash commands served in a browser",time:"20 min",serves:"1 terminal ninja",diff:2,
+ingredients:[
+  {q:"1",i:"linux-kids-lab app"},
+  {q:"1",i:"willingness to type"},
+  {q:"10+",i:"bash commands to learn"},
+  {q:"1",i:"virtual filesystem"},
+  {q:"0",i:"fear of the command line"},
+],steps:[
+  "Open linux-kids-lab. Observe the blinking cursor. This is your new home.",
+  "Type 'ls' to list files. Then 'ls -la' to see hidden files. Feel the power.",
+  "Navigate with 'cd'. Create files with 'touch'. Make directories with 'mkdir'.",
+  "Read files with 'cat'. Search with 'grep'. Chain commands with pipes: 'ls | grep .txt'",
+  "Master permissions with 'chmod'. Understand user/group/other. Feel like a sysadmin.",
+  "Try 'man' for help pages. Real hackers read the manual. Sometimes.",
+  "Do NOT type 'rm -rf /'. The simulation will survive, but your dignity won't.",
+],tip:"Chef's tip: Aliases are the spice rack of the terminal. Set up 'alias ll=\"ls -la\"' and never look back."},
+
+{emoji:"🐳",name:"Containerized Docker Stack",tagline:"Micro-services for young chefs",time:"25 min",serves:"∞ containers",diff:3,
+ingredients:[
+  {q:"1",i:"docker-lab app"},
+  {q:"1",i:"Dockerfile"},
+  {q:"1",i:"docker-compose.yml"},
+  {q:"3+",i:"services to orchestrate"},
+  {q:"1",i:"basic YAML comprehension"},
+  {q:"1 cup",i:"courage to explain this to your parents"},
+],steps:[
+  "Open docker-lab. Understand the concept: apps in boxes. Boxes are isolated. Boxes are good.",
+  "Write your first Dockerfile: FROM node:18, COPY . ., RUN npm install, CMD node app.js",
+  "Build the image: 'docker build -t my-app .'  — Watch layers stack like a mille-feuille.",
+  "Run the container: 'docker run -p 3000:3000 my-app' — Your app is now contained.",
+  "Create docker-compose.yml with 3 services: web, api, database. Define networks and volumes.",
+  "Run 'docker-compose up' and watch your micro-service architecture come alive.",
+  "Explain it at dinner. Watch your software engineer parent's expression change.",
+],tip:"Chef's tip: If your container won't start, check the logs with 'docker logs'. The error is always in the logs. Always."},
+
+{emoji:"💡",name:"Rainbow LED Strip",tagline:"16 million colors, one HTTP request at a time",time:"15 min",serves:"1 LED strip",diff:1,
+ingredients:[
+  {q:"1",i:"ESP32 with WLED firmware"},
+  {q:"1",i:"WS2812B Neopixel strip (30-60 LEDs)"},
+  {q:"1",i:"330Ω resistor (data line)"},
+  {q:"1",i:"1000µF capacitor (power smoothing)"},
+  {q:"1",i:"5V 2A power supply"},
+  {q:"1",i:"wled-kids-lab app"},
+],steps:[
+  "Flash WLED firmware to ESP32. Connect to WLED-AP WiFi to configure.",
+  "Wire the Neopixel strip: 5V → power, GND → ground, DIN → GPIO2 (through 330Ω resistor).",
+  "Add the 1000µF capacitor across power lines. This protects against voltage spikes.",
+  "Open wled-kids-lab. Connect to the ESP32's IP address. See the LED controls appear.",
+  "Pick a color. Watch the entire strip light up. Try the rainbow chase effect.",
+  "Create custom animations. Set schedules. Sync to music if feeling adventurous.",
+],tip:"Chef's tip: Never connect more than 60 LEDs without a separate power injection point. Also, the resistor is NOT optional — your LEDs' first pixel will thank you."},
+];
+
+const container=document.getElementById('recipes');
+RECIPES.forEach((r,idx)=>{
+  const diffDots=Array(5).fill(0).map((_,i)=>`<div class="diff-dot${i<r.diff?' on':''}"></div>`).join('');
+  container.innerHTML+=`<div class="recipe" id="rec${idx}">
+    <div class="rec-header" onclick="toggle(${idx})">
+      <div class="rec-emoji">${r.emoji}</div>
+      <div class="rec-info">
+        <div class="rec-name">${r.name}</div>
+        <div class="rec-tagline">${r.tagline}</div>
+        <div class="rec-meta"><span>⏱ ${r.time}</span><span>🍽 ${r.serves}</span><span>Difficulty: </span><span><div class="difficulty">${diffDots}</div></span></div>
+      </div>
+      <div class="rec-arrow">▶</div>
+    </div>
+    <div class="rec-body">
+      <div class="rec-cols">
+        <div class="rec-col"><h3>INGREDIENTS</h3>${r.ingredients.map(i=>`<div class="ingredient"><span class="qty">${i.q}</span><span>${i.i}</span></div>`).join('')}</div>
+        <div class="rec-col"><h3>METHOD</h3>${r.steps.map((s,j)=>`<div class="step"><span class="step-num">${j+1}.</span><span>${s}</span></div>`).join('')}</div>
+      </div>
+      <div class="rec-tip"><b>💡 ${r.tip}</b></div>
+    </div>
+  </div>`;
+});
+
+function toggle(i){document.getElementById('rec'+i).classList.toggle('open')}
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BREAKING NEWS // WKSHP-DIY</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#0a0a12;font-family:'JetBrains Mono',monospace;color:#fff}
+
+.app{position:fixed;inset:0;display:flex;flex-direction:column}
+
+/* TOP BAR */
+.topbar{background:linear-gradient(90deg,#cc0000,#990000);padding:4px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.topbar-logo{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:2px}
+.topbar-live{display:flex;align-items:center;gap:5px;font-size:8px;letter-spacing:2px}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#fff;animation:livePulse 1s ease-in-out infinite}
+@keyframes livePulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* MAIN CONTENT */
+.main{flex:1;position:relative;background:#0a0a12;overflow:hidden}
+
+/* STORY DISPLAY */
+.story{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;opacity:0;transition:all .8s;pointer-events:none}
+.story.on{opacity:1;pointer-events:auto}
+.story-emoji{font-size:clamp(50px,10vw,80px);margin-bottom:10px;filter:drop-shadow(0 4px 16px rgba(0,0,0,.5))}
+.story-headline{font-family:'Syne',sans-serif;font-size:clamp(18px,4vw,32px);font-weight:800;line-height:1.4;margin-bottom:8px;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.story-body{font-size:clamp(10px,1.5vw,14px);color:rgba(255,255,255,.5);max-width:540px;line-height:2}
+
+/* BREAKING ALERT */
+.breaking{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:50;opacity:0;pointer-events:none;transition:all .3s}
+.breaking.on{opacity:1}
+.breaking-box{background:linear-gradient(135deg,#cc0000,#880000);padding:12px 30px;border:3px solid #ff0000;text-align:center;box-shadow:0 0 40px rgba(255,0,0,.3);animation:breakPulse 1s ease-in-out infinite}
+@keyframes breakPulse{0%,100%{box-shadow:0 0 20px rgba(255,0,0,.2)}50%{box-shadow:0 0 40px rgba(255,0,0,.4)}}
+.breaking-label{font-family:'Syne',sans-serif;font-size:clamp(14px,3vw,24px);font-weight:800;letter-spacing:4px}
+.breaking-text{font-size:clamp(9px,1.5vw,13px);color:rgba(255,255,255,.7);margin-top:4px}
+
+/* CHYRON (LOWER THIRD) */
+.chyron{position:absolute;bottom:40px;left:0;right:0;z-index:10}
+.chyron-box{background:linear-gradient(90deg,rgba(20,20,40,.95),rgba(10,10,20,.95));border-top:2px solid #cc0000;border-bottom:2px solid #cc0000;display:flex;align-items:stretch}
+.chyron-label{background:#cc0000;padding:8px 14px;display:flex;align-items:center;font-family:'Syne',sans-serif;font-size:10px;font-weight:800;letter-spacing:2px;flex-shrink:0}
+.chyron-text{flex:1;padding:8px 14px;display:flex;align-items:center;font-size:clamp(10px,1.5vw,14px);font-weight:700;white-space:nowrap;overflow:hidden}
+.chyron-time{padding:8px 14px;display:flex;align-items:center;font-size:10px;color:rgba(255,255,255,.5);flex-shrink:0;border-left:1px solid rgba(255,255,255,.1)}
+
+/* TICKER */
+.ticker{position:absolute;bottom:0;left:0;right:0;z-index:10;background:#0a0a14;border-top:1px solid #1a1a2e;overflow:hidden;height:28px;display:flex;align-items:center}
+.ticker-label{background:#cc0000;padding:4px 10px;font-size:7px;font-weight:700;letter-spacing:2px;flex-shrink:0;height:100%;display:flex;align-items:center}
+.ticker-scroll{flex:1;overflow:hidden;position:relative;height:100%}
+.ticker-track{display:flex;align-items:center;height:100%;gap:30px;animation:tickerScroll 60s linear infinite;white-space:nowrap;position:absolute}
+@keyframes tickerScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-item{font-size:10px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px}
+.ticker-item .sep{color:#cc0000;font-size:8px}
+
+/* BOTTOM STATS */
+.bottom-stats{position:absolute;bottom:28px;right:0;z-index:10;display:flex;flex-direction:column;gap:1px}
+.bs{background:rgba(10,10,20,.9);padding:3px 10px;font-size:7px;color:rgba(255,255,255,.3);text-align:right;border-left:2px solid #cc0000}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="app">
+<div class="topbar">
+  <div class="topbar-logo">WKSHP NEWS NETWORK</div>
+  <div class="topbar-live"><div class="live-dot"></div> LIVE</div>
+</div>
+<div class="main">
+  <!-- STORIES -->
+  <div class="story on" data-i="0">
+    <div class="story-emoji">🤖</div>
+    <div class="story-headline">WORKSHOP-DIY LAUNCHES 39TH APP</div>
+    <div class="story-body">The French association has officially released its 39th browser-based educational application, covering robotics, AI, cybersecurity, and more. All apps are free and open-source.</div>
+  </div>
+  <div class="story" data-i="1">
+    <div class="story-emoji">🔐</div>
+    <div class="story-headline">TEENAGE HACKERS BREACH SCHOOL PRINTER — ETHICALLY</div>
+    <div class="story-body">Students from Workshop-DIY's cybersecurity program discovered a vulnerability in their school's network printer. They responsibly disclosed it. The IT department was "mostly grateful."</div>
+  </div>
+  <div class="story" data-i="2">
+    <div class="story-emoji">🧠</div>
+    <div class="story-headline">10-YEAR-OLD TRAINS AI MODEL WITH 98% ACCURACY</div>
+    <div class="story-body">Using Workshop-DIY's teachable-machine app, a young workshop member trained a gesture recognition model entirely in-browser. "It was easier than math homework," she reported.</div>
+  </div>
+  <div class="story" data-i="3">
+    <div class="story-emoji">⚡</div>
+    <div class="story-headline">ESP32 ROBOT SURVIVES 47TH DROP — SCIENTISTS BAFFLED</div>
+    <div class="story-body">The Workshop-DIY robot kit, built by 8-year-olds, has survived its 47th fall from a table. Engineers are calling it "surprisingly indestructible." The robot had no comment.</div>
+  </div>
+  <div class="story" data-i="4">
+    <div class="story-emoji">🐧</div>
+    <div class="story-headline">CHILD EXPLAINS DOCKER TO PARENT WHO IS A SOFTWARE ENGINEER</div>
+    <div class="story-body">A 14-year-old workshop member reportedly explained containerization to their parent, a professional software engineer. The parent was quoted as "slightly concerned, mostly proud."</div>
+  </div>
+  <div class="story" data-i="5">
+    <div class="story-emoji">☕</div>
+    <div class="story-headline">WORKSHOP INSTRUCTOR'S COFFEE CONSUMPTION REACHES "CRITICAL"</div>
+    <div class="story-body">The lead instructor has been observed consuming approximately 847 cups of coffee this year. Doctors recommend "probably less caffeine." The instructor disagrees.</div>
+  </div>
+  <div class="story" data-i="6">
+    <div class="story-emoji">🔑</div>
+    <div class="story-headline">WIFI PASSWORD STILL "password123" — COMMUNITY DIVIDED</div>
+    <div class="story-body">Despite cybersecurity being a core curriculum, the Workshop-DIY WiFi password remains unchanged since 2024. "It's tradition at this point," said the founder. Pentest students are conflicted.</div>
+  </div>
+
+  <!-- BREAKING ALERT -->
+  <div class="breaking" id="breaking">
+    <div class="breaking-box">
+      <div class="breaking-label">BREAKING NEWS</div>
+      <div class="breaking-text" id="breakText">Bug #42 has officially been declared a feature</div>
+    </div>
+  </div>
+
+  <!-- CHYRON -->
+  <div class="chyron">
+    <div class="chyron-box">
+      <div class="chyron-label">LIVE</div>
+      <div class="chyron-text" id="chyronText">Workshop-DIY: 39 apps, 7 domains, 12 themes — all free and browser-based</div>
+      <div class="chyron-time" id="chyronTime">00:00</div>
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-label">TICKER</div>
+    <div class="ticker-scroll">
+      <div class="ticker-track" id="tickerTrack"></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="bottom-stats">
+    <div class="bs">APPS: 39</div>
+    <div class="bs">DOMAINS: 7</div>
+    <div class="bs">THEMES: 12</div>
+    <div class="bs">BUGS: 42 (features)</div>
+  </div>
+</div>
+</div>
+
+<script>
+const stories=document.querySelectorAll('.story');
+let curStory=0;
+const chyrons=[
+  "Workshop-DIY: 39 apps, 7 domains, 12 themes — all free and browser-based",
+  "ESP32 Robot Kit now available on HelloAsso — assembly required, explosions not included",
+  "bit-bot app surpasses 2,800 sessions this year — most popular in the ecosystem",
+  "New workshops announced: Robot Building, Code Camp, Solder School, Cyber Defense",
+  "Workshop-DIY: teaching robotics, AI, electronics, 3D printing, cybersecurity since 2023",
+  "Community grows to 42 active members — applications open at workshop-diy.org",
+  "All 39 apps available at abourdim.github.io/apps — zero installation required",
+];
+const breakingNews=[
+  "Bug #42 has officially been declared a feature",
+  "3 more USB cables lost during workshop — total now at 47",
+  "Robot learned to dance — refuses to stop",
+  "Student solves pentest challenge before instructor",
+  "WiFi password unchanged for 2nd consecutive year",
+];
+const tickerItems=[
+  "🤖 bit-bot: 2,847 sessions","🪄 magic-hands: most fun app","🕵️ face-quest: 1,892 plays",
+  "🧠 AI models trained: 347","⚡ Robots built: 42","🔐 CTF challenges solved: 156",
+  "🐧 Terminal commands run: 12,847","🐳 Containers deployed: 89","📡 BLE connections: 4,200",
+  "☕ Coffee consumed: ∞ liters","🔥 Soldering irons heated: 847 times","🎨 Pixel art created: 203",
+  "💻 Lines of code: 42,000+","🌍 Countries reached: 12","🇫🇷 Made in France with 💚",
+];
+
+// TICKER
+const track=document.getElementById('tickerTrack');
+const allItems=[...tickerItems,...tickerItems];
+track.innerHTML=allItems.map(t=>`<span class="ticker-item">${t} <span class="sep">●</span></span>`).join('');
+
+// STORY ROTATION
+function nextStory(){
+  stories[curStory].classList.remove('on');
+  curStory=(curStory+1)%stories.length;
+  stories[curStory].classList.add('on');
+  document.getElementById('chyronText').textContent=chyrons[curStory%chyrons.length];
+}
+setInterval(nextStory,8000);
+
+// BREAKING NEWS
+function showBreaking(){
+  const el=document.getElementById('breaking');
+  document.getElementById('breakText').textContent=breakingNews[Math.floor(Math.random()*breakingNews.length)];
+  el.classList.add('on');
+  setTimeout(()=>el.classList.remove('on'),4000);
+}
+setTimeout(showBreaking,5000);
+setInterval(showBreaking,25000);
+
+// CLOCK
+setInterval(()=>{document.getElementById('chyronTime').textContent=new Date().toTimeString().slice(0,5)},1000);
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP Store</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#000;--card:#1c1c1e;--card2:#2c2c2e;--t1:#fff;--t2:#8e8e93;--blue:#0a84ff;--green:#30d158;--red:#ff453a;--orange:#ff9f0a;--purple:#bf5af2}
+body{background:var(--bg);color:var(--t1);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;font-size:14px;max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:70px}
+
+/* STATUS BAR */
+.status{padding:6px 16px;display:flex;justify-content:space-between;font-size:11px;color:var(--t2);font-weight:600}
+
+/* NAV TABS */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(28,28,30,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.05);display:flex;z-index:100;padding:4px 0 12px}
+.nav-item{flex:1;text-align:center;padding:4px 0;cursor:pointer;transition:all .15s}
+.nav-item .icon{font-size:20px;margin-bottom:1px}
+.nav-item .label{font-size:9px;color:var(--t2)}.nav-item.on .label{color:var(--blue)}
+
+/* SEARCH */
+.search{margin:8px 16px;background:var(--card);border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:6px;color:var(--t2);font-size:13px}
+
+/* SECTIONS */
+.section{padding:16px}
+.section-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.section-h h2{font-size:18px;font-weight:700}.section-h a{color:var(--blue);font-size:13px;text-decoration:none}
+
+/* FEATURED BANNER */
+.featured{margin:8px 16px;border-radius:14px;overflow:hidden;position:relative;height:180px;background:linear-gradient(135deg,#0a2a0a,#001a1a,#0a0a2e);cursor:pointer}
+.featured::after{content:'';position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.7))}
+.feat-content{position:absolute;bottom:0;left:0;right:0;padding:14px;z-index:1}
+.feat-cat{font-size:9px;color:var(--blue);font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.feat-title{font-size:22px;font-weight:800;margin:2px 0}
+.feat-sub{font-size:12px;color:var(--t2)}
+.feat-emoji{position:absolute;top:20px;right:20px;font-size:60px;z-index:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))}
+
+/* APP ROW */
+.app-row{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
+.app-row::-webkit-scrollbar{display:none}
+
+/* APP CARD (horizontal scroll) */
+.app-card{flex-shrink:0;width:280px;scroll-snap-align:start;background:var(--card);border-radius:12px;padding:12px;cursor:pointer;transition:transform .15s}
+.app-card:hover{transform:scale(.98)}
+.app-card-h{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.app-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.app-icon.robo{background:linear-gradient(135deg,#0a2a0a,#001a00)}.app-icon.ai{background:linear-gradient(135deg,#1a0033,#0a001a)}.app-icon.cyber{background:linear-gradient(135deg,#1a0000,#330011)}.app-icon.learn{background:linear-gradient(135deg,#001a1a,#002233)}.app-icon.hw{background:linear-gradient(135deg,#1a1a00,#332200)}.app-icon.cam{background:linear-gradient(135deg,#0a0a2e,#001a33)}.app-icon.tool{background:linear-gradient(135deg,#111,#222)}
+.app-info .name{font-size:13px;font-weight:600}.app-info .dev{font-size:11px;color:var(--t2)}
+.app-meta{display:flex;gap:8px;font-size:10px;color:var(--t2);align-items:center}
+.stars{color:var(--orange);font-size:9px}
+.get-btn{margin-left:auto;background:var(--card2);color:var(--blue);font-size:12px;font-weight:700;padding:5px 16px;border-radius:16px;border:none;cursor:pointer;flex-shrink:0}
+.get-btn:hover{background:var(--blue);color:#fff}
+
+/* APP LIST (vertical) */
+.app-list-item{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.app-list-item:last-child{border:none}
+.app-rank{font-size:16px;font-weight:700;color:var(--t2);width:20px;text-align:center}
+
+/* REVIEW */
+.review{background:var(--card);border-radius:12px;padding:12px;margin-bottom:8px}
+.review-h{display:flex;justify-content:space-between;margin-bottom:4px}
+.review-name{font-size:12px;font-weight:600}.review-date{font-size:10px;color:var(--t2)}
+.review-stars{color:var(--orange);font-size:11px;margin-bottom:4px}
+.review-text{font-size:12px;color:var(--t2);line-height:1.7}
+
+/* CATEGORY PILLS */
+.pills{display:flex;gap:6px;overflow-x:auto;padding:0 16px 8px;-webkit-overflow-scrolling:touch}
+.pills::-webkit-scrollbar{display:none}
+.pill{flex-shrink:0;padding:6px 14px;border-radius:18px;background:var(--card);font-size:11px;color:var(--t2);cursor:pointer;transition:all .15s;border:1px solid transparent}
+.pill:hover,.pill.on{background:var(--blue);color:#fff}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="status"><span>9:41</span><span>WKSHP Store</span><span>🔋 87%</span></div>
+
+<!-- FEATURED -->
+<div class="featured" onclick="scrollToId('top5')">
+  <div class="feat-emoji">🤖</div>
+  <div class="feat-content">
+    <div class="feat-cat">Collection of the Year</div>
+    <div class="feat-title">Workshop-DIY</div>
+    <div class="feat-sub">39 apps that teach robots, AI, code & more</div>
+  </div>
+</div>
+
+<!-- CATEGORY PILLS -->
+<div class="pills" id="pills"></div>
+
+<!-- FEATURED APPS -->
+<div class="section">
+  <div class="section-h"><h2>Must-Have Apps</h2><a href="#">See All</a></div>
+  <div class="app-row" id="featuredApps"></div>
+</div>
+
+<!-- TOP CHARTS -->
+<div class="section" id="top5">
+  <div class="section-h"><h2>Top Charts — Free</h2><a href="#">See All</a></div>
+  <div id="topCharts"></div>
+</div>
+
+<!-- NEW THIS WEEK -->
+<div class="section">
+  <div class="section-h"><h2>New This Week</h2></div>
+  <div class="app-row" id="newApps"></div>
+</div>
+
+<!-- REVIEWS -->
+<div class="section">
+  <div class="section-h"><h2>Ratings & Reviews</h2></div>
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
+    <div style="text-align:center"><div style="font-size:40px;font-weight:800">4.9</div><div class="stars">★★★★★</div><div style="font-size:10px;color:var(--t2)">847 ratings</div></div>
+    <div style="flex:1" id="ratingBars"></div>
+  </div>
+  <div id="reviews"></div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-item on"><div class="icon">🏠</div><div class="label">Today</div></div>
+  <div class="nav-item"><div class="icon">🎮</div><div class="label">Games</div></div>
+  <div class="nav-item"><div class="icon">📱</div><div class="label">Apps</div></div>
+  <div class="nav-item"><div class="icon">🔍</div><div class="label">Search</div></div>
+</div>
+
+<script>
+const APPS=[
+{e:"🤖",n:"bit-bot",d:"Drive robots via Bluetooth",dev:"Workshop-DIY",cat:"robo",r:5.0,dl:"2.8K"},
+{e:"🪄",n:"magic-hands",d:"Hand-tracking magic effects",dev:"Workshop-DIY",cat:"ai",r:4.9,dl:"2.1K"},
+{e:"🕵️",n:"face-quest",d:"Face detection scoring game",dev:"Workshop-DIY",cat:"cam",r:4.8,dl:"1.9K"},
+{e:"🧠",n:"teachable-machine",d:"Train AI gestures in browser",dev:"Workshop-DIY",cat:"ai",r:4.9,dl:"1.7K"},
+{e:"💬",n:"talking-robot",d:"Voice-controlled robot",dev:"Workshop-DIY",cat:"robo",r:4.7,dl:"1.3K"},
+{e:"😎",n:"face-tracking",d:"Face position tracker",dev:"Workshop-DIY",cat:"cam",r:4.6,dl:"1.1K"},
+{e:"🚀",n:"mission-control",d:"WebRTC command center",dev:"Workshop-DIY",cat:"tool",r:4.8,dl:"980"},
+{e:"🔐",n:"pentest-lab",d:"Cybersecurity sandbox",dev:"Workshop-DIY",cat:"cyber",r:4.9,dl:"1.5K"},
+{e:"🐧",n:"linux-kids-lab",d:"Linux in your browser",dev:"Workshop-DIY",cat:"learn",r:4.8,dl:"1.4K"},
+{e:"💡",n:"wled-kids-lab",d:"Neopixel LED control",dev:"Workshop-DIY",cat:"hw",r:4.7,dl:"890"},
+{e:"⚡",n:"esp32-c3-lab",d:"ESP32-C3 IoT lab",dev:"Workshop-DIY",cat:"hw",r:4.6,dl:"780"},
+{e:"🧩",n:"bit-playground",d:"micro:bit BLE playground",dev:"Workshop-DIY",cat:"robo",r:4.7,dl:"960"},
+{e:"🎨",n:"pixel-gateway",d:"Retro pixel art editor",dev:"Workshop-DIY",cat:"learn",r:4.5,dl:"720"},
+{e:"🐳",n:"docker-lab",d:"Learn Docker basics",dev:"Workshop-DIY",cat:"learn",r:4.6,dl:"650"},
+{e:"🎛️",n:"rxy",d:"Custom BLE remote builder",dev:"Workshop-DIY",cat:"robo",r:4.5,dl:"540"},
+{e:"✨",n:"prompt-hero",d:"AI prompting playground",dev:"Workshop-DIY",cat:"ai",r:4.7,dl:"820"},
+{e:"🏡",n:"smart-home",d:"IoT dashboard sim",dev:"Workshop-DIY",cat:"hw",r:4.4,dl:"470"},
+{e:"🔗",n:"dhcp-lab",d:"DHCP server lab",dev:"Workshop-DIY",cat:"learn",r:4.3,dl:"380"},
+];
+
+const CATS=[{n:"All",id:"all"},{n:"🤖 Robotics",id:"robo"},{n:"🧠 AI",id:"ai"},{n:"🔐 Cyber",id:"cyber"},{n:"💻 Learning",id:"learn"},{n:"⚡ Hardware",id:"hw"},{n:"📷 Camera",id:"cam"},{n:"🧰 Tools",id:"tool"}];
+
+// PILLS
+const pills=document.getElementById('pills');
+CATS.forEach((c,i)=>{const p=document.createElement('div');p.className='pill'+(i===0?' on':'');p.textContent=c.n;p.onclick=()=>{document.querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));p.classList.add('on');filterApps(c.id)};pills.appendChild(p)});
+
+let currentFilter='all';
+function filterApps(cat){currentFilter=cat;renderAll()}
+
+function makeAppCard(a){
+  return `<div class="app-card"><div class="app-card-h"><div class="app-icon ${a.cat}">${a.e}</div><div class="app-info"><div class="name">${a.n}</div><div class="dev">${a.d}</div></div><button class="get-btn">GET</button></div><div class="app-meta"><span class="stars">${'★'.repeat(Math.round(a.r))}${'☆'.repeat(5-Math.round(a.r))}</span><span>${a.r}</span><span>·</span><span>${a.dl} downloads</span></div></div>`;
+}
+
+function renderAll(){
+  const filtered=currentFilter==='all'?APPS:APPS.filter(a=>a.cat===currentFilter);
+
+  // Featured row
+  document.getElementById('featuredApps').innerHTML=filtered.slice(0,6).map(makeAppCard).join('');
+
+  // Top charts
+  document.getElementById('topCharts').innerHTML=filtered.slice(0,5).map((a,i)=>
+    `<div class="app-list-item"><span class="app-rank">${i+1}</span><div class="app-icon ${a.cat}" style="width:40px;height:40px;border-radius:10px;font-size:18px">${a.e}</div><div class="app-info" style="flex:1"><div class="name" style="font-size:13px">${a.n}</div><div class="dev" style="font-size:10px;color:var(--t2)">${a.d}</div><div class="app-meta"><span class="stars">${'★'.repeat(Math.round(a.r))}</span><span style="font-size:10px;color:var(--t2)">${a.r} · ${a.dl}</span></div></div><button class="get-btn">GET</button></div>`
+  ).join('');
+
+  // New
+  document.getElementById('newApps').innerHTML=filtered.slice(-4).reverse().map(makeAppCard).join('');
+}
+renderAll();
+
+// RATING BARS
+const bars=[{s:5,p:87},{s:4,p:9},{s:3,p:3},{s:2,p:1},{s:1,p:0}];
+document.getElementById('ratingBars').innerHTML=bars.map(b=>`<div style="display:flex;align-items:center;gap:4px;margin-bottom:2px"><span style="font-size:9px;color:var(--t2);width:10px">${b.s}</span><div style="flex:1;height:4px;background:var(--card);border-radius:2px;overflow:hidden"><div style="width:${b.p}%;height:100%;background:var(--orange);border-radius:2px"></div></div></div>`).join('');
+
+// REVIEWS
+const revs=[
+  {n:"CyberYassine",d:"Feb 2025",s:5,t:"These apps turned my kids into robot engineers. The bit-bot app is insanely fun. My 8-year-old won't stop coding now. Send help."},
+  {n:"MakerAmira",d:"Jan 2025",s:5,t:"magic-hands is mind-blowing. Hand tracking that works in a browser?! My students went crazy for it. All 39 apps are gems."},
+  {n:"LinuxLucas",d:"Dec 2024",s:5,t:"linux-kids-lab taught my students terminal commands in one session. The fake bash environment is shockingly realistic."},
+  {n:"RoboParent42",d:"Nov 2024",s:4,t:"Great collection. Only complaint: my kid now explains Docker to me and I'm a software engineer. Slightly humbling."},
+];
+document.getElementById('reviews').innerHTML=revs.map(r=>`<div class="review"><div class="review-h"><span class="review-name">${r.n}</span><span class="review-date">${r.d}</span></div><div class="review-stars">${'★'.repeat(r.s)}${'☆'.repeat(5-r.s)}</div><div class="review-text">${r.t}</div></div>`).join('');
+
+function scrollToId(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

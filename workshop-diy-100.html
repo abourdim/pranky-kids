@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // FILE #100 🎉</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;overflow-x:hidden}
+
+/* FIREWORKS CANVAS */
+canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+.content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;padding:16px}
+
+/* HERO */
+.hero{text-align:center;padding:40px 16px 20px}
+.hero .number{font-family:'Syne',sans-serif;font-size:clamp(80px,20vw,140px);font-weight:800;line-height:1;background:linear-gradient(180deg,#ffd700,#ff8800,#ff0066);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 4px 20px rgba(255,215,0,.15))}
+.hero .label{font-size:clamp(14px,3vw,20px);color:#ffd700;font-family:'Syne',sans-serif;font-weight:800;letter-spacing:4px;margin-top:-4px}
+.hero .sub{font-size:9px;color:rgba(255,215,0,.2);letter-spacing:3px;margin-top:4px}
+
+/* STATS */
+.stats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0;max-width:600px}
+.stat{text-align:center;padding:10px 16px;border:1px solid rgba(255,215,0,.06);border-radius:6px;background:rgba(255,215,0,.01);min-width:100px}
+.stat .num{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#ffd700}
+.stat .label{font-size:7px;color:rgba(255,215,0,.2);letter-spacing:1px;margin-top:1px}
+
+/* MILESTONES */
+.milestones{max-width:500px;width:100%;margin:14px 0}
+.mile-h{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#ffd700;text-align:center;margin-bottom:8px}
+.mile{display:flex;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,215,0,.03);align-items:center;font-size:9px}
+.mile .count{width:30px;color:rgba(255,215,0,.2);text-align:right;flex-shrink:0}
+.mile .bar{flex:1;height:4px;background:rgba(255,215,0,.06);border-radius:2px;overflow:hidden}
+.mile .bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#ffd700,#ff8800)}
+.mile .name{width:120px;color:rgba(255,255,255,.25);flex-shrink:0;text-align:right}
+
+/* CATEGORIES */
+.cats{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;max-width:600px;margin:10px 0}
+.cat{padding:3px 10px;border-radius:12px;font-size:7px;letter-spacing:1px}
+
+/* CELEBRATION TEXT */
+.celeb{text-align:center;max-width:400px;margin:14px 0;padding:14px;border:1px solid rgba(255,215,0,.06);border-radius:8px;background:rgba(255,215,0,.01)}
+.celeb p{font-size:10px;color:rgba(255,255,255,.3);line-height:2.2;margin:4px 0}
+.celeb .highlight{color:#ffd700;font-weight:700}
+
+.footer{text-align:center;padding:14px;font-size:6px;color:rgba(255,215,0,.06);letter-spacing:1px;line-height:2.2}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<canvas id="fw"></canvas>
+
+<div class="content">
+
+<div class="hero">
+  <div class="number">100</div>
+  <div class="label">HTML FILES</div>
+  <div class="sub">THE WORKSHOP-DIY CREATIVE UNIVERSE</div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="num">100</div><div class="label">HTML FILES</div></div>
+  <div class="stat"><div class="num">39</div><div class="label">REAL APPS</div></div>
+  <div class="stat"><div class="num">12</div><div class="label">SESSIONS</div></div>
+  <div class="stat"><div class="num">50+</div><div class="label">UNIQUE FORMATS</div></div>
+  <div class="stat"><div class="num">0</div><div class="label">NPM INSTALLS</div></div>
+  <div class="stat"><div class="num">∞</div><div class="label">COFFEE CONSUMED</div></div>
+</div>
+
+<div class="milestones">
+  <div class="mile-h">📊 FORMAT BREAKDOWN</div>
+  <div class="mile"><span class="name">Interactive Games</span><div class="bar"><div class="bar-fill" style="width:85%"></div></div><span class="count">17</span></div>
+  <div class="mile"><span class="name">Parody Pages</span><div class="bar"><div class="bar-fill" style="width:70%"></div></div><span class="count">14</span></div>
+  <div class="mile"><span class="name">Video/Animation</span><div class="bar"><div class="bar-fill" style="width:40%"></div></div><span class="count">8</span></div>
+  <div class="mile"><span class="name">Dashboards/Monitors</span><div class="bar"><div class="bar-fill" style="width:45%"></div></div><span class="count">9</span></div>
+  <div class="mile"><span class="name">Documents/Reports</span><div class="bar"><div class="bar-fill" style="width:50%"></div></div><span class="count">10</span></div>
+  <div class="mile"><span class="name">Galleries/Collections</span><div class="bar"><div class="bar-fill" style="width:55%"></div></div><span class="count">11</span></div>
+  <div class="mile"><span class="name">Social Media Parodies</span><div class="bar"><div class="bar-fill" style="width:50%"></div></div><span class="count">10</span></div>
+  <div class="mile"><span class="name">Data Viz/Maps</span><div class="bar"><div class="bar-fill" style="width:35%"></div></div><span class="count">7</span></div>
+  <div class="mile"><span class="name">Narrative/Story</span><div class="bar"><div class="bar-fill" style="width:40%"></div></div><span class="count">8</span></div>
+  <div class="mile"><span class="name">Meta/Hub</span><div class="bar"><div class="bar-fill" style="width:15%"></div></div><span class="count">3</span></div>
+  <div class="mile"><span class="name">Quizzes/Tests</span><div class="bar"><div class="bar-fill" style="width:15%"></div></div><span class="count">3</span></div>
+</div>
+
+<div class="cats">
+  <span class="cat" style="background:rgba(0,204,102,.06);color:#00cc66;border:1px solid rgba(0,204,102,.15)">🤖 Robotics</span>
+  <span class="cat" style="background:rgba(153,102,255,.06);color:#9966ff;border:1px solid rgba(153,102,255,.15)">🧠 AI</span>
+  <span class="cat" style="background:rgba(255,51,68,.06);color:#ff3344;border:1px solid rgba(255,51,68,.15)">🔐 Cyber</span>
+  <span class="cat" style="background:rgba(255,136,0,.06);color:#ff8800;border:1px solid rgba(255,136,0,.15)">⚡ Hardware</span>
+  <span class="cat" style="background:rgba(0,136,255,.06);color:#0088ff;border:1px solid rgba(0,136,255,.15)">📚 Learning</span>
+  <span class="cat" style="background:rgba(0,204,204,.06);color:#00cccc;border:1px solid rgba(0,204,204,.15)">🔧 Tools</span>
+  <span class="cat" style="background:rgba(255,0,102,.06);color:#ff0066;border:1px solid rgba(255,0,102,.15)">🎭 Creative</span>
+</div>
+
+<div class="celeb">
+  <p>What started as a French roadmap video became <span class="highlight">100 unique HTML files</span> spanning every imaginable format: from <span class="highlight">Tinder parodies</span> to <span class="highlight">courtroom dramas</span>, from <span class="highlight">text adventures</span> to <span class="highlight">IKEA manuals</span>, from <span class="highlight">academic papers</span> to <span class="highlight">fortune cookies</span>.</p>
+  <p>Every file is <span class="highlight">self-contained</span>. Every file is <span class="highlight">production-ready</span>. Every file celebrates the <span class="highlight">39 apps</span> that make Workshop-DIY what it is.</p>
+  <p>And yes — the WiFi password is still <span class="highlight">password123</span>.</p>
+</div>
+
+</div>
+
+<div class="footer">
+  FILE #100 · WORKSHOP-DIY · ASSOCIATION LOI 1901 · FRANCE 🇫🇷<br>
+  39 APPS · 7 DOMAINS · 100 HTML FILES · 0 INSTALLATIONS · ∞ POSSIBILITIES<br>
+  BUGS ARE FEATURES · password123 · COFFEE AT 8% · THE 40TH APP WAS HERE ALL ALONG
+</div>
+
+<script>
+// FIREWORKS
+const c=document.getElementById('fw');const ctx=c.getContext('2d');
+let W,H;function resize(){W=c.width=innerWidth;H=c.height=innerHeight}resize();addEventListener('resize',resize);
+
+class Particle{
+  constructor(x,y,color){this.x=x;this.y=y;this.vx=(Math.random()-.5)*6;this.vy=(Math.random()-.5)*6;this.alpha=1;this.color=color;this.size=Math.random()*2+1}
+  update(){this.x+=this.vx;this.y+=this.vy;this.vy+=.05;this.alpha-=.015;this.vx*=.99}
+  draw(){ctx.globalAlpha=this.alpha;ctx.fillStyle=this.color;ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fill()}
+}
+
+let particles=[];
+const colors=['#ffd700','#ff8800','#ff0066','#0af','#00cc66','#9966ff'];
+
+function firework(){
+  const x=Math.random()*W;const y=Math.random()*H*.5+50;
+  const col=colors[Math.floor(Math.random()*colors.length)];
+  for(let i=0;i<40;i++)particles.push(new Particle(x,y,col));
+}
+
+function animate(){
+  requestAnimationFrame(animate);
+  ctx.globalAlpha=.1;ctx.fillStyle='rgba(10,10,20,.15)';ctx.fillRect(0,0,W,H);
+  particles=particles.filter(p=>p.alpha>0);
+  particles.forEach(p=>{p.update();p.draw()});
+}
+animate();
+
+// Launch fireworks periodically
+setInterval(firework,1500);
+firework();setTimeout(firework,300);setTimeout(firework,600);
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

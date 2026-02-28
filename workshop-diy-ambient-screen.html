@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // AMBIENT</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#000;cursor:none}
+canvas{position:fixed;inset:0;z-index:0}
+
+/* CENTER OVERLAY */
+.center{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.center-box{text-align:center;opacity:0;transition:opacity 2s;font-family:'JetBrains Mono',monospace}
+.center-box.on{opacity:1}
+.c-logo{font-family:'Syne',sans-serif;font-size:clamp(32px,7vw,72px);font-weight:800;color:#00ff41;text-shadow:0 0 40px rgba(0,255,65,.2),0 0 80px rgba(0,255,65,.08);letter-spacing:-3px}
+.c-sub{font-size:clamp(9px,1.5vw,14px);color:#00d4ff;letter-spacing:4px;margin-top:6px;opacity:.6}
+.c-stat{font-size:clamp(10px,2vw,18px);color:#00ff41;margin-top:20px;opacity:0;transition:opacity 1.5s}
+.c-stat.on{opacity:.4}
+.c-quote{font-size:clamp(8px,1.2vw,12px);color:rgba(0,255,65,.2);margin-top:16px;max-width:500px;font-style:italic;opacity:0;transition:opacity 1.5s;line-height:1.8}
+.c-quote.on{opacity:1}
+
+/* CORNERS */
+.corner{position:fixed;z-index:10;font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(0,255,65,.12);pointer-events:none}
+.tl{top:10px;left:12px}.tr{top:10px;right:12px;text-align:right}.bl{bottom:10px;left:12px}.br{bottom:10px;right:12px;text-align:right}
+
+/* FLOATING APPS */
+.float-app{position:fixed;z-index:5;pointer-events:none;opacity:0;transition:opacity 2s}
+.float-app.on{opacity:1}
+.fa-emoji{font-size:28px;display:block;filter:drop-shadow(0 0 12px rgba(0,255,65,.15))}
+.fa-name{font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(0,255,65,.2);text-align:center;margin-top:2px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div class="corner tl">WKSHP_DIY.sys v4.2.0<br>AMBIENT MODE</div>
+<div class="corner tr" id="clock">00:00:00<br><span id="date"></span></div>
+<div class="corner bl">workshop-diy.org<br>abourdim.github.io/apps</div>
+<div class="corner br">39 APPS // 7 DOMAINS<br>12 THEMES // ∞ BUILDS</div>
+
+<div class="center">
+  <div class="center-box" id="centerBox">
+    <div class="c-logo">WORKSHOP-DIY</div>
+    <div class="c-sub">ASSOCIATION LOI 1901 — FRANCE</div>
+    <div class="c-stat" id="cStat"></div>
+    <div class="c-quote" id="cQuote"></div>
+  </div>
+</div>
+
+<div id="floats"></div>
+
+<script>
+const APPS=[
+  {e:"🤖",n:"bit-bot"},{e:"🪄",n:"magic-hands"},{e:"🕵️",n:"face-quest"},{e:"💬",n:"talking-robot"},{e:"🧠",n:"teachable-machine"},{e:"😎",n:"face-tracking"},{e:"😄",n:"bitmoji-lab"},{e:"🚀",n:"mission-control"},{e:"🧩",n:"bit-playground"},{e:"🎛️",n:"rxy"},{e:"🎨",n:"pixel-gateway"},{e:"💡",n:"wled-kids-lab"},{e:"⚡",n:"esp32-c3"},{e:"🪙",n:"crypto-academy"},{e:"🔐",n:"pentest-lab"},{e:"🐧",n:"linux-lab"},{e:"🏭",n:"production"},{e:"🏫",n:"classroom"},{e:"🔌",n:"usb-logger"},{e:"📡",n:"ble-logger"},{e:"🧰",n:"claude-tk"},{e:"🎭",n:"puppeteer"},{e:"🔋",n:"circuit-lab"},{e:"🛡️",n:"vpn-guide"},{e:"🧊",n:"3d-lab"},{e:"🔀",n:"git-lab"},{e:"✨",n:"prompt-hero"},{e:"🌍",n:"save-planet"},{e:"📋",n:"ops-catalog"},{e:"💻",n:"code-kids"},{e:"🏡",n:"smart-home"},{e:"🧱",n:"makecode"},{e:"🤖",n:"54-activities"},{e:"💰",n:"crypto-vault"},{e:"🔗",n:"dhcp-lab"},{e:"🐳",n:"docker-lab"},{e:"🔴",n:"nodered"},{e:"⛽",n:"ocpp"},{e:"🖥️",n:"tty"}
+];
+const STATS=["39 APPS BUILT","7 SKILL DOMAINS","12 THEMES","ROBOTICS · AI · CODE · CYBER","ESP32 + MICRO:BIT","3D PRINTING · ELECTRONICS","FREE & OPEN SOURCE","BROWSER-BASED · NO INSTALL","MADE IN FRANCE 🇫🇷"];
+const QUOTES=[
+  '"They learn without realizing they\'re learning. That\'s the trick."',
+  '"I built my first robot at 10."',
+  '"My son now explains Docker to me."',
+  '"Bugs are just surprise features."',
+  '"// made with 💚, ☕, and stackoverflow"',
+  '"The soldering iron is supervised. Mostly."',
+  '"42 bugs. All features."',
+  '"No robots were harmed."'
+];
+
+// ═══ MATRIX RAIN ═══
+const cv=document.getElementById('c'),cx=cv.getContext('2d');
+let W,H,cols,drops,speeds;
+const chars='ワークショップDIY01アイロボットSTEMコードABCDEF0123456789';
+
+function resize(){
+  W=cv.width=innerWidth;H=cv.height=innerHeight;
+  cols=Math.floor(W/16);
+  drops=Array(cols).fill(0).map(()=>Math.random()*H/16);
+  speeds=Array(cols).fill(0).map(()=>.5+Math.random()*1.5);
+}
+resize();addEventListener('resize',resize);
+
+function draw(){
+  cx.fillStyle='rgba(0,0,0,.04)';
+  cx.fillRect(0,0,W,H);
+  
+  for(let i=0;i<cols;i++){
+    // Occasionally draw an app emoji instead of a character
+    if(Math.random()>.997){
+      const app=APPS[Math.floor(Math.random()*APPS.length)];
+      cx.font='14px sans-serif';
+      cx.fillText(app.e,i*16,drops[i]*16);
+    }else{
+      const c=chars[Math.floor(Math.random()*chars.length)];
+      // Vary brightness
+      const brightness=Math.random()>.95?255:Math.floor(80+Math.random()*80);
+      cx.fillStyle=`rgb(0,${brightness},${Math.floor(brightness*.3)})`;
+      cx.font='14px monospace';
+      cx.fillText(c,i*16,drops[i]*16);
+    }
+    
+    drops[i]+=speeds[i];
+    if(drops[i]*16>H&&Math.random()>.975){
+      drops[i]=0;
+      speeds[i]=.5+Math.random()*1.5;
+    }
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+
+// ═══ CENTER CYCLING ═══
+const centerBox=document.getElementById('centerBox');
+const cStat=document.getElementById('cStat');
+const cQuote=document.getElementById('cQuote');
+let phase=0;
+
+function cycleCenter(){
+  phase++;
+  if(phase%3===0){
+    // Show logo + stat
+    centerBox.classList.add('on');
+    cStat.textContent=STATS[Math.floor(Math.random()*STATS.length)];
+    cStat.classList.add('on');
+    cQuote.classList.remove('on');
+    setTimeout(()=>{cQuote.textContent=QUOTES[Math.floor(Math.random()*QUOTES.length)];cQuote.classList.add('on')},2000);
+    setTimeout(()=>{centerBox.classList.remove('on');cStat.classList.remove('on');cQuote.classList.remove('on')},8000);
+  }
+}
+cycleCenter();
+setInterval(cycleCenter,12000);
+
+// ═══ FLOATING APPS ═══
+const floatsEl=document.getElementById('floats');
+function spawnFloat(){
+  const app=APPS[Math.floor(Math.random()*APPS.length)];
+  const d=document.createElement('div');
+  d.className='float-app';
+  d.style.left=Math.random()*80+5+'%';
+  d.style.top=Math.random()*70+10+'%';
+  d.innerHTML=`<span class="fa-emoji">${app.e}</span><span class="fa-name">${app.n}</span>`;
+  floatsEl.appendChild(d);
+  requestAnimationFrame(()=>d.classList.add('on'));
+  setTimeout(()=>{d.classList.remove('on');setTimeout(()=>d.remove(),2000)},5000);
+}
+setInterval(spawnFloat,4000);
+spawnFloat();
+
+// ═══ CLOCK ═══
+setInterval(()=>{
+  document.getElementById('clock').innerHTML=new Date().toTimeString().slice(0,8)+'<br>'+new Date().toISOString().slice(0,10);
+},1000);
+
+// ═══ CURSOR RESTORE ON MOVE ═══
+let cursorTimer;
+document.addEventListener('mousemove',()=>{
+  document.body.style.cursor='default';
+  clearTimeout(cursorTimer);
+  cursorTimer=setTimeout(()=>{document.body.style.cursor='none'},3000);
+});
+
+// Fullscreen on double-click
+document.addEventListener('dblclick',()=>{
+  if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(()=>{});
+  else document.exitFullscreen();
+});
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

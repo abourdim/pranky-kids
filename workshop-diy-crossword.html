@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // CROSSWORD</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050508;color:#00ff41;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px}
+
+.header{text-align:center;margin-bottom:12px}
+.h-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#00ff41;text-shadow:0 0 12px rgba(0,255,65,.15)}
+.h-sub{font-size:7px;color:rgba(0,255,65,.2);letter-spacing:3px}
+
+.game{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+
+/* GRID */
+.grid{display:inline-grid;gap:1px;background:rgba(0,255,65,.04)}
+.cell{width:32px;height:32px;background:#0a0a14;border:1px solid rgba(0,255,65,.06);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;transition:all .1s}
+.cell.black{background:#050508;border-color:#050508;cursor:default}
+.cell.active{background:rgba(0,255,65,.06);border-color:rgba(0,255,65,.2)}
+.cell.highlight{background:rgba(0,255,65,.03);border-color:rgba(0,255,65,.1)}
+.cell .num{position:absolute;top:1px;left:2px;font-size:6px;color:rgba(0,255,65,.25)}
+.cell .letter{font-size:16px;font-weight:700;color:#00ff41;text-transform:uppercase}
+.cell.correct .letter{color:#ffd700}
+.cell.wrong .letter{color:#ff0033}
+
+/* CLUES */
+.clues{max-width:280px}
+.clue-section{margin-bottom:10px}
+.clue-h{font-size:10px;color:#00ff41;font-weight:700;margin-bottom:4px;letter-spacing:2px;border-bottom:1px solid rgba(0,255,65,.08);padding-bottom:2px}
+.clue{padding:2px 0;font-size:9px;color:rgba(0,255,65,.35);cursor:pointer;transition:all .1s;line-height:1.8}
+.clue:hover,.clue.active{color:#00ff41}
+.clue .cn{color:rgba(0,255,65,.15);margin-right:4px}
+
+.controls{display:flex;gap:6px;margin-top:10px}
+.ctrl{padding:5px 14px;border-radius:4px;border:1px solid rgba(0,255,65,.08);background:rgba(0,255,65,.02);color:rgba(0,255,65,.3);font-family:inherit;font-size:8px;cursor:pointer}
+.ctrl:hover{background:rgba(0,255,65,.06);color:#00ff41;border-color:rgba(0,255,65,.15)}
+
+.status{font-size:8px;color:rgba(0,255,65,.15);margin-top:6px;text-align:center}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="h-title">WKSHP CROSSWORD</div>
+  <div class="h-sub">TEST YOUR WORKSHOP-DIY KNOWLEDGE</div>
+</div>
+
+<div class="game">
+  <div>
+    <div class="grid" id="grid" style="grid-template-columns:repeat(10,32px)"></div>
+    <div class="controls">
+      <button class="ctrl" onclick="checkAll()">✓ CHECK</button>
+      <button class="ctrl" onclick="revealAll()">👁 REVEAL</button>
+      <button class="ctrl" onclick="clearAll()">🗑 CLEAR</button>
+    </div>
+    <div class="status" id="status">Click a cell, then type · Arrow keys to move</div>
+  </div>
+  <div class="clues">
+    <div class="clue-section">
+      <div class="clue-h">ACROSS →</div>
+      <div id="acrossClues"></div>
+    </div>
+    <div class="clue-section">
+      <div class="clue-h">DOWN ↓</div>
+      <div id="downClues"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 10x10 GRID
+// . = black, letter = filled
+const SOLUTION=[
+  'BLUETOOTH.',
+  '......O...',
+  '.DOCKER.E.',
+  '.....O.S..',
+  'ROBOT.B.P.',
+  '..E..WIFI.',
+  '.MEDIA....',
+  '..S.L.C.B.',
+  '.FORTY.O.U',
+  '......D.G.',
+];
+
+const ACROSS={
+  1:{r:0,c:0,clue:"Web ___ connects bit-bot to browser",answer:"BLUETOOTH"},
+  3:{r:2,c:1,clue:"Container whale; confuses parents",answer:"DOCKER"},
+  5:{r:4,c:0,clue:"ESP32-powered creature; survived 47 drops",answer:"ROBOT"},
+  6:{r:5,c:5,clue:"Password: password123 (network type)",answer:"WIFI"},
+  7:{r:6,c:1,clue:"___Pipe: hand-tracking framework",answer:"MEDIA"},
+  9:{r:8,c:1,clue:"Bug #42's favorite number; the ___th app",answer:"FORTY"},
+};
+
+const DOWN={
+  1:{r:0,c:0,clue:"___ bot: the first Workshop-DIY app",answer:"BIT"},
+  2:{r:0,c:6,clue:"Teaching machine's output destination (micro:___)",answer:"ROBOT"},
+  3:{r:2,c:7,clue:"ESP32-C3: an IoT micro_____",answer:"ESP"},
+  4:{r:4,c:8,clue:"#42 is not a ___; it's a feature",answer:"BUG"},
+  7:{r:6,c:5,clue:"Face detection counts 468 of these (abbr)",answer:"CODE"},
+};
+
+// Build grid
+const grid=document.getElementById('grid');
+const cells=[];
+let activeR=-1,activeC=-1,dir='across';
+
+// Number map
+const numbers={};
+Object.entries(ACROSS).forEach(([n,d])=>numbers[`${d.r},${d.c}`]=n);
+Object.entries(DOWN).forEach(([n,d])=>{if(!numbers[`${d.r},${d.c}`])numbers[`${d.r},${d.c}`]=n});
+
+for(let r=0;r<10;r++){
+  cells[r]=[];
+  for(let c=0;c<10;c++){
+    const ch=SOLUTION[r][c];
+    const cell=document.createElement('div');
+    cell.className='cell'+(ch==='.'?' black':'');
+    const num=numbers[`${r},${c}`];
+    if(num)cell.innerHTML+=`<span class="num">${num}</span>`;
+    cell.innerHTML+=`<span class="letter" id="l${r}_${c}"></span>`;
+    cell.dataset.r=r;cell.dataset.c=c;
+    if(ch!=='.'){
+      cell.onclick=()=>selectCell(r,c);
+    }
+    grid.appendChild(cell);
+    cells[r][c]={el:cell,sol:ch,val:''};
+  }
+}
+
+function selectCell(r,c){
+  if(activeR===r&&activeC===c)dir=dir==='across'?'down':'across';
+  activeR=r;activeC=c;
+  highlightWord();
+}
+
+function highlightWord(){
+  document.querySelectorAll('.cell').forEach(c=>{c.classList.remove('active','highlight')});
+  document.querySelectorAll('.clue').forEach(c=>c.classList.remove('active'));
+  if(activeR<0)return;
+  cells[activeR][activeC].el.classList.add('active');
+  // Highlight word
+  if(dir==='across'){
+    let sc=activeC;while(sc>0&&SOLUTION[activeR][sc-1]!=='.')sc--;
+    let ec=activeC;while(ec<9&&SOLUTION[activeR][ec+1]!=='.')ec++;
+    for(let c=sc;c<=ec;c++)cells[activeR][c].el.classList.add('highlight');
+  }else{
+    let sr=activeR;while(sr>0&&SOLUTION[sr-1][activeC]!=='.')sr--;
+    let er=activeR;while(er<9&&SOLUTION[er+1][activeC]!=='.')er++;
+    for(let r=sr;r<=er;r++)cells[r][activeC].el.classList.add('highlight');
+  }
+}
+
+document.addEventListener('keydown',e=>{
+  if(activeR<0)return;
+  if(e.key.length===1&&/[a-zA-Z]/.test(e.key)){
+    cells[activeR][activeC].val=e.key.toUpperCase();
+    document.getElementById(`l${activeR}_${activeC}`).textContent=e.key.toUpperCase();
+    cells[activeR][activeC].el.classList.remove('correct','wrong');
+    moveNext();
+  }else if(e.key==='Backspace'){
+    if(cells[activeR][activeC].val){
+      cells[activeR][activeC].val='';
+      document.getElementById(`l${activeR}_${activeC}`).textContent='';
+    }else movePrev();
+  }else if(e.key==='ArrowRight'){if(activeC<9&&SOLUTION[activeR][activeC+1]!=='.')selectCell(activeR,activeC+1)}
+  else if(e.key==='ArrowLeft'){if(activeC>0&&SOLUTION[activeR][activeC-1]!=='.')selectCell(activeR,activeC-1)}
+  else if(e.key==='ArrowDown'){if(activeR<9&&SOLUTION[activeR+1]&&SOLUTION[activeR+1][activeC]!=='.')selectCell(activeR+1,activeC)}
+  else if(e.key==='ArrowUp'){if(activeR>0&&SOLUTION[activeR-1][activeC]!=='.')selectCell(activeR-1,activeC)}
+});
+
+function moveNext(){
+  if(dir==='across'){
+    let nc=activeC+1;while(nc<10&&SOLUTION[activeR][nc]==='.')nc++;
+    if(nc<10)selectCell(activeR,nc);
+  }else{
+    let nr=activeR+1;while(nr<10&&SOLUTION[nr][activeC]==='.')nr++;
+    if(nr<10)selectCell(nr,activeC);
+  }
+}
+function movePrev(){
+  if(dir==='across'){
+    let nc=activeC-1;while(nc>=0&&SOLUTION[activeR][nc]==='.')nc--;
+    if(nc>=0){selectCell(activeR,nc);cells[activeR][nc].val='';document.getElementById(`l${activeR}_${nc}`).textContent=''}
+  }else{
+    let nr=activeR-1;while(nr>=0&&SOLUTION[nr][activeC]==='.')nr--;
+    if(nr>=0){selectCell(nr,activeC);cells[nr][activeC].val='';document.getElementById(`l${nr}_${activeC}`).textContent=''}
+  }
+}
+
+function checkAll(){
+  let correct=0,total=0;
+  for(let r=0;r<10;r++)for(let c=0;c<10;c++){
+    if(SOLUTION[r][c]!=='.'){
+      total++;
+      if(cells[r][c].val===SOLUTION[r][c]){cells[r][c].el.classList.add('correct');cells[r][c].el.classList.remove('wrong');correct++}
+      else if(cells[r][c].val){cells[r][c].el.classList.add('wrong');cells[r][c].el.classList.remove('correct')}
+    }
+  }
+  document.getElementById('status').textContent=correct===total?'🏆 PERFECT! All correct!':  `${correct}/${total} correct`;
+}
+
+function revealAll(){
+  for(let r=0;r<10;r++)for(let c=0;c<10;c++){
+    if(SOLUTION[r][c]!=='.'){
+      cells[r][c].val=SOLUTION[r][c];
+      document.getElementById(`l${r}_${c}`).textContent=SOLUTION[r][c];
+      cells[r][c].el.classList.add('correct');
+    }
+  }
+}
+
+function clearAll(){
+  for(let r=0;r<10;r++)for(let c=0;c<10;c++){
+    cells[r][c].val='';
+    document.getElementById(`l${r}_${c}`).textContent='';
+    cells[r][c].el.classList.remove('correct','wrong');
+  }
+}
+
+// RENDER CLUES
+const acEl=document.getElementById('acrossClues');
+Object.entries(ACROSS).forEach(([n,d])=>{
+  acEl.innerHTML+=`<div class="clue" onclick="dir='across';selectCell(${d.r},${d.c})"><span class="cn">${n}.</span>${d.clue}</div>`;
+});
+const dnEl=document.getElementById('downClues');
+Object.entries(DOWN).forEach(([n,d])=>{
+  dnEl.innerHTML+=`<div class="clue" onclick="dir='down';selectCell(${d.r},${d.c})"><span class="cn">${n}.</span>${d.clue}</div>`;
+});
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // BINGO</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050508;color:#00ff41;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px}
+.crt{position:fixed;inset:0;z-index:99;pointer-events:none}.crt::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 1px,transparent 3px)}
+
+.header{text-align:center;margin-bottom:12px}
+.h-title{font-family:'Syne',sans-serif;font-size:clamp(22px,5vw,32px);font-weight:800;color:#00ff41;text-shadow:0 0 12px rgba(0,255,65,.15)}
+.h-sub{font-size:7px;color:rgba(0,255,65,.2);letter-spacing:3px;margin-top:2px}
+
+.bingo-header{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;max-width:420px;width:100%;margin-bottom:3px}
+.bingo-letter{text-align:center;font-family:'Syne',sans-serif;font-size:20px;font-weight:800;padding:4px;border-radius:4px;background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.1)}
+
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;max-width:420px;width:100%}
+
+.cell{aspect-ratio:1;border:1px solid rgba(0,255,65,.06);border-radius:4px;display:flex;align-items:center;justify-content:center;text-align:center;padding:4px;cursor:pointer;transition:all .15s;background:rgba(0,255,65,.005);font-size:7px;color:rgba(0,255,65,.4);line-height:1.6;user-select:none;flex-direction:column;gap:2px}
+.cell:hover{background:rgba(0,255,65,.03);border-color:rgba(0,255,65,.12)}
+.cell.marked{background:rgba(0,255,65,.08);border-color:#00ff41;color:#00ff41;box-shadow:0 0 6px rgba(0,255,65,.1)}
+.cell.free{background:rgba(255,215,0,.06);border-color:rgba(255,215,0,.15);color:#ffd700}
+.cell .emoji{font-size:16px;margin-bottom:1px}
+
+.win-overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center}
+.win-overlay.on{display:flex}
+.win-title{font-family:'Syne',sans-serif;font-size:clamp(28px,8vw,48px);font-weight:800;color:#ffd700;text-shadow:0 0 20px rgba(255,215,0,.2);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.win-sub{font-size:10px;color:rgba(0,255,65,.3);margin-top:6px}
+.win-btn{margin-top:12px;padding:8px 24px;background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.15);border-radius:4px;color:#00ff41;font-family:inherit;font-size:10px;cursor:pointer}
+
+.controls{display:flex;gap:6px;margin-top:10px}
+.ctrl-btn{padding:5px 14px;border-radius:4px;border:1px solid rgba(0,255,65,.08);background:rgba(0,255,65,.02);color:rgba(0,255,65,.3);font-family:inherit;font-size:8px;cursor:pointer;transition:all .15s}
+.ctrl-btn:hover{background:rgba(0,255,65,.06);color:#00ff41;border-color:rgba(0,255,65,.15)}
+.status{font-size:8px;color:rgba(0,255,65,.15);margin-top:8px;text-align:center}
+
+.confetti{position:fixed;top:-10px;width:8px;height:8px;z-index:101;pointer-events:none;border-radius:1px}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="crt"></div>
+
+<div class="header">
+  <div class="h-title">WORKSHOP BINGO</div>
+  <div class="h-sub">MARK YOUR CARD · 5 IN A ROW WINS</div>
+</div>
+
+<div class="bingo-header">
+  <div class="bingo-letter">B</div>
+  <div class="bingo-letter">I</div>
+  <div class="bingo-letter">N</div>
+  <div class="bingo-letter">G</div>
+  <div class="bingo-letter">O</div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="controls">
+  <button class="ctrl-btn" onclick="newCard()">🔀 NEW CARD</button>
+  <button class="ctrl-btn" onclick="resetCard()">🔄 RESET</button>
+</div>
+<div class="status" id="status">Click cells to mark · Get 5 in a row (horizontal, vertical, or diagonal)</div>
+
+<div class="win-overlay" id="winOverlay">
+  <div class="win-title">🎉 BINGO!</div>
+  <div class="win-sub">You got 5 in a row! Workshop-DIY champion!</div>
+  <button class="win-btn" onclick="document.getElementById('winOverlay').classList.remove('on')">CONTINUE</button>
+</div>
+
+<script>
+const ALL_ITEMS=[
+  {e:"🤖",t:"Robot drops off table"},
+  {e:"🐛",t:"Someone says 'it's a feature'"},
+  {e:"🔑",t:"WiFi password mentioned"},
+  {e:"☕",t:"Instructor needs coffee"},
+  {e:"💻",t:"Chrome crashes"},
+  {e:"🔌",t:"USB cable goes missing"},
+  {e:"📡",t:"BLE disconnects randomly"},
+  {e:"🤷",t:"'Works on my machine'"},
+  {e:"🔥",t:"Student solders first joint"},
+  {e:"🎉",t:"Code runs on first try"},
+  {e:"😱",t:"'rm -rf' almost typed"},
+  {e:"📖",t:"Nobody reads the docs"},
+  {e:"🐳",t:"Kid explains Docker to parent"},
+  {e:"💡",t:"LED strip lights up"},
+  {e:"🧠",t:"AI model hits 98%"},
+  {e:"🖨️",t:"Printer vulnerability found"},
+  {e:"🔐",t:"CTF challenge solved"},
+  {e:"🕐",t:"Workshop runs overtime"},
+  {e:"📱",t:"Student takes phone out"},
+  {e:"🎮",t:"Someone plays retro arcade"},
+  {e:"😅",t:"git push --force used"},
+  {e:"🔇",t:"Microphone feedback screech"},
+  {e:"🧩",t:"micro:bit runs out of battery"},
+  {e:"🏃",t:"Student runs to show parent"},
+  {e:"💀",t:"Kernel panic simulated"},
+  {e:"📊",t:"Instructor shows a graph"},
+  {e:"🎨",t:"Pixel art masterpiece created"},
+  {e:"🤖",t:"Robot does unexpected dance"},
+  {e:"⚡",t:"ESP32 reboots unexpectedly"},
+  {e:"🔴",t:"Node-RED flow breaks"},
+  {e:"🐧",t:"'sudo' explained 3 times"},
+  {e:"😎",t:"Student says 'I'm a hacker now'"},
+  {e:"🧲",t:"Magnet near electronics scare"},
+  {e:"🎤",t:"'Can you hear me?' repeated"},
+  {e:"📝",t:"'TODO: fix later' written"},
+  {e:"🌐",t:"Internet goes down"},
+];
+
+let grid=[];
+let marked=Array(25).fill(false);
+let won=false;
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function newCard(){
+  won=false;
+  marked=Array(25).fill(false);
+  marked[12]=true; // FREE space
+  const items=shuffle(ALL_ITEMS).slice(0,24);
+  grid=[];
+  let idx=0;
+  for(let i=0;i<25;i++){
+    if(i===12){grid.push({e:"⭐",t:"FREE SPACE",free:true})}
+    else{grid.push(items[idx++])}
+  }
+  render();
+}
+
+function resetCard(){marked=Array(25).fill(false);marked[12]=true;won=false;render()}
+
+function render(){
+  const el=document.getElementById('grid');
+  el.innerHTML=grid.map((item,i)=>{
+    const cls=item.free?'cell free marked':('cell'+(marked[i]?' marked':''));
+    return `<div class="${cls}" onclick="mark(${i})"><span class="emoji">${item.e}</span><span>${item.t}</span></div>`;
+  }).join('');
+  document.getElementById('status').textContent=`Marked: ${marked.filter(Boolean).length}/25 · ${won?'🎉 BINGO!':'Click cells to mark'}`;
+}
+
+function mark(i){
+  if(won||grid[i].free)return;
+  marked[i]=!marked[i];
+  render();
+  checkWin();
+}
+
+function checkWin(){
+  const lines=[];
+  // Rows
+  for(let r=0;r<5;r++)lines.push([r*5,r*5+1,r*5+2,r*5+3,r*5+4]);
+  // Cols
+  for(let c=0;c<5;c++)lines.push([c,c+5,c+10,c+15,c+20]);
+  // Diagonals
+  lines.push([0,6,12,18,24]);
+  lines.push([4,8,12,16,20]);
+
+  for(const line of lines){
+    if(line.every(i=>marked[i])){
+      won=true;
+      document.getElementById('winOverlay').classList.add('on');
+      spawnConfetti();
+      return;
+    }
+  }
+}
+
+function spawnConfetti(){
+  const colors=['#ffd700','#00ff41','#ff0066','#00d4ff','#ff8800','#bf00ff'];
+  for(let i=0;i<40;i++){
+    const c=document.createElement('div');c.className='confetti';
+    c.style.left=(Math.random()*100)+'%';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(Math.random()*6+4)+'px';c.style.height=(Math.random()*6+4)+'px';
+    c.style.animation=`confettiFall ${Math.random()*2+1.5}s ease-out forwards`;
+    c.style.animationDelay=(Math.random()*.5)+'s';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4000);
+  }
+}
+
+newCard();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

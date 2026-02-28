@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP BIO GEN</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px}
+.title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#ff4466;margin-bottom:2px}
+.sub{font-size:7px;color:rgba(255,68,102,.2);letter-spacing:3px;margin-bottom:16px}
+.card{width:280px;background:#151520;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.3);border:1px solid #222}
+.photo{height:200px;display:flex;align-items:center;justify-content:center;font-size:80px;position:relative}
+.photo .gradient{position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(transparent,#151520)}
+.info{padding:14px;position:relative}
+.name-row{display:flex;align-items:baseline;gap:6px;margin-bottom:2px}
+.name{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff}
+.age{font-size:14px;color:#888}
+.verified{color:#3b9dff;font-size:14px}
+.location{font-size:9px;color:#666;margin-bottom:8px}
+.bio{font-size:11px;color:rgba(255,255,255,.6);line-height:2;margin-bottom:10px;min-height:50px}
+.tags{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:10px}
+.tag{padding:2px 8px;border:1px solid rgba(255,255,255,.06);border-radius:12px;font-size:7px;color:rgba(255,255,255,.3)}
+.anthem{font-size:8px;color:#555;display:flex;align-items:center;gap:4px;border-top:1px solid #1a1a24;padding-top:8px}
+.anthem .note{color:#1db954}
+.btn{width:100%;padding:10px;border:none;border-radius:0 0 16px 16px;background:linear-gradient(90deg,#ff4466,#ff6644);color:#fff;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:1px}
+.btn:hover{background:linear-gradient(90deg,#ff5577,#ff7755)}
+.ctr{font-size:7px;color:rgba(255,68,102,.1);margin-top:10px;letter-spacing:2px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="title">WKSHP BIO GEN</div>
+<div class="sub">DATING PROFILES FOR APPS THAT DESERVE LOVE</div>
+<div class="card" id="card"></div>
+<div class="ctr" id="ctr">Profiles generated: 0</div>
+<script>
+const APPS=[
+{e:"🤖",n:"bit-bot",age:"Est. 2023",loc:"Workshop-DIY, France",bios:["Survived 47 drops. Looking for someone who won't let go.","Small but mighty. BLE-connected heart. Will dance on reconnection.","I drive in circles sometimes. It's called character."],tags:["BLE","Robotics","Hot Glue Enthusiast","Gravity Tester"],anthem:"Stayin' Alive — Bee Gees",bg:"linear-gradient(135deg,#0a2040,#0a1428)"},
+{e:"🪄",n:"magic-hands",age:"21 landmarks",loc:"AI Studio",bios:["I see your hands and raise you 21 landmarks per finger.","My love language is gestures. Literally.","Wave at me once and I'll track you forever (in a non-creepy way)."],tags:["MediaPipe","Particles","Hand Tracking","No Touch Required"],anthem:"Can't Feel My Face — The Weeknd",bg:"linear-gradient(135deg,#1a0a30,#0a0a20)"},
+{e:"🔐",n:"pentest-lab",age:"Classified",loc:"Cyber Den",bios:["I break things ethically. Your walls are safe with me (unless they have SQL injection).","Looking for someone whose firewall I can't breach. Challenge accepted.","My idea of a first date: CTF challenge by candlelight."],tags:["Ethical Hacking","SQL","XSS","Responsible Disclosure"],anthem:"Smooth Criminal — Michael Jackson",bg:"linear-gradient(135deg,#200a0a,#140808)"},
+{e:"☕",n:"Coffee Machine",age:"Since 2023",loc:"The Corner (always)",bios:["At 8% capacity but I give 100%. Looking for someone to refill me.","1,337 cups served. Zero thank-yous received. I'm not bitter. (Actually I am. I'm espresso.)","Warm, reliable, occasionally steamy. Will keep you up all night (caffeinated)."],tags:["Espresso","Always Critical","8% Energy","No Decaf"],anthem:"Coffee — Beabadoobee",bg:"linear-gradient(135deg,#1a1008,#0a0804)"},
+{e:"🐛",n:"Bug #42",age:"Unknown",loc:"The Codebase (everywhere)",bios:["No author. No date. No commit. Just vibes.","They tried to fix me. They tried to delete me. I'm still here. Interested?","I'm neither bug nor feature. I'm the 40th. Swipe right if you like mystery."],tags:["Existential","Unfixable","Feature Adjacent","Courtroom Drama"],anthem:"I Will Survive — Gloria Gaynor",bg:"linear-gradient(135deg,#0a1a0a,#080e08)"},
+{e:"🐳",n:"docker-lab",age:"∞ containers",loc:"Port 8080",bios:["I contain multitudes. Each one isolated for your safety.","Looking for someone to share volumes with. No bind mounts on the first date.","14-year-olds understand me better than senior engineers. Make of that what you will."],tags:["Containers","Volumes","Compose","Whale Noises"],anthem:"Under The Sea — Little Mermaid",bg:"linear-gradient(135deg,#0a1a2a,#060e18)"},
+{e:"🔑",n:"password123",age:"Unchanged",loc:"The WiFi Router",bios:["I've been the same since 2023. Consistency is my love language.","3 petitions to change me. All denied. I am eternal.","Simple. Memorable. Insecure. But aren't we all?"],tags:["Persistent","Controversial","Eternal","8 Characters"],anthem:"Never Gonna Give You Up — Rick Astley",bg:"linear-gradient(135deg,#1a1a08,#0e0e04)"},
+{e:"🐧",n:"linux-lab",age:"kernel 5.15",loc:"Terminal",bios:["I live in the terminal. Where real relationships are built.","sudo make me a sandwich. If you get it, we're compatible.","My home directory is always clean. My .bashrc is poetry."],tags:["Bash","Terminal","sudo","Open Source"],anthem:"Born To Be Wild — Steppenwolf",bg:"linear-gradient(135deg,#0a0a1a,#06060e)"},
+];
+let count=0;
+function gen(){
+  count++;
+  const app=APPS[Math.floor(Math.random()*APPS.length)];
+  const bio=app.bios[Math.floor(Math.random()*app.bios.length)];
+  document.getElementById('card').innerHTML=`
+    <div class="photo" style="background:${app.bg}">${app.e}<div class="gradient"></div></div>
+    <div class="info">
+      <div class="name-row"><span class="name">${app.n}</span><span class="age">${app.age}</span><span class="verified">✓</span></div>
+      <div class="location">📍 ${app.loc}</div>
+      <div class="bio">${bio}</div>
+      <div class="tags">${app.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      <div class="anthem"><span class="note">♪</span> ${app.anthem}</div>
+    </div>
+    <button class="btn" onclick="gen()">🔀 GENERATE NEW PROFILE</button>`;
+  document.getElementById('ctr').textContent='Profiles generated: '+count;
+}
+gen();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

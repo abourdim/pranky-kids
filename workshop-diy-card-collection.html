@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // CARD COLLECTION</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Syne:wght@700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--g:#00ff41;--c:#00d4ff;--r:#ff0033;--o:#ff8800;--y:#ffd700;--p:#bf00ff}
+html,body{height:100%;overflow:hidden}
+body{background:#050508;color:#fff;font-family:'JetBrains Mono',monospace}
+.crt{position:fixed;inset:0;z-index:999;pointer-events:none}.crt::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 1px,transparent 3px)}
+
+.app{position:fixed;inset:0;display:flex;flex-direction:column;z-index:1}
+.hud{padding:5px 10px;display:flex;justify-content:space-between;font-size:7px;color:rgba(0,255,65,.2);border-bottom:1px solid rgba(0,255,65,.04);flex-shrink:0}
+.hud-b{border-bottom:none;border-top:1px solid rgba(0,255,65,.04)}
+
+/* HEADER */
+.hdr{padding:8px 14px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(0,255,65,.04);flex-shrink:0;background:rgba(0,0,0,.3)}
+.hdr-t{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--g);letter-spacing:-1px;flex:1}
+.hdr-sub{font-size:7px;color:rgba(0,255,65,.25)}
+.pack-btn{background:linear-gradient(135deg,rgba(0,255,65,.08),rgba(0,212,255,.08));border:1px solid var(--g);color:var(--g);font-family:inherit;font-size:9px;padding:6px 14px;border-radius:3px;cursor:pointer;letter-spacing:1px;transition:all .2s;font-weight:700}
+.pack-btn:hover{background:var(--g);color:#000;box-shadow:0 0 16px rgba(0,255,65,.3)}
+.counter{font-size:8px;color:var(--y);padding:4px 10px;border:1px solid rgba(255,215,0,.12);border-radius:3px;background:rgba(255,215,0,.02)}
+
+/* FILTERS */
+.filters{display:flex;gap:3px;padding:6px 14px;border-bottom:1px solid rgba(0,255,65,.04);flex-shrink:0;flex-wrap:wrap}
+.fil{font-size:7px;padding:3px 8px;border:1px solid rgba(0,255,65,.06);border-radius:2px;cursor:pointer;color:rgba(0,255,65,.35);transition:all .12s;background:none;font-family:inherit}
+.fil:hover{color:var(--g);border-color:rgba(0,255,65,.15)}
+.fil.on{color:var(--g);border-color:var(--g);background:rgba(0,255,65,.04)}
+
+/* GRID */
+.grid-wrap{flex:1;overflow-y:auto;padding:10px 14px}
+.grid-wrap::-webkit-scrollbar{width:3px}.grid-wrap::-webkit-scrollbar-thumb{background:rgba(0,255,65,.1)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+
+/* CARD */
+.card{perspective:800px;height:210px;cursor:pointer}
+.card-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.card-front,.card-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:6px;overflow:hidden}
+
+/* FRONT */
+.card-front{border:2px solid rgba(0,255,65,.08);background:linear-gradient(160deg,#0a0e14,#060a10);display:flex;flex-direction:column;padding:8px}
+.card.legendary .card-front{border-color:rgba(255,215,0,.2);background:linear-gradient(160deg,#0e0c06,#080604)}
+.card.rare .card-front{border-color:rgba(191,0,255,.15);background:linear-gradient(160deg,#0a060e,#06040a)}
+.card.epic .card-front{border-color:rgba(0,212,255,.15);background:linear-gradient(160deg,#060a0e,#040810)}
+.cf-top{display:flex;justify-content:space-between;align-items:flex-start}
+.cf-rarity{font-size:5px;letter-spacing:2px;padding:1px 5px;border-radius:2px}
+.r-common{background:rgba(0,255,65,.06);color:var(--g);border:1px solid rgba(0,255,65,.1)}
+.r-rare{background:rgba(191,0,255,.08);color:var(--p);border:1px solid rgba(191,0,255,.12)}
+.r-epic{background:rgba(0,212,255,.08);color:var(--c);border:1px solid rgba(0,212,255,.12)}
+.r-legendary{background:rgba(255,215,0,.1);color:var(--y);border:1px solid rgba(255,215,0,.15)}
+.cf-id{font-size:5px;color:rgba(255,255,255,.15)}
+.cf-emoji{font-size:36px;text-align:center;margin:6px 0;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+.cf-name{font-size:8px;font-weight:700;color:var(--c);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cf-cats{display:flex;gap:2px;justify-content:center;margin-top:3px;flex-wrap:wrap}
+.cf-cat{font-size:4.5px;padding:1px 4px;border-radius:1px;letter-spacing:.5px}
+.c-microbit{background:rgba(0,212,255,.08);color:var(--c);border:1px solid rgba(0,212,255,.1)}
+.c-ai{background:rgba(191,0,255,.06);color:var(--p);border:1px solid rgba(191,0,255,.08)}
+.c-camera{background:rgba(255,215,0,.06);color:var(--y);border:1px solid rgba(255,215,0,.08)}
+.c-hardware{background:rgba(255,136,0,.06);color:var(--o);border:1px solid rgba(255,136,0,.08)}
+.c-learning{background:rgba(0,255,65,.05);color:var(--g);border:1px solid rgba(0,255,65,.08)}
+.c-classroom{background:rgba(0,102,255,.06);color:#06f;border:1px solid rgba(0,102,255,.08)}
+.c-tools{background:rgba(255,0,51,.05);color:var(--r);border:1px solid rgba(255,0,51,.08)}
+/* STATS */
+.cf-stats{margin-top:auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px}
+.cf-st{text-align:center;padding:3px 0;border:1px solid rgba(0,255,65,.03);border-radius:2px;background:rgba(0,0,0,.2)}
+.cf-st .v{font-size:9px;font-weight:800;display:block}.cf-st .l{font-size:4px;color:rgba(255,255,255,.2);letter-spacing:1px}
+.st-pow .v{color:var(--r)}.st-cpx .v{color:var(--c)}.st-fun .v{color:var(--y)}
+
+/* BACK */
+.card-back{transform:rotateY(180deg);border:2px solid rgba(0,255,65,.08);background:#080a0c;padding:10px;display:flex;flex-direction:column}
+.card.legendary .card-back{border-color:rgba(255,215,0,.2)}
+.card.rare .card-back{border-color:rgba(191,0,255,.15)}
+.card.epic .card-back{border-color:rgba(0,212,255,.15)}
+.cb-name{font-size:9px;font-weight:700;color:var(--c);margin-bottom:4px}
+.cb-desc{font-size:7px;color:rgba(0,255,65,.35);line-height:1.8;flex:1}
+.cb-link{font-size:6px;color:var(--c);text-decoration:none;margin-top:4px;display:block}.cb-link:hover{text-decoration:underline}
+.cb-flavor{font-size:6px;color:rgba(0,255,65,.15);font-style:italic;margin-top:4px;border-top:1px solid rgba(0,255,65,.04);padding-top:4px}
+
+/* PACK OPENING OVERLAY */
+#packOverlay{position:fixed;inset:0;z-index:9990;background:rgba(0,0,0,.95);display:none;align-items:center;justify-content:center;flex-direction:column;cursor:pointer}
+.pack-visual{width:160px;height:220px;border:2px solid var(--g);border-radius:8px;background:linear-gradient(160deg,#0a1a0a,#000);display:flex;align-items:center;justify-content:center;flex-direction:column;margin-bottom:16px;position:relative;overflow:hidden;box-shadow:0 0 30px rgba(0,255,65,.1)}
+.pack-visual::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(0,255,65,.05) 50%,transparent 60%);animation:sheen 3s ease-in-out infinite}
+@keyframes sheen{0%,100%{transform:translateX(-200%)}50%{transform:translateX(200%)}}
+.pack-logo{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--g);text-shadow:0 0 12px rgba(0,255,65,.3)}
+.pack-sub{font-size:6px;color:rgba(0,255,65,.3);letter-spacing:3px;margin-top:4px}
+.pack-msg{font-size:8px;color:var(--y);animation:coinBlink 1s step-end infinite}
+@keyframes coinBlink{0%,50%{opacity:1}51%,100%{opacity:0}}
+.pack-cards{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.reveal-card{width:100px;height:140px;border:2px solid var(--g);border-radius:6px;background:#0a0e14;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transform:scale(.5) rotateY(180deg);transition:all .5s}
+.reveal-card.show{opacity:1;transform:scale(1) rotateY(0)}
+.reveal-card .e{font-size:28px;margin-bottom:4px}.reveal-card .n{font-size:6px;color:var(--c);font-weight:700}.reveal-card .r{font-size:5px;margin-top:3px;letter-spacing:1px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="crt"></div>
+
+<!-- PACK OVERLAY -->
+<div id="packOverlay">
+  <div class="pack-visual">
+    <div class="pack-logo">WKSHP</div>
+    <div class="pack-sub">CARD PACK</div>
+  </div>
+  <div class="pack-msg">▸ CLICK TO REVEAL ◂</div>
+  <div class="pack-cards" id="packCards"></div>
+</div>
+
+<div class="app">
+<div class="hud"><span>CARD_COLLECTION.sys</span><span>WORKSHOP-DIY // TRADING CARDS</span></div>
+
+<div class="hdr">
+  <div><div class="hdr-t">WKSHP CARD COLLECTION</div><div class="hdr-sub">// collect all 39 app cards. gotta catch 'em all... wait, wrong franchise.</div></div>
+  <div class="counter" id="counter">0/39 COLLECTED</div>
+  <button class="pack-btn" onclick="openPack()">🎴 OPEN PACK</button>
+</div>
+
+<div class="filters" id="filters"></div>
+
+<div class="grid-wrap"><div class="grid" id="grid"></div></div>
+
+<div class="hud hud-b"><span>39 CARDS // 4 RARITIES // ∞ DOPAMINE</span><span>// no actual money required. ever.</span></div>
+</div>
+
+<script>
+const APPS=[
+{e:"🤖",n:"bit-bot",c:["microbit"],r:"legendary",d:"Drive a Bit:Bot robot from your browser over Bluetooth — virtual joystick, line-follow and obstacle avoidance.",f:"The robot that started it all. Treat it well.",pw:95,cx:70,fn:90},
+{e:"🪄",n:"magic-hands",c:["camera","ai"],r:"legendary",d:"Wave your hands for magic effects — confetti, neon trails, particles. Powered by MediaPipe.",f:"Warning: you will wave at your screen for hours.",pw:90,cx:60,fn:99},
+{e:"🕵️",n:"face-quest",c:["camera","ai"],r:"legendary",d:"Face-detection game — smile, blink, turn to score. 100% local, zero data sent.",f:"Your face is the controller. No excuses for losing.",pw:85,cx:55,fn:95},
+{e:"🧠",n:"teachable-machine",c:["microbit","camera","ai"],r:"legendary",d:"Train AI gestures in browser, send to micro:bit. The bridge between human and machine.",f:"You taught a computer to understand your wave. Think about that.",pw:98,cx:80,fn:88},
+{e:"💬",n:"talking-robot",c:["microbit","ai"],r:"epic",d:"Robot that speaks, listens, shows emotions via BLE.",f:"It has feelings now. This is your fault.",pw:80,cx:65,fn:85},
+{e:"😎",n:"face-tracking",c:["camera","microbit"],r:"epic",d:"Kids face tracking with event triggers for micro:bit.",f:"Big Brother is watching. But cute and educational.",pw:75,cx:60,fn:80},
+{e:"😄",n:"bitmoji-lab",c:["microbit"],r:"rare",d:"Pick emojis, turn into 5×5 LED pixel art on micro:bit.",f:"Pixel art on a 5×5 grid. Minimalism at its finest.",pw:50,cx:30,fn:85},
+{e:"🚀",n:"mission-control",c:["classroom","microbit"],r:"epic",d:"Dashboard with live video/chat via WebRTC.",f:"Houston, we have a classroom.",pw:85,cx:75,fn:70},
+{e:"🧩",n:"bit-playground",c:["microbit"],r:"rare",d:"The ultimate micro:bit BLE playground — LEDs, sensors, servos.",f:"Everything but the kitchen sink. Working on that.",pw:70,cx:50,fn:80},
+{e:"🎛️",n:"rxy",c:["microbit"],r:"rare",d:"Drag buttons, sliders, D-pads to build custom BLE remotes.",f:"Your remote, your rules. No instructions needed.",pw:65,cx:55,fn:75},
+{e:"🎨",n:"pixel-gateway",c:["tools"],r:"rare",d:"Retro pixel art portal — draw, animate, export.",f:"Bob Ross would approve. If he knew what pixels were.",pw:55,cx:40,fn:90},
+{e:"💡",n:"wled-kids-lab",c:["hardware","learning"],r:"rare",d:"Control Neopixel LED strips with WLED — kid-friendly.",f:"Making the room look like a spaceship since 2024.",pw:60,cx:45,fn:85},
+{e:"⚡",n:"esp32-c3-kids-lab",c:["hardware","learning"],r:"rare",d:"Hands-on ESP32-C3 lab — LEDs, sensors, WiFi, IoT.",f:"Tiny chip. Infinite possibilities. Also, it gets warm.",pw:75,cx:65,fn:70},
+{e:"🪙",n:"crypto-academy",c:["learning"],r:"common",d:"Blockchain & crypto lessons — wallets, mining explained.",f:"No, you cannot mine Bitcoin on the workshop laptop.",pw:50,cx:55,fn:65},
+{e:"🔐",n:"pentest-lab",c:["learning"],r:"epic",d:"Cybersecurity sandbox — ethical hacking challenges.",f:"Hack the planet! (ethically) (please)",pw:80,cx:70,fn:85},
+{e:"🐧",n:"linux-kids-lab",c:["learning"],r:"epic",d:"Linux commands in a safe browser sandbox.",f:"sudo make me a sandwich",pw:70,cx:60,fn:75},
+{e:"🏭",n:"production-chain",c:["learning"],r:"common",d:"Industrial production chain simulation.",f:"Supply chain management: now fun. No, really.",pw:45,cx:50,fn:60},
+{e:"🏫",n:"classroom",c:["classroom"],r:"rare",d:"PeerJS cloud classroom — rooms, screen-share, chat.",f:"School, but make it cyberpunk.",pw:65,cx:55,fn:65},
+{e:"🔌",n:"usb-logger",c:["microbit"],r:"common",d:"USB serial browser tool for micro:bit.",f:"The unsung hero. Every debug session needs this.",pw:40,cx:35,fn:45},
+{e:"📡",n:"ble-logger",c:["microbit"],r:"common",d:"BLE debug playground — inspect services.",f:"For when Bluetooth decides to be... Bluetooth.",pw:45,cx:45,fn:40},
+{e:"🧰",n:"claude-toolkit",c:["ai","tools"],r:"epic",d:"Build apps with Claude AI — prompts, chat, API helpers.",f:"AI building tools for humans building AI tools. Inception.",pw:85,cx:70,fn:80},
+{e:"🎭",n:"puppeteer",c:["tools"],r:"rare",d:"Browser automation — scrape, screenshot, test.",f:"Automate the boring stuff. Robots working for you.",pw:60,cx:65,fn:55},
+{e:"🔋",n:"circuit-lab",c:["hardware","learning"],r:"common",d:"Simulate circuits in browser — LEDs, resistors.",f:"Blow up virtual circuits instead of real ones. Safer.",pw:55,cx:50,fn:65},
+{e:"🛡️",n:"vpn-guide",c:["tools"],r:"common",d:"VPN & network security visual guide.",f:"Your data, encrypted. Your ISP, confused.",pw:40,cx:45,fn:50},
+{e:"🧊",n:"3d-lab",c:["learning"],r:"common",d:"3D design with Three.js — create, rotate, light.",f:"The third dimension. It's like the other two, but more.",pw:50,cx:55,fn:70},
+{e:"🔀",n:"git-lab",c:["learning"],r:"common",d:"Learn Git — commit, branch, merge, pull requests.",f:"git commit -m 'I have no idea what I just did'",pw:45,cx:60,fn:50},
+{e:"✨",n:"prompt-hero",c:["ai","learning"],r:"rare",d:"Master AI prompting techniques for LLMs.",f:"The pen is mightier than the sword. The prompt is mightier than the code.",pw:65,cx:50,fn:75},
+{e:"🌍",n:"save-planet",c:["learning"],r:"common",d:"Climate & sustainability — quizzes, action plans.",f:"Saving the planet, one quiz at a time.",pw:40,cx:30,fn:60},
+{e:"📋",n:"ops-catalog",c:["tools"],r:"common",d:"DevOps tools catalog — CI/CD, Docker, Kubernetes.",f:"The DevOps yellow pages. But green.",pw:35,cx:50,fn:40},
+{e:"💻",n:"code-kids",c:["learning"],r:"common",d:"Learn HTML, CSS, JS from scratch.",f:"Everyone starts somewhere. This is that somewhere.",pw:45,cx:35,fn:65},
+{e:"🏡",n:"smart-home",c:["hardware","learning"],r:"rare",d:"Smart home dashboard — sensors, lights, automations.",f:"The future is now. Your lamp listens to you.",pw:60,cx:55,fn:75},
+{e:"🧱",n:"makecode",c:["microbit","learning"],r:"common",d:"Block-based MakeCode adventures.",f:"Drag. Drop. Deploy. The trifecta.",pw:50,cx:25,fn:70},
+{e:"🤖",n:"54-activities",c:["microbit","learning"],r:"rare",d:"54 hands-on micro:bit activities.",f:"54 ways to procrastinate productively.",pw:60,cx:40,fn:80},
+{e:"💰",n:"crypto-vault",c:["learning"],r:"common",d:"Cryptography basics — encrypt, hash, generate keys.",f:"Your messages, but make them unreadable. Like my handwriting.",pw:50,cx:55,fn:55},
+{e:"🔗",n:"dhcp-lab",c:["hardware"],r:"common",d:"Python DHCP server with real-time dashboard.",f:"Handing out IP addresses like candy.",pw:55,cx:65,fn:40},
+{e:"🐳",n:"docker-lab",c:["learning"],r:"rare",d:"Docker experiments — containers, images, volumes.",f:"It works on my machine. Now it works everywhere.",pw:60,cx:60,fn:60},
+{e:"🔴",n:"nodered-lab",c:["learning"],r:"common",d:"Node-RED visual programming — wire APIs & hardware.",f:"Spaghetti code, but make it visual.",pw:55,cx:50,fn:65},
+{e:"⛽",n:"ocpp",c:["tools"],r:"epic",d:"OCPP 1.6J EV charging simulation ecosystem.",f:"The most niche app here. And we're proud of it.",pw:70,cx:80,fn:45},
+{e:"🖥️",n:"tty",c:["microbit"],r:"common",d:"Terminal for micro:bit — serial console in browser.",f:"ASCII art never looked so good at 115200 baud.",pw:40,cx:40,fn:50}
+];
+
+const CATS_MAP={microbit:"🤖",camera:"📸",ai:"🧠",hardware:"🔩",learning:"📚",classroom:"🏫",tools:"🛠️"};
+let collected=new Set(),curFilter='all',packPhase=0;
+
+// FILTERS
+const filEl=document.getElementById('filters');
+['all','legendary','epic','rare','common','microbit','ai','camera','hardware','learning','classroom','tools'].forEach(f=>{
+  const b=document.createElement('button');b.className='fil'+(f==='all'?' on':'');b.dataset.f=f;
+  const cnt=f==='all'?39:APPS.filter(a=>a.r===f||a.c.includes(f)).length;
+  b.textContent=`${f.toUpperCase()} (${cnt})`;
+  b.onclick=()=>{curFilter=f;document.querySelectorAll('.fil').forEach(x=>x.classList.toggle('on',x.dataset.f===f));buildGrid()};
+  filEl.appendChild(b);
+});
+
+// GRID
+const gridEl=document.getElementById('grid');
+function buildGrid(){
+  gridEl.innerHTML='';
+  APPS.forEach((a,i)=>{
+    if(curFilter!=='all'&&a.r!==curFilter&&!a.c.includes(curFilter))return;
+    const card=document.createElement('div');
+    card.className=`card ${a.r}`;
+    card.onclick=()=>card.classList.toggle('flipped');
+    const rMap={legendary:'r-legendary">★ LEGENDARY',epic:'r-epic">◆ EPIC',rare:'r-rare">● RARE',common:'r-common">○ COMMON'};
+    card.innerHTML=`
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="cf-top"><span class="cf-rarity ${rMap[a.r]}</span><span class="cf-id">#${String(i+1).padStart(3,'0')}</span></div>
+          <div class="cf-emoji">${a.e}</div>
+          <div class="cf-name">${a.n}</div>
+          <div class="cf-cats">${a.c.map(c=>`<span class="cf-cat c-${c}">${CATS_MAP[c]||''} ${c}</span>`).join('')}</div>
+          <div class="cf-stats">
+            <div class="cf-st st-pow"><span class="v">${a.pw}</span><span class="l">PWR</span></div>
+            <div class="cf-st st-cpx"><span class="v">${a.cx}</span><span class="l">CPX</span></div>
+            <div class="cf-st st-fun"><span class="v">${a.fn}</span><span class="l">FUN</span></div>
+          </div>
+        </div>
+        <div class="card-back">
+          <div class="cb-name">${a.e} ${a.n}</div>
+          <div class="cb-desc">${a.d}</div>
+          <a class="cb-link" href="https://abourdim.github.io/${a.n}/" target="_blank" onclick="event.stopPropagation()">↗ OPEN APP</a>
+          <div class="cb-flavor">"${a.f}"</div>
+        </div>
+      </div>`;
+    gridEl.appendChild(card);
+  });
+}
+buildGrid();
+
+// PACK OPENING
+const overlay=document.getElementById('packOverlay');
+const packCardsEl=document.getElementById('packCards');
+function openPack(){
+  packPhase=0;
+  packCardsEl.innerHTML='';
+  // Pick 5 random cards
+  const picks=[];
+  const pool=[...APPS];
+  for(let i=0;i<5;i++){const idx=Math.floor(Math.random()*pool.length);picks.push(pool.splice(idx,1)[0])}
+  picks.forEach(a=>{
+    const rMap={legendary:'r-legendary">★ LEGENDARY',epic:'r-epic">◆ EPIC',rare:'r-rare">● RARE',common:'r-common">○ COMMON'};
+    const d=document.createElement('div');
+    d.className='reveal-card';
+    d.style.borderColor=a.r==='legendary'?'#ffd700':a.r==='epic'?'#00d4ff':a.r==='rare'?'#bf00ff':'#00ff4166';
+    d.innerHTML=`<span class="e">${a.e}</span><span class="n">${a.n}</span><span class="r ${rMap[a.r]}</span>`;
+    packCardsEl.appendChild(d);
+    collected.add(a.n);
+  });
+  document.getElementById('counter').textContent=`${collected.size}/39 COLLECTED`;
+  overlay.style.display='flex';
+  overlay.onclick=()=>{
+    packPhase++;
+    if(packPhase===1){
+      const cards=packCardsEl.querySelectorAll('.reveal-card');
+      cards.forEach((c,i)=>setTimeout(()=>c.classList.add('show'),i*300));
+    }else{
+      overlay.style.display='none';
+    }
+  };
+}
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

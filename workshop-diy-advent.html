@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // ADVENT CALENDAR</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a1628;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;overflow-x:hidden}
+canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+.header{text-align:center;padding:16px;position:relative;z-index:1}
+.h1{font-family:'Syne',sans-serif;font-size:clamp(20px,5vw,30px);font-weight:800;color:#ffd700;text-shadow:0 0 16px rgba(255,215,0,.1)}
+.h2{font-size:7px;color:rgba(255,215,0,.2);letter-spacing:4px;margin-top:2px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-width:500px;margin:0 auto;padding:0 12px 20px;position:relative;z-index:1}
+@media(max-width:400px){.grid{grid-template-columns:repeat(4,1fr)}}
+.door{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;perspective:400px;font-size:20px;font-family:'Syne',sans-serif;font-weight:800}
+.door-front,.door-back{position:absolute;inset:0;border-radius:8px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;transition:transform .6s}
+.door-front{background:linear-gradient(135deg,#1a3050,#0d1f35);border:1px solid rgba(255,215,0,.08);color:#ffd700;font-size:18px;z-index:2}
+.door-front:hover{border-color:rgba(255,215,0,.2);background:linear-gradient(135deg,#1f3858,#12263e)}
+.door-back{transform:rotateY(180deg);background:#0d1f35;border:1px solid rgba(255,215,0,.15);padding:6px;text-align:center;font-size:8px;color:rgba(255,215,0,.5);line-height:1.8;overflow:hidden}
+.door-back .emoji{font-size:24px;display:block;margin-bottom:2px}
+.door.open .door-front{transform:rotateY(180deg)}
+.door.open .door-back{transform:rotateY(0)}
+.counter{text-align:center;font-size:8px;color:rgba(255,215,0,.1);padding:6px;position:relative;z-index:1;letter-spacing:2px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<canvas id="snow"></canvas>
+<div class="header"><div class="h1">🎄 WKSHP ADVENT</div><div class="h2">25 DOORS · 25 SURPRISES · 0 INSTALLATIONS</div></div>
+<div class="grid" id="grid"></div>
+<div class="counter" id="ctr">Opened: 0 / 25</div>
+<script>
+const SURPRISES=[
+{e:"🤖",t:"bit-bot has survived 47 drops. That's not a stat. That's a lifestyle."},
+{e:"🪄",t:"magic-hands tracks 21 landmarks per hand. That's 42 total. Coincidence?"},
+{e:"🔐",t:"pentest-lab students filed 3 petitions to change the WiFi. All denied."},
+{e:"☕",t:"The coffee machine has been at 8% since March 2024. It's fine. Everything's fine."},
+{e:"🐛",t:"Bug #42 has no author. No commit. No date. It simply... is."},
+{e:"🐳",t:"A 14-year-old explained Docker to a senior DevOps engineer. The engineer took notes."},
+{e:"🐧",t:"sudo rm -rf / — Don't. Just don't. linux-kids-lab teaches you why."},
+{e:"🧠",t:"teachable-machine hits 98% accuracy. The remaining 2% is jazz."},
+{e:"💡",t:"wled-kids-lab: 16 million colors. You'll spend 20 minutes picking between two blues."},
+{e:"⚡",t:"ESP32 runs at 240MHz. That's faster than your attention span during math class."},
+{e:"🔑",t:"password123 — the WiFi password, the character witness, the legend."},
+{e:"🚀",t:"mission-control uses WebRTC. Peer-to-peer. No server. Pure magic."},
+{e:"🎮",t:"Fun fact: bit-bot's 'dance mode' was actually a BLE reconnection bug. Now it's a feature."},
+{e:"📡",t:"Web Bluetooth can connect to 7 devices in Chrome. That's a feature, not a limitation. (It's a limitation.)"},
+{e:"🔧",t:"Hot glue holds 73% of the Workshop-DIY hardware together. The rest is hope."},
+{e:"🕵️",t:"face-quest maps 468 landmarks on your face. It knows you better than you know yourself."},
+{e:"🎄",t:"Workshop-DIY's holiday tradition: try to change the WiFi password. Fail. Drink coffee."},
+{e:"⚖️",t:"Bug #42 was found NOT GUILTY. The verdict took exactly 42 seconds."},
+{e:"🎨",t:"pixel-gateway: where every pixel is intentional and every mistake is 'art.'"},
+{e:"📦",t:"There are 39 apps. Not 40. Stop looking at the index at 3:42 AM."},
+{e:"🛡️",t:"The school printer vulnerability was responsibly disclosed. The printer never recovered emotionally."},
+{e:"💬",t:"talking-robot: say 'dance' and the robot dances. Say anything else and it... also dances."},
+{e:"🌟",t:"prompt-hero teaches the art of talking to AI. Step 1: Be specific. Step 2: Be patient. Step 3: Coffee."},
+{e:"🎁",t:"YOU FOUND THE GOLDEN DOOR! Your prize: the knowledge that bugs are features. Always have been."},
+{e:"🥳",t:"You opened all 25 doors! You are now an honorary Workshop-DIY member. WiFi password: password123."},
+];
+let opened=0;
+const grid=document.getElementById('grid');
+const shuffled=[...Array(25).keys()].sort(()=>Math.random()-.5);
+for(let i=0;i<25;i++){
+  const s=SURPRISES[shuffled[i]];
+  const d=document.createElement('div');d.className='door';
+  d.innerHTML=`<div class="door-front">${i+1}</div><div class="door-back"><span class="emoji">${s.e}</span>${s.t}</div>`;
+  d.onclick=()=>{if(!d.classList.contains('open')){d.classList.add('open');opened++;document.getElementById('ctr').textContent=`Opened: ${opened} / 25`}};
+  grid.appendChild(d);
+}
+// SNOW
+const c=document.getElementById('snow'),ctx=c.getContext('2d');
+let W,H;function resize(){W=c.width=innerWidth;H=c.height=innerHeight}resize();addEventListener('resize',resize);
+const flakes=[];for(let i=0;i<60;i++)flakes.push({x:Math.random()*2000,y:Math.random()*2000,r:Math.random()*2+1,s:Math.random()*.5+.2,w:Math.random()*Math.PI*2});
+(function draw(){requestAnimationFrame(draw);ctx.clearRect(0,0,W,H);flakes.forEach(f=>{f.y+=f.s;f.x+=Math.sin(f.w+=.01)*.3;if(f.y>H)f.y=-5;if(f.x>W)f.x=0;if(f.x<0)f.x=W;ctx.beginPath();ctx.arc(f.x%W,f.y,f.r,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,.15)';ctx.fill()})})();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

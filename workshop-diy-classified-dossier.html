@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CLASSIFIED // WKSHP-DIY</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Special+Elite&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--g:#00ff41;--c:#00d4ff;--r:#ff0033;--o:#ff8800;--y:#ffd700;--paper:#f4f0e8;--ink:#1a1a1a}
+html,body{height:100%;overflow:hidden}
+body{background:#0a0a0a;font-family:'JetBrains Mono',monospace;font-size:12px;color:#fff}
+
+.app{position:fixed;inset:0;display:flex;z-index:1}
+
+/* SIDEBAR */
+.sidebar{width:200px;background:#080808;border-right:1px solid #1a1a1a;display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
+.sb-h{padding:10px;border-bottom:1px solid #1a1a1a;text-align:center}
+.sb-logo{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--r);letter-spacing:-1px}
+.sb-sub{font-size:6px;color:#444;letter-spacing:3px;margin-top:2px}
+.sb-list{flex:1;overflow-y:auto;padding:6px}
+.sb-list::-webkit-scrollbar{width:2px}.sb-list::-webkit-scrollbar-thumb{background:#222}
+.folder{margin-bottom:8px}
+.folder-h{font-size:7px;color:#555;letter-spacing:2px;padding:4px 6px;border-bottom:1px solid #1a1a1a;cursor:pointer;display:flex;justify-content:space-between}
+.folder-h:hover{color:var(--r)}
+.folder-h .cnt{color:#333}
+.folder-items{padding:2px 0}
+.dossier-btn{display:flex;align-items:center;gap:5px;width:100%;background:none;border:none;color:#666;font-family:inherit;font-size:8px;padding:4px 8px;cursor:pointer;text-align:left;transition:all .1s;border-left:2px solid transparent}
+.dossier-btn:hover{color:#fff;background:rgba(255,255,255,.02);border-left-color:#333}
+.dossier-btn.on{color:var(--r);border-left-color:var(--r);background:rgba(255,0,51,.03)}
+.dossier-btn .e{font-size:11px}
+.sb-stamp{padding:8px;text-align:center;border-top:1px solid #1a1a1a}
+.stamp{display:inline-block;border:2px solid var(--r);color:var(--r);font-size:7px;padding:3px 10px;border-radius:2px;transform:rotate(-3deg);letter-spacing:3px;font-weight:700;opacity:.5}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.main-bar{padding:6px 14px;display:flex;justify-content:space-between;font-size:7px;color:#333;border-bottom:1px solid #1a1a1a;flex-shrink:0;background:#080808}
+
+/* DOSSIER VIEW */
+.dossier{flex:1;overflow-y:auto;padding:20px;display:flex;justify-content:center;background:#111}
+.dossier::-webkit-scrollbar{width:3px}.dossier::-webkit-scrollbar-thumb{background:#222}
+
+/* PAPER */
+.paper{width:min(100%,560px);background:var(--paper);color:var(--ink);padding:30px 36px;border-radius:2px;box-shadow:0 4px 24px rgba(0,0,0,.5);position:relative;font-family:'Special Elite',monospace;font-size:13px;line-height:2}
+.paper::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--r)}
+.paper::after{content:'CLASSIFIED';position:absolute;top:40px;right:-10px;font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800;color:rgba(255,0,0,.06);transform:rotate(15deg);letter-spacing:8px;pointer-events:none}
+
+.doc-header{text-align:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #ccc}
+.doc-agency{font-size:8px;letter-spacing:6px;color:#888;font-family:'JetBrains Mono',monospace}
+.doc-title{font-size:18px;font-weight:700;margin-top:4px;color:var(--ink)}
+.doc-class{display:inline-block;border:2px solid var(--r);color:var(--r);font-family:'JetBrains Mono',monospace;font-size:8px;padding:2px 10px;letter-spacing:3px;margin-top:6px;transform:rotate(-1deg)}
+.doc-meta{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin:10px 0;font-size:10px;color:#666;padding:8px;background:rgba(0,0,0,.02);border:1px solid #ddd;border-radius:2px}
+.doc-meta .k{font-family:'JetBrains Mono',monospace;font-size:8px;color:#999;letter-spacing:1px}
+
+.doc-emoji{font-size:48px;text-align:center;margin:12px 0;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.1))}
+
+.doc-section{margin:12px 0}.doc-section-h{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;color:#999;border-bottom:1px solid #ddd;padding-bottom:2px;margin-bottom:6px}
+.doc-p{margin-bottom:8px;text-align:justify}
+.redacted{background:#1a1a1a;color:#1a1a1a;padding:0 4px;border-radius:1px;cursor:pointer;transition:all .3s}
+.redacted:hover{background:rgba(255,0,0,.1);color:var(--r)}
+.redacted.revealed{background:rgba(255,0,0,.05);color:var(--r)}
+
+.doc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:10px 0}
+.doc-stat{text-align:center;padding:6px;border:1px solid #ddd;border-radius:2px;background:rgba(0,0,0,.01)}
+.doc-stat .v{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;color:var(--ink)}
+.doc-stat .l{font-family:'JetBrains Mono',monospace;font-size:6px;color:#999;letter-spacing:2px}
+
+.doc-stamp{text-align:center;margin-top:16px;padding-top:12px;border-top:2px solid #ccc}
+.doc-stamp-box{display:inline-block;border:3px solid rgba(0,160,0,.3);color:rgba(0,160,0,.4);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:800;padding:4px 16px;border-radius:3px;transform:rotate(-5deg);letter-spacing:4px}
+
+.doc-footer{margin-top:16px;padding-top:8px;border-top:1px solid #ddd;font-size:8px;color:#bbb;text-align:center;font-family:'JetBrains Mono',monospace}
+
+/* CRT overlay on sidebar */
+.sb-crt{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 1px,transparent 3px)}
+
+@media(max-width:600px){.sidebar{width:140px}.paper{padding:20px 22px;font-size:12px}}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="app">
+<div class="sidebar" style="position:relative">
+  <div class="sb-crt"></div>
+  <div class="sb-h">
+    <div class="sb-logo">WKSHP-DIY</div>
+    <div class="sb-sub">CLASSIFIED FILES</div>
+  </div>
+  <div class="sb-list" id="sbList"></div>
+  <div class="sb-stamp"><div class="stamp">TOP SECRET</div></div>
+</div>
+<div class="main">
+  <div class="main-bar">
+    <span>DOCUMENT VIEWER // CLEARANCE: LEVEL ∞</span>
+    <span id="clock" style="color:var(--r)">00:00:00</span>
+    <span>WORKSHOP-DIY INTELLIGENCE DIVISION</span>
+  </div>
+  <div class="dossier" id="dossier"></div>
+</div>
+</div>
+
+<script>
+const APPS=[
+{e:"🤖",n:"bit-bot",c:["microbit"],cl:"TOP SECRET",d:"Drive a Bit:Bot robot from your browser over Bluetooth. Features virtual joystick, line-follow mode, and obstacle avoidance. The flagship project that proved browser-to-robot communication was not only possible, but fun.",code:"BB-001",threat:"CRITICAL",status:"ACTIVE",pw:95,cx:70,fn:90,redact:"Bluetooth Low Energy protocol reverse-engineered"},
+{e:"🪄",n:"magic-hands",c:["camera","ai"],cl:"TOP SECRET",d:"Hand tracking via MediaPipe generates real-time visual effects. Confetti, neon trails, particle explosions, all triggered by hand gestures detected at 30fps in-browser.",code:"MH-002",threat:"HIGH",status:"ACTIVE",pw:90,cx:60,fn:99,redact:"MediaPipe hand landmark detection model v0.4"},
+{e:"🕵️",n:"face-quest",c:["camera","ai"],cl:"SECRET",d:"A gamified face detection experience. Users score points by smiling, blinking, and turning their heads. Zero data leaves the browser — all processing is local via MediaPipe Face Mesh.",code:"FQ-003",threat:"MODERATE",status:"ACTIVE",pw:85,cx:55,fn:95,redact:"Face mesh 468 landmark points analyzed per frame"},
+{e:"🧠",n:"teachable-machine",c:["microbit","camera","ai"],cl:"TOP SECRET",d:"The bridge between human and machine. Train gestures or sounds in-browser with Google's Teachable Machine, then send classification results to micro:bit via Web Bluetooth.",code:"TM-004",threat:"CRITICAL",status:"ACTIVE",pw:98,cx:80,fn:88,redact:"Transfer learning on MobileNet v2 backbone"},
+{e:"🐧",n:"linux-kids-lab",c:["learning"],cl:"SECRET",d:"A safe browser-based Linux sandbox. Users learn to navigate files, use pipes, write scripts, and master the terminal. No actual system access — everything runs in an emulated shell.",code:"LX-016",threat:"MODERATE",status:"ACTIVE",pw:70,cx:60,fn:75,redact:"xterm.js with custom command interpreter"},
+{e:"🔐",n:"pentest-lab",c:["learning"],cl:"TOP SECRET",d:"Ethical hacking challenges in a sandboxed environment. Users learn reconnaissance, vulnerability scanning, and basic exploitation techniques — all within legal and ethical boundaries.",code:"PT-015",threat:"HIGH",status:"ACTIVE",pw:80,cx:70,fn:85,redact:"Simulated network with 12 vulnerable services"},
+{e:"💬",n:"talking-robot",c:["microbit","ai"],cl:"SECRET",d:"A conversational robot interface that processes text and voice input, generates emotional responses, and communicates results to a physical micro:bit robot via BLE.",code:"TR-005",threat:"MODERATE",status:"ACTIVE",pw:80,cx:65,fn:85,redact:"Web Speech API + emotion classification model"},
+{e:"⚡",n:"esp32-c3-kids-lab",c:["hardware","learning"],cl:"SECRET",d:"Hands-on ESP32-C3 IoT laboratory. Users learn to blink LEDs, read sensors, connect to WiFi, and build basic IoT systems. Real hardware, real learning.",code:"EC-013",threat:"LOW",status:"ACTIVE",pw:75,cx:65,fn:70,redact:"ESP-IDF firmware v5.1 with custom web server"},
+{e:"🐳",n:"docker-lab",c:["learning"],cl:"CONFIDENTIAL",d:"Docker containerization experiments. Users create, run, and manage containers, understand images and volumes, and learn the fundamentals of modern deployment.",code:"DK-036",threat:"LOW",status:"ACTIVE",pw:60,cx:60,fn:60,redact:"Alpine Linux base images, isolated runtime"},
+{e:"🏫",n:"classroom",c:["classroom"],cl:"SECRET",d:"PeerJS-powered cloud classroom. Create rooms, share screens, chat in real-time. Built for Workshop-DIY sessions but works for any collaborative learning environment.",code:"CL-018",threat:"LOW",status:"ACTIVE",pw:65,cx:55,fn:65,redact:"WebRTC peer mesh with signaling server"}
+];
+
+const CATS={microbit:{n:"MICRO:BIT OPS",apps:["bit-bot","magic-hands","teachable-machine","talking-robot"]},ai:{n:"AI DIVISION",apps:["magic-hands","face-quest","teachable-machine","pentest-lab"]},learning:{n:"TRAINING CORPS",apps:["linux-kids-lab","esp32-c3-kids-lab","docker-lab","pentest-lab"]},hardware:{n:"HARDWARE LAB",apps:["esp32-c3-kids-lab"]},camera:{n:"VISUAL INTEL",apps:["magic-hands","face-quest"]},classroom:{n:"FIELD OPS",apps:["classroom"]},tools:{n:"TOOLSMITH UNIT",apps:[]}};
+
+// BUILD SIDEBAR
+const sbList=document.getElementById('sbList');
+const allApps=[...APPS];
+const categories={microbit:[],ai:[],learning:[],hardware:[],camera:[],classroom:[],tools:[]};
+APPS.forEach(a=>a.c.forEach(c=>{if(categories[c]&&!categories[c].includes(a))categories[c].push(a)}));
+
+Object.entries(categories).forEach(([k,apps])=>{
+  if(!apps.length)return;
+  const f=document.createElement('div');f.className='folder';
+  f.innerHTML=`<div class="folder-h">${CATS[k]?.n||k.toUpperCase()} <span class="cnt">${apps.length}</span></div><div class="folder-items">${apps.map(a=>`<button class="dossier-btn" data-n="${a.n}"><span class="e">${a.e}</span>${a.n}</button>`).join('')}</div>`;
+  sbList.appendChild(f);
+});
+
+document.querySelectorAll('.dossier-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.dossier-btn').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  showDossier(APPS.find(a=>a.n===b.dataset.n));
+});
+
+// SHOW DOSSIER
+const dossierEl=document.getElementById('dossier');
+function showDossier(a){
+  const clCol=a.cl==='TOP SECRET'?'#cc0000':a.cl==='SECRET'?'#cc6600':'#888';
+  const stampCol=a.status==='ACTIVE'?'rgba(0,160,0,.3)':'rgba(200,0,0,.3)';
+  const stampText=a.status==='ACTIVE'?'CLEARED':'SUSPENDED';
+  dossierEl.innerHTML=`<div class="paper">
+    <div class="doc-header">
+      <div class="doc-agency">WORKSHOP-DIY // INTELLIGENCE DIVISION</div>
+      <div class="doc-title">DOSSIER: ${a.n.toUpperCase()}</div>
+      <div class="doc-class" style="border-color:${clCol};color:${clCol}">${a.cl}</div>
+    </div>
+    <div class="doc-emoji">${a.e}</div>
+    <div class="doc-meta">
+      <div><span class="k">CODENAME:</span> ${a.code}</div>
+      <div><span class="k">STATUS:</span> <span style="color:${a.status==='ACTIVE'?'green':'red'}">${a.status}</span></div>
+      <div><span class="k">THREAT LEVEL:</span> ${a.threat}</div>
+      <div><span class="k">CLASSIFICATION:</span> ${a.cl}</div>
+      <div><span class="k">CATEGORY:</span> ${a.c.join(', ').toUpperCase()}</div>
+      <div><span class="k">LAST UPDATED:</span> 2025-Q4</div>
+    </div>
+    <div class="doc-section">
+      <div class="doc-section-h">MISSION BRIEF</div>
+      <div class="doc-p">${a.d}</div>
+    </div>
+    <div class="doc-section">
+      <div class="doc-section-h">TECHNICAL INTEL [REDACTED]</div>
+      <div class="doc-p">Core technology: <span class="redacted" onclick="this.classList.toggle('revealed')">${a.redact}</span>. Deployment via static hosting on GitHub Pages. Zero backend dependencies. All processing occurs client-side.</div>
+    </div>
+    <div class="doc-section">
+      <div class="doc-section-h">CAPABILITY ASSESSMENT</div>
+      <div class="doc-stats">
+        <div class="doc-stat"><div class="v">${a.pw}</div><div class="l">POWER</div></div>
+        <div class="doc-stat"><div class="v">${a.cx}</div><div class="l">COMPLEXITY</div></div>
+        <div class="doc-stat"><div class="v">${a.fn}</div><div class="l">FUN FACTOR</div></div>
+      </div>
+    </div>
+    <div class="doc-section">
+      <div class="doc-section-h">FIELD DEPLOYMENT</div>
+      <div class="doc-p">Asset is deployed at <a href="https://abourdim.github.io/${a.n}/" target="_blank" style="color:var(--r)">abourdim.github.io/${a.n}</a>. Available 24/7. No authentication required. Free and open-source.</div>
+    </div>
+    <div class="doc-stamp"><div class="doc-stamp-box" style="border-color:${stampCol};color:${stampCol}">${stampText}</div></div>
+    <div class="doc-footer">WKSHP-DIY INTELLIGENCE // DOCUMENT ${a.code} // PAGE 1 OF 1<br>UNAUTHORIZED DISTRIBUTION WILL RESULT IN MANDATORY ROBOT-BUILDING WORKSHOP</div>
+  </div>`;
+}
+
+// Load first
+showDossier(APPS[0]);
+document.querySelector('.dossier-btn').classList.add('on');
+
+// Clock
+setInterval(()=>{document.getElementById('clock').textContent=new Date().toTimeString().slice(0,8)},1000);
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

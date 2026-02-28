@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY ARCADE</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#0a0a0e;color:#fff;font-family:'Press Start 2P',monospace;image-rendering:pixelated}
+
+/* ARCADE CABINET */
+.cab{position:fixed;inset:0;display:flex;flex-direction:column;border:3px solid #222;background:#0a0a0e}
+.cab-top{padding:6px 10px;background:#111;border-bottom:2px solid #222;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.cab-logo{font-size:8px;color:#0f0;letter-spacing:2px}
+.cab-coins{font-size:7px;color:#ffd700}
+.screen{flex:1;position:relative;overflow:hidden;background:#06060a}
+.cab-bot{padding:6px 10px;background:#111;border-top:2px solid #222;display:flex;justify-content:center;gap:8px;flex-shrink:0}
+.joy-btn{width:28px;height:28px;border-radius:50%;border:2px solid #333;background:#1a1a1a;color:#666;font-size:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .1s;font-family:inherit}
+.joy-btn:hover,.joy-btn:active{background:#333;color:#fff;border-color:#555;box-shadow:0 0 8px rgba(255,255,255,.1)}
+.joy-btn.act{background:#0f0;color:#000;border-color:#0f0;box-shadow:0 0 12px rgba(0,255,0,.3)}
+
+/* SCREENS */
+.scr{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .3s}
+.scr.on{opacity:1;pointer-events:auto}
+
+/* ════ TITLE SCREEN ════ */
+.title-scr{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse,#0a0a1a,#000)}
+.title-logo{font-size:clamp(14px,3.5vw,24px);color:#0f0;text-shadow:0 0 10px rgba(0,255,0,.4),0 0 20px rgba(0,255,0,.2);margin-bottom:8px;animation:titlePulse 2s ease-in-out infinite}
+@keyframes titlePulse{0%,100%{text-shadow:0 0 10px rgba(0,255,0,.4)}50%{text-shadow:0 0 20px rgba(0,255,0,.6),0 0 40px rgba(0,255,0,.3)}}
+.title-sub{font-size:7px;color:#0af;margin-bottom:20px;letter-spacing:3px}
+.title-stats{display:flex;gap:20px;margin-bottom:24px}
+.t-stat{text-align:center}.t-stat .v{font-size:14px;color:#ffd700}.t-stat .l{font-size:5px;color:#666;margin-top:3px}
+.insert-coin{font-size:8px;color:#ffd700;animation:coinBlink 1s step-end infinite}
+@keyframes coinBlink{0%,50%{opacity:1}51%,100%{opacity:0}}
+.title-hint{font-size:5px;color:#333;margin-top:12px}
+.title-chars{display:flex;gap:6px;margin-bottom:16px}
+.title-char{font-size:28px;animation:charBounce 1.5s ease-in-out infinite}
+@keyframes charBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* ════ SELECT SCREEN ════ */
+.sel-scr{display:flex;flex-direction:column}
+.sel-top{padding:6px 10px;display:flex;justify-content:space-between;font-size:6px;border-bottom:2px solid #1a1a1a;flex-shrink:0;background:#0a0a0e}
+.sel-cat{color:#0af;cursor:pointer;padding:2px 6px;border:1px solid transparent;border-radius:2px;transition:all .1s}
+.sel-cat:hover{border-color:#0af33}
+.sel-cat.on{color:#0f0;border-color:#0f0;background:rgba(0,255,0,.06)}
+.sel-cat .cnt{color:#666}
+.sel-body{flex:1;overflow-y:auto;padding:8px}
+.sel-body::-webkit-scrollbar{width:3px}.sel-body::-webkit-scrollbar-thumb{background:#222}
+.sel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:4px}
+.app-slot{border:2px solid #1a1a1a;border-radius:4px;padding:8px;cursor:pointer;transition:all .15s;text-align:center;background:#0a0a0e;position:relative}
+.app-slot:hover,.app-slot.sel{border-color:#0f0;background:#0a1a0a;box-shadow:0 0 10px rgba(0,255,0,.08)}
+.app-slot.sel::before{content:'▸';position:absolute;left:3px;top:50%;transform:translateY(-50%);color:#0f0;font-size:8px;animation:arrowBlink .5s step-end infinite}
+@keyframes arrowBlink{0%,50%{opacity:1}51%,100%{opacity:0}}
+.app-slot .e{font-size:20px;display:block;margin-bottom:3px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
+.app-slot .n{font-size:6px;color:#0f0;display:block;margin-bottom:2px}
+.app-slot .d{font-size:5px;color:#555;line-height:1.6;display:block}
+.app-slot .badge{font-size:4px;display:inline-block;padding:1px 4px;border-radius:2px;margin-top:2px;letter-spacing:1px}
+.b-popular{background:#332200;color:#ffd700;border:1px solid #ffd70033}.b-stable{background:#002200;color:#0f0;border:1px solid #0f033}.b-dev{background:#1a0033;color:#bf00ff;border:1px solid #bf00ff33}.b-new{background:#001a33;color:#0af;border:1px solid #0af3}
+
+/* ════ DETAIL SCREEN ════ */
+.det-scr{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;background:radial-gradient(ellipse,#0a0a1a,#000)}
+.det-emoji{font-size:48px;margin-bottom:8px;animation:charBounce 2s ease-in-out infinite}
+.det-name{font-size:14px;color:#0af;text-shadow:0 0 10px rgba(0,170,255,.3);margin-bottom:4px}
+.det-desc{font-size:6px;color:#888;max-width:400px;line-height:2;margin-bottom:10px}
+.det-cats{display:flex;gap:4px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.det-cat{font-size:5px;padding:2px 6px;border-radius:2px}
+.det-badge{font-size:5px;padding:2px 8px;border-radius:2px;margin-bottom:12px}
+.det-launch{font-size:7px;color:#0f0;padding:6px 16px;border:2px solid #0f0;border-radius:3px;background:rgba(0,255,0,.06);cursor:pointer;transition:all .15s;text-decoration:none;display:inline-block;animation:launchPulse 1.5s ease-in-out infinite}
+@keyframes launchPulse{0%,100%{box-shadow:0 0 6px rgba(0,255,0,.1)}50%{box-shadow:0 0 16px rgba(0,255,0,.25)}}
+.det-launch:hover{background:#0f0;color:#000}
+.det-back{font-size:5px;color:#666;margin-top:10px;cursor:pointer}.det-back:hover{color:#fff}
+.det-hs{margin-top:12px;border:1px solid #1a1a1a;border-radius:3px;padding:8px 14px;background:rgba(0,0,0,.3)}
+.det-hs-h{font-size:5px;color:#ffd700;margin-bottom:4px;letter-spacing:2px}
+.det-hs-row{font-size:5px;color:#555;line-height:2}
+.det-hs-row .rank{color:#ffd700}.det-hs-row .name{color:#0f0}.det-hs-row .score{color:#0af}
+
+/* ════ SCANLINES ════ */
+.scanlines{position:fixed;inset:0;z-index:999;pointer-events:none}
+.scanlines::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 1px,transparent 3px)}
+.scanlines::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse,transparent 60%,rgba(0,0,0,.35))}
+
+/* CAT COLORS */
+.c-microbit{background:#002233;color:#0af;border:1px solid #0af3}
+.c-camera{background:#332200;color:#ffd700;border:1px solid #ffd70033}
+.c-ai{background:#1a0033;color:#bf00ff;border:1px solid #bf00ff33}
+.c-hardware{background:#331a00;color:#ff8800;border:1px solid #ff880033}
+.c-learning{background:#002200;color:#0f0;border:1px solid #0f033}
+.c-classroom{background:#000d33;color:#06f;border:1px solid #06f3}
+.c-tools{background:#330011;color:#f03;border:1px solid #f033}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="scanlines"></div>
+<div class="cab">
+  <div class="cab-top">
+    <div class="cab-logo">WKSHP-DIY ARCADE</div>
+    <div class="cab-coins">CREDIT: <span id="coins">∞</span></div>
+  </div>
+  <div class="screen">
+    <!-- TITLE -->
+    <div class="scr title-scr on" id="scrTitle">
+      <div class="title-chars" id="titleChars"></div>
+      <div class="title-logo">WORKSHOP-DIY</div>
+      <div class="title-sub">ARCADE EDITION v4.2.0</div>
+      <div class="title-stats">
+        <div class="t-stat"><div class="v">39</div><div class="l">APPS</div></div>
+        <div class="t-stat"><div class="v">7</div><div class="l">WORLDS</div></div>
+        <div class="t-stat"><div class="v">12</div><div class="l">SKINS</div></div>
+      </div>
+      <div class="insert-coin">▸ PRESS START ◂</div>
+      <div class="title-hint">ENTER / SPACE / CLICK</div>
+    </div>
+    <!-- SELECT -->
+    <div class="scr sel-scr" id="scrSelect">
+      <div class="sel-top" id="selCats"></div>
+      <div class="sel-body"><div class="sel-grid" id="selGrid"></div></div>
+    </div>
+    <!-- DETAIL -->
+    <div class="scr det-scr" id="scrDetail">
+      <div class="det-emoji" id="detE"></div>
+      <div class="det-name" id="detN"></div>
+      <div class="det-desc" id="detD"></div>
+      <div class="det-cats" id="detC"></div>
+      <div id="detB"></div>
+      <a class="det-launch" id="detL" href="#" target="_blank">▸ LAUNCH APP ◂</a>
+      <div class="det-back" onclick="showScreen('select')">◂ BACK TO SELECT</div>
+      <div class="det-hs">
+        <div class="det-hs-h">HIGH SCORES</div>
+        <div id="detHS"></div>
+      </div>
+    </div>
+  </div>
+  <div class="cab-bot">
+    <button class="joy-btn" onclick="nav('up')" title="Up">▲</button>
+    <button class="joy-btn" onclick="nav('left')" title="Left">◄</button>
+    <button class="joy-btn act" onclick="nav('select')" title="Select">A</button>
+    <button class="joy-btn" onclick="nav('right')" title="Right">►</button>
+    <button class="joy-btn" onclick="nav('down')" title="Down">▼</button>
+    <button class="joy-btn" onclick="nav('back')" title="Back">B</button>
+  </div>
+</div>
+
+<script>
+const APPS=[
+{e:"🤖",n:"bit-bot",c:["microbit"],b:"popular",d:"Drive Bit:Bot robot via Bluetooth"},{e:"🪄",n:"magic-hands",c:["camera","ai"],b:"popular",d:"Hand-tracking magic effects"},{e:"🕵️",n:"face-quest",c:["camera","ai"],b:"popular",d:"Face detection scoring game"},{e:"💬",n:"talking-robot",c:["microbit","ai"],b:"stable",d:"Robot with speech & emotions"},{e:"🧠",n:"teachable-machine",c:["microbit","camera","ai"],b:"popular",d:"Train AI gestures in browser"},{e:"😎",n:"face-tracking",c:["camera","microbit"],b:"stable",d:"Kids face tracking + events"},{e:"😄",n:"bitmoji-lab",c:["microbit"],b:"stable",d:"Emoji to LED pixel art"},{e:"🚀",n:"mission-control",c:["classroom","microbit"],b:"stable",d:"Dashboard with live video/chat"},{e:"🧩",n:"bit-playground",c:["microbit"],b:"stable",d:"Ultimate micro:bit playground"},{e:"🎛️",n:"rxy",c:["microbit"],b:"stable",d:"Custom BLE remote builder"},{e:"🎨",n:"pixel-gateway",c:["tools"],b:"stable",d:"Retro pixel art portal"},{e:"💡",n:"wled-kids-lab",c:["hardware","learning"],b:"stable",d:"Control LED strips with WLED"},{e:"⚡",n:"esp32-c3-kids-lab",c:["hardware","learning"],b:"stable",d:"Hands-on ESP32-C3 lab"},{e:"🪙",n:"crypto-academy",c:["learning"],b:"stable",d:"Blockchain & crypto lessons"},{e:"🔐",n:"pentest-lab",c:["learning"],b:"stable",d:"Cybersecurity sandbox"},{e:"🐧",n:"linux-kids-lab",c:["learning"],b:"stable",d:"Linux commands in browser"},{e:"🏭",n:"production-chain",c:["learning"],b:"stable",d:"Industrial simulation"},{e:"🏫",n:"classroom",c:["classroom"],b:"stable",d:"PeerJS cloud classroom"},{e:"🔌",n:"usb-logger",c:["microbit"],b:"stable",d:"USB serial browser tool"},{e:"📡",n:"ble-logger",c:["microbit"],b:"stable",d:"BLE debug playground"},{e:"🧰",n:"claude-toolkit",c:["ai","tools"],b:"dev",d:"Build apps with Claude AI"},{e:"🎭",n:"puppeteer",c:["tools"],b:"stable",d:"Browser automation"},{e:"🔋",n:"circuit-lab",c:["hardware","learning"],b:"dev",d:"Simulate circuits"},{e:"🛡️",n:"vpn-guide",c:["tools"],b:"dev",d:"VPN & network security"},{e:"🧊",n:"3d-lab",c:["learning"],b:"dev",d:"3D design in browser"},{e:"🔀",n:"git-lab",c:["learning"],b:"dev",d:"Learn Git step by step"},{e:"✨",n:"prompt-hero",c:["ai","learning"],b:"dev",d:"Master AI prompting"},{e:"🌍",n:"save-planet",c:["learning"],b:"dev",d:"Climate & sustainability"},{e:"📋",n:"ops-catalog",c:["tools"],b:"dev",d:"DevOps tools catalog"},{e:"💻",n:"code-kids",c:["learning"],b:"dev",d:"Learn HTML/CSS/JS"},{e:"🏡",n:"smart-home",c:["hardware","learning"],b:"dev",d:"Smart home dashboard"},{e:"🧱",n:"makecode",c:["microbit","learning"],b:"dev",d:"Block-based coding"},{e:"🤖",n:"54-activities",c:["microbit","learning"],b:"dev",d:"54 micro:bit activities"},{e:"💰",n:"crypto-vault",c:["learning"],b:"dev",d:"Cryptography basics"},{e:"🔗",n:"dhcp-lab",c:["hardware"],b:"new",d:"DHCP server dashboard"},{e:"🐳",n:"docker-lab",c:["learning"],b:"new",d:"Docker experiments"},{e:"🔴",n:"nodered-lab",c:["learning"],b:"new",d:"Node-RED visual programming"},{e:"⛽",n:"ocpp",c:["tools"],b:"new",d:"EV charging simulation"},{e:"🖥️",n:"tty",c:["microbit"],b:"new",d:"Terminal for micro:bit"}
+];
+const CATS={all:{e:"⭐",n:"ALL"},microbit:{e:"🤖",n:"MICROBIT"},learning:{e:"📚",n:"LEARNING"},tools:{e:"🛠️",n:"TOOLS"},ai:{e:"🧠",n:"AI"},hardware:{e:"🔩",n:"HARDWARE"},camera:{e:"📸",n:"CAMERA"},classroom:{e:"🏫",n:"CLASS"}};
+let curScreen='title',curCat='all',selIdx=0,filtered=[...APPS];
+const names=['N30','R0B0T','H4CK3R','C0D3R','M4K3R','PIXEL','CYBER','N00B','L33T','ESP32'];
+
+// Title chars
+const tc=document.getElementById('titleChars');
+['🤖','💻','⚡','🧠','🔐','🎨','🚀'].forEach((e,i)=>{const s=document.createElement('span');s.className='title-char';s.textContent=e;s.style.animationDelay=(i*.15)+'s';tc.appendChild(s)});
+
+// Cats
+const sc=document.getElementById('selCats');
+Object.entries(CATS).forEach(([k,v])=>{
+  const cnt=k==='all'?APPS.length:APPS.filter(a=>a.c.includes(k)).length;
+  const d=document.createElement('span');
+  d.className='sel-cat'+(k==='all'?' on':'');d.dataset.k=k;
+  d.innerHTML=`${v.e} ${v.n} <span class="cnt">${cnt}</span>`;
+  d.onclick=()=>filterCat(k);
+  sc.appendChild(d);
+});
+
+function filterCat(k){
+  curCat=k;
+  filtered=k==='all'?[...APPS]:APPS.filter(a=>a.c.includes(k));
+  selIdx=0;
+  document.querySelectorAll('.sel-cat').forEach(c=>c.classList.toggle('on',c.dataset.k===k));
+  buildGrid();
+}
+
+function buildGrid(){
+  const g=document.getElementById('selGrid');g.innerHTML='';
+  filtered.forEach((a,i)=>{
+    const d=document.createElement('div');
+    d.className='app-slot'+(i===selIdx?' sel':'');d.dataset.i=i;
+    const bMap={popular:'b-popular">★ POPULAR',stable:'b-stable">✓ STABLE',dev:'b-dev">⚙ DEV',new:'b-new">✦ NEW'};
+    d.innerHTML=`<span class="e">${a.e}</span><span class="n">${a.n}</span><span class="d">${a.d}</span><span class="badge ${bMap[a.b]||''}</span>`;
+    d.onclick=()=>{selIdx=i;updateSel();showDetail(filtered[i])};
+    g.appendChild(d);
+  });
+}
+buildGrid();
+
+function updateSel(){
+  document.querySelectorAll('.app-slot').forEach((s,i)=>s.classList.toggle('sel',i===selIdx));
+  const el=document.querySelector('.app-slot.sel');
+  if(el)el.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+
+function showDetail(a){
+  document.getElementById('detE').textContent=a.e;
+  document.getElementById('detN').textContent=a.n.toUpperCase();
+  document.getElementById('detD').textContent=a.d;
+  document.getElementById('detC').innerHTML=a.c.map(c=>`<span class="det-cat c-${c}">${CATS[c]?.e||''} ${CATS[c]?.n||c}</span>`).join('');
+  const bMap={popular:'b-popular">★ POPULAR',stable:'b-stable">✓ STABLE',dev:'b-dev">⚙ DEV',new:'b-new">✦ NEW'};
+  document.getElementById('detB').innerHTML=`<span class="det-badge ${bMap[a.b]||''}</span>`;
+  document.getElementById('detL').href=`https://abourdim.github.io/${a.n}/`;
+  // Fake high scores
+  const hs=document.getElementById('detHS');hs.innerHTML='';
+  for(let i=0;i<5;i++){
+    const d=document.createElement('div');d.className='det-hs-row';
+    d.innerHTML=`<span class="rank">${i+1}.</span> <span class="name">${names[Math.floor(Math.random()*names.length)]}</span> .......... <span class="score">${Math.floor(Math.random()*9000+1000)}</span>`;
+    hs.appendChild(d);
+  }
+  showScreen('detail');
+}
+
+function showScreen(s){
+  curScreen=s;
+  document.querySelectorAll('.scr').forEach(el=>el.classList.remove('on'));
+  document.getElementById('scr'+s.charAt(0).toUpperCase()+s.slice(1)).classList.add('on');
+}
+
+// NAV
+function nav(dir){
+  if(curScreen==='title'){showScreen('select');return}
+  if(curScreen==='detail'&&dir==='back'){showScreen('select');return}
+  if(curScreen==='select'){
+    const cols=Math.floor(document.getElementById('selGrid').offsetWidth/134)||3;
+    if(dir==='right'&&selIdx<filtered.length-1)selIdx++;
+    if(dir==='left'&&selIdx>0)selIdx--;
+    if(dir==='down'&&selIdx+cols<filtered.length)selIdx+=cols;
+    if(dir==='up'&&selIdx-cols>=0)selIdx-=cols;
+    if(dir==='select')showDetail(filtered[selIdx]);
+    if(dir==='back')showScreen('title');
+    updateSel();
+  }
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight')nav('right');
+  if(e.key==='ArrowLeft')nav('left');
+  if(e.key==='ArrowDown'){e.preventDefault();nav('down')}
+  if(e.key==='ArrowUp'){e.preventDefault();nav('up')}
+  if(e.key==='Enter'||e.key===' '){e.preventDefault();nav('select')}
+  if(e.key==='Escape'||e.key==='Backspace')nav('back');
+});
+document.getElementById('scrTitle').onclick=()=>nav('select');
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // THE BOARD</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#2a1f14;font-family:'Special Elite',monospace;font-size:12px;color:#222;min-height:100vh;overflow:auto}
+
+.board{position:relative;width:100%;min-height:100vh;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='60' height='60' fill='%23b89868'/%3E%3Ccircle cx='15' cy='15' r='.5' fill='%23a08050' opacity='.3'/%3E%3Ccircle cx='45' cy='35' r='.4' fill='%23a08050' opacity='.2'/%3E%3C/svg%3E");padding:20px}
+
+/* STRING CANVAS */
+canvas{position:absolute;inset:0;z-index:1;pointer-events:none}
+
+/* CARDS */
+.card{position:absolute;z-index:2;cursor:grab;transition:box-shadow .2s}
+.card:hover{box-shadow:0 4px 16px rgba(0,0,0,.3);z-index:10}
+
+.photo{width:140px;background:#f5f0e0;padding:6px;box-shadow:2px 2px 8px rgba(0,0,0,.2);transform:rotate(var(--rot,0deg))}
+.photo .pin{position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:14px;height:14px;border-radius:50%;z-index:3}
+.photo .emoji{font-size:42px;text-align:center;padding:8px;background:#fff;border:1px solid #ddd;margin-bottom:4px}
+.photo .label{font-family:'Permanent Marker',cursive;font-size:11px;text-align:center;color:#333}
+.photo .note{font-family:'Special Elite',monospace;font-size:8px;color:#777;text-align:center;margin-top:2px;line-height:1.6}
+
+.sticky{width:130px;padding:10px;font-family:'Permanent Marker',cursive;font-size:11px;line-height:1.8;box-shadow:2px 2px 6px rgba(0,0,0,.15);transform:rotate(var(--rot,0deg))}
+.sticky.yellow{background:#fff9a5;color:#555}
+.sticky.pink{background:#ffb5c5;color:#663344}
+.sticky.blue{background:#b5d5ff;color:#334466}
+.sticky.green{background:#b5ffb5;color:#336633}
+
+.headline{position:absolute;z-index:2;font-family:'Permanent Marker',cursive;font-size:clamp(16px,3vw,22px);color:#cc0000;text-shadow:1px 1px 0 rgba(0,0,0,.1);transform:rotate(var(--rot,0deg));white-space:nowrap}
+
+.clipping{width:150px;background:#f8f4e8;padding:8px;border:1px solid #ccc;font-family:Georgia,serif;font-size:8px;line-height:1.7;color:#444;box-shadow:1px 1px 4px rgba(0,0,0,.1);transform:rotate(var(--rot,0deg))}
+.clipping h4{font-size:10px;margin-bottom:2px;color:#222}
+
+.marker-text{position:absolute;z-index:2;font-family:'Permanent Marker',cursive;color:#cc0000;font-size:14px;white-space:nowrap;transform:rotate(var(--rot,0deg))}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<canvas id="strings"></canvas>
+<div class="board" id="board">
+
+<!-- CENTRAL QUESTION -->
+<div class="headline" style="left:50%;top:30px;transform:translateX(-50%);font-size:28px;color:#cc0000;text-decoration:underline">WHO IS BUG #42?</div>
+
+<!-- PHOTOS -->
+<div class="photo card" style="left:8%;top:12%;--rot:-3deg" id="c0"><div class="pin" style="background:#cc0000"></div><div class="emoji">🐛</div><div class="label">BUG #42</div><div class="note">No author. No date.<br>No commit hash.</div></div>
+
+<div class="photo card" style="left:65%;top:10%;--rot:2deg" id="c1"><div class="pin" style="background:#0066cc"></div><div class="emoji">🤖</div><div class="label">BIT-BOT</div><div class="note">First app created.<br>Knows more than it says.</div></div>
+
+<div class="photo card" style="left:35%;top:25%;--rot:-1deg" id="c2"><div class="pin" style="background:#cc0000"></div><div class="emoji">⬛</div><div class="label">THE 40TH APP</div><div class="note">Seen at 3:42 AM.<br>No name. Black icon.</div></div>
+
+<div class="photo card" style="left:75%;top:42%;--rot:3deg" id="c3"><div class="pin" style="background:#008800"></div><div class="emoji">🔑</div><div class="label">password123</div><div class="note">Unchanged since 2023.<br>In a CYBERSECURITY org.</div></div>
+
+<div class="photo card" style="left:10%;top:55%;--rot:-2deg" id="c4"><div class="pin" style="background:#cc6600"></div><div class="emoji">☕</div><div class="label">THE COFFEE MACHINE</div><div class="note">Always at 8%.<br>Has it ever been refilled?</div></div>
+
+<div class="photo card" style="left:50%;top:60%;--rot:1deg" id="c5"><div class="pin" style="background:#cc0000"></div><div class="emoji">⚖️</div><div class="label">THE TRIAL</div><div class="note">Verdict: NOT GUILTY.<br>But who filed the case?</div></div>
+
+<!-- STICKY NOTES -->
+<div class="sticky yellow card" style="left:25%;top:10%;--rot:2deg">"There have always been 39 apps." — The Founder<br><br>BUT WHO SAID IT FIRST?</div>
+
+<div class="sticky pink card" style="left:82%;top:25%;--rot:-3deg">WiFi changed to "forty" for ONE NIGHT. Then back to password123. WHO DID IT?</div>
+
+<div class="sticky blue card" style="left:5%;top:35%;--rot:1deg">git blame shows NO AUTHOR for Bug #42. How is that even possible?</div>
+
+<div class="sticky green card" style="left:60%;top:35%;--rot:-1deg">The counter shows 40 at 3:42 AM. 3+4+2 = 9. 3×9 = 27. 2+7 = 9. WHAT DOES IT MEAN?</div>
+
+<div class="sticky yellow card" style="left:35%;top:50%;--rot:3deg">ESLint found 17 violations. Bug #42 uses "var". INTENTIONAL? A message?</div>
+
+<div class="sticky pink card" style="left:15%;top:75%;--rot:-2deg">Coffee machine: 1,337 cups. 1337 = LEET. Is the coffee machine a HACKER?</div>
+
+<div class="sticky blue card" style="left:70%;top:70%;--rot:2deg">Bug description: "I am the 40th."<br>40th what? App? Developer?<br>SOMETHING ELSE?</div>
+
+<!-- NEWSPAPER CLIPPINGS -->
+<div class="clipping card" style="left:45%;top:78%;--rot:-1deg">
+<h4>STUDENT DISCOVERS PRINTER VULNERABILITY</h4>
+Using techniques from pentest-lab, a student found an open port on the school printer. Coincidence? Or was pentest-lab DESIGNED to find it?
+</div>
+
+<div class="clipping card" style="left:80%;top:58%;--rot:2deg">
+<h4>ROBOT SURVIVES 47TH DROP</h4>
+The ESP32 robot survived yet another fall. Engineers say the hot glue holds. But what if it's not the glue? What if Bug #42 is PROTECTING it?
+</div>
+
+<!-- MARKER ANNOTATIONS -->
+<div class="marker-text" style="left:30%;top:45%;--rot:-5deg">CONNECTED??</div>
+<div class="marker-text" style="left:55%;top:22%;--rot:3deg;color:#0066cc">FOLLOW THE COMMITS</div>
+<div class="marker-text" style="left:40%;top:70%;--rot:-2deg">WHY 42???</div>
+
+</div>
+
+<script>
+// DRAW RED STRINGS
+const canvas=document.getElementById('strings');
+const ctx=canvas.getContext('2d');
+
+function resize(){canvas.width=window.innerWidth;canvas.height=Math.max(document.body.scrollHeight,window.innerHeight)}
+resize();window.addEventListener('resize',resize);
+
+const connections=[
+  ['c0','c2'],['c0','c5'],['c2','c1'],['c3','c0'],['c4','c0'],['c5','c3'],['c1','c3'],['c4','c5'],['c2','c5'],
+];
+
+function getCenter(id){
+  const el=document.getElementById(id);
+  if(!el)return{x:0,y:0};
+  const r=el.getBoundingClientRect();
+  return{x:r.left+r.width/2+window.scrollX,y:r.top+r.height/2+window.scrollY};
+}
+
+function drawStrings(){
+  resize();
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  connections.forEach(([a,b])=>{
+    const p1=getCenter(a),p2=getCenter(b);
+    ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);
+    ctx.strokeStyle='rgba(204,0,0,0.35)';ctx.lineWidth=1.5;ctx.stroke();
+    // Pushpin dots
+    ctx.beginPath();ctx.arc(p1.x,p1.y,3,0,Math.PI*2);ctx.fillStyle='#cc0000';ctx.fill();
+    ctx.beginPath();ctx.arc(p2.x,p2.y,3,0,Math.PI*2);ctx.fillStyle='#cc0000';ctx.fill();
+  });
+}
+
+drawStrings();
+setInterval(drawStrings,500);
+
+// DRAG
+let dragging=null,ox,oy;
+document.querySelectorAll('.card').forEach(c=>{
+  c.addEventListener('mousedown',e=>{dragging=c;ox=e.clientX-c.offsetLeft;oy=e.clientY-c.offsetTop;c.style.zIndex=20;c.style.cursor='grabbing'});
+});
+document.addEventListener('mousemove',e=>{
+  if(!dragging)return;
+  dragging.style.left=(e.clientX-ox)+'px';
+  dragging.style.top=(e.clientY-oy)+'px';
+  drawStrings();
+});
+document.addEventListener('mouseup',()=>{if(dragging){dragging.style.cursor='grab';dragging.style.zIndex=2;dragging=null}});
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

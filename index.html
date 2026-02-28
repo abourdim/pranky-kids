@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WORKSHOP-DIY // COMPLETE SUITE — 115 FILES</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;padding:16px 16px 40px}
+
+.hero{text-align:center;margin-bottom:16px;padding:20px 0}
+.hero .number{font-family:'Syne',sans-serif;font-size:clamp(48px,12vw,80px);font-weight:800;background:linear-gradient(180deg,#ffd700,#ff8800,#ff0066);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.hero .label{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#ffd700;letter-spacing:4px;margin-top:-2px}
+.hero .sub{font-size:8px;color:rgba(255,215,0,.15);letter-spacing:3px;margin-top:4px}
+
+.stats{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.stat{text-align:center;padding:6px 14px;border:1px solid rgba(255,215,0,.04);border-radius:4px;background:rgba(255,215,0,.01)}
+.stat .n{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#ffd700}
+.stat .l{font-size:6px;color:rgba(255,215,0,.15);letter-spacing:1px}
+
+/* SEARCH */
+.search{max-width:500px;margin:0 auto 12px;position:relative}
+.search input{width:100%;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:10px 14px 10px 32px;color:#fff;font-family:inherit;font-size:11px;outline:none}
+.search input::placeholder{color:rgba(255,255,255,.1)}
+.search input:focus{border-color:rgba(255,215,0,.15)}
+.search::before{content:'🔍';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px}
+
+/* FILTERS */
+.filters{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.filter{padding:4px 10px;border-radius:12px;border:1px solid rgba(255,255,255,.04);font-size:8px;color:rgba(255,255,255,.2);cursor:pointer;transition:all .2s;letter-spacing:.5px}
+.filter:hover,.filter.active{border-color:rgba(255,215,0,.2);color:#ffd700;background:rgba(255,215,0,.03)}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px;max-width:1000px;margin:0 auto}
+
+.card{padding:10px;border:1px solid rgba(255,255,255,.03);border-radius:6px;background:rgba(255,255,255,.01);cursor:pointer;transition:all .2s;text-decoration:none;color:inherit;display:flex;flex-direction:column}
+.card:hover{border-color:rgba(255,215,0,.1);background:rgba(255,215,0,.02);transform:translateY(-1px)}
+.card .top{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.card .emoji{font-size:18px}
+.card .name{font-size:10px;font-weight:700;color:rgba(255,255,255,.5);flex:1}
+.card .cat-badge{font-size:6px;padding:1px 6px;border-radius:8px;letter-spacing:.5px}
+.card .desc{font-size:8px;color:rgba(255,255,255,.15);line-height:1.8;flex:1}
+
+/* CATEGORY COLORS */
+.c-social{border-color:rgba(0,170,255,.15);color:#0af}
+.c-tv{border-color:rgba(255,0,102,.15);color:#ff0066}
+.c-game{border-color:rgba(0,204,102,.15);color:#00cc66}
+.c-doc{border-color:rgba(255,170,0,.15);color:#ffaa00}
+.c-gallery{border-color:rgba(153,102,255,.15);color:#9966ff}
+.c-story{border-color:rgba(255,136,170,.15);color:#ff88aa}
+.c-data{border-color:rgba(0,204,204,.15);color:#00cccc}
+.c-media{border-color:rgba(255,204,0,.15);color:#ffcc00}
+.c-video{border-color:rgba(255,102,0,.15);color:#ff6600}
+.c-meta{border-color:rgba(136,136,136,.15);color:#888}
+
+.count-display{text-align:center;margin:10px 0;font-size:9px;color:rgba(255,255,255,.1)}
+
+.footer{text-align:center;margin-top:16px;font-size:6px;color:rgba(255,215,0,.06);letter-spacing:1px;line-height:2.4}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="hero">
+  <div class="number">115</div>
+  <div class="label">WORKSHOP-DIY FILES</div>
+  <div class="sub">THE COMPLETE CREATIVE UNIVERSE · OPEN ANY FILE TO EXPLORE</div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="n">115</div><div class="l">HTML FILES</div></div>
+  <div class="stat"><div class="n">39</div><div class="l">REAL APPS</div></div>
+  <div class="stat"><div class="n">65+</div><div class="l">UNIQUE FORMATS</div></div>
+  <div class="stat"><div class="n">12</div><div class="l">SESSIONS</div></div>
+  <div class="stat"><div class="n">0</div><div class="l">INSTALLS</div></div>
+</div>
+
+<div class="search"><input type="text" id="search" placeholder="Search files..." oninput="filterCards()"></div>
+
+<div class="filters" id="filters"></div>
+
+<div class="count-display">Showing <span id="showing">115</span> of 115 files</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="footer">
+  WORKSHOP-DIY · ASSOCIATION LOI 1901 · FRANCE 🇫🇷<br>
+  39 APPS · 7 DOMAINS · 115 FILES · 0 INSTALLATIONS · ∞ POSSIBILITIES<br>
+  ALL FILES SELF-CONTAINED · JUST OPEN IN A BROWSER · BUGS ARE FEATURES · password123
+</div>
+
+<script>
+const FILES=[
+// SOCIAL MEDIA PARODIES
+{f:"tiktok",n:"TikTok Feed",e:"📱",d:"Vertical scrolling WKSHPtok with likes, comments, sounds",c:"social"},
+{f:"tinder",n:"Tinder for Apps",e:"🔥",d:"Swipe right on your favorite app. Match & chat.",c:"social"},
+{f:"discord-chat",n:"Discord Chat",e:"💬",d:"Fake Discord server with channels and bot messages",c:"social"},
+{f:"reddit",n:"Reddit Thread",e:"🗣️",d:"r/WorkshopDIY subreddit with upvotes and comments",c:"social"},
+{f:"linkedin",n:"LinkedIn Profile",e:"💼",d:"Professional profile page for Workshop-DIY",c:"social"},
+{f:"github-profile",n:"GitHub Profile",e:"🐙",d:"GitHub profile with contribution graph and repos",c:"social"},
+{f:"hacker-news",n:"Hacker News",e:"🟧",d:"HN front page with Workshop-DIY stories",c:"social"},
+{f:"wikipedia",n:"Wikipedia Article",e:"📖",d:"Full encyclopedia entry for Workshop-DIY",c:"social"},
+{f:"app-store",n:"App Store",e:"📲",d:"Mobile app store listing for all 39 apps",c:"social"},
+{f:"wrapped-2025",n:"Spotify Wrapped",e:"🎵",d:"2025 year in review, Spotify style",c:"social"},
+{f:"maps-reviews",n:"Google Maps Reviews",e:"📍",d:"Business listing with reviews from apps",c:"social"},
+{f:"iphone",n:"iPhone Home Screen",e:"📱",d:"iOS-style home screen with app icons",c:"social"},
+{f:"vscode",n:"VS Code Editor",e:"💻",d:"Code editor with Workshop-DIY source code",c:"social"},
+{f:"bio-gen",n:"Social Bio Generator",e:"✍️",d:"Generate bios for any Workshop-DIY app",c:"social"},
+{f:"social-media-kit",n:"Social Media Kit",e:"📦",d:"Complete branding kit with templates",c:"social"},
+
+// TV / FILM / SHOW
+{f:"breaking-news",n:"Breaking News",e:"📺",d:"Live news broadcast about Bug #42 escape",c:"tv"},
+{f:"weather",n:"Weather Forecast",e:"🌤️",d:"Tech weather with humidity, bugs, and BLE fog",c:"tv"},
+{f:"court-trial",n:"Court Trial",e:"⚖️",d:"The People v. Bug #42 — courtroom drama",c:"tv"},
+{f:"trial",n:"Trial Transcript",e:"📜",d:"Full trial proceedings of Bug #42",c:"tv"},
+{f:"shark-tank",n:"Shark Tank",e:"🦈",d:"60-second pitch timer with shark investors",c:"tv"},
+{f:"bugchelor",n:"The Bug-chelor",e:"🌹",d:"Dating show with Bug #42 choosing a partner",c:"tv"},
+{f:"infomercial",n:"QVC Infomercial",e:"📞",d:"Shopping channel with price slashing countdown",c:"tv"},
+{f:"emergency-alert",n:"Emergency Alert",e:"🚨",d:"EBS broadcast: Bug #42 reclassified as Feature",c:"tv"},
+{f:"movie-credits",n:"Movie Credits",e:"🎬",d:"Star Wars crawl + Hollywood end credits",c:"tv"},
+{f:"awards",n:"The WKSHPies",e:"🏆",d:"Award ceremony with envelope reveals & confetti",c:"tv"},
+{f:"rap-battle",n:"Rap Battle",e:"🎤",d:"bit-bot vs Bug #42 lyrical showdown",c:"tv"},
+{f:"scoreboard",n:"Sports Broadcast",e:"📊",d:"Live scoreboard: Robots vs Hackers",c:"tv"},
+
+// GAMES / INTERACTIVE
+{f:"arcade",n:"Arcade Cabinet",e:"🕹️",d:"Retro arcade with multiple mini-games",c:"game"},
+{f:"text-adventure",n:"Text Adventure",e:"⌨️",d:"Zork-style interactive fiction with rooms & puzzles",c:"game"},
+{f:"escape-room",n:"Escape Room",e:"🔓",d:"Solve puzzles to escape the server room",c:"game"},
+{f:"crossword",n:"Crossword Puzzle",e:"✏️",d:"Interactive 10×10 crossword with check/reveal",c:"game"},
+{f:"bingo",n:"Workshop Bingo",e:"🎯",d:"Bingo card for workshop moments",c:"game"},
+{f:"jeopardy",n:"Jeopardy!",e:"❓",d:"Quiz show with Workshop-DIY categories",c:"game"},
+{f:"slot-machine",n:"Slot Machine",e:"🎰",d:"Pull the lever for random app combos",c:"game"},
+{f:"ctf-quiz",n:"CTF Quiz",e:"🏴",d:"Capture-the-flag style hacking quiz",c:"game"},
+{f:"dungeon",n:"Dungeon Crawler",e:"⚔️",d:"RPG dungeon with app enemies and loot",c:"game"},
+{f:"bug-or-feature",n:"Bug or Feature?",e:"🐛",d:"Swipe cards to classify 20 anomalies",c:"game"},
+{f:"compatibility",n:"Compatibility Test",e:"💕",d:"10-question personality quiz with % match",c:"game"},
+{f:"mad-libs",n:"Mad Libs",e:"📝",d:"Fill-in-the-blank tech story generator",c:"game"},
+{f:"gacha",n:"Gacha Pull",e:"🎲",d:"Loot box pulls for app characters",c:"game"},
+{f:"monopoly",n:"Monopoly Board",e:"🎩",d:"Board game with app properties",c:"game"},
+{f:"app-match",n:"App Match",e:"🃏",d:"Memory matching card game with apps",c:"game"},
+{f:"ouija",n:"Ouija Board",e:"🔮",d:"Ask Bug #42 questions via planchette",c:"game"},
+{f:"fortune-cookie",n:"Fortune Cookie",e:"🥠",d:"Crack cookies for tech fortunes",c:"game"},
+
+// DOCUMENTS / REPORTS
+{f:"paper",n:"Academic Paper",e:"📄",d:"Peer-reviewed paper on Bug #42 classification",c:"doc"},
+{f:"forensic-report",n:"Forensic Report",e:"🔬",d:"USB cable autopsy — cause of death",c:"doc"},
+{f:"police-report",n:"Police Report",e:"🚔",d:"Incident report: 39 apps deployed without npm",c:"doc"},
+{f:"classified-dossier",n:"Classified Dossier",e:"🔒",d:"Top secret files on Workshop-DIY operations",c:"doc"},
+{f:"scp-file",n:"SCP Foundation File",e:"⬛",d:"SCP-042 containment procedures",c:"doc"},
+{f:"newspaper",n:"Newspaper",e:"📰",d:"Front page coverage of Workshop-DIY",c:"doc"},
+{f:"blueprints",n:"Blueprints",e:"📐",d:"Technical drawings of bit-bot architecture",c:"doc"},
+{f:"cookbook",n:"Cookbook",e:"👨‍🍳",d:"Recipes for tech dishes with code ingredients",c:"doc"},
+{f:"report-card",n:"Report Card",e:"🎓",d:"School grades for every app",c:"doc"},
+{f:"warranty",n:"Warranty Card",e:"📋",d:"bit-bot warranty — what IS and ISN'T covered",c:"doc"},
+{f:"detention",n:"Detention Slips",e:"⚠️",d:"Disciplinary forms for misbehaving apps",c:"doc"},
+{f:"ikea-manual",n:"IKEA Manual",e:"🔧",d:"BÖTRÖBT assembly guide with stick figures",c:"doc"},
+{f:"safety-card",n:"Safety Card",e:"✈️",d:"Airline-style emergency procedures",c:"doc"},
+{f:"safety-card-v2",n:"Safety Card v2",e:"✈️",d:"Updated emergency procedures with more detail",c:"doc"},
+{f:"receipt",n:"Shop Receipt",e:"🧾",d:"Purchase receipt with line items",c:"doc"},
+{f:"pizza-menu",n:"Pizza Menu",e:"🍕",d:"Tech-themed pizza shop with ordering",c:"doc"},
+{f:"wedding",n:"Wedding Invitation",e:"💒",d:"Bug #42 × Feature Status — ceremony invite",c:"doc"},
+{f:"passport",n:"Passport",e:"🛂",d:"Travel document with domain visa stamps",c:"doc"},
+{f:"real-estate",n:"Real Estate Listing",e:"🏠",d:"Zillow-style listing for Workshop-DIY HQ",c:"doc"},
+{f:"ransom-note",n:"Ransom Note",e:"✂️",d:"Cut-out letter demands from Bug #42",c:"doc"},
+{f:"diary",n:"Bug #42 Diary",e:"📓",d:"Private journal entries — creation to trial",c:"doc"},
+
+
+// GALLERIES / COLLECTIONS
+{f:"card-collection",n:"Trading Cards",e:"🃏",d:"Collectible cards for every app",c:"gallery"},
+{f:"sticker-sheet",n:"Sticker Sheet",e:"🏷️",d:"Printable stickers with app logos",c:"gallery"},
+{f:"periodic-table",n:"Periodic Table",e:"⚗️",d:"Elements of Workshop-DIY technology",c:"gallery"},
+{f:"pokedex",n:"Pokédex",e:"📕",d:"Pokémon-style encyclopedia of apps",c:"gallery"},
+{f:"museum",n:"Museum Gallery",e:"🏛️",d:"Art museum with exhibit placards",c:"gallery"},
+{f:"loading-screens",n:"Loading Screens",e:"⏳",d:"Collection of creative loading animations",c:"gallery"},
+{f:"wanted-wall",n:"Wanted Wall",e:"🤠",d:"Wild West bounty posters for apps",c:"gallery"},
+{f:"testimonials",n:"Testimonials",e:"💬",d:"User reviews and endorsements",c:"gallery"},
+{f:"superlatives",n:"Yearbook Superlatives",e:"🏅",d:'"Most Likely To..." awards for 20 apps',c:"gallery"},
+{f:"yearbook",n:"Yearbook",e:"📸",d:"Class of 2026 yearbook photos",c:"gallery"},
+{f:"license-plates",n:"License Plates",e:"🚗",d:"Vanity plates for each app + custom creator",c:"gallery"},
+{f:"cereal-box",n:"Cereal Box",e:"🥣",d:"Feature Flakes — front & back of box",c:"gallery"},
+{f:"horoscope",n:"Horoscope",e:"♈",d:"Daily tech horoscope for each sign",c:"gallery"},
+{f:"zodiac",n:"Zodiac Chart",e:"⭐",d:"Star sign compatibility for apps",c:"gallery"},
+{f:"in-memoriam",n:"In Memoriam",e:"🕯️",d:"Obituaries for fallen hardware",c:"gallery"},
+{f:"haiku",n:"Haiku Collection",e:"🌸",d:"20 minimalist tech haikus, click to reveal",c:"gallery"},
+{f:"comic",n:"Comic Strip",e:"💥",d:"6-panel comic: bit-bot's first desk drop",c:"gallery"},
+
+// NARRATIVE / STORY
+{f:"therapy",n:"Therapy Session",e:"🛋️",d:"Bug #42's session with Dr. try{} catch(e){}",c:"story"},
+{f:"creepypasta",n:"Creepypasta",e:"👻",d:"Horror story: The 40th App",c:"story"},
+{f:"conspiracy",n:"Conspiracy Board",e:"📌",d:"Draggable corkboard with red string connections",c:"story"},
+
+// DATA VIZ / DASHBOARDS
+{f:"network-map",n:"Network Map",e:"🌐",d:"Interactive topology of all apps",c:"data"},
+{f:"skill-tree",n:"Skill Tree",e:"🌳",d:"RPG-style learning progression",c:"data"},
+{f:"live-monitor",n:"Live Monitor",e:"📡",d:"Real-time dashboard with system metrics",c:"data"},
+{f:"metro-map",n:"Metro Map",e:"🚇",d:"SVG transit map with 6 lines, 19 stations",c:"data"},
+{f:"timeline",n:"Timeline",e:"📅",d:"Chronological history of Workshop-DIY",c:"data"},
+{f:"stock-market",n:"Stock Market",e:"📈",d:"Real-time ticker for app valuations",c:"data"},
+{f:"space-mission",n:"Space Mission",e:"🚀",d:"NASA mission control for Workshop-DIY launch",c:"data"},
+{f:"nasa-control",n:"NASA Control",e:"🛰️",d:"Mission control dashboard with telemetry",c:"data"},
+{f:"departures",n:"Departure Board",e:"🛫",d:"Airport-style flip board with app flights",c:"data"},
+{f:"kanban",n:"Kanban Board",e:"📋",d:"Project management board with tasks",c:"data"},
+
+// AUDIO / MEDIA
+{f:"synth-visualizer",n:"Synth Visualizer",e:"🎹",d:"Audio visualizer with waveforms",c:"media"},
+{f:"music-player",n:"Music Player",e:"🎧",d:"Spotify-style player with Workshop playlists",c:"media"},
+{f:"tamagotchi",n:"Tamagotchi",e:"🥚",d:"Virtual pet — raise your own bit-bot",c:"media"},
+{f:"festival",n:"Festival Poster",e:"🎪",d:"WKSHPCHELLA lineup — 3-day music festival",c:"media"},
+{f:"ambient-screen",n:"Ambient Screen",e:"🌊",d:"Relaxing animated background",c:"media"},
+
+// VIDEO / ANIMATION
+{f:"roadmap-video-fr",n:"Roadmap Video (FR)",e:"🇫🇷",d:"French roadmap presentation video",c:"video"},
+{f:"genius-video",n:"Genius Video",e:"💡",d:"Genius-style lyric breakdown video",c:"video"},
+{f:"genius-video-animation",n:"Genius Animated",e:"🎞️",d:"Animated version of genius breakdown",c:"video"},
+{f:"app-demo-reel",n:"Demo Reel",e:"🎥",d:"Showcase reel of all apps in action",c:"video"},
+{f:"ultimate-video",n:"Ultimate Video",e:"🎬",d:"Full promotional video experience",c:"video"},
+{f:"boot-sequence",n:"Boot Sequence",e:"💾",d:"Terminal boot animation for Workshop-DIY OS",c:"video"},
+{f:"video-concept-preview",n:"Video Preview",e:"📹",d:"Storyboard concept for promo video",c:"video"},
+{f:"elevator-pitch",n:"Elevator Pitch",e:"🏢",d:"60-second animated pitch deck",c:"video"},
+{f:"genius-ideas-lab",n:"Ideas Lab",e:"🧪",d:"Creative brainstorming visualizer",c:"video"},
+
+// META
+{f:"master-hub",n:"Master Hub",e:"🏠",d:"Central navigation hub (original)",c:"meta"},
+{f:"100",n:"File #100 Celebration",e:"🎉",d:"Fireworks & stats for the 100th file",c:"meta"},
+{f:"hacker-presentation",n:"Hacker Presentation",e:"🖥️",d:"Slide deck in hacker aesthetic",c:"meta"},
+{f:"hacker-terminal",n:"Hacker Terminal",e:"⌨️",d:"Interactive terminal with easter eggs",c:"meta"},
+{f:"os-desktop",n:"OS Desktop",e:"🖥️",d:"Fake desktop OS with app windows",c:"meta"},
+{f:"advent",n:"Advent Calendar",e:"🎄",d:"25 doors with Workshop-DIY surprises",c:"meta"},
+];
+
+const CATS={
+  social:{label:"Social Media",color:"#0af",count:0},
+  tv:{label:"TV / Film",color:"#ff0066",count:0},
+  game:{label:"Games",color:"#00cc66",count:0},
+  doc:{label:"Documents",color:"#ffaa00",count:0},
+  gallery:{label:"Gallery",color:"#9966ff",count:0},
+  story:{label:"Narrative",color:"#ff88aa",count:0},
+  data:{label:"Data Viz",color:"#00cccc",count:0},
+  media:{label:"Audio/Media",color:"#ffcc00",count:0},
+  video:{label:"Video",color:"#ff6600",count:0},
+  meta:{label:"Meta",color:"#888",count:0},
+};
+
+FILES.forEach(f=>CATS[f.c].count++);
+
+// RENDER FILTERS
+const filtersEl=document.getElementById('filters');
+filtersEl.innerHTML=`<div class="filter active" data-cat="all" onclick="setFilter('all')">All (${FILES.length})</div>`+
+  Object.entries(CATS).map(([k,v])=>
+    `<div class="filter" data-cat="${k}" onclick="setFilter('${k}')" style="border-color:${v.color}30">${v.label} (${v.count})</div>`
+  ).join('');
+
+let activeCat='all';
+function setFilter(cat){
+  activeCat=cat;
+  document.querySelectorAll('.filter').forEach(f=>{
+    f.classList.toggle('active',f.dataset.cat===cat);
+  });
+  filterCards();
+}
+
+// RENDER GRID
+const grid=document.getElementById('grid');
+function renderGrid(list){
+  grid.innerHTML=list.map(f=>{
+    const cat=CATS[f.c];
+    return `<a class="card" href="workshop-diy-${f.f}.html" data-cat="${f.c}" data-name="${f.n.toLowerCase()} ${f.f} ${f.d.toLowerCase()}">
+      <div class="top">
+        <span class="emoji">${f.e}</span>
+        <span class="name">${f.n}</span>
+        <span class="cat-badge c-${f.c}" style="border:1px solid ${cat.color}30;color:${cat.color}">${cat.label}</span>
+      </div>
+      <div class="desc">${f.d}</div>
+    </a>`;
+  }).join('');
+  document.getElementById('showing').textContent=list.length;
+}
+
+function filterCards(){
+  const q=document.getElementById('search').value.toLowerCase();
+  const filtered=FILES.filter(f=>{
+    const matchCat=activeCat==='all'||f.c===activeCat;
+    const matchSearch=!q||f.n.toLowerCase().includes(q)||f.f.includes(q)||f.d.toLowerCase().includes(q);
+    return matchCat&&matchSearch;
+  });
+  renderGrid(filtered);
+}
+
+renderGrid(FILES);
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

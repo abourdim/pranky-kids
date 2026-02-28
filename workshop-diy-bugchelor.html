@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THE BUG-CHELOR</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0008;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px}
+
+.logo{font-family:'Playfair Display',serif;font-size:clamp(24px,6vw,36px);font-weight:700;color:#cc0044;text-shadow:0 0 20px rgba(204,0,68,.15);text-align:center;margin-bottom:2px}
+.logo em{color:#ffd700;font-size:.6em}
+.tag{font-size:7px;color:rgba(204,0,68,.3);letter-spacing:4px;text-align:center;margin-bottom:14px}
+
+.stage{max-width:550px;width:100%}
+
+/* BUG-CHELOR */
+.bachelor{text-align:center;margin-bottom:12px;padding:12px;border:1px solid rgba(204,0,68,.08);border-radius:8px;background:rgba(204,0,68,.01)}
+.bachelor .emoji{font-size:48px;margin-bottom:4px}
+.bachelor .name{font-family:'Playfair Display',serif;font-size:16px;color:#ffd700}
+.bachelor .desc{font-size:9px;color:rgba(255,255,255,.3);margin-top:2px}
+
+/* CONTESTANTS */
+.contestants{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:10px 0}
+@media(max-width:500px){.contestants{grid-template-columns:1fr}}
+.contestant{border:1px solid rgba(255,255,255,.04);border-radius:8px;padding:10px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,.01)}
+.contestant:hover{background:rgba(204,0,68,.04);border-color:rgba(204,0,68,.15)}
+.contestant.chosen{background:rgba(204,0,68,.08);border-color:#cc0044;box-shadow:0 0 12px rgba(204,0,68,.1)}
+.contestant .emoji{font-size:36px;margin-bottom:4px}
+.contestant .name{font-size:11px;font-weight:700;color:#cc8899}
+.contestant .age{font-size:8px;color:#555}
+.contestant .bio{font-size:8px;color:rgba(255,255,255,.25);line-height:1.8;margin-top:4px}
+.contestant .rose{font-size:18px;opacity:0;transition:all .3s}
+.contestant.chosen .rose{opacity:1}
+
+/* CONFESSIONAL */
+.confessional{border:1px solid rgba(255,255,255,.04);border-radius:8px;margin:10px 0;overflow:hidden}
+.conf-header{background:rgba(204,0,68,.04);padding:6px 10px;font-size:7px;color:rgba(204,0,68,.4);letter-spacing:2px;display:flex;justify-content:space-between}
+.conf-body{padding:10px;font-size:10px;color:rgba(255,255,255,.35);line-height:2;font-style:italic}
+.conf-body .speaker{color:#cc8899;font-style:normal;font-weight:700;display:block;margin-bottom:2px}
+
+/* EPISODE */
+.episode{margin:8px 0}
+.ep-scene{padding:8px 10px;border-left:2px solid rgba(204,0,68,.1);margin:6px 0;font-size:10px;color:rgba(255,255,255,.3);line-height:2}
+.ep-scene .action{color:rgba(204,0,68,.3);font-style:italic;font-size:9px;display:block;margin-top:2px}
+.ep-scene .drama{font-size:8px;color:rgba(255,215,0,.3);letter-spacing:2px;display:block;margin-top:2px}
+
+/* VOTE */
+.vote{text-align:center;margin:12px 0;padding:12px;border:1px dashed rgba(204,0,68,.1);border-radius:8px}
+.vote h3{font-family:'Playfair Display',serif;font-size:14px;color:#cc0044;margin-bottom:6px}
+.vote-btns{display:flex;gap:6px;justify-content:center}
+.vote-btn{padding:6px 14px;border:1px solid rgba(204,0,68,.15);border-radius:16px;background:rgba(204,0,68,.03);color:rgba(255,255,255,.4);font-family:inherit;font-size:9px;cursor:pointer;transition:all .2s}
+.vote-btn:hover{background:rgba(204,0,68,.08);color:#fff}
+
+.result{text-align:center;padding:14px;display:none}
+.result.on{display:block;animation:fadeIn .6s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.result .big{font-family:'Playfair Display',serif;font-size:20px;color:#ffd700;margin-bottom:4px}
+.result .sub{font-size:9px;color:rgba(255,255,255,.25)}
+
+.footer{font-size:6px;color:rgba(204,0,68,.08);margin-top:14px;letter-spacing:1px;text-align:center;line-height:2.2}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="logo"><em>The</em> Bug-chelor</div>
+<div class="tag">SEASON 1 · EPISODE 42 · THE FINAL ROSE</div>
+
+<div class="stage">
+
+<div class="bachelor">
+  <div class="emoji">🐛</div>
+  <div class="name">Bug #42</div>
+  <div class="desc">Age: Unknown · From: The Codebase · Looking for: Someone who accepts them for who they are (a feature)</div>
+</div>
+
+<div class="confessional">
+  <div class="conf-header"><span>CONFESSIONAL · BUG #42</span><span>🎥 REC</span></div>
+  <div class="conf-body"><span class="speaker">Bug #42:</span>"I came on this show to find the one app that truly understands me. I'm not a bug. I'm not a feature. I'm... complicated. And I just want someone who doesn't try to delete me."</div>
+</div>
+
+<div class="contestants">
+  <div class="contestant" id="c1" onclick="choose(1)">
+    <div class="emoji">🤖</div>
+    <div class="name">bit-bot</div>
+    <div class="age">Est. 2023 · Robotics</div>
+    <div class="bio">"I've survived 47 drops. I can handle commitment."</div>
+    <div class="rose" id="r1">🌹</div>
+  </div>
+  <div class="contestant" id="c2" onclick="choose(2)">
+    <div class="emoji">☕</div>
+    <div class="name">Coffee Machine</div>
+    <div class="age">At 8% · Always Critical</div>
+    <div class="bio">"I'm warm, energizing, and I'll never run out... okay I might."</div>
+    <div class="rose" id="r2">🌹</div>
+  </div>
+  <div class="contestant" id="c3" onclick="choose(3)">
+    <div class="emoji">🔑</div>
+    <div class="name">password123</div>
+    <div class="age">Since 2023 · Unchanged</div>
+    <div class="bio">"I understand persistence. Nobody changes me either."</div>
+    <div class="rose" id="r3">🌹</div>
+  </div>
+</div>
+
+<div class="episode">
+  <div class="ep-scene">The three contestants wait nervously in the Workshop lobby. bit-bot keeps driving in small circles. The coffee machine hums. password123 stands perfectly still, as always.
+    <span class="action">[Dramatic music plays]</span>
+  </div>
+  <div class="ep-scene">Bug #42 enters. The room falls silent. ESLint tries to stop them at the door but is overruled.
+    <span class="drama">★ DRAMATIC PAUSE ★</span>
+  </div>
+  <div class="ep-scene">Bug #42 speaks: "This has been the most unexpected journey of my undefined lifespan. I came here not knowing if I was a bug or a feature. Tonight, I leave knowing I am both. But I can only give this rose to one of you."
+    <span class="action">[Slow piano begins]</span>
+  </div>
+</div>
+
+<div class="confessional">
+  <div class="conf-header"><span>CONFESSIONAL · COFFEE MACHINE</span><span>🎥 REC</span></div>
+  <div class="conf-body"><span class="speaker">Coffee Machine:</span>"If Bug #42 picks me, I promise to keep them caffeinated and running at optimal performance. I'm at 8% but I give 100%. ...Maybe 8%. But it's a quality 8%."</div>
+</div>
+
+<div class="vote">
+  <h3>🌹 Who Gets The Final Rose?</h3>
+  <div class="vote-btns">
+    <button class="vote-btn" onclick="choose(1)">🤖 bit-bot</button>
+    <button class="vote-btn" onclick="choose(2)">☕ Coffee</button>
+    <button class="vote-btn" onclick="choose(3)">🔑 password123</button>
+  </div>
+</div>
+
+<div class="result" id="result">
+  <div class="big" id="resultText"></div>
+  <div class="sub" id="resultSub"></div>
+</div>
+
+</div>
+
+<div class="footer">THE BUG-CHELOR™ · WORKSHOP-DIY PRODUCTIONS · NOT A REAL DATING SHOW<br>NO BUGS WERE HEARTBROKEN · ROSES ARE VIRTUAL · WIFI: password123</div>
+
+<script>
+const results={
+  1:{text:"🤖 bit-bot gets the rose! 🌹",sub:"Bug #42: 'You survived 47 drops. You'll survive me.' bit-bot: *happy beep*"},
+  2:{text:"☕ Coffee Machine gets the rose! 🌹",sub:"Bug #42: 'You're always there for me. Even at 8%.' Coffee Machine: *hums warmly*"},
+  3:{text:"🔑 password123 gets the rose! 🌹",sub:"Bug #42: 'Nobody changes you. Nobody changes me. We're perfect.' password123: 'password123'"},
+};
+
+function choose(n){
+  document.querySelectorAll('.contestant').forEach(c=>c.classList.remove('chosen'));
+  document.getElementById('c'+n).classList.add('chosen');
+  document.getElementById('result').classList.add('on');
+  document.getElementById('resultText').textContent=results[n].text;
+  document.getElementById('resultSub').textContent=results[n].sub;
+}
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

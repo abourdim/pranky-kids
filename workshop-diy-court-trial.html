@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // THE TRIAL</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a12;color:#c8d0e0;font-family:'Lora',serif;font-size:13px;line-height:2;padding:20px}
+.doc{max-width:680px;margin:0 auto;background:#0e0e1a;border:1px solid rgba(255,215,0,.06);border-radius:8px;padding:24px 28px;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+
+.seal{text-align:center;margin-bottom:16px}
+.seal-emoji{font-size:40px}
+.seal-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#ffd700;letter-spacing:2px;text-shadow:0 0 10px rgba(255,215,0,.1)}
+.seal-sub{font-size:9px;color:rgba(255,215,0,.25);letter-spacing:3px;font-family:'JetBrains Mono',monospace}
+.seal-line{height:1px;background:linear-gradient(90deg,transparent,rgba(255,215,0,.1),transparent);margin:8px 0}
+
+.case-header{text-align:center;margin-bottom:16px;font-family:'JetBrains Mono',monospace}
+.case-num{font-size:8px;color:rgba(255,215,0,.2);letter-spacing:3px}
+.case-title{font-size:16px;font-weight:700;color:#ffd700;margin:4px 0}
+.case-vs{font-size:10px;color:rgba(255,215,0,.3);font-style:italic}
+
+.section-h{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#ffd700;border-bottom:1px solid rgba(255,215,0,.06);padding-bottom:3px;margin:16px 0 8px;letter-spacing:1px}
+
+.dialog{margin:6px 0;padding-left:16px;border-left:2px solid rgba(255,215,0,.04)}
+.speaker{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:1px}
+.speaker.judge{color:#ffd700}.speaker.pros{color:#ff4444}.speaker.def{color:#44aaff}.speaker.wit{color:#44ff88}.speaker.jury{color:#ff88ff}
+.speech{color:rgba(200,208,224,.6);font-size:12px;margin-bottom:8px}
+.speech i{color:rgba(200,208,224,.35)}
+.speech b{color:#ffd700}
+
+.objection{background:rgba(255,0,0,.03);border:1px solid rgba(255,0,0,.08);border-radius:4px;padding:6px 10px;margin:6px 0;font-family:'JetBrains Mono',monospace;font-size:10px;color:#ff4444}
+.sustained{color:#ffd700}.overruled{color:#44aaff}
+
+.verdict{text-align:center;margin:16px 0;padding:16px;border:2px solid rgba(255,215,0,.1);border-radius:6px;background:rgba(255,215,0,.01)}
+.verdict-label{font-family:'Syne',sans-serif;font-size:14px;color:#ffd700;letter-spacing:3px;margin-bottom:4px}
+.verdict-text{font-size:14px;font-weight:700;color:#44ff88}
+
+.exhibit{background:rgba(0,255,65,.02);border:1px solid rgba(0,255,65,.06);border-radius:4px;padding:8px;margin:8px 0;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(0,255,65,.4)}
+.exhibit-label{font-size:7px;color:rgba(0,255,65,.2);letter-spacing:2px;margin-bottom:2px}
+
+.footer{text-align:center;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:6px;color:rgba(255,215,0,.1);letter-spacing:2px;line-height:2.5}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="doc">
+
+<div class="seal">
+  <div class="seal-emoji">⚖️</div>
+  <div class="seal-title">SUPREME COURT OF WORKSHOP-DIY</div>
+  <div class="seal-sub">DISTRICT OF FRANCE · LOI 1901 JURISDICTION</div>
+  <div class="seal-line"></div>
+</div>
+
+<div class="case-header">
+  <div class="case-num">CASE NO. WKSHP-2025-042</div>
+  <div class="case-title">THE PEOPLE v. BUG #42</div>
+  <div class="case-vs">On the matter of whether bugs constitute features</div>
+</div>
+
+<div class="section-h">I. OPENING STATEMENTS</div>
+
+<div class="dialog">
+  <div class="speaker judge">JUDGE TERMINAL — PRESIDING</div>
+  <div class="speech">Court is now in session. The defendant, <b>Bug #42</b>, stands accused of masquerading as a software feature within the Workshop-DIY ecosystem. The prosecution may proceed.</div>
+</div>
+
+<div class="dialog">
+  <div class="speaker pros">PROSECUTION — MS. SEGFAULT</div>
+  <div class="speech">Your Honor, the prosecution will demonstrate that Bug #42 is, in fact, a bug — not a feature. It was discovered during a routine code review of the <b>bit-bot</b> application and has since been falsely reclassified by the defendant's co-conspirators. We intend to prove that the Workshop-DIY ecosystem harbors at least 42 such fraudulent "features."</div>
+</div>
+
+<div class="dialog">
+  <div class="speaker def">DEFENSE — MR. HOTFIX</div>
+  <div class="speech">Your Honor, the defense will show that Bug #42 has been a productive member of the codebase for over two years. It has brought joy to users, provided unexpected functionality, and has been embraced by the community. One person's bug is another person's feature. We move to reclassify.</div>
+</div>
+
+<div class="section-h">II. EXAMINATION OF WITNESSES</div>
+
+<div class="dialog">
+  <div class="speaker pros">PROSECUTION</div>
+  <div class="speech">The prosecution calls its first witness: <b>the error log</b>.</div>
+</div>
+
+<div class="exhibit">
+  <div class="exhibit-label">EXHIBIT A — ERROR LOG EXCERPT</div>
+  [2024-11-15 14:23:07] ERROR: Unexpected behavior in bit-bot motor control<br>
+  [2024-11-15 14:23:07] WARNING: Robot spinning in circles instead of forward<br>
+  [2024-11-15 14:23:08] INFO: Student reaction: "This is amazing"<br>
+  [2024-11-15 14:23:08] INFO: Reclassifying as FEATURE #42
+</div>
+
+<div class="dialog">
+  <div class="speaker pros">PROSECUTION</div>
+  <div class="speech">As the court can see, the log clearly states "ERROR" and "Unexpected behavior." The robot was supposed to go forward. It spun in circles. That is a bug.</div>
+</div>
+
+<div class="dialog">
+  <div class="speaker def">DEFENSE</div>
+  <div class="speech">Objection. The log also states the student found it "amazing." The court cannot ignore the human element.</div>
+</div>
+
+<div class="objection">⚠️ OBJECTION — <span class="overruled">OVERRULED</span>. The court will hear the testimony.</div>
+
+<div class="dialog">
+  <div class="speaker wit">WITNESS — LUCAS, AGE 10, WORKSHOP PARTICIPANT</div>
+  <div class="speech">The robot was supposed to go straight but it started spinning and I thought it was a dance move. I showed all my friends. We made it do it again on purpose. It was the best part of the workshop.</div>
+</div>
+
+<div class="dialog">
+  <div class="speaker pros">PROSECUTION</div>
+  <div class="speech">Lucas, did anyone tell you it was supposed to go in a straight line?</div>
+</div>
+
+<div class="dialog">
+  <div class="speaker wit">WITNESS — LUCAS</div>
+  <div class="speech">No. I thought robots were supposed to dance. All the cool ones do.</div>
+</div>
+
+<div class="dialog">
+  <div class="speaker pros">PROSECUTION</div>
+  <div class="speech"><i>sighs</i> No further questions.</div>
+</div>
+
+<div class="section-h">III. EXPERT TESTIMONY</div>
+
+<div class="dialog">
+  <div class="speaker def">DEFENSE</div>
+  <div class="speech">The defense calls <b>Dr. Stack Overflow</b>, expert in software classification.</div>
+</div>
+
+<div class="dialog">
+  <div class="speaker wit">WITNESS — DR. STACK OVERFLOW</div>
+  <div class="speech">In my professional opinion, the distinction between a bug and a feature is entirely contextual. The Linux kernel itself contains behaviors that were initially bugs but are now documented features relied upon by millions. If users expect it, enjoy it, and would complain if you removed it — it's a feature.</div>
+</div>
+
+<div class="dialog">
+  <div class="speaker pros">PROSECUTION</div>
+  <div class="speech">Dr. Overflow, would you classify a WiFi password that has been <b>password123</b> for three years as a bug or a feature?</div>
+</div>
+
+<div class="dialog">
+  <div class="speaker wit">WITNESS — DR. STACK OVERFLOW</div>
+  <div class="speech"><i>long pause</i> ...I'll plead the fifth on that one.</div>
+</div>
+
+<div class="objection">⚠️ OBJECTION — Relevance! — <span class="sustained">SUSTAINED</span>. The WiFi password is not on trial today.</div>
+
+<div class="section-h">IV. THE WIFI PASSWORD SIDEBAR</div>
+
+<div class="dialog">
+  <div class="speaker judge">JUDGE TERMINAL</div>
+  <div class="speech">While the WiFi password is not formally on trial, the court notes — for the record — that an association teaching cybersecurity while maintaining <b>password123</b> as its WiFi password is, at minimum, <i>poetically ironic</i>. The cybersecurity students' petition to change it has been noted and will be forwarded to the appropriate committee, where it will almost certainly be ignored again.</div>
+</div>
+
+<div class="section-h">V. CLOSING ARGUMENTS</div>
+
+<div class="dialog">
+  <div class="speaker pros">PROSECUTION — MS. SEGFAULT</div>
+  <div class="speech">Your Honor, the code said ERROR. The robot did not do what it was programmed to do. By every technical definition, this is a bug. We cannot let the defendant hide behind the whims of a 10-year-old, however charming his testimony may have been.</div>
+</div>
+
+<div class="dialog">
+  <div class="speaker def">DEFENSE — MR. HOTFIX</div>
+  <div class="speech">Your Honor, Workshop-DIY exists to inspire creativity. Bug #42 inspired more joy than any correctly functioning line of code in the entire repository. It made a child believe robots can dance. If that's a bug, then perhaps we need more bugs in the world.</div>
+</div>
+
+<div class="section-h">VI. VERDICT</div>
+
+<div class="dialog">
+  <div class="speaker judge">JUDGE TERMINAL</div>
+  <div class="speech">The court has deliberated. After reviewing the error logs, hearing witness testimony, and observing that the student's reaction was objectively more important than the developer's intention, this court finds:</div>
+</div>
+
+<div class="verdict">
+  <div class="verdict-label">THE VERDICT</div>
+  <div class="verdict-text">🏛️ NOT GUILTY — Bug #42 is hereby officially reclassified as Feature #42</div>
+</div>
+
+<div class="dialog">
+  <div class="speaker judge">JUDGE TERMINAL</div>
+  <div class="speech">Furthermore, this court orders the Workshop-DIY documentation to be updated accordingly. All 42 bugs are to be reclassified as features, effective immediately. Case dismissed. <i>strikes gavel</i></div>
+</div>
+
+<div class="dialog">
+  <div class="speaker judge">JUDGE TERMINAL</div>
+  <div class="speech"><i>quietly, to the clerk</i> ...and someone please change that WiFi password.</div>
+</div>
+
+<div class="exhibit">
+  <div class="exhibit-label">COURT ORDER WKSHP-2025-042</div>
+  ORDERED: All 42 bugs reclassified as features<br>
+  ORDERED: Documentation to be updated within 30 days<br>
+  ORDERED: The dancing robot behavior to be preserved in perpetuity<br>
+  SUGGESTED: WiFi password change (non-binding, probably ignored)
+</div>
+
+<div class="footer">
+  SUPREME COURT OF WORKSHOP-DIY · CASE WKSHP-2025-042 · SEALED<br>
+  ASSOCIATION LOI 1901 · FRANCE · WORKSHOP-DIY.ORG<br>
+  // THIS DOCUMENT IS LEGALLY BINDING IN ALL FICTIONAL JURISDICTIONS
+</div>
+
+</div>
+  <script src="nav.js"></script>
+</body>
+</html>

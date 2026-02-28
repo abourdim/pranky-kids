@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // FEATURE FLAKES</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Bangers&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#ffcc00;font-family:'JetBrains Mono',monospace;font-size:10px;min-height:100vh;padding:16px;display:flex;flex-direction:column;align-items:center;gap:14px}
+
+.box{width:320px;border-radius:8px;overflow:hidden;box-shadow:4px 4px 16px rgba(0,0,0,.15)}
+
+/* FRONT */
+.front{background:linear-gradient(180deg,#ff3300,#ff6600,#ffcc00);padding:14px;text-align:center;position:relative;min-height:440px}
+.front .badge{position:absolute;top:8px;left:8px;background:#003399;color:#fff;padding:3px 8px;border-radius:10px;font-size:7px;font-weight:700;letter-spacing:1px}
+.front .toy{position:absolute;top:8px;right:8px;background:#ff0066;color:#fff;padding:3px 8px;border-radius:10px;font-size:7px;font-weight:700;letter-spacing:1px}
+
+.front .brand{font-family:'Syne',sans-serif;font-size:10px;color:rgba(255,255,255,.7);letter-spacing:3px;margin-top:20px}
+.front .name{font-family:'Bangers',cursive;font-size:clamp(36px,10vw,48px);color:#fff;text-shadow:3px 3px 0 #cc0000,-1px -1px 0 #cc0000;line-height:1;margin:4px 0}
+.front .sub{font-family:'Bangers',cursive;font-size:16px;color:#003399;margin-bottom:8px}
+.front .mascot{font-size:72px;filter:drop-shadow(4px 4px 8px rgba(0,0,0,.2));margin:6px 0}
+.front .tagline{font-family:'Bangers',cursive;font-size:14px;color:#fff;text-shadow:1px 1px 0 #cc0000}
+.front .serving{background:rgba(255,255,255,.15);border-radius:20px;padding:4px 14px;display:inline-block;margin-top:6px;font-size:8px;color:#fff}
+.front .weight{font-size:7px;color:rgba(255,255,255,.3);margin-top:auto;padding-top:14px}
+
+/* BACK */
+.back{background:#fff;padding:14px}
+.back-title{font-family:'Bangers',cursive;font-size:20px;color:#ff3300;text-align:center;margin-bottom:6px}
+
+/* NUTRITION */
+.nutrition{border:2px solid #333;padding:6px;margin:6px 0}
+.nutrition h3{font-size:12px;font-weight:700;border-bottom:1px solid #333;padding-bottom:2px;margin-bottom:3px}
+.nutrition .serving-info{font-size:8px;color:#555;border-bottom:4px solid #333;padding-bottom:3px;margin-bottom:3px}
+.nut-row{display:flex;justify-content:space-between;padding:1px 0;border-bottom:1px solid #eee;font-size:8px}
+.nut-row.bold{font-weight:700;border-bottom:2px solid #333}
+.nut-row .pct{color:#888}
+
+/* FUN FACTS */
+.fun{margin:8px 0}
+.fun h3{font-family:'Bangers',cursive;font-size:14px;color:#ff6600;margin-bottom:4px}
+.fun-item{font-size:9px;color:#555;line-height:2;padding:2px 0;border-bottom:1px dotted #eee}
+
+/* MAZE */
+.maze{text-align:center;margin:8px 0;padding:8px;background:#fff8f0;border:2px dashed #ffcc00;border-radius:6px}
+.maze h3{font-family:'Bangers',cursive;font-size:12px;color:#ff6600;margin-bottom:4px}
+.maze .desc{font-size:8px;color:#888}
+.maze .grid{display:grid;grid-template-columns:repeat(8,1fr);gap:1px;margin:4px auto;max-width:160px}
+.maze .cell{aspect-ratio:1;background:#f5f0e0;border:1px solid #e0d8c0;font-size:8px;display:flex;align-items:center;justify-content:center}
+.maze .cell.wall{background:#333}
+.maze .cell.start{background:#00cc66;color:#fff;font-weight:700}
+.maze .cell.end{background:#ff3300;color:#fff;font-weight:700}
+
+.ingredients{font-size:6px;color:#aaa;margin-top:8px;line-height:2}
+.footer{font-size:6px;color:#999;text-align:center;margin-top:6px;font-family:'JetBrains Mono',monospace}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<!-- FRONT OF BOX -->
+<div class="box">
+<div class="front">
+  <div class="badge">NEW! 🆕</div>
+  <div class="toy">FREE TOY INSIDE! 🎁</div>
+  <div class="brand">WORKSHOP-DIY PRESENTS</div>
+  <div class="name">FEATURE<br>FLAKES</div>
+  <div class="sub">With Real Bug Bites!</div>
+  <div class="mascot">🐛</div>
+  <div class="tagline">PART OF A COMPLETE CODEBASE!</div>
+  <div class="serving">39 Apps Per Serving · 0 Installations</div>
+  <div class="weight">NET WT 42 oz (1,337g)</div>
+</div>
+</div>
+
+<!-- BACK OF BOX -->
+<div class="box">
+<div class="back">
+  <div class="back-title">🥣 NUTRITION FACTS</div>
+  
+  <div class="nutrition">
+    <h3>Tech Facts</h3>
+    <div class="serving-info">Serving size: 1 browser tab · Servings per box: 39</div>
+    <div class="nut-row bold"><span>Amount Per Serving</span><span class="pct">% Daily Value*</span></div>
+    <div class="nut-row"><span>Apps 39</span><span class="pct">100%</span></div>
+    <div class="nut-row"><span>&nbsp;&nbsp;Robotics 5</span><span class="pct">13%</span></div>
+    <div class="nut-row"><span>&nbsp;&nbsp;AI/ML 4</span><span class="pct">10%</span></div>
+    <div class="nut-row"><span>&nbsp;&nbsp;Cybersecurity 3</span><span class="pct">8%</span></div>
+    <div class="nut-row"><span>Total Installations 0g</span><span class="pct">0%</span></div>
+    <div class="nut-row"><span>npm Packages 0g</span><span class="pct">0%</span></div>
+    <div class="nut-row"><span>Config Files 0g</span><span class="pct">0%</span></div>
+    <div class="nut-row"><span>Bugs 42</span><span class="pct">100%†</span></div>
+    <div class="nut-row"><span>Features 42</span><span class="pct">100%†</span></div>
+    <div class="nut-row"><span>Robot Drops 47</span><span class="pct">🤷</span></div>
+    <div class="nut-row"><span>Coffee (Critical) 8%</span><span class="pct">8%</span></div>
+    <div style="font-size:6px;color:#888;margin-top:3px">* Based on a 39-app educational diet.<br>† Bugs and Features are the same thing.</div>
+  </div>
+
+  <div class="fun">
+    <h3>🤓 DID YOU KNOW?</h3>
+    <div class="fun-item">🤖 bit-bot has survived 47 desk drops! That's more than most phones.</div>
+    <div class="fun-item">🔑 The WiFi password (password123) has been unchanged since 2023. Three petitions denied!</div>
+    <div class="fun-item">🐛 Bug #42 has no author, no date, and no commit hash. Nobody knows where it came from.</div>
+    <div class="fun-item">☕ The coffee machine has brewed 1,337 cups. That's LEET cups of coffee!</div>
+  </div>
+
+  <div class="maze">
+    <h3>🏆 HELP BIT-BOT FIND THE WIFI!</h3>
+    <div class="desc">Navigate from 🤖 to 🔑</div>
+    <div class="grid">
+      <div class="cell start">🤖</div><div class="cell"></div><div class="cell wall"></div><div class="cell"></div><div class="cell"></div><div class="cell wall"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell wall"></div><div class="cell"></div><div class="cell wall"></div><div class="cell"></div><div class="cell wall"></div><div class="cell"></div><div class="cell wall"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell wall"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell wall"></div>
+      <div class="cell wall"></div><div class="cell wall"></div><div class="cell"></div><div class="cell"></div><div class="cell wall"></div><div class="cell wall"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell wall"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell wall"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell wall"></div><div class="cell"></div><div class="cell wall"></div><div class="cell wall"></div><div class="cell"></div><div class="cell"></div><div class="cell end">🔑</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin:6px 0;padding:6px;background:#fff0e0;border-radius:4px;font-family:'Bangers',cursive;font-size:11px;color:#ff6600">🎁 FREE TOY INSIDE: Mini USB-C Cable!<br><span style="font-family:'JetBrains Mono',monospace;font-size:7px;color:#999">(may not survive first use)</span></div>
+
+  <div class="ingredients"><b>INGREDIENTS:</b> HTML5, CSS3, JavaScript (ES6+), Web Bluetooth API, MediaPipe, TensorFlow.js, WebRTC, Canvas API, Service Workers, Web Audio API, SVG, LocalStorage, IndexedDB, Hot Glue (structural), Coffee (critical), Bug #42 (feature), password123 (seasoning). <b>CONTAINS:</b> Traces of Docker. <b>MAY CONTAIN:</b> The 40th app.</div>
+</div>
+</div>
+
+<div class="footer">WKSHP FOODS INC. · NOT ACTUAL FOOD · DO NOT EAT · BUGS ARE FEATURES · password123</div>
+  <script src="nav.js"></script>
+</body>
+</html>

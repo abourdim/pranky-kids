@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>??̷?̴?̵</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Creepster&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#aaa;font-family:'JetBrains Mono',monospace;font-size:12px;min-height:100vh;overflow-x:hidden}
+
+/* GLITCH */
+@keyframes glitch{0%{transform:translate(0)}20%{transform:translate(-2px,1px)}40%{transform:translate(1px,-1px)}60%{transform:translate(-1px,2px)}80%{transform:translate(2px,-1px)}100%{transform:translate(0)}}
+@keyframes flicker{0%,95%,100%{opacity:1}96%{opacity:.1}97%{opacity:.8}98%{opacity:.2}99%{opacity:.6}}
+@keyframes redFlash{0%,100%{color:#aaa}50%{color:#ff0000}}
+@keyframes static{0%{background-position:0 0}100%{background-position:100px 100px}}
+.glitch{animation:glitch .3s infinite}
+.flicker{animation:flicker 4s infinite}
+
+.noise{position:fixed;inset:0;z-index:999;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:static .5s steps(10) infinite}
+
+.container{max-width:600px;margin:0 auto;padding:20px}
+
+/* HEADER */
+.header{text-align:center;padding:30px 0;position:relative}
+.header h1{font-family:'Creepster',cursive;font-size:clamp(28px,6vw,48px);color:#ff0000;text-shadow:0 0 10px rgba(255,0,0,.3),2px 2px 0 #300;letter-spacing:2px}
+.header .sub{font-size:8px;color:#444;letter-spacing:4px;margin-top:4px}
+.header .warn{font-size:9px;color:#660000;border:1px solid #330000;padding:6px 12px;display:inline-block;margin-top:10px;border-radius:2px;background:rgba(255,0,0,.02)}
+
+/* STORY */
+.story{line-height:2.4;color:#777;margin:16px 0}
+.story p{margin-bottom:12px;text-indent:2em}
+.story .highlight{color:#cc0000;font-weight:700}
+.story .redacted{background:#333;color:#333;padding:0 4px;cursor:pointer;transition:all .3s;border-radius:1px;user-select:none}
+.story .redacted:hover,.story .redacted.revealed{background:transparent;color:#ff0000}
+.story .corrupted{font-family:'Creepster',cursive;color:#ff0000;text-shadow:0 0 4px rgba(255,0,0,.3)}
+.story .whisper{font-size:8px;color:#333;font-style:italic}
+.story .timestamp{font-size:8px;color:#222;margin:8px 0;letter-spacing:2px}
+
+/* CHAT LOG */
+.chat{border:1px solid #1a1a1a;border-radius:4px;padding:10px;margin:12px 0;background:#080808}
+.chat-h{font-size:7px;color:#333;letter-spacing:2px;margin-bottom:6px;border-bottom:1px solid #111;padding-bottom:3px}
+.chat-msg{padding:3px 0;font-size:10px;display:flex;gap:6px}
+.chat-msg .user{color:#0066cc;font-weight:700;flex-shrink:0;width:80px}.chat-msg .text{color:#555}
+.chat-msg.sys .user{color:#444}.chat-msg.sys .text{color:#333;font-style:italic}
+.chat-msg.err .user{color:#cc0000}.chat-msg.err .text{color:#660000}
+
+/* TERMINAL */
+.term{background:#050505;border:1px solid #1a1a1a;border-radius:4px;padding:8px;margin:12px 0;font-size:9px;line-height:2}
+.term .prompt{color:#444}
+.term .output{color:#555}
+.term .error{color:#880000}
+
+/* IMAGE PLACEHOLDER */
+.screenshot{border:1px solid #1a1a1a;background:#080808;padding:20px;text-align:center;margin:12px 0;border-radius:4px;position:relative;overflow:hidden}
+.screenshot::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,0,0,.01) 2px,rgba(255,0,0,.01) 4px)}
+.screenshot .emoji{font-size:48px;filter:grayscale(.8) contrast(1.2);margin-bottom:6px}
+.screenshot .caption{font-size:7px;color:#333}
+
+/* FOOTER */
+.footer{text-align:center;margin-top:30px;padding:16px;border-top:1px solid #111}
+.footer p{font-size:8px;color:#222;line-height:2.2}
+.footer .final{font-family:'Creepster',cursive;font-size:16px;color:#440000;margin-top:8px}
+
+/* INTERACTIVE */
+.reveal-btn{background:none;border:1px solid #220000;color:#440000;padding:4px 12px;font-family:inherit;font-size:9px;cursor:pointer;border-radius:2px;transition:all .2s}
+.reveal-btn:hover{background:rgba(255,0,0,.03);color:#880000;border-color:#440000}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="noise"></div>
+<div class="container">
+
+<div class="header">
+  <h1 class="flicker">THE 40TH APP</h1>
+  <div class="sub">A WORKSHOP-DIY CREEPYPASTA</div>
+  <div class="warn">⚠ The following document was found on an unregistered Workshop-DIY development branch. Its authenticity has not been verified.</div>
+</div>
+
+<div class="story">
+  <div class="timestamp">// recovered_log_001.txt — last modified: 2025-??-??</div>
+  
+  <p>Everyone knows Workshop-DIY has <span class="highlight">39 apps</span>. That's what the website says. That's what the documentation says. That's what the instructor says when someone asks.</p>
+  
+  <p>But if you look at the GitHub repository at exactly <span class="highlight">3:42 AM</span>, just for a moment, the counter shows <span class="corrupted">40</span>.</p>
+  
+  <p>I first noticed it during a late-night coding session. I was debugging bit-bot's BLE reconnection issue — the one where Chrome drops the connection if you look away for too long. I glanced at the app index. <span class="redacted" onclick="this.classList.add('revealed')">There were 40 entries.</span></p>
+
+  <p>The 40th app had no name. Its icon was just a <span class="corrupted">black square</span>. Its description read: <span class="redacted" onclick="this.classList.add('revealed')">"This app was never built. This app has always existed."</span></p>
+
+  <p class="whisper">I should have closed the tab.</p>
+</div>
+
+<div class="chat">
+  <div class="chat-h">RECOVERED CHAT LOG — #dev-internal — 03:42 AM</div>
+  <div class="chat-msg"><span class="user">devMaker_01</span><span class="text">hey is anyone else seeing a 40th entry in the app index?</span></div>
+  <div class="chat-msg"><span class="user">devMaker_01</span><span class="text">it wasn't there an hour ago</span></div>
+  <div class="chat-msg"><span class="user">devMaker_01</span><span class="text">the icon is just... black</span></div>
+  <div class="chat-msg sys"><span class="user">[SYSTEM]</span><span class="text">devMaker_02 has joined the channel</span></div>
+  <div class="chat-msg"><span class="user">devMaker_02</span><span class="text">what are you talking about? I count 39</span></div>
+  <div class="chat-msg"><span class="user">devMaker_01</span><span class="text">refresh the page. look at the bottom.</span></div>
+  <div class="chat-msg"><span class="user">devMaker_02</span><span class="text">...</span></div>
+  <div class="chat-msg"><span class="user">devMaker_02</span><span class="text">ok that's weird. but it's probably just a placeholder someone left in</span></div>
+  <div class="chat-msg"><span class="user">devMaker_01</span><span class="text">I checked git blame. there's no commit for it. no author. no timestamp.</span></div>
+  <div class="chat-msg"><span class="user">devMaker_01</span><span class="text">it's like it was always there but hidden</span></div>
+  <div class="chat-msg err"><span class="user">[ERROR]</span><span class="text">Message delivery failed: recipient not found</span></div>
+  <div class="chat-msg err"><span class="user">[ERROR]</span><span class="text">Channel #dev-internal does not exist</span></div>
+</div>
+
+<div class="story">
+  <p>I tried to open the app. The URL was <code style="color:#440000">abourdim.github.io/████████/</code>. The page loaded — but there was nothing there. Just a black screen. No HTML. No JavaScript. No CSS.</p>
+
+  <p>And yet my browser's DevTools showed <span class="highlight">42 network requests</span>.</p>
+
+  <p>All of them returned <span class="corrupted">status 000</span>.</p>
+</div>
+
+<div class="term">
+  <div class="prompt">$ curl -v https://abourdim.github.io/████████/</div>
+  <div class="output">* Trying 185.199.108.153...</div>
+  <div class="output">* Connected</div>
+  <div class="output">* SSL handshake completed</div>
+  <div class="output">> GET /████████/ HTTP/2</div>
+  <div class="error">< HTTP/2 000</div>
+  <div class="error">< content-type: application/x-unknown</div>
+  <div class="error">< x-served-by: ████████████████</div>
+  <div class="error">< x-wkshp-app: 40</div>
+  <div class="error">< x-message: you were not supposed to find this</div>
+  <div class="output">* Connection closed</div>
+</div>
+
+<div class="story">
+  <p>I told the instructor the next day. He looked at me for a long moment. Then he said:</p>
+
+  <p style="text-align:center;font-size:14px;color:#440000;padding:8px;border:1px solid #1a0000;margin:8px 0"><i>"There have always been 39 apps."</i></p>
+
+  <p>I checked the repository again. 39 apps. The 40th was gone.</p>
+
+  <p>But my browser history still showed the URL. And when I hovered over it, the favicon changed to <span class="redacted" onclick="this.classList.add('revealed')">an emoji I had never seen before — something between a robot and a face, but wrong. Like it was looking at me through the screen.</span></p>
+
+  <div class="timestamp">// recovered_log_002.txt — corrupted — partial recovery</div>
+
+  <p>The WiFi password changed that night. Not to something stronger. It changed to <span class="redacted" onclick="this.classList.add('revealed')">forty</span>. Just the word. Lowercase. No one admitted to changing it. By morning, it was back to <code style="color:#440000">password123</code>.</p>
+
+  <p>Bug #42 was filed the same day. No one filed it. It just appeared in the tracker.</p>
+  
+  <p>The description was one line: <span class="corrupted">"I am not a bug. I am not a feature. I am the 40th."</span></p>
+</div>
+
+<div class="screenshot">
+  <div class="emoji glitch">⬛</div>
+  <div class="caption">SCREENSHOT RECOVERED FROM devMaker_01's DEVICE — UNVERIFIED — IMAGE CORRUPTED</div>
+</div>
+
+<div class="story">
+  <p>I deleted my browser cache. I cleared my history. I reformatted my laptop.</p>
+
+  <p>When I opened Chrome again, the homepage was <code style="color:#440000">abourdim.github.io/apps/</code>.</p>
+
+  <p>I had never set that as my homepage.</p>
+
+  <p>I counted the apps. <span class="highlight">39</span>.</p>
+
+  <p class="whisper">But for just a moment, before the page fully loaded, I saw a 40th card at the bottom. It had no emoji. No name. Just a single line of text:</p>
+
+  <p style="text-align:center;font-family:'Creepster',cursive;font-size:20px;color:#660000;animation:redFlash 3s infinite">"I was always here."</p>
+</div>
+
+<div style="text-align:center;margin:16px 0">
+  <button class="reveal-btn" onclick="this.textContent='There is no 40th app. There was never a 40th app. Close this tab.';this.style.color='#ff0000';this.style.borderColor='#ff0000'">CLICK TO REVEAL THE 40TH APP NAME</button>
+</div>
+
+<div class="footer">
+  <p>This document was recovered from an encrypted partition on a Workshop-DIY development machine.<br>
+  The machine was later found with all files deleted except a single text file: <code style="color:#440000">readme.txt</code><br>
+  The file contained one line: <code style="color:#440000">There are 39 apps. There have always been 39 apps.</code></p>
+  <div class="final flicker">[ END OF FILE ]</div>
+  <p style="margin-top:8px;color:#111">// This is fiction. Workshop-DIY has exactly 39 wonderful, non-haunted apps.<br>// No developers were harmed. The WiFi password is still password123.<br>// ...probably.</p>
+</div>
+
+</div>
+  <script src="nav.js"></script>
+</body>
+</html>

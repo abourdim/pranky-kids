@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THE WKSHPIES 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Playfair+Display:wght@400;700;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a10;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh}
+.glow{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 50% 0%,rgba(255,215,0,.03),transparent 60%);pointer-events:none}
+
+.header{text-align:center;padding:30px 16px 20px;position:relative;z-index:1}
+.trophy{font-size:56px;filter:drop-shadow(0 8px 20px rgba(255,215,0,.15));margin-bottom:6px}
+.h-title{font-family:'Playfair Display',serif;font-size:clamp(28px,6vw,42px);font-weight:900;color:#ffd700;letter-spacing:2px}
+.h-sub{font-size:8px;color:rgba(255,215,0,.25);letter-spacing:5px;margin-top:4px}
+
+.categories{max-width:650px;margin:0 auto;padding:0 16px 30px;position:relative;z-index:1}
+
+.award{margin-bottom:20px;border:1px solid rgba(255,215,0,.06);border-radius:8px;overflow:hidden;background:rgba(255,215,0,.01)}
+.award-h{padding:10px 14px;background:rgba(255,215,0,.03);border-bottom:1px solid rgba(255,215,0,.04);cursor:pointer;display:flex;align-items:center;gap:8px}
+.award-h .icon{font-size:18px}
+.award-h .cat{font-family:'Playfair Display',serif;font-size:14px;color:#ffd700;flex:1}
+.award-h .reveal-btn{padding:3px 12px;border-radius:12px;border:1px solid rgba(255,215,0,.15);background:rgba(255,215,0,.03);color:#ffd700;font-family:inherit;font-size:8px;cursor:pointer;letter-spacing:1px}
+.award-h .reveal-btn:hover{background:rgba(255,215,0,.08)}
+.award-h .reveal-btn.opened{background:rgba(255,215,0,.06);border-color:rgba(255,215,0,.1);color:rgba(255,215,0,.4)}
+
+.nominees{padding:8px 14px}
+.nominee{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:4px;margin:3px 0;transition:all .3s}
+.nominee .emoji{font-size:20px;width:28px;text-align:center}
+.nominee .name{font-size:11px;color:#ccc;flex:1}
+.nominee .reason{font-size:8px;color:#666;flex:2}
+.nominee.winner{background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.12)}
+.nominee.winner .name{color:#ffd700;font-weight:700}
+.winner-badge{font-size:7px;color:#ffd700;letter-spacing:1px;display:none}
+.nominee.winner .winner-badge{display:inline;margin-left:4px}
+
+/* SPEECH */
+.speech{margin:6px 14px 10px;padding:8px 10px;background:rgba(255,215,0,.02);border-left:2px solid rgba(255,215,0,.1);border-radius:0 4px 4px 0;font-size:9px;color:#888;line-height:2;font-style:italic;display:none}
+.speech.on{display:block;animation:fadeIn .5s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.confetti{position:fixed;top:-10px;width:8px;height:8px;z-index:100;pointer-events:none;border-radius:1px}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+
+.footer{text-align:center;padding:16px;font-size:6px;color:rgba(255,215,0,.08);letter-spacing:2px;position:relative;z-index:1}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="glow"></div>
+
+<div class="header">
+  <div class="trophy">🏆</div>
+  <div class="h-title">THE WKSHPIES</div>
+  <div class="h-sub">1ST ANNUAL WORKSHOP-DIY AWARDS · 2026</div>
+</div>
+
+<div class="categories" id="cats"></div>
+
+<div class="footer">
+  THE WKSHPIES™ · WORKSHOP-DIY · NO APPS WERE HARMED · BUGS REMAIN FEATURES<br>
+  SPONSORED BY: THE COFFEE MACHINE (OFFICIAL BEVERAGE) · PASSWORD123 (OFFICIAL WIFI)
+</div>
+
+<script>
+const AWARDS=[
+{icon:"⭐",cat:"Best App",nominees:[
+  {e:"🤖",n:"bit-bot",r:"The app that started it all. Robot control via BLE.",w:true,speech:"I'd like to thank Web Bluetooth, Chrome DevTools, and the 47 desk drops that made me who I am today. This one's for every robot that survived."},
+  {e:"🪄",n:"magic-hands",r:"21 hand landmarks. Pure visual magic."},
+  {e:"🔐",n:"pentest-lab",r:"Ethical hacking made educational and fun."},
+  {e:"🧠",n:"teachable-machine",r:"Train AI in your browser. 98% accurate."},
+]},
+{icon:"🐛",cat:"Best Bug (Feature)",nominees:[
+  {e:"🐛",n:"Bug #42",r:"Neither bug nor feature. The 40th.",w:true,speech:"I wasn't supposed to exist. I appeared without a commit, without a pull request, without a code review. And yet here I am. Receiving an award. The defense rests."},
+  {e:"🔇",n:"BLE Disconnect",r:"Random disconnects that keep you on your toes."},
+  {e:"📡",n:"Chrome BLE Limit",r:"Only 7 Bluetooth devices. Educational constraint."},
+]},
+{icon:"🏋️",cat:"Most Durable",nominees:[
+  {e:"🤖",n:"ESP32 Robot Kit",r:"47 drops survived. Still running.",w:true,speech:"I'm held together with hot glue, hope, and a 3.7V LiPo battery. 47 drops, zero failures. I didn't choose durability testing. Durability testing chose me."},
+  {e:"🔑",n:"password123",r:"Unchanged since 2023. Unbreakable (by policy)."},
+  {e:"☕",n:"Coffee Machine",r:"1,337 cups served. Never stopped brewing."},
+]},
+{icon:"😂",cat:"Most Unintentionally Funny",nominees:[
+  {e:"🐳",n:"docker-lab",r:"14-year-olds explaining Docker to engineer parents.",w:true,speech:"I never meant to be funny. I'm a serious containerization education tool. But when a teenager explains volumes better than a senior DevOps engineer... comedy writes itself."},
+  {e:"🔑",n:"WiFi password policy",r:"Teaching cybersecurity. Password: password123."},
+  {e:"🖨️",n:"Printer vulnerability",r:"Student hacked the school printer. Ethically."},
+]},
+{icon:"🎓",cat:"Lifetime Achievement",nominees:[
+  {e:"☕",n:"The Coffee Machine",r:"Fuel behind every line of code since day one.",w:true,speech:"1,337 cups. That's one for every line of code that actually worked on the first try. I've been at 8% capacity since 2023. I've seen developers come and go. I remain. I pour. I am the real founder."},
+]},
+{icon:"🌟",cat:"Breakthrough App",nominees:[
+  {e:"✨",n:"prompt-hero",r:"Teaching the art of AI conversation.",w:true,speech:"In a world of LLMs, someone had to teach the humans how to talk to the machines. That someone was me. Remember: specificity is the soul of a good prompt."},
+  {e:"🕵️",n:"face-quest",r:"468 facial landmarks turned into a game."},
+  {e:"💡",n:"wled-kids-lab",r:"16 million colors via one HTTP request."},
+]},
+{icon:"🤝",cat:"Best Supporting App",nominees:[
+  {e:"🧩",n:"bit-playground",r:"Quietly powering every micro:bit interaction."},
+  {e:"🎛️",n:"rxy",r:"Custom BLE remotes that make everything work.",w:true,speech:"I don't get the headlines. I don't get the glory. But when you need a custom Bluetooth remote with exactly the right layout... you call me. And I deliver. Every. Time."},
+  {e:"🚀",n:"mission-control",r:"Connecting peers when it matters most."},
+]},
+{icon:"💀",cat:"Best Plot Twist",nominees:[
+  {e:"🐛",n:"Bug #42's identity",r:"Was it a bug? Was it a feature? The trial revealed all.",w:true,speech:"NOT GUILTY. That's all I have to say. Talk to my lawyer: try { } catch(e) { }."},
+  {e:"🔑",n:"WiFi password protest #3",r:"Third petition to change password123. Denied again."},
+  {e:"🤖",n:"Robot's 47th drop",r:"Survived. Again. Against all odds."},
+]},
+];
+
+const catsEl=document.getElementById('cats');
+AWARDS.forEach((a,ai)=>{
+  const winner=a.nominees.find(n=>n.w);
+  catsEl.innerHTML+=`
+  <div class="award" id="aw${ai}">
+    <div class="award-h" onclick="reveal(${ai})">
+      <span class="icon">${a.icon}</span>
+      <span class="cat">${a.cat}</span>
+      <button class="reveal-btn" id="btn${ai}">OPEN ENVELOPE</button>
+    </div>
+    <div class="nominees" id="nom${ai}">
+      ${a.nominees.map((n,ni)=>`<div class="nominee" id="n${ai}_${ni}"><span class="emoji">${n.e}</span><span class="name">${n.n}<span class="winner-badge">★ WINNER</span></span><span class="reason">${n.r}</span></div>`).join('')}
+    </div>
+    <div class="speech" id="sp${ai}">${winner?.speech||''}</div>
+  </div>`;
+});
+
+function reveal(i){
+  const btn=document.getElementById('btn'+i);
+  if(btn.classList.contains('opened'))return;
+  btn.classList.add('opened');
+  btn.textContent='★ WINNER ANNOUNCED';
+  const a=AWARDS[i];
+  a.nominees.forEach((n,ni)=>{
+    if(n.w)document.getElementById(`n${i}_${ni}`).classList.add('winner');
+  });
+  document.getElementById('sp'+i).classList.add('on');
+  confetti();
+}
+
+function confetti(){
+  const colors=['#ffd700','#fff','#ff8800','#ffd700','#ffee00'];
+  for(let i=0;i<20;i++){
+    const c=document.createElement('div');c.className='confetti';
+    c.style.left=(Math.random()*100)+'%';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(Math.random()*6+3)+'px';c.style.height=(Math.random()*6+3)+'px';
+    c.style.animation=`confettiFall ${Math.random()*2+1.5}s ease-out forwards`;
+    c.style.animationDelay=(Math.random()*.3)+'s';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4000);
+  }
+}
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

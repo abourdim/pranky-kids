@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-DIY // COMPATIBILITY TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px}
+
+.header{text-align:center;margin-bottom:14px}
+.h-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#ff0066}
+.h-sub{font-size:7px;color:rgba(255,0,102,.2);letter-spacing:3px;margin-top:2px}
+
+.game{max-width:420px;width:100%}
+
+/* PROGRESS */
+.progress{height:4px;background:#1a1a24;border-radius:2px;margin-bottom:12px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#ff0066,#ff8800);border-radius:2px;transition:width .4s}
+
+/* QUESTION */
+.question{margin-bottom:10px;min-height:260px}
+.q-num{font-size:7px;color:#333;letter-spacing:2px;margin-bottom:4px}
+.q-text{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:12px;line-height:1.6}
+.options{display:flex;flex-direction:column;gap:6px}
+.option{padding:10px 12px;border:1px solid rgba(255,0,102,.06);border-radius:6px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;background:rgba(255,0,102,.01)}
+.option:hover{border-color:rgba(255,0,102,.2);background:rgba(255,0,102,.03)}
+.option.selected{border-color:#ff0066;background:rgba(255,0,102,.06)}
+.option .letter{width:22px;height:22px;border-radius:50%;border:1px solid rgba(255,0,102,.15);display:flex;align-items:center;justify-content:center;font-size:9px;color:#555;flex-shrink:0}
+.option.selected .letter{background:#ff0066;border-color:#ff0066;color:#fff}
+.option .text{font-size:10px;color:rgba(255,255,255,.4)}
+.option.selected .text{color:#fff}
+
+.nav{display:flex;gap:6px;margin-top:10px}
+.btn{flex:1;padding:8px;border-radius:4px;border:1px solid rgba(255,0,102,.1);background:rgba(255,0,102,.03);color:rgba(255,0,102,.4);font-family:inherit;font-size:9px;cursor:pointer;text-align:center}
+.btn:hover{background:rgba(255,0,102,.06);color:#ff0066}
+.btn:disabled{opacity:.2;cursor:default}
+
+/* RESULT */
+.result{display:none;text-align:center;padding:16px;border:1px solid rgba(255,0,102,.1);border-radius:8px;background:rgba(255,0,102,.02)}
+.result.show{display:block;animation:pop .4s}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.result .pct{font-family:'Syne',sans-serif;font-size:clamp(48px,12vw,64px);font-weight:800;background:linear-gradient(135deg,#ff0066,#ff8800);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.result .verdict{font-size:14px;color:#fff;margin:6px 0}
+.result .match{font-size:11px;color:rgba(255,255,255,.3);margin:8px 0;line-height:2}
+.result .match-emoji{font-size:36px;margin:6px 0}
+.result .retry{margin-top:10px}
+
+.footer{font-size:6px;color:#111;margin-top:auto;letter-spacing:1px}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="h-title">💕 COMPATIBILITY TEST</div>
+  <div class="h-sub">ARE YOU WORKSHOP-DIY MATERIAL?</div>
+</div>
+
+<div class="game" id="game">
+  <div class="progress"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+  <div class="question" id="qArea"></div>
+  <div class="nav">
+    <button class="btn" id="prevBtn" onclick="prev()" disabled>← BACK</button>
+    <button class="btn" id="nextBtn" onclick="next()" disabled>NEXT →</button>
+  </div>
+</div>
+
+<div class="result" id="result">
+  <div class="pct" id="pct"></div>
+  <div class="verdict" id="verdict"></div>
+  <div class="match-emoji" id="matchEmoji"></div>
+  <div class="match" id="match"></div>
+  <div class="retry"><button class="btn" onclick="restart()" style="max-width:160px;margin:0 auto">🔄 RETAKE</button></div>
+</div>
+
+<div class="footer">WORKSHOP-DIY · RESULTS NOT SCIENTIFICALLY VALIDATED · BUGS ARE COMPATIBLE WITH FEATURES</div>
+
+<script>
+const QS=[
+{q:"Your code has a bug. What do you do?",opts:[
+  {t:"Fix it immediately, properly",s:{r:1,a:1,c:0,l:1}},
+  {t:"Call it a feature and ship it",s:{r:2,a:0,c:0,l:0}},
+  {t:"Google the error message",s:{r:0,a:1,c:0,l:2}},
+  {t:"Blame the compiler",s:{r:1,a:0,c:1,l:0}},
+]},
+{q:"How do you feel about password123?",opts:[
+  {t:"It's a security nightmare",s:{r:0,a:0,c:3,l:0}},
+  {t:"It's tradition. I respect it.",s:{r:2,a:1,c:0,l:1}},
+  {t:"I've already changed it... wait, it reverted?",s:{r:0,a:0,c:2,l:1}},
+  {t:"I am password123",s:{r:1,a:0,c:0,l:0}},
+]},
+{q:"A robot falls off a desk. Your reaction?",opts:[
+  {t:"Catch it! Save the robot!",s:{r:3,a:0,c:0,l:0}},
+  {t:"Document the drop for science",s:{r:1,a:2,c:0,l:1}},
+  {t:"It's survived 47 drops. It'll be fine.",s:{r:2,a:0,c:0,l:0}},
+  {t:"Build a bumper for next time",s:{r:2,a:0,c:0,l:2}},
+]},
+{q:"Pick your preferred development environment:",opts:[
+  {t:"Just a browser. Nothing else.",s:{r:1,a:1,c:1,l:1}},
+  {t:"VS Code with 47 extensions",s:{r:0,a:1,c:0,l:3}},
+  {t:"A terminal and vim",s:{r:0,a:0,c:2,l:2}},
+  {t:"Notepad. Fight me.",s:{r:2,a:0,c:1,l:0}},
+]},
+{q:"The coffee machine shows 8% remaining. You:",opts:[
+  {t:"Panic and refill immediately",s:{r:0,a:0,c:0,l:1}},
+  {t:"It's been at 8% for 14 months. It's fine.",s:{r:2,a:1,c:0,l:0}},
+  {t:"Switch to tea",s:{r:0,a:0,c:0,l:0}},
+  {t:"Write a monitoring script for it",s:{r:0,a:1,c:1,l:2}},
+]},
+{q:"How would you explain Docker to a child?",opts:[
+  {t:"Shipping containers for software!",s:{r:0,a:1,c:0,l:3}},
+  {t:"It's like having separate rooms for each toy",s:{r:1,a:1,c:0,l:2}},
+  {t:"I can't explain it to adults, let alone children",s:{r:0,a:0,c:0,l:0}},
+  {t:"Let the child explain it to ME",s:{r:2,a:2,c:0,l:1}},
+]},
+{q:"What's your WiFi debugging strategy?",opts:[
+  {t:"Turn it off and on again",s:{r:1,a:0,c:0,l:1}},
+  {t:"Check the router logs",s:{r:0,a:0,c:2,l:2}},
+  {t:"Blame Chrome",s:{r:2,a:0,c:0,l:0}},
+  {t:"The WiFi is fine. The password is password123.",s:{r:1,a:0,c:1,l:0}},
+]},
+{q:"AI accuracy: what's acceptable?",opts:[
+  {t:"98% minimum",s:{r:0,a:3,c:0,l:1}},
+  {t:"If it works more than half the time, ship it",s:{r:2,a:0,c:0,l:0}},
+  {t:"Accuracy is a social construct",s:{r:1,a:0,c:0,l:0}},
+  {t:"Whatever teachable-machine gives me",s:{r:0,a:2,c:0,l:1}},
+]},
+{q:"Soldering iron: friend or foe?",opts:[
+  {t:"Friend! 350°C of possibility!",s:{r:3,a:0,c:0,l:1}},
+  {t:"Foe. I've been burned. Literally.",s:{r:1,a:0,c:0,l:0}},
+  {t:"I use hot glue for everything",s:{r:2,a:0,c:0,l:0}},
+  {t:"What's a soldering iron?",s:{r:0,a:0,c:0,l:0}},
+]},
+{q:"Bug #42 appears in your codebase. You:",opts:[
+  {t:"Delete it immediately",s:{r:0,a:0,c:2,l:0}},
+  {t:"Investigate its origin",s:{r:0,a:2,c:1,l:2}},
+  {t:"Accept it. Bugs are features.",s:{r:3,a:1,c:0,l:0}},
+  {t:"Put it on trial",s:{r:1,a:0,c:1,l:1}},
+]},
+];
+
+let cur=0,answers=new Array(QS.length).fill(-1);
+
+function render(){
+  const q=QS[cur];
+  document.getElementById('progFill').style.width=((cur/QS.length)*100)+'%';
+  document.getElementById('qArea').innerHTML=`
+    <div class="q-num">QUESTION ${cur+1} OF ${QS.length}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="options">${q.opts.map((o,i)=>`
+      <div class="option${answers[cur]===i?' selected':''}" onclick="select(${i})">
+        <div class="letter">${'ABCD'[i]}</div>
+        <div class="text">${o.t}</div>
+      </div>`).join('')}
+    </div>`;
+  document.getElementById('prevBtn').disabled=cur===0;
+  document.getElementById('nextBtn').disabled=answers[cur]<0;
+  document.getElementById('nextBtn').textContent=cur===QS.length-1?'SEE RESULTS →':'NEXT →';
+}
+
+function select(i){answers[cur]=i;render()}
+function prev(){if(cur>0){cur--;render()}}
+function next(){
+  if(answers[cur]<0)return;
+  if(cur===QS.length-1){showResult();return}
+  cur++;render();
+}
+
+function showResult(){
+  let scores={r:0,a:0,c:0,l:0};
+  answers.forEach((a,qi)=>{
+    const s=QS[qi].opts[a].s;
+    scores.r+=s.r;scores.a+=s.a;scores.c+=s.c;scores.l+=s.l;
+  });
+  const total=scores.r+scores.a+scores.c+scores.l;
+  const max=30;
+  const pct=Math.min(100,Math.round((total/max)*100)+15);
+  
+  const top=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0];
+  const matches={r:{e:"🤖",n:"bit-bot",d:"You're a maker at heart. Hardware, robots, and the courage to drop things from desks."},a:{e:"🧠",n:"teachable-machine",d:"You're an AI thinker. Data in, intelligence out. 98% of the time, you're right."},c:{e:"🔐",n:"pentest-lab",d:"You're a digital sentinel. Security-minded, detail-oriented, and very concerned about password123."},l:{e:"🐧",n:"linux-kids-lab",d:"You're a learner and builder. Command lines, documentation, and the joy of understanding."}};
+  const m=matches[top];
+  
+  let vt="";
+  if(pct>=90)vt="PERFECT MATCH! You ARE Workshop-DIY.";
+  else if(pct>=70)vt="Highly compatible! Welcome aboard.";
+  else if(pct>=50)vt="Good potential! With coffee, anything is possible.";
+  else vt="You might need more coffee. Try again.";
+
+  document.getElementById('game').style.display='none';
+  const r=document.getElementById('result');
+  r.classList.add('show');
+  document.getElementById('pct').textContent=pct+'%';
+  document.getElementById('verdict').textContent=vt;
+  document.getElementById('matchEmoji').textContent=m.e;
+  document.getElementById('match').innerHTML=`Your spirit app: <b style="color:#ff0066">${m.n}</b><br>${m.d}`;
+}
+
+function restart(){
+  cur=0;answers=new Array(QS.length).fill(-1);
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('game').style.display='block';
+  render();
+}
+
+render();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

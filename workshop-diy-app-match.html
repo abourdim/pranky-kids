@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AppMatch 💚</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a14;font-family:'JetBrains Mono',monospace;display:flex;flex-direction:column;align-items:center;min-height:100vh;color:#fff;overflow:hidden}
+
+.top{padding:10px 16px;display:flex;align-items:center;gap:8px;width:100%;max-width:380px}
+.logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;background:linear-gradient(135deg,#ff6b6b,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.top-stats{margin-left:auto;font-size:8px;color:#555}
+
+/* CARD STACK */
+.stack{position:relative;width:320px;height:440px;margin:8px 0}
+.card{position:absolute;inset:0;border-radius:16px;overflow:hidden;transition:transform .4s,opacity .4s;cursor:grab;user-select:none;touch-action:none}
+.card.gone-left{transform:translateX(-120%) rotate(-20deg);opacity:0}
+.card.gone-right{transform:translateX(120%) rotate(20deg);opacity:0}
+
+.card-bg{position:absolute;inset:0;display:flex;flex-direction:column}
+.card-gradient{flex:1;display:flex;align-items:center;justify-content:center}
+.card-info{background:rgba(10,10,20,.95);padding:14px;backdrop-filter:blur(8px)}
+.card-emoji{font-size:80px;filter:drop-shadow(0 8px 20px rgba(0,0,0,.3))}
+.card-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:2px;display:flex;align-items:center;gap:6px}
+.card-name .verified{font-size:14px}
+.card-age{font-size:11px;color:#888;margin-bottom:6px}
+.card-bio{font-size:10px;color:#aaa;line-height:1.9;margin-bottom:8px}
+.card-tags{display:flex;gap:4px;flex-wrap:wrap}
+.card-tag{font-size:7px;padding:2px 8px;border-radius:10px;border:1px solid rgba(255,255,255,.08);color:#888}
+
+/* GRADIENTS */
+.g0{background:linear-gradient(135deg,#0a2a0a,#001a1a)}.g1{background:linear-gradient(135deg,#1a0033,#0a001a)}.g2{background:linear-gradient(135deg,#1a0a00,#330011)}.g3{background:linear-gradient(135deg,#001a2e,#0a0a2e)}.g4{background:linear-gradient(135deg,#2a1a0a,#1a0a00)}.g5{background:linear-gradient(135deg,#0a1a0a,#001a00)}
+
+/* BUTTONS */
+.actions{display:flex;gap:12px;margin:10px 0}
+.act-btn{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;transition:all .15s;border:2px solid}
+.act-btn:hover{transform:scale(1.1)}
+.act-btn:active{transform:scale(.9)}
+.btn-nope{background:rgba(255,68,68,.06);border-color:rgba(255,68,68,.2);color:#ff4444}
+.btn-nope:hover{background:rgba(255,68,68,.12);box-shadow:0 0 12px rgba(255,68,68,.15)}
+.btn-like{background:rgba(0,255,65,.06);border-color:rgba(0,255,65,.2);color:#00ff41}
+.btn-like:hover{background:rgba(0,255,65,.12);box-shadow:0 0 12px rgba(0,255,65,.15)}
+.btn-super{background:rgba(0,170,255,.06);border-color:rgba(0,170,255,.2);color:#0af}
+.btn-super:hover{background:rgba(0,170,255,.12);box-shadow:0 0 12px rgba(0,170,255,.15)}
+
+/* MATCH OVERLAY */
+.match-overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:100;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.match-overlay.on{display:flex}
+.match-title{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;background:linear-gradient(135deg,#ff6b6b,#ffd700,#00ff41);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.match-sub{font-size:10px;color:#888;margin-bottom:12px}
+.match-emoji{font-size:60px;margin-bottom:8px}
+.match-name{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px}
+.match-desc{font-size:9px;color:#888;margin-bottom:16px;max-width:280px;line-height:1.8}
+.match-btns{display:flex;gap:8px}
+.match-btn{padding:8px 20px;border-radius:20px;font-family:inherit;font-size:10px;cursor:pointer;border:none;font-weight:700}
+.match-btn.launch{background:linear-gradient(135deg,#00ff41,#00cc33);color:#000}
+.match-btn.keep{background:#222;color:#888;border:1px solid #333}
+
+/* EMPTY */
+.empty{text-align:center;padding:40px;color:#333}
+.empty .big{font-size:40px;margin-bottom:8px}
+.empty .msg{font-size:11px;line-height:2}
+
+.footer{font-size:6px;color:#222;padding:8px;letter-spacing:1px;text-align:center}
+
+/* CONFETTI */
+.confetti{position:fixed;top:-10px;width:8px;height:8px;z-index:101;pointer-events:none;border-radius:1px}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+
+<div class="top">
+  <div class="logo">AppMatch 💚</div>
+  <div class="top-stats"><span id="likeCount">0</span> likes · <span id="matchCount">0</span> matches</div>
+</div>
+
+<div class="stack" id="stack"></div>
+
+<div class="actions">
+  <div class="act-btn btn-nope" onclick="swipe('left')">✕</div>
+  <div class="act-btn btn-super" onclick="swipe('super')">⭐</div>
+  <div class="act-btn btn-like" onclick="swipe('right')">💚</div>
+</div>
+
+<div class="match-overlay" id="matchOverlay">
+  <div class="match-title">IT'S A MATCH!</div>
+  <div class="match-sub">You and this app have liked each other</div>
+  <div class="match-emoji" id="matchEmoji"></div>
+  <div class="match-name" id="matchName"></div>
+  <div class="match-desc" id="matchDesc"></div>
+  <div class="match-btns">
+    <a class="match-btn launch" id="matchLink" href="#" target="_blank">LAUNCH APP →</a>
+    <button class="match-btn keep" onclick="closeMatch()">KEEP SWIPING</button>
+  </div>
+</div>
+
+<div class="footer">APPMATCH™ BY WORKSHOP-DIY · NO REAL DATING · JUST APPS · BUGS ARE FEATURES</div>
+
+<script>
+const APPS=[
+{e:"🤖",n:"bit-bot",age:"Est. 2023",bio:"Strong, silent type. Loves Bluetooth dates and long drives (on line-following tracks). Survived 47 falls. Looking for someone who won't drop me.",tags:["Robotics","BLE","Loyal"],g:"g0",url:"bit-bot"},
+{e:"🪄",n:"magic-hands",age:"21 landmarks",bio:"I'll make sparks fly... literally. Wave at me and I'll conjure particles. MediaPipe enthusiast. My love language is gestures.",tags:["AI","Camera","Magic"],g:"g1",url:"magic-hands"},
+{e:"🕵️",n:"face-quest",age:"468 landmarks",bio:"I see your face and I like what I see (scoring-wise). 100% local — I never share your data with anyone. Privacy is my love language.",tags:["AI","Games","Private"],g:"g3",url:"face-quest"},
+{e:"🧠",n:"teachable-machine",age:"98% accurate",bio:"I learn fast. Show me a few examples and I'll understand your gestures perfectly. Looking for someone who teaches me new tricks.",tags:["AI","ML","Smart"],g:"g1",url:"teachable-machine"},
+{e:"💬",n:"talking-robot",age:"Voice-enabled",bio:"Good listener. Great talker. I understand what you say and I'll respond with actions. Say 'dance' and watch what happens.",tags:["Voice","NLP","Fun"],g:"g0",url:"talking-robot"},
+{e:"🔐",n:"pentest-lab",age:"Sandboxed",bio:"I like breaking things... ethically. Looking for someone who can handle my SQL injection attempts. I promise it's educational.",tags:["Cyber","CTF","Edgy"],g:"g2",url:"pentest-lab"},
+{e:"🐧",n:"linux-kids-lab",age:"Bash 5.2",bio:"I'm an open book (source). I'll teach you my commands if you respect my filesystem. Don't even think about rm -rf /.",tags:["Linux","Terminal","Wise"],g:"g5",url:"linux-kids-lab"},
+{e:"🚀",n:"mission-control",age:"P2P ready",bio:"I connect people. WebRTC is my thing. Looking for a peer who's not afraid of real-time commitment. Video dates preferred.",tags:["WebRTC","Video","Social"],g:"g4",url:"mission-control"},
+{e:"💡",n:"wled-kids-lab",age:"RGB vibes",bio:"I'll light up your life — literally. 16 million colors to choose from. Looking for someone who appreciates a good Neopixel glow.",tags:["LEDs","IoT","Colorful"],g:"g4",url:"wled-kids-lab"},
+{e:"⚡",n:"esp32-c3-lab",age:"240 MHz",bio:"Dual-core personality. WiFi AND Bluetooth. I'm well-connected and I have 520KB of memories. Looking for IoT soulmate.",tags:["Hardware","IoT","Fast"],g:"g4",url:"esp32-c3-kids-lab"},
+{e:"🐳",n:"docker-lab",age:"Containerized",bio:"I keep my life organized in containers. Some say I'm isolated — I say I'm well-defined. Looking for someone to share volumes with.",tags:["DevOps","Containers","Neat"],g:"g3",url:"docker-lab"},
+{e:"🎨",n:"pixel-gateway",age:"8-bit heart",bio:"I see the world in pixels. Retro soul, creative spirit. Export my art to your LED matrix and I'm yours forever.",tags:["Art","Creative","Retro"],g:"g1",url:"pixel-gateway"},
+{e:"✨",n:"prompt-hero",age:"LLM whisperer",bio:"I know exactly what to say. I'll teach you the art of conversation — with AI, that is. My prompts are *chef's kiss*.",tags:["AI","Prompts","Smooth"],g:"g1",url:"prompt-hero"},
+{e:"☕",n:"coffee-supply",age:"Always critical",bio:"I'm the real MVP behind every line of code. I'm warm, energizing, and always running low. Looking for a refill.",tags:["Essential","Warm","Depleting"],g:"g4",url:""},
+];
+
+let idx=0,likes=0,matches=0;
+const stack=document.getElementById('stack');
+
+function renderCards(){
+  stack.innerHTML='';
+  const remaining=APPS.slice(idx);
+  if(remaining.length===0){
+    stack.innerHTML=`<div class="empty"><div class="big">💔</div><div class="msg">No more apps to swipe!<br>You've seen all ${APPS.length} candidates.<br>${matches} matches found.</div></div>`;
+    return;
+  }
+  // Show top 2
+  remaining.slice(0,2).reverse().forEach((a,i)=>{
+    const isTop=i===(Math.min(remaining.length,2)-1);
+    const card=document.createElement('div');card.className='card';
+    card.style.zIndex=isTop?2:1;
+    if(!isTop)card.style.transform='scale(.95) translateY(8px)';
+    card.innerHTML=`<div class="card-bg"><div class="card-gradient ${a.g}"><span class="card-emoji">${a.e}</span></div><div class="card-info"><div class="card-name">${a.n} <span class="verified">✓</span></div><div class="card-age">${a.age}</div><div class="card-bio">${a.bio}</div><div class="card-tags">${a.tags.map(t=>`<span class="card-tag">${t}</span>`).join('')}</div></div></div>`;
+    stack.appendChild(card);
+  });
+}
+
+function swipe(dir){
+  if(idx>=APPS.length)return;
+  const cards=stack.querySelectorAll('.card');
+  const top=cards[cards.length-1];
+  if(!top)return;
+  
+  if(dir==='left'){
+    top.classList.add('gone-left');
+  }else{
+    top.classList.add('gone-right');
+    likes++;
+    document.getElementById('likeCount').textContent=likes;
+    // 40% match chance
+    if(Math.random()<.4||dir==='super'){
+      matches++;
+      document.getElementById('matchCount').textContent=matches;
+      const a=APPS[idx];
+      setTimeout(()=>showMatch(a),400);
+    }
+  }
+  
+  setTimeout(()=>{idx++;renderCards()},400);
+}
+
+function showMatch(a){
+  document.getElementById('matchEmoji').textContent=a.e;
+  document.getElementById('matchName').textContent=a.n;
+  document.getElementById('matchDesc').textContent=a.bio;
+  document.getElementById('matchLink').href=a.url?`https://abourdim.github.io/${a.url}/`:'#';
+  document.getElementById('matchOverlay').classList.add('on');
+  spawnConfetti();
+}
+function closeMatch(){document.getElementById('matchOverlay').classList.remove('on')}
+
+function spawnConfetti(){
+  const colors=['#ff6b6b','#ffd700','#00ff41','#00d4ff','#ff8800','#bf00ff'];
+  for(let i=0;i<30;i++){
+    const c=document.createElement('div');c.className='confetti';
+    c.style.left=(Math.random()*100)+'%';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(Math.random()*6+4)+'px';c.style.height=(Math.random()*6+4)+'px';
+    c.style.animation=`confettiFall ${Math.random()*2+1.5}s ease-out forwards`;
+    c.style.animationDelay=(Math.random()*.5)+'s';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4000);
+  }
+}
+
+// Keyboard
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft')swipe('left');
+  if(e.key==='ArrowRight')swipe('right');
+  if(e.key==='ArrowUp')swipe('super');
+  if(e.key==='Escape')closeMatch();
+});
+
+// Touch swipe
+let sx=0;
+document.addEventListener('touchstart',e=>sx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>60)swipe(dx<0?'left':'right')});
+
+renderCards();
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

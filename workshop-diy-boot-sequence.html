@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WKSHP-OS BOOT</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#aaa;font-family:'JetBrains Mono',monospace;font-size:clamp(10px,1.5vw,14px);padding:16px;overflow:hidden;cursor:none;min-height:100vh}
+.line{opacity:0;animation:typeIn .05s ease forwards;white-space:pre-wrap;line-height:1.8}
+@keyframes typeIn{to{opacity:1}}
+.green{color:#0f0}.cyan{color:#0ff}.yellow{color:#ff0}.red{color:#f44}.white{color:#fff}.dim{color:#555}
+.blink{animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.bar{display:inline-block}.bar-fill{display:inline-block;color:#0f0}
+.scanlines{position:fixed;inset:0;pointer-events:none;z-index:100}.scanlines::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.1) 0,rgba(0,0,0,.1) 1px,transparent 1px,transparent 3px)}
+.cursor-block{display:inline-block;width:8px;height:14px;background:#0f0;animation:blink 1s step-end infinite;vertical-align:middle}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<div class="scanlines"></div>
+<div id="output"></div>
+
+<script>
+const out=document.getElementById('output');
+let delay=0;
+
+function add(text,cls='',d=50){
+  delay+=d;
+  setTimeout(()=>{
+    const div=document.createElement('div');div.className='line';
+    if(cls)div.innerHTML=`<span class="${cls}">${text}</span>`;
+    else div.textContent=text;
+    out.appendChild(div);
+    window.scrollTo(0,document.body.scrollHeight);
+  },delay);
+}
+function gap(d=300){delay+=d}
+
+// BIOS POST
+add('WKSHP-BIOS v4.2.0 (C) Workshop-DIY Systems Corp. 2025','dim',0);
+add('Association Loi 1901 — France','dim');
+gap(200);
+add('');
+add('CPU: Xtensa LX6 Dual-Core @ 240 MHz','cyan');
+add('RAM: Testing...  512K OK   1024K OK   2048K OK   4096K OK','yellow');
+gap(400);
+add('RAM: 520 KB SRAM Verified','green');
+add('Flash: 4 MB NOR Flash Detected','green');
+gap(200);
+add('');
+add('Detecting hardware...');
+gap(300);
+add('  [OK] ESP32-WROOM-32 .............. Online','green');
+add('  [OK] WiFi 802.11 b/g/n ........... Ready','green');
+add('  [OK] Bluetooth Low Energy 4.2 .... Ready','green');
+add('  [OK] Motor Driver DRV8833 ........ 2 channels','green');
+add('  [OK] IR Sensors TCRT5000 ......... 2 units','green');
+add('  [OK] Ultrasonic HC-SR04 .......... Ranging','green');
+add('  [OK] Servo SG90 .................. Calibrated','green');
+add('  [OK] Neopixel WS2812B ............ 60 LEDs','green');
+add('  [OK] USB-C Serial ................ 115200 baud','green');
+add('  [OK] Camera Module ............... OV2640','green');
+gap(300);
+add('  [!!] Coffee Level ................','red',100);
+gap(100);
+add('  [!!] Coffee Level ................ CRITICAL','red');
+add('  [OK] WiFi Password ............... password123 (unchanged since 2023)','yellow');
+gap(400);
+add('');
+add('Scanning app repository...');
+gap(500);
+add('');
+add('  Loading apps [                                        ]  0%','dim');
+
+// Progress bar simulation
+const barSteps=20;
+for(let i=1;i<=barSteps;i++){
+  const pct=Math.round(i/barSteps*100);
+  const filled='█'.repeat(i*2);
+  const empty=' '.repeat((barSteps-i)*2);
+  const apps=Math.round(39*i/barSteps);
+  delay+=80;
+  setTimeout(((fi,em,p,a)=>()=>{
+    const lines=out.querySelectorAll('.line');
+    const last=lines[lines.length-1];
+    last.innerHTML=`<span class="green">  Loading apps [${fi}${em}] ${String(p).padStart(3)}%  ${a}/39 apps</span>`;
+  })(filled,empty,pct,apps),delay);
+}
+
+gap(300);
+add('');
+add('  39 apps loaded successfully.','green');
+add('  7 domains initialized.','green');
+add('  12 themes available.','green');
+add('  42 bugs detected. Reclassifying as features...','yellow');
+gap(200);
+add('  42 features confirmed.','green');
+gap(400);
+add('');
+add('Initializing WKSHP-OS kernel...');
+gap(200);
+add('  [  0.000000] WKSHP-OS kernel v4.2.0-lts','dim');
+add('  [  0.001337] Command line: root=/dev/maker0 quiet splash','dim');
+add('  [  0.004200] Memory: 520K/520K available','dim');
+add('  [  0.008400] Calibrating delay loop... 240.00 BogoMIPS','dim');
+add('  [  0.012600] PID hash table entries: 39','dim');
+add('  [  0.016800] Mount-cache hash table entries: 7','dim');
+add('  [  0.021000] Initializing cgroup subsys robotics','dim');
+add('  [  0.025200] Initializing cgroup subsys ai_ml','dim');
+add('  [  0.029400] Initializing cgroup subsys electronics','dim');
+add('  [  0.033600] Initializing cgroup subsys cybersecurity','dim');
+add('  [  0.037800] Initializing cgroup subsys devops','dim');
+add('  [  0.042000] Initializing cgroup subsys learning','dim');
+add('  [  0.046200] Initializing cgroup subsys camera','dim');
+gap(200);
+add('  [  0.100000] BLE: Scanning for micro:bit devices...','dim');
+add('  [  0.200000] BLE: Found 3 devices in range','dim');
+add('  [  0.300000] NET: WiFi connected to "Workshop-DIY-5G"','dim');
+add('  [  0.300001] NET: Password accepted (password123)','dim');
+add('  [  0.400000] USB: Serial adapter detected at /dev/ttyUSB0','dim');
+add('  [  0.500000] GPIO: 34 pins configured','dim');
+add('  [  0.600000] ROBOT: bit-bot driver loaded','dim');
+add('  [  0.700000] AI: MediaPipe runtime initialized','dim');
+add('  [  0.800000] CAM: OV2640 stream ready @ 30fps','dim');
+add('  [  0.847000] COFFEE: Module not found. Sending help request.','dim');
+gap(400);
+add('');
+add('  ╔══════════════════════════════════════════════╗','green');
+add('  ║                                              ║','green');
+add('  ║          W K S H P - O S   v 4 . 2           ║','green');
+add('  ║                                              ║','green');
+add('  ║     Workshop-DIY · Loi 1901 · France 🇫🇷     ║','green');
+add('  ║                                              ║','green');
+add('  ║   39 apps · 7 domains · 12 themes · ∞ fun    ║','green');
+add('  ║                                              ║','green');
+add('  ╚══════════════════════════════════════════════╝','green');
+gap(500);
+add('');
+add('  System ready. All modules operational.','green');
+add('  Uptime: 0d 0h 0m 0s. Bugs: 0 (42 features).','dim');
+add('');
+gap(300);
+
+delay+=200;
+setTimeout(()=>{
+  const div=document.createElement('div');div.className='line';
+  div.innerHTML='<span class="green">maker@wkshp-os:~$ </span><span class="cursor-block"></span>';
+  out.appendChild(div);
+  document.body.style.cursor='text';
+},delay);
+
+// Allow fake typing after boot
+delay+=500;
+setTimeout(()=>{
+  document.addEventListener('keydown',e=>{
+    if(e.key.length===1){
+      const cursors=document.querySelectorAll('.cursor-block');
+      const last=cursors[cursors.length-1];
+      if(last){
+        const span=document.createElement('span');
+        span.className='green';span.textContent=e.key;
+        last.parentElement.insertBefore(span,last);
+      }
+    }
+    if(e.key==='Enter'){
+      const cursors=document.querySelectorAll('.cursor-block');
+      cursors.forEach(c=>c.remove());
+      const div=document.createElement('div');div.className='line';
+      div.innerHTML='<span class="green">maker@wkshp-os:~$ </span><span class="cursor-block"></span>';
+      out.appendChild(div);
+      window.scrollTo(0,document.body.scrollHeight);
+    }
+  });
+},delay);
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Workshop-DIY — App Demo Reel</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--cy:#00d4ff;--bl:#4f6ef7;--pk:#ff2d8a;--or:#ff6b35;--lm:#a3e635;--pr:#9333ea;--yw:#fbbf24;--gn:#22c55e;--rd:#ef4444}
+html,body{height:100%;overflow:hidden}
+body{background:#040608;color:#fff;font-family:'Fredoka',sans-serif}
+canvas#bg{position:fixed;inset:0;z-index:0}
+
+/* LAYOUT */
+.main{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column}
+
+/* HEADER */
+.hdr{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.04);flex-shrink:0;position:relative;z-index:10}
+.hdr-brand{display:flex;align-items:center;gap:10px}
+.hdr-logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;letter-spacing:-1px}
+.hdr-logo .gr{background:linear-gradient(135deg,var(--cy),var(--bl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hdr-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.25);letter-spacing:2px}
+.hdr-stats{display:flex;gap:16px}
+.hdr-stat{text-align:center}
+.hdr-stat .v{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--cy)}
+.hdr-stat .l{font-size:7px;color:rgba(255,255,255,.2);letter-spacing:1.5px;text-transform:uppercase}
+
+/* FILTERS */
+.filters{padding:10px 20px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.03);flex-shrink:0}
+.fbtn{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;font-family:'Fredoka',sans-serif}
+.fbtn:hover{background:rgba(255,255,255,.06);color:#fff}
+.fbtn.on{background:rgba(0,212,255,.1);border-color:rgba(0,212,255,.25);color:var(--cy)}
+.fbtn .cnt{font-family:'JetBrains Mono',monospace;font-size:8px;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:4px}
+.fbtn.on .cnt{background:rgba(0,212,255,.15)}
+
+/* STAGE */
+.stage{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:20px}
+
+/* APP CARD */
+.card{width:min(92%,520px);position:relative;perspective:1200px}
+.card-inner{position:relative;transition:transform .7s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
+.card.flipping .card-inner{transform:rotateY(90deg)}
+
+.card-face{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:20px;overflow:hidden;backface-visibility:hidden}
+
+/* Card Content */
+.card-top{padding:32px 32px 24px;text-align:center;position:relative}
+.card-emoji{font-size:72px;margin-bottom:12px;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));display:block;animation:cardFloat 3s ease-in-out infinite}
+@keyframes cardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.card-badge{display:inline-block;padding:2px 10px;border-radius:99px;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.badge-popular{background:rgba(251,191,36,.12);color:var(--yw);border:1px solid rgba(251,191,36,.2)}
+.badge-stable{background:rgba(34,197,94,.1);color:var(--gn);border:1px solid rgba(34,197,94,.2)}
+.badge-dev{background:rgba(147,51,234,.1);color:var(--pr);border:1px solid rgba(147,51,234,.2)}
+.badge-new{background:rgba(0,212,255,.1);color:var(--cy);border:1px solid rgba(0,212,255,.2)}
+.card-name{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,32px);font-weight:800;letter-spacing:-1px;margin-bottom:6px}
+.card-desc{font-size:13px;color:rgba(255,255,255,.45);line-height:1.6;max-width:400px;margin:0 auto}
+
+/* Categories */
+.card-cats{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:0 32px 20px}
+.cat-pill{font-size:10px;padding:3px 10px;border-radius:6px;font-weight:600;letter-spacing:.5px}
+
+/* Tags row */
+.card-tags{padding:12px 32px 20px;display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
+.tag-chip{font-family:'JetBrains Mono',monospace;font-size:8px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.04)}
+
+/* Progress bar */
+.card-prog{height:3px;background:rgba(255,255,255,.03);position:relative}
+.card-prog-fill{height:100%;background:linear-gradient(90deg,var(--cy),var(--bl));transition:width .1s linear;box-shadow:0 0 8px rgba(0,212,255,.3)}
+
+/* Counter */
+.card-counter{padding:10px 32px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.2);letter-spacing:2px;border-top:1px solid rgba(255,255,255,.03)}
+
+/* CONTROLS */
+.ctrls{padding:12px 20px;display:flex;align-items:center;justify-content:center;gap:10px;border-top:1px solid rgba(255,255,255,.04);flex-shrink:0}
+.cbtn{background:none;border:1px solid rgba(255,255,255,.08);color:#fff;cursor:pointer;font-size:16px;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:'Fredoka',sans-serif}
+.cbtn:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15)}
+.cbtn.play-btn{width:42px;height:42px;border-radius:50%;font-size:18px;border-color:rgba(0,212,255,.25);background:rgba(0,212,255,.06)}
+.cbtn.play-btn:hover{background:rgba(0,212,255,.12)}
+.speed-sel{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:10px;padding:4px 8px;border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace}
+.speed-sel option{background:#111;color:#fff}
+
+/* MINI GRID (bottom) */
+.mini-grid{padding:8px 12px;display:flex;gap:3px;flex-wrap:wrap;justify-content:center;border-top:1px solid rgba(255,255,255,.03);flex-shrink:0;max-height:42px;overflow:hidden}
+.mini-dot{width:16px;height:16px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;cursor:pointer;background:rgba(255,255,255,.03);border:1px solid transparent;transition:all .2s}
+.mini-dot:hover{background:rgba(255,255,255,.08)}
+.mini-dot.on{border-color:var(--cy);background:rgba(0,212,255,.1);box-shadow:0 0 6px rgba(0,212,255,.2)}
+
+/* Category colors */
+.cat-microbit{background:rgba(0,212,255,.1);color:var(--cy);border:1px solid rgba(0,212,255,.15)}
+.cat-camera{background:rgba(251,191,36,.1);color:var(--yw);border:1px solid rgba(251,191,36,.15)}
+.cat-ai{background:rgba(147,51,234,.1);color:var(--pr);border:1px solid rgba(147,51,234,.15)}
+.cat-hardware{background:rgba(255,107,53,.1);color:var(--or);border:1px solid rgba(255,107,53,.15)}
+.cat-learning{background:rgba(34,197,94,.1);color:var(--gn);border:1px solid rgba(34,197,94,.15)}
+.cat-classroom{background:rgba(79,110,247,.1);color:var(--bl);border:1px solid rgba(79,110,247,.15)}
+.cat-tools{background:rgba(255,45,138,.1);color:var(--pk);border:1px solid rgba(255,45,138,.15)}
+
+/* Link row */
+.link-row{display:flex;justify-content:center;padding:4px 32px 16px}
+.app-link{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--cy);text-decoration:none;opacity:.5;transition:opacity .2s;letter-spacing:1px}
+.app-link:hover{opacity:1}
+</style>
+  <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<div class="main">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-brand">
+    <div><div class="hdr-logo"><span class="gr">WORKSHOP</span>-DIY</div><div class="hdr-sub">APP DEMO REEL</div></div>
+  </div>
+  <div class="hdr-stats">
+    <div class="hdr-stat"><div class="v" id="totalShown">39</div><div class="l">Apps</div></div>
+    <div class="hdr-stat"><div class="v" id="catShown">All</div><div class="l">Filter</div></div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters" id="filters"></div>
+
+<!-- STAGE -->
+<div class="stage">
+  <div class="card" id="card">
+    <div class="card-inner" id="cardInner">
+      <div class="card-face">
+        <div class="card-top">
+          <span class="card-emoji" id="cEmoji">🤖</span>
+          <div id="cBadge"></div>
+          <div class="card-name" id="cName">bit-bot</div>
+          <div class="card-desc" id="cDesc">Loading...</div>
+        </div>
+        <div class="card-cats" id="cCats"></div>
+        <div class="card-tags" id="cTags"></div>
+        <div class="link-row"><a class="app-link" id="cLink" href="#" target="_blank">↗ Open App</a></div>
+        <div class="card-prog"><div class="card-prog-fill" id="progFill"></div></div>
+        <div class="card-counter" id="cCounter">01 / 39</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="ctrls">
+  <button class="cbtn" id="prevBtn" title="Previous">◀</button>
+  <button class="cbtn" id="shuffleBtn" title="Shuffle">🔀</button>
+  <button class="cbtn play-btn" id="playBtn" title="Play/Pause">⏸</button>
+  <select class="speed-sel" id="speedSel" title="Speed">
+    <option value="3000">3s Fast</option>
+    <option value="5000" selected>5s Normal</option>
+    <option value="8000">8s Slow</option>
+    <option value="12000">12s Read</option>
+  </select>
+  <button class="cbtn" id="nextBtn" title="Next">▶</button>
+</div>
+
+<!-- MINI GRID -->
+<div class="mini-grid" id="miniGrid"></div>
+
+</div>
+
+<script>
+// ===== REAL APP DATA =====
+const ALL_APPS=[
+{e:"🤖",n:"bit-bot",c:["microbit"],b:"popular",d:"Drive a Bit:Bot robot from your browser over Bluetooth — virtual joystick, line-follow test and obstacle mode.",t:["robot","micro:bit","BLE","motor","gamepad"]},
+{e:"🪄",n:"magic-hands",c:["camera","ai"],b:"popular",d:"Wave your hands in front of the camera to trigger magic effects — confetti, trails, neon glow — powered by MediaPipe hand tracking.",t:["camera","hand-tracking","mediapipe","effects"]},
+{e:"🕵️",n:"face-quest",c:["camera","ai"],b:"popular",d:"A face-detection game you play with your webcam — smile, blink, turn your head to score points. Privacy-first: runs 100% locally.",t:["camera","face-detection","game","privacy"]},
+{e:"💬",n:"talking-robot",c:["microbit","ai"],b:"stable",d:"A browser robot that speaks, listens and shows emotions — send text or voice commands to a micro:bit over BLE.",t:["robot","speech","TTS","STT","BLE","emotions"]},
+{e:"🧠",n:"teachable-machine",c:["microbit","camera","ai"],b:"popular",d:"Train gestures or sounds in the browser with Teachable Machine, then send the results to a micro:bit in real time.",t:["AI","gestures","training","real-time"]},
+{e:"😎",n:"face-tracking",c:["camera","microbit"],b:"stable",d:"Kids-friendly face tracking with event triggers — optionally send face position to a micro:bit over BLE.",t:["camera","face-tracking","events","BLE"]},
+{e:"😄",n:"bitmoji-lab",c:["microbit"],b:"stable",d:"Pick emojis and turn them into colorful 5×5 LED pixel art on your micro:bit — send over BLE instantly.",t:["emoji","LED","pixel-art","BLE"]},
+{e:"🚀",n:"mission-control",c:["classroom","microbit"],b:"stable",d:"Mission control dashboard with live video/chat via WebRTC — send button commands to micro:bits in the room.",t:["WebRTC","video","chat","dashboard"]},
+{e:"🧩",n:"bit-playground",c:["microbit"],b:"stable",d:"The ultimate micro:bit BLE playground — control LEDs, read sensors, drive servos and motors from one page.",t:["BLE","sensors","servos","motors","LEDs"]},
+{e:"🎛️",n:"rxy",c:["microbit"],b:"stable",d:"Build a custom Bluetooth remote for micro:bit — drag buttons, sliders and D-pads onto a canvas.",t:["remote","custom","drag-drop","BLE"]},
+{e:"🎨",n:"pixel-gateway",c:["tools"],b:"stable",d:"A retro pixel art portal — draw on a grid, animate frames, preview sprites and share your creations.",t:["pixel-art","animation","sprites","draw"]},
+{e:"💡",n:"wled-kids-lab",c:["hardware","learning"],b:"stable",d:"Control WS2812 / Neopixel LED strips with WLED — pick colors, effects and brightness in a kid-friendly UI.",t:["WLED","Neopixel","LED","colors"]},
+{e:"⚡",n:"esp32-c3-kids-lab",c:["hardware","learning"],b:"stable",d:"Hands-on ESP32-C3 lab — blink LEDs, read temperature sensors, connect to WiFi and explore IoT basics.",t:["ESP32","IoT","sensors","WiFi"]},
+{e:"🪙",n:"crypto-academy",c:["learning"],b:"stable",d:"Interactive lessons on cryptocurrency and blockchain — learn how wallets, mining and transactions work.",t:["crypto","blockchain","wallets","mining"]},
+{e:"🔐",n:"pentest-lab",c:["learning"],b:"stable",d:"A beginner-friendly penetration testing sandbox — learn cybersecurity basics through hands-on challenges.",t:["cybersecurity","pentest","hacking","sandbox"]},
+{e:"🐧",n:"linux-kids-lab",c:["learning"],b:"stable",d:"Learn Linux commands in a safe browser sandbox — navigate files, use pipes, write scripts and master the terminal.",t:["Linux","terminal","bash","commands"]},
+{e:"🏭",n:"production-chain",c:["learning"],b:"stable",d:"Visualize and simulate an industrial production chain — drag stations, set throughput and watch the flow.",t:["simulation","industry","production","flow"]},
+{e:"🏫",n:"classroom",c:["classroom"],b:"stable",d:"PeerJS-powered cloud classroom — create a room with a code, share screens, chat and collaborate in real time.",t:["PeerJS","classroom","collaboration","screen-share"]},
+{e:"🔌",n:"usb-logger",c:["microbit"],b:"stable",d:"Talk to your micro:bit over USB serial from the browser — send commands, receive data and log everything.",t:["USB","serial","logging","debug"]},
+{e:"📡",n:"ble-logger",c:["microbit"],b:"stable",d:"Bluetooth logger and debug playground for micro:bit — connect, inspect services, read/write characteristics.",t:["BLE","debug","services","characteristics"]},
+{e:"🧰",n:"claude-toolkit",c:["ai","tools"],b:"dev",d:"A toolkit for building apps and workflows with Claude AI — prompt templates, chat interface and API helpers.",t:["Claude","AI","prompts","API"]},
+{e:"🎭",n:"puppeteer-playground",c:["tools"],b:"stable",d:"Experiment with Puppeteer browser automation — write scripts to scrape pages, take screenshots and more.",t:["Puppeteer","automation","scraping","testing"]},
+{e:"🔋",n:"circuit-lab",c:["hardware","learning"],b:"dev",d:"Build and simulate electronic circuits in the browser — wire up LEDs, resistors, capacitors and see the results.",t:["circuits","simulation","electronics","components"]},
+{e:"🛡️",n:"rocket-shield-vpn",c:["tools"],b:"dev",d:"Visual guide to VPNs and network security — see how encrypted tunnels protect your data.",t:["VPN","security","encryption","networks"]},
+{e:"🧊",n:"3d-lab",c:["learning"],b:"dev",d:"Explore 3D design in the browser — create, rotate and light up objects using Three.js.",t:["3D","Three.js","modeling","design"]},
+{e:"🔀",n:"git-lab",c:["learning"],b:"dev",d:"Learn Git step by step — interactive lessons on commit, branch, merge and pull requests.",t:["Git","version-control","branch","merge"]},
+{e:"✨",n:"prompt-hero",c:["ai","learning"],b:"dev",d:"Master AI prompting — learn techniques to write effective prompts for ChatGPT, Claude and other LLMs.",t:["AI","prompts","LLM","techniques"]},
+{e:"🌍",n:"save-our-planet",c:["learning"],b:"dev",d:"Interactive lessons on climate change, recycling and sustainability — quizzes, facts and action plans.",t:["climate","sustainability","ecology","quizzes"]},
+{e:"📋",n:"ops-catalog",c:["tools"],b:"dev",d:"A browsable catalog of DevOps tools and workflows — CI/CD pipelines, Docker, Kubernetes and more.",t:["DevOps","CI/CD","Docker","Kubernetes"]},
+{e:"💻",n:"code-kids",c:["learning"],b:"dev",d:"Learn to code from scratch — step-by-step exercises in HTML, CSS and JavaScript for beginners.",t:["HTML","CSS","JavaScript","beginner"]},
+{e:"🏡",n:"smart-home",c:["hardware","learning"],b:"dev",d:"Build a smart home dashboard — monitor sensors, toggle lights, set automations and explore IoT.",t:["IoT","smart-home","sensors","automation"]},
+{e:"🧱",n:"makecode-adventures",c:["microbit","learning"],b:"dev",d:"Block-based coding adventures with MakeCode — guided projects that teach programming step by step.",t:["MakeCode","blocks","coding","projects"]},
+{e:"🤖",n:"bit-54-activities",c:["microbit","learning"],b:"dev",d:"54 hands-on activities for BBC micro:bit — from blinking LEDs to BLE robots, beginner to advanced.",t:["54-activities","micro:bit","hands-on","progressive"]},
+{e:"💰",n:"crypto-vault",c:["learning"],b:"dev",d:"Learn cryptography basics hands-on — encrypt messages, hash passwords, generate keys and understand security.",t:["cryptography","encryption","hashing","keys"]},
+{e:"🔗",n:"dhcp-lab",c:["hardware"],b:"new",d:"Zero-dependency Python DHCP server with real-time web dashboard — visualize network assignments live.",t:["DHCP","networking","Python","dashboard"]},
+{e:"🐳",n:"docker-lab",c:["learning"],b:"new",d:"Docker Lab — explore containers, images and volumes in an interactive learning environment.",t:["Docker","containers","DevOps"]},
+{e:"🔴",n:"nodered-lab",c:["learning"],b:"new",d:"Node-RED visual programming — wire together APIs, services and hardware with a drag-and-drop flow editor.",t:["Node-RED","flows","visual","IoT"]},
+{e:"⛽",n:"ocpp",c:["tools"],b:"new",d:"A complete, production-quality OCPP 1.6J simulation ecosystem for learning, testing and EV charging.",t:["OCPP","EV-charging","simulation","protocol"]},
+{e:"🖥️",n:"tty",c:["microbit"],b:"new",d:"Terminal interface for micro:bit — serial console access directly from your web browser.",t:["terminal","serial","console","micro:bit"]}
+];
+
+const CATS=[
+  {e:"⭐",n:"All",k:"all",col:"#fff"},
+  {e:"🤖",n:"micro:bit",k:"microbit",col:"#00d4ff"},
+  {e:"📚",n:"Learning",k:"learning",col:"#22c55e"},
+  {e:"🛠️",n:"Tools",k:"tools",col:"#ff2d8a"},
+  {e:"🧠",n:"AI",k:"ai",col:"#9333ea"},
+  {e:"🔩",n:"Hardware",k:"hardware",col:"#ff6b35"},
+  {e:"📸",n:"Camera",k:"camera",col:"#fbbf24"},
+  {e:"🏫",n:"Classroom",k:"classroom",col:"#4f6ef7"}
+];
+
+let apps=[...ALL_APPS],cur=0,playing=true,speed=5000,elapsed=0,lastT=Date.now(),filter='all';
+
+// ===== STARFIELD =====
+const cv=document.getElementById('bg'),cx=cv.getContext('2d');
+let W,H,stars=[];
+function onR(){W=cv.width=innerWidth;H=cv.height=innerHeight;stars=Array.from({length:80},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.2,a:Math.random(),s:Math.random()*.2+.06}))}
+onR();addEventListener('resize',onR);
+(function draw(){cx.clearRect(0,0,W,H);stars.forEach(s=>{s.a+=s.s*.01;cx.globalAlpha=Math.abs(Math.sin(s.a))*.3;cx.fillStyle='#fff';cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);cx.fill()});cx.globalAlpha=1;requestAnimationFrame(draw)})();
+
+// ===== FILTERS =====
+const filtersEl=document.getElementById('filters');
+CATS.forEach(c=>{
+  const cnt=c.k==='all'?ALL_APPS.length:ALL_APPS.filter(a=>a.c.includes(c.k)).length;
+  const b=document.createElement('button');
+  b.className='fbtn'+(c.k==='all'?' on':'');
+  b.dataset.k=c.k;
+  b.innerHTML=`${c.e} ${c.n} <span class="cnt">${cnt}</span>`;
+  b.onclick=()=>{
+    filter=c.k;
+    apps=c.k==='all'?[...ALL_APPS]:ALL_APPS.filter(a=>a.c.includes(c.k));
+    document.querySelectorAll('.fbtn').forEach(f=>f.classList.toggle('on',f.dataset.k===c.k));
+    document.getElementById('totalShown').textContent=apps.length;
+    document.getElementById('catShown').textContent=c.n;
+    cur=0;buildMiniGrid();showApp(0);
+  };
+  filtersEl.appendChild(b);
+});
+
+// ===== MINI GRID =====
+function buildMiniGrid(){
+  const mg=document.getElementById('miniGrid');
+  mg.innerHTML='';
+  apps.forEach((a,i)=>{
+    const d=document.createElement('div');
+    d.className='mini-dot'+(i===0?' on':'');
+    d.textContent=a.e;
+    d.title=a.n;
+    d.onclick=()=>{cur=i;showApp(i)};
+    mg.appendChild(d);
+  });
+}
+buildMiniGrid();
+
+// ===== SHOW APP =====
+const card=document.getElementById('card');
+function showApp(idx){
+  if(idx<0)idx=apps.length-1;if(idx>=apps.length)idx=0;
+  cur=idx;elapsed=0;lastT=Date.now();
+
+  // Flip animation
+  card.classList.add('flipping');
+  setTimeout(()=>{
+    const a=apps[idx];
+    document.getElementById('cEmoji').textContent=a.e;
+    document.getElementById('cName').textContent=a.n;
+    document.getElementById('cDesc').textContent=a.d;
+    document.getElementById('cLink').href=`https://abourdim.github.io/${a.n}/`;
+    document.getElementById('cCounter').textContent=`${String(idx+1).padStart(2,'0')} / ${String(apps.length).padStart(2,'0')}`;
+
+    // Badge
+    const bb=document.getElementById('cBadge');
+    const bMap={popular:'⭐ Popular',stable:'✅ Stable',dev:'🔧 Dev',new:'✨ New'};
+    bb.innerHTML=`<span class="card-badge badge-${a.b}">${bMap[a.b]||a.b}</span>`;
+
+    // Categories
+    const cc=document.getElementById('cCats');
+    cc.innerHTML=a.c.map(c=>`<span class="cat-pill cat-${c}">${c}</span>`).join('');
+
+    // Tags
+    const tt=document.getElementById('cTags');
+    tt.innerHTML=(a.t||[]).map(t=>`<span class="tag-chip">#${t}</span>`).join('');
+
+    // Mini grid highlight
+    document.querySelectorAll('.mini-dot').forEach((d,i)=>d.classList.toggle('on',i===idx));
+
+    card.classList.remove('flipping');
+  },350);
+}
+showApp(0);
+
+// ===== CONTROLS =====
+document.getElementById('prevBtn').onclick=()=>showApp(cur-1);
+document.getElementById('nextBtn').onclick=()=>showApp(cur+1);
+document.getElementById('shuffleBtn').onclick=()=>{
+  apps.sort(()=>Math.random()-.5);
+  cur=0;buildMiniGrid();showApp(0);
+};
+document.getElementById('playBtn').onclick=function(){
+  playing=!playing;this.textContent=playing?'⏸':'▶';lastT=Date.now();
+};
+document.getElementById('speedSel').onchange=function(){
+  speed=+this.value;elapsed=0;lastT=Date.now();
+};
+
+// ===== TIMER =====
+const progFill=document.getElementById('progFill');
+(function tick(){
+  if(playing){
+    const n=Date.now();elapsed+=n-lastT;lastT=n;
+    progFill.style.width=(Math.min(elapsed/speed,1)*100)+'%';
+    if(elapsed>=speed)showApp(cur+1);
+  }else lastT=Date.now();
+  requestAnimationFrame(tick);
+})();
+
+// ===== KEYBOARD =====
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight')showApp(cur+1);
+  if(e.key==='ArrowLeft')showApp(cur-1);
+  if(e.key===' '){e.preventDefault();document.getElementById('playBtn').click()}
+});
+</script>
+  <script src="nav.js"></script>
+</body>
+</html>
